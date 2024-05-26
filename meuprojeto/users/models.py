@@ -1,14 +1,14 @@
 from django.db import models
 
 
-class Users(models.Model):
+class User(models.Model):
 	id = models.AutoField(primary_key=True)
-	name = models.CharField(max_length=25, unique=True)
+	name = models.CharField(max_length=25, unique=True, blank=False, null=False)
 	nickname = models.CharField(max_length=25)
 	friends = models.ManyToManyField('self', blank=True)
 	avatar = models.ImageField(upload_to='avatars/', blank=True)
 	online = models.BooleanField(default=False)
-	games = models.ManyToManyField('Games', blank=True)
+	games = models.ManyToManyField('Game', blank=True)
 
 	def __str__(self):
 		return self.name
@@ -27,10 +27,10 @@ class GamesTemplate(models.Model):
 		return self.name
 
 
-class Games(models.Model):
+class Game(models.Model):
 	id = models.AutoField(primary_key=True)
 	template = models.ForeignKey(GamesTemplate, on_delete=models.CASCADE)
-	players = models.ManyToManyField(Users, blank=True, related_name='PlayerInGame')
+	players = models.ManyToManyField(User, blank=True, related_name='PlayerInGame')
 
 
 class PlayerInGame(models.Model):
@@ -40,8 +40,8 @@ class PlayerInGame(models.Model):
 	)
 
 	id = models.AutoField(primary_key=True)
-	user = models.ForeignKey(Users, on_delete=models.CASCADE)
-	game = models.ForeignKey(Games, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	game = models.ForeignKey(Game, on_delete=models.CASCADE)
 	role = models.CharField(max_length=10, choices=ROLE_PLAYER)
 	winner = models.BooleanField(default=False)
 
@@ -51,8 +51,8 @@ class PlayerInGame(models.Model):
 
 class Friends(models.Model):
 	id = models.AutoField(primary_key=True)
-	user1 = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='user1')
-	user2 = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='user2')
+	user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1')
+	user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2')
 
 	class Meta:
 		unique_together = ['user1', 'user2']
