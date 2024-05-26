@@ -1,18 +1,33 @@
 version: '3.0'
 
 volumes:
-  app:
+  frontend-files:
     driver_opts:
       type: none
       device: ${PWD}/frontend/app
       o: bind
+  backend-files:
+    driver_opts:
+      type: none
+      device: ${PWD}/backend
+      o: bind
 
 services:
 
-  nginx:
+  frontend:
     build: ./frontend/config
-    container_name: nginx-transcendence
+    container_name: ft_frontend
     ports:
       - "443:443"
     volumes:
-      - app:/var/www
+      - frontend-files:/var/www
+
+  backend:
+    build: ./backend
+    container_name: ft_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend-files:/app
+    
+    
