@@ -13,6 +13,6 @@ services:
     build: ./frontend/config
     container_name: nginx-transcendence
     ports:
-      - "80:80"
+      - "443:443"
     volumes:
       - app:/var/www
