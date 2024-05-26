@@ -14,23 +14,14 @@ class User(models.Model):
 
 
 class Game(models.Model):
-	id = models.AutoField(primary_key=True)
-	template = models.ForeignKey('GamesTemplate', on_delete=models.CASCADE)
-	players = models.ManyToManyField(User, blank=True, through='PlayerInGame')
-
-
-class GamesTemplate(models.Model):
 	ROLE_CHOICES = (
 		('ranked', 'ranked'),
 		('normal', 'normal'),
 	)
-
 	id = models.AutoField(primary_key=True)
-	name = models.CharField(max_length=10, choices=ROLE_CHOICES)
-
-	def __str__(self):
-		return self.name
-
+	template = models.CharField(max_length=10, choices=ROLE_CHOICES)
+	players = models.ManyToManyField(User, blank=True, through='PlayerInGame')
+	create_at = models.DateTimeField(auto_now_add=True)
 
 class PlayerInGame(models.Model):
 	ROLE_CHOICES = (
