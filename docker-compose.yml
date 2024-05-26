@@ -1,0 +1,18 @@
+version: '3.0'
+
+volumes:
+  app:
+    driver_opts:
+      type: none
+      device: ${PWD}/frontend/app
+      o: bind
+
+services:
+
+  nginx:
+    build: ./frontend/config
+    container_name: nginx-transcendence
+    ports:
+      - "80:80"
+    volumes:
+      - app:/var/www
