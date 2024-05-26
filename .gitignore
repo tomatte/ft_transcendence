@@ -1,2 +1,11 @@
-venv/
 .gitignore
+
+# Byte-compiled / optimized / DLL files
+venv/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+
+#db
+db.sqlite3
