@@ -22,6 +22,8 @@ class Game(models.Model):
 	template = models.CharField(max_length=10, choices=ROLE_CHOICES)
 	players = models.ManyToManyField(User, blank=True, through='PlayerInGame')
 	create_at = models.DateTimeField(auto_now_add=True)
+	duration = models.DurationField(null=True, blank=True)
+
 
 class PlayerInGame(models.Model):
 	ROLE_CHOICES = (
@@ -34,6 +36,7 @@ class PlayerInGame(models.Model):
 	game = models.ForeignKey(Game, on_delete=models.CASCADE)
 	role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 	winner = models.BooleanField(default=False)
+	points = models.IntegerField(default=0)
 
 	def __str__(self):
 		return f"User: {self.user.name} GameID: {self.game.id}"
