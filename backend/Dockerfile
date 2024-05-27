@@ -8,7 +8,7 @@ RUN apt-get update \
 WORKDIR /app
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
-RUN pip install -U channels["daphne"]
+RUN pip install -U channels["daphne"] psycopg[binary]
 COPY . .
 
 EXPOSE 8000
