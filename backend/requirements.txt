@@ -1,3 +1,2 @@
 Django==5.0.6
 environs==11.0.0
-daphne
