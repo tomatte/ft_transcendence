@@ -1,12 +1,9 @@
-from django.shortcuts import render
-from .models import User, Game, PlayerInGame
+from .models import User, MatchPlayer
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-
-# Create your views here.
 from django.db.models import Count, Q
 
-user = User.objects.get(pk=1)
+# Create your views here.
 
 def get_user(request):
 	"""Function to get user data
@@ -17,7 +14,7 @@ def get_user(request):
 		returns:
 			JsonResponse: response with user data
 	"""
-	players_in_game = PlayerInGame.objects \
+	players_in_game = MatchPlayer.objects \
 		.filter(user=user) \
 		.annotate(nun_matches=Count('game')) \
 		.annotate(wins=Count('game', filter=Q(winner=True))) \
