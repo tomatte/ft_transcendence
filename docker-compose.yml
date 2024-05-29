@@ -1,4 +1,4 @@
-version: '3.0'
+version: '3.4'
 
 volumes:
   frontend-files:
@@ -52,7 +52,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     restart: always
     networks:
-      trans-network:
+      - trans-network
 
   mock-server:
     image: mockoon/cli:latest
@@ -66,6 +66,15 @@ services:
       retries: 2
       start_period: 10s
     volumes:
-      - ./mock-data/transcendence.json:/data:readonly
+      - ./mock-data/transcendence.json:/data
     networks:
       - trans-network
+
+
+# docker stop $(docker ps -a -q)  # Para todos os contêineres
+# docker rm $(docker ps -a -q)  # Remove todos os contêineres
+# docker rmi $(docker images -q)  # Remove todas as imagens
+# docker network prune -f  # Remove todas as redes não utilizadas
+# docker volume prune -f  # Remove todos os volumes não utilizados
+# docker system prune -a --volumes
+# docker volume rm ft_transcendence_backend-files ft_transcendence_frontend-files

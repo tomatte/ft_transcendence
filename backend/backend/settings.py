@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from environs import Env
-env = Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -62,7 +61,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [Path(BASE_DIR, 'backend', 'templates')],
-        'DIRS': [Path(BASE_DIR, 'users', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,12 +79,23 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
+env = Env()
+env.read_env()
+
+# print(env.str('DB_NAME'))
+# print(env.str('DB_USER'))
+# print(env.str('DB_PASSWORD'))
+# print(env.str('DB_HOST'))
+# print(env.str('DB_PORT'))
 DATABASES = {
     'default': {
-        "OPTIONS": {
-            "service": "my_service",
-            "passfile": ".my_pgpass",
-        },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bankaidb',
+        'USER': 'bankai',
+        'PASSWORD': '123456',
+        'HOST': '172.20.0.3', # Testar no windows com localhost ou db
+        'PORT': '5432',
     }
 }
 
@@ -131,3 +140,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+PGSERVICEFILE=Path(BASE_DIR, 'backend', '.pg_service.conf')
+print(PGSERVICEFILE)
