@@ -52,7 +52,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     restart: always
     networks:
-      trans-network:
+      - trans-network
     
   mock-server:
     image: mockoon/cli:latest
