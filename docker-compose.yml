@@ -23,7 +23,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - frontend-files:/var/www
+      - ./frontend:/var/www
     networks:
       - trans-network
 
@@ -33,7 +33,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - backend-files:/app
+      - ./backend:/app
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -66,6 +66,6 @@ services:
       retries: 2
       start_period: 10s
     volumes:
-      - ./mock-data/transcendence.json:/data:readonly
+      - ./mock-data/transcendence.json:/data
     networks:
       - trans-network
