@@ -1,0 +1,12 @@
+<!doctype>
+<html>
+<head>
+	<title>Register</title>
+</head>
+<body>
+	<form method="post" action="{% url register %}">
+		{% csrf_token %}
+		<input type="text" name="name" placeholder="Username">
+		<input type="submit" value="Register">
+	</form>
+</body>
