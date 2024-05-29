@@ -91,11 +91,11 @@ env.read_env()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bankaidb',
-        'USER': 'bankai',
-        'PASSWORD': '123456',
-        'HOST': '172.20.0.3', # Testar no windows com localhost ou db
-        'PORT': '5432',
+        'NAME': env.str('POSTGRES_DB'),
+        'USER': env.str('POSTGRES_USER'),
+        'PASSWORD': env.str('POSTGRES_PASSWORD'),
+        'HOST': env.str('POSTGRES_HOST'),
+        'PORT': env.str('POSTGRES_PORT'),
     }
 }
 

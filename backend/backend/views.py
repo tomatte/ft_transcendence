@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from users.models import User
@@ -34,3 +34,7 @@ def login(request):
 
 
 
+def get_user(request):
+	users = User.objects.all()[0]
+	print(users.nickname)
+	return JsonResponse({'users': users.nickname})
