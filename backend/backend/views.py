@@ -6,7 +6,6 @@ from django.contrib.auth import get_user_model
 
 import requests
 
-User = get_user_model()
 
 def get_acess_token(code):
 	data = {
