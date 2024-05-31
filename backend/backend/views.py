@@ -1,40 +1,56 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login as auth_login
 from users.models import User
+from django.contrib.auth import get_user_model
+
+import requests
+
+User = get_user_model()
+
+def get_acess_token(code):
+	data = {
+		'grant_type': 'authorization_code',
+		'client_id': 'u-s4t2ud-9fc0845267bce949c5cf5e83db67b91730ba9fab5ffd6c62f001ec8802ec6f83',
+		'client_secret': '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',
+		'code': code,
+		'redirect_uri': 'http://127.0.0.1:8000/api/autenticate'
+	}
+
+	response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
+	if response.status_code != 200:
+		raise Exception('Error getting access token')
+
+	return response.json()['access_token']
 
 
-def register(request):
-	if (request.method != 'POST'):
-		return render(request, 'register.html')
+def get_intra_data(acess_token):
+	headers = {
+		'Authorization': 'Bearer ' + acess_token
+	}
+	response = requests.get('https://api.intra.42.fr/v2/me', headers=headers)
+	if response.status_code != 200:
+		raise Exception('Error getting user data')
+
+	return ({
+		'name': response.json()['login'],
+		'email': response.json()['email']
+	})
+
+
+def autenticate(request):
+	code = request.GET.get('code')
+	if request.method != 'GET' and not code:
+		return JsonResponse({'message': 'Invalid request'})
 
 	try:
-		User.objects.create(name=request.POST['name'], nickname=request.POST['nickname'])
-		return redirect('/login/')
-	except User.DoesNotExist:
-		return HttpResponse("Internal Erro", status=500)
+		acess_token = get_acess_token(code)
+		data_user = get_intra_data(acess_token)
+		user, created = User.objects.get_or_create(name=data_user['name'], defaults=data_user)
+		auth_login(request, user)
+		return JsonResponse({'message': 'User authenticated'})
 	except Exception as e:
-		return HttpResponse(f"Invalid request: {str(e)}", status=400)
-
+		return JsonResponse({'message': str(e)})
 
 def login(request):
-	if request.method == 'POST':
-		try:
-			user = authenticate(name=request.POST['username'])
-			if user is not None:
-				login(request, user)
-				## TODO: Redirect to the home page
-				return HttpResponse(f"Welcome {user.username}", status=200)
-			else:
-				return redirect('/register/')
-
-		except Exception as e:
-			return redirect('/register/')
 	return render(request, 'login.html')
-
-
-
-def get_user(request):
-	users = User.objects.all()[0]
-	print(users.nickname)
-	return JsonResponse({'users': users.nickname})

@@ -5,3 +5,4 @@ psycopg2-binary
 channels
 environs
 Pillow
+requests
