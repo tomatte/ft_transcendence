@@ -73,9 +73,12 @@ def uptade_avatar(request):
 	if 'avatar' not in request.FILES:
 		return HttpResponse(status=400)
 
-	avatar = request.FILES.get('avatar')
 	user = User.objects.get(username=request.user.username)
-	user.avatar = avatar
+
+	if user.avatar:
+		user.avatar.delete(save=False)
+
+	user.avatar = request.FILES.get('avatar')
 	user.save()
 	return HttpResponse(status=200)
 
