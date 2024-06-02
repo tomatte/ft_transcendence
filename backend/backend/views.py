@@ -32,8 +32,7 @@ def get_intra_data(acess_token):
 		raise Exception('Error getting user data')
 
 	return ({
-		'name': response.json()['login'],
-		'email': response.json()['email']
+		'username': response.json()['login'],
 	})
 
 
@@ -45,7 +44,7 @@ def autenticate(request):
 	try:
 		acess_token = get_acess_token(code)
 		data_user = get_intra_data(acess_token)
-		user, created = User.objects.get_or_create(name=data_user['name'], defaults=data_user)
+		user, created = User.objects.get_or_create(username=data_user['username'], defaults=data_user)
 		auth_login(request, user)
 		return JsonResponse({'message': 'User authenticated'})
 	except Exception as e:
