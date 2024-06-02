@@ -1,4 +1,5 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
 from users.models import User
 
 
@@ -45,13 +46,48 @@ def my_user(request):
 		'name': user.username,
 		'nickname': user.nickname,
 		'friends': get_friends(user.friends.all()),
+		'avatar': user.avatar.name,
 	})
 
 
-def populate(request):
-	for i in range(1, 10):
-		username = f'username{i}'
-		nickname = f'nickname{i}'
-		User.objects.create(nickname=nickname, username=username)
-	return JsonResponse({'message': 'Populate success!'})
+################################################################################
+#							Routes
+################################################################################
+
+
+def uptade_nickname(request):
+	if request.method != 'POST':
+		return HttpResponse(status=405)
+
+	nickname = request.POST.get('nickname')
+	user = User.objects.get(username=request.user.username)
+	user.nickname = nickname
+	user.save()
+	return HttpResponse(status=200)
+
+
+def uptade_avatar(request):
+	if request.method != 'POST':
+		return HttpResponse(status=405)
+
+	if 'avatar' not in request.FILES:
+		return HttpResponse(status=400)
+
+	avatar = request.FILES.get('avatar')
+	user = User.objects.get(username=request.user.username)
+	user.avatar = avatar
+	user.save()
+	return HttpResponse(status=200)
+
+
+# def auxiliar(request):
+# 	return render(request, 'auxiliar.html')
+
+
+# def populate(request):
+# 	for i in range(1, 10):
+# 		username = f'username{i}'
+# 		nickname = f'nickname{i}'
+# 		User.objects.create(nickname=nickname, username=username)
+# 	return JsonResponse({'message': 'Populate success!'})
 
