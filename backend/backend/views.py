@@ -51,5 +51,10 @@ def autenticate(request):
 	except Exception as e:
 		return JsonResponse({'message': str(e)})
 
+
+def not_authorized(request):
+	return render(request, 'not_authorized.html')
+
+
 def login(request):
 	return render(request, 'login.html')
