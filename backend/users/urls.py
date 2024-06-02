@@ -7,6 +7,6 @@ urlpatterns = [
 
 	re_path('uptade_nickname/', views.uptade_nickname, name='uptade_nickname'),
 	re_path('uptade_avatar/', views.uptade_avatar, name='uptade_avatar'),
-	# re_path('populate/', views.populate, name='populate'),
-	# re_path('auxiliar/', views.auxiliar, name='auxiliar'),
+	re_path('populate/', views.populate, name='populate'),
+	re_path('auxiliar/', views.auxiliar, name='auxiliar'),
 ]

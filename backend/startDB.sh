@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# rm -rf users/migrations/*
+rm -rf users/migrations/*
 
 python manage.py makemigrations users
 python manage.py migrate users

@@ -80,14 +80,14 @@ def uptade_avatar(request):
 	return HttpResponse(status=200)
 
 
-# def auxiliar(request):
-# 	return render(request, 'auxiliar.html')
+def auxiliar(request):
+	return render(request, 'auxiliar.html')
 
 
-# def populate(request):
-# 	for i in range(1, 10):
-# 		username = f'username{i}'
-# 		nickname = f'nickname{i}'
-# 		User.objects.create(nickname=nickname, username=username)
-# 	return JsonResponse({'message': 'Populate success!'})
+def populate(request):
+	for i in range(1, 10):
+		username = f'username{i}'
+		nickname = f'nickname{i}'
+		User.objects.create(nickname=nickname, username=username)
+	return JsonResponse({'message': 'Populate success!'})
 
