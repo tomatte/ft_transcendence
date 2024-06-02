@@ -1,23 +1,18 @@
 from django.http import JsonResponse
 from users.models import User
-import requests
 
 
-# def all_users(request):
-# 	users = User.objects.all()
-# 	users_list = [
-# 		{
-# 			'id': user.id,
-# 			'name': user.name,
-# 			'nickname': user.nickname,
-# 			'avatar': user.avatar.name,
-# 		} for user in users
-# 	]
-# 	return JsonResponse(users_list, safe=False)
+def all_users(request):
+	users = User.objects.all().values(
+		'id', 'nickname', 'avatar'
+	)
+	return JsonResponse(list(users), safe=False)
+
 
 ################################################################################
 # This block is used to return the my user information.
 ################################################################################
+
 
 def get_friends(friends: object) -> dict:
 	friends_list = [
@@ -44,17 +39,19 @@ def get_maths(matches: object) -> dict:
 
 
 def my_user(request):
-	user = User.objects.prefetch_related('userMatch').get(name=request.user.name)
-	print(user.userMatch.all().__dict__)
-	print(user.userMatch.all().__dict__)
+	user = User.objects.prefetch_related('userMatch').get(username=request.user.username)
 	return JsonResponse({
 		'id': user.id,
-		'name': user.name,
+		'name': user.username,
 		'nickname': user.nickname,
 		'friends': get_friends(user.friends.all()),
 	})
 
 
-# def populate():
-# 	for i in range(1, 10):
-# 		user = User.objects.create(name=f'user{i}', nickname=f'nickname{i}', avatar=f'user{i}.png')
+def populate(request):
+	for i in range(1, 10):
+		username = f'username{i}'
+		nickname = f'nickname{i}'
+		User.objects.create(nickname=nickname, username=username)
+	return JsonResponse({'message': 'Populate success!'})
+
