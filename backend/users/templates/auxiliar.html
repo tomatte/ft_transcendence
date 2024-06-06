@@ -4,9 +4,14 @@
 	<title>Register</title>
 </head>
 <body>
-	<form method="post" action="/api/users/uptade_avatar/" enctype="multipart/form-data">
+	<form method="post" action="/api/users/add_friend/">
+		{% csrf_token %}
+		<input type="text" name="friend_id" value='2' placeholder="Username">
+		<button type="submit">Add friend</button>
+	</form>
+	{% comment %} <form method="post" action="/api/users/uptade_avatar/" enctype="multipart/form-data">
 		{% csrf_token %}
 		<input type="file" name="avatar" accept="image/*">
 		<button type="submit">Upload</button>
-	</form>
+	</form> {% endcomment %}
 </body>

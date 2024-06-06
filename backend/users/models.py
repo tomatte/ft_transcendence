@@ -6,7 +6,6 @@ class User(AbstractUser):
 	"""User model with additional fields."""
 	nickname = models.CharField(max_length=25)
 	avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-	friends = models.ManyToManyField('self', through='Friendship', symmetrical=False)
 	def __str__(self):
 		return self.nickname
 
