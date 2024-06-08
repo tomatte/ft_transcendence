@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'tournament',
 ]
 
 
@@ -86,11 +87,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 env = Env()
 env.read_env()
 
-# print(env.str('DB_NAME'))
-# print(env.str('DB_USER'))
-# print(env.str('DB_PASSWORD'))
-# print(env.str('DB_HOST'))
-# print(env.str('DB_PORT'))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

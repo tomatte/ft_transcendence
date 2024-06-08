@@ -3,8 +3,8 @@ set -e
 
 rm -rf users/migrations/*
 
-python manage.py makemigrations users
-python manage.py migrate users
+python manage.py makemigrations
+python manage.py migrate
 
 python manage.py migrate --fake sessions zero
 python manage.py showmigrations

@@ -2,26 +2,21 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from users.models import User, Friendship
 
-
 ################################################################################
-# This block is used to return the my user information.
+# 							Auxiliaries
 ################################################################################
 
+def format_maths_list(matches: object) -> dict:
+	"""Função para formatar a query de partidas.
 
-def get_friends(friends: object) -> dict:
-	friends_list = [
-		{
-			'id': friend.id,
-			'name': friend.name,
-			'nickname': friend.nickname,
-			'avatar': friend.avatar.name,
-		} for friend in friends
-	]
-	return friends_list
+		args:
+			matches (OBJ ITERABLE): QuerySet de partidas.
 
+		return:
+			list (List): Lista de partidas formatada.
+	"""
 
-def get_maths(matches: object) -> dict:
-	matches_list = [
+	return [
 		{
 			'id': match.id,
 			'tournament': match.tournament.id,
@@ -29,10 +24,42 @@ def get_maths(matches: object) -> dict:
 			'duration': match.duration,
 		} for match in matches
 	]
-	return matches_list
+
+
+def format_friends_list(friends: object ) -> list:
+	"""Função para formatar a query de amigos.
+
+		args:
+			friends (OBJ ITERABLE): QuerySet de amigos.
+
+		return:
+			list (List): Lista de amigos formatada.
+	"""
+
+	return [
+		{
+			'id': friend['id'],
+			'from_user': friend['from_user__nickname'],
+			'to_user': friend['to_user__nickname'],
+		} for friend in friends
+	]
+
+
+################################################################################
+#							Routes
+################################################################################
 
 
 def my_user(request):
+	"""Função para retornar o usuário logado.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			json (JSON): informações com as informações do usuario.
+	"""
+
 	user = User.objects.prefetch_related('userMatch').get(username=request.user.username)
 	return JsonResponse({
 		'id': user.id,
@@ -43,38 +70,50 @@ def my_user(request):
 	})
 
 
-def get_friends(friends):
-	return [
-		{
-			'id': friend['id'],
-			'from_user': friend['from_user__nickname'],
-			'to_user': friend['to_user__nickname'],
-		} for friend in friends
-	]
+def friend_request_send(request):
+	"""Função para retornar os pedidos de amizade enviados.
 
+		args:
+			request (OBJ): Requisição do usuario.
 
-def pending_friends(request):
+		return:
+			json (JSON): informações com as informações dos pedidos de amizade enviados.
+	"""
+
 	user = User.objects.get(username=request.user.username)
-	friends = Friendship.objects.filter(to_user=user, status='pending').values(
+	friends = Friendship.objects.filter(from_user=user, status='pending').values(
 		'id',
 		'from_user__nickname',
 		'to_user__nickname'
 	)
-	return JsonResponse(get_friends(friends), safe=False)
+	return JsonResponse(format_friends_list(friends), safe=False)
 
 
-def receive_pending(request):
+def friend_request_received(request):
+	"""Função para retornar os pedidos de amizade recebidos.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			json (JSON): informações com as informações dos pedidos de amizade recebidos.
+	"""
+
 	user = User.objects.get(username=request.user.username)
-	friends = Friendship.objects.filter(from_user=user, status='pending').values('id', 'from_user__nickname', 'to_user__nickname')
-	return JsonResponse(get_friends(friends), safe=False)
-
-
-################################################################################
-#							Routes
-################################################################################
+	friends = Friendship.objects.filter(to_user=user, status='pending').values('id', 'from_user__nickname', 'to_user__nickname')
+	return JsonResponse(format_friends_list(friends), safe=False)
 
 
 def all_users(request):
+	"""Função para retornar todos os usuarios.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			json (JSON): informações com as informações de todos os usuarios.
+	"""
+
 	users = User.objects.all().values(
 		'id', 'nickname', 'avatar'
 	)
@@ -82,6 +121,15 @@ def all_users(request):
 
 
 def uptade_nickname(request):
+	"""Função para atualizar o nickname do usuario.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			http (HTTP): status da requisição.
+	"""
+
 	if request.method != 'POST':
 		return HttpResponse(status=405)
 
@@ -93,6 +141,15 @@ def uptade_nickname(request):
 
 
 def uptade_avatar(request):
+	"""Função para atualizar o avatar do usuario.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			http (HTTP): status da requisição.
+	"""
+
 	if request.method != 'POST':
 		return HttpResponse(status=405)
 
@@ -110,6 +167,15 @@ def uptade_avatar(request):
 
 
 def add_friend(request):
+	"""Função para adicionar um amigo.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			http (HTTP): status da requisição.
+	"""
+
 	if request.method != 'POST':
 		return HttpResponse(status=405, content='Method not allowed!')
 
@@ -122,12 +188,19 @@ def add_friend(request):
 		return HttpResponse(status=404, content='User not found!')
 
 
-def response_friend(request):
+def response_friend_request(request):
+	"""Função para aceitar um pedido de amizade.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			http (HTTP): status da requisição.
+	"""
 	if request.method != 'POST':
 		return HttpResponse(status=405, content='Method not allowed!')
 
 	try:
-		my_user = User.objects.get(username=request.user.username)
 		friendship = Friendship.objects.get(id=request.POST.get('friendship_id'))
 		friendship.status = request.POST.get('status')
 		friendship.save()
