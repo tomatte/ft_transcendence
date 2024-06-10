@@ -1,6 +1,8 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from users.models import User, Friendship
+from tournament.views import create_tournament, get_tournament, create_Bracket
+from tournament.models import Tournament
 
 ################################################################################
 # 							Auxiliaries
@@ -213,11 +215,35 @@ def auxiliar(request):
 	return render(request, 'auxiliar.html')
 
 
-def populate(request):
+
+
+
+################################################################################
+# Auxiliaries
+################################################################################
+
+
+def populate_users():
 	for i in range(1, 10):
 		username = f'username{i}'
 		nickname = f'nickname{i}'
 		User.objects.create(nickname=nickname, username=username)
+	return JsonResponse({'message': 'Populate success!'})
+
+
+def add_users_tournament():
+	tournament = Tournament.objects.get(pk=1)
+	for i in range(1, 8):
+		user = User.objects.get(username=f'username{i}')
+		tournament.players.add(user)
+
+def populate(request):
+	# populate_users()
+	# create_tournament(request)
+	# add_users_tournament()
+	# create_Bracket(Tournament.objects.get(pk=1), 1)
+	get_tournament(request)
+
 	return JsonResponse({'message': 'Populate success!'})
 
 

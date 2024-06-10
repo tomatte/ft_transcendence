@@ -17,32 +17,32 @@ networks:
 
 services:
 
-  frontend:
-    build: ./frontend/config
-    container_name: ft_frontend
-    ports:
-      - "443:443"
-    volumes:
-      - frontend-files:/var/www
-    networks:
-      - trans-network
+  # frontend:
+  #   build: ./frontend/config
+  #   container_name: ft_frontend
+  #   ports:
+  #     - "443:443"
+  #   volumes:
+  #     - frontend-files:/var/www
+  #   networks:
+  #     - trans-network
 
-  backend:
-    build: ./backend
-    container_name: ft_backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - backend-files:/app
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      PYTHONUNBUFFERED: 1
-    networks:
-      - trans-network
+  # backend:
+  #   build: ./backend
+  #   container_name: ft_backend
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - backend-files:/app
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     POSTGRES_HOST: ${POSTGRES_HOST}
+  #     PYTHONUNBUFFERED: 1
+  #   networks:
+  #     - trans-network
 
   db:
     image: postgres:latest
@@ -51,6 +51,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+    - "5432:5432"
     restart: always
     networks:
       - trans-network
@@ -72,10 +74,10 @@ services:
   #     - trans-network
 
 
-# docker stop $(docker ps -a -q)  # Para todos os contêineres
-# docker rm $(docker ps -a -q)  # Remove todos os contêineres
-# docker rmi $(docker images -q)  # Remove todas as imagens
-# docker network prune -f  # Remove todas as redes não utilizadas
-# docker volume prune -f  # Remove todos os volumes não utilizados
+# docker stop $(docker ps -a -q)
+# docker rm $(docker ps -a -q)
+# docker rmi $(docker images -q)
+# docker network prune -f
+# docker volume prune -f
 # docker system prune -a --volumes
 # docker volume rm ft_transcendence_backend-files ft_transcendence_frontend-files

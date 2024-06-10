@@ -6,7 +6,6 @@ class CustomMiddleware:
 		self.urls_free = ['/api/autenticate', '/api/login/', '/api/notAuthorized/']
 
 	def __call__(self, request):
-		print(request.path)
 		if request.path in self.urls_free:
 			return self.get_response(request)
 		if not request.user.is_authenticated:
