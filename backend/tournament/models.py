@@ -7,7 +7,7 @@ class Match(models.Model):
 	players = models.ManyToManyField('users.User', through='MatchPlayer')
 	tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE, blank=True, null=True)
 	create_at = models.DateTimeField(auto_now_add=True)
-	duration = models.DurationField()
+	duration = models.DurationField(null=True, blank=True)
 
 
 class MatchPlayer(models.Model):

@@ -241,7 +241,7 @@ def populate(request):
 	# populate_users()
 	# create_tournament(request)
 	# add_users_tournament()
-	# create_Bracket(Tournament.objects.get(pk=1), 1)
+	create_Bracket(Tournament.objects.get(pk=1), 1)
 	get_tournament(request)
 
 	return JsonResponse({'message': 'Populate success!'})

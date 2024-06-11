@@ -61,6 +61,10 @@ def create_Bracket(tournament: object, round: int) -> None:
 		args:
 			tournament (OBJ): Torneio.
 	"""
+
+	if TournamentBracket.objects.filter(tournament=tournament, round=round).count() > 0:
+		return
+
 	players = list(tournament.players.all())
 	for i in range(0, len(players), 2):
 		match = Match.objects.create(
@@ -145,6 +149,19 @@ def start_tournament(request):
 		return HttpResponse(status=e.status, content=str(e))
 
 
+
+def format_players_bracket(bracket: object) -> dict:
+    return {
+		"player1": {
+			"id": bracket.player1.id,
+			"nickname": bracket.player1.nickname
+		},
+		"player2": {
+			"id": bracket.player2.id,
+			"nickname": bracket.player2.nickname
+		},
+	}
+
 def get_tournament(request):
 	"""Função para retornar um torneio.
 
@@ -162,17 +179,22 @@ def get_tournament(request):
 		# 	Prefetch('tournamentBracket', queryset=TournamentBracket.objects.all().select_related('user1', 'user2', 'match'))
 
 		# ).get(id=request.GET.get('id'))
+
 		tournament = Tournament.objects.prefetch_related(
 			Prefetch('players', queryset=User.objects.all().only('id', 'nickname', 'avatar')),
 			Prefetch('tournamentBracket', queryset=TournamentBracket.objects.all().select_related('player1', 'player2', 'match'))
 
 		).get(id=1)
-		print('dsada')
+
+		backets = [{
+				f"bracket{i}": format_players_bracket(bracket)
+			} for i, bracket in enumerate(tournament.tournamentBracket.all())
+		]
+
 		response = {
 			"players": list(tournament.players.all().values('nickname', 'id')),
-			"brackets": list(tournament.tournamentBracket.all())
+			"brackets": backets
 		}
-
 	except Tournament.DoesNotExist:
 		return HttpResponse(status=404, content='Tournament not found!')
 	except CustomException as e:
