@@ -1,0 +1,48 @@
+{% extends '../base/base.html' %} 
+
+{% block content %}
+  <main class="d-flex align-items-start h-100 gap-2 p-2">
+    <div class="d-flex flex flex-column justify-content-between h-100 gap-2 col-2">
+      <div>
+        <a class="nav-link" href="#">42 transcendence</a>
+        <div role="tabpanel">
+          <menu
+            id="menu"
+            class="nav nav-pills flex-column gap-2"
+            role="tablist"
+            aria-orientation="vertical"
+          >   
+            <li class="nav-item">
+              {% with id='game' icon='bi-controller' label='game' active=True  %}
+                {% include '../components/nav_button.html'  %} 
+              {% endwith %}
+            </li>
+            <li class="nav-item">
+              {% with id='history' icon='bi-clock' label='history'  %}
+                {% include '../components/nav_button.html'  %} 
+              {% endwith %}
+            </li>
+            <li class="nav-item">
+              {% with id='dashbord' icon='bi-bar-chart-line' label='dashbord' %}
+                {% include '../components/nav_button.html'  %}
+              {% endwith %}
+            </li>
+          </menu>
+        </div>
+      </div>
+
+      {% include '../components/dropdown.html' %}
+    </div>
+
+    <div class="col-10 h-100 px-2">
+      <div
+        class="tab-content w-100 h-100 rounded border border-black p-2"
+        id="tab-content"
+      >
+        {% include '../views/game.html' %} {% include '../views/history.html' %}
+        {% include '../views/dashbord.html' %}
+      </div>
+    </div>
+  </main>
+
+{% endblock %}
