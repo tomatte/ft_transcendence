@@ -1,11 +1,15 @@
 .comet-cloud-theme {
-  --cometcloud900: #1f1f1f; /* Cor mais escura */
-  --cometcloud800: #383838;
-  --cometcloud700: #515151;
-  --cometcloud600: #6a6a6a;
-  --cometcloud500: #838383;
-  --cometcloud400: #9c9c9c;
-  --cometcloud300: #b5b5b5;
-  --cometcloud200: #cecece;
-  --cometcloud100: #e7e7e7; /* Cor mais clara */
+  --cometcloud1000: #1f1f1f; /* Cor mais escura */
+  --cometcloud950:  #1f1f1f;
+  --cometcloud900:  #1f1f1f;
+  --cometcloud800:  #383838;
+  --cometcloud700:  #515151;
+  --cometcloud600:  #6a6a6a;
+  --cometcloud500:  #838383;
+  --cometcloud400:  #9c9c9c;
+  --cometcloud300:  #b5b5b5;
+  --cometcloud200:  #cecece;
+  --cometcloud100:  #e7e7e7;
+  --cometcloud50:   #e7e7e7;
+  --cometcloud0:    #e7e7e7; /* Cor mais clara */
 }

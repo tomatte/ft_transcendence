@@ -1,11 +1,15 @@
 .cosmic-forest-theme {
-  --cosmicforest900: #0b3d13; /* Cor mais escura */
-  --cosmicforest800: #14521a;
-  --cosmicforest700: #1d6721;
-  --cosmicforest600: #267c28;
-  --cosmicforest500: #30812f;
-  --cosmicforest400: #469837;
-  --cosmicforest300: #5bae3f;
-  --cosmicforest200: #71c347;
-  --cosmicforest100: #87d84f; /* Cor mais clara */
+  --cometcforest1000: #1f1f1f; /* Cor mais escura */
+  --cometcforest950:  #1f1f1f;
+  --cosmicforest900:  #0b3d13;
+  --cosmicforest800:  #14521a;
+  --cosmicforest700:  #1d6721;
+  --cosmicforest600:  #267c28;
+  --cosmicforest500:  #30812f;
+  --cosmicforest400:  #469837;
+  --cosmicforest300:  #5bae3f;
+  --cosmicforest200:  #71c347;
+  --cosmicforest100:  #87d84f;
+  --cometcforest50:   #e7e7e7;
+  --cometcforest0:    #e7e7e7; /* Cor mais clara */
 }

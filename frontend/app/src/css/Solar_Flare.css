@@ -1,11 +1,15 @@
 .solar-flare-theme {
-  --solarflame900: #1a1a1a; /* Cor mais escura */
-  --solarflame800: #333333;
-  --solarflame700: #4d4d4d;
-  --solarflame600: #666666;
-  --solarflame500: #808080;
-  --solarflame400: #999999;
-  --solarflame300: #b3b3b3;
-  --solarflame200: #cccccc;
-  --solarflame100: #e6e6e6; /* Cor mais clara */
+  --solarflame1000: #1f1f1f; /* Cor mais escura */
+  --solarflame950:  #1f1f1f;
+  --solarflame900:  #1a1a1a;
+  --solarflame800:  #333333;
+  --solarflame700:  #4d4d4d;
+  --solarflame600:  #666666;
+  --solarflame500:  #808080;
+  --solarflame400:  #999999;
+  --solarflame300:  #b3b3b3;
+  --solarflame200:  #cccccc;
+  --solarflame100:  #e6e6e6;
+  --solarflame50:   #e6e6e6;
+  --solarflame0:    #e6e6e6; /* Cor mais clara */
 }

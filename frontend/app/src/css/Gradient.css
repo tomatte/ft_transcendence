@@ -1,11 +1,15 @@
 .gradient-theme {
-  --gradient900: #1a1a1a; /* Cor mais escura */
-  --gradient800: #2e2e2e;
-  --gradient700: #424242;
-  --gradient600: #565656;
-  --gradient500: #6a6a6a;
-  --gradient400: #7e7e7e;
-  --gradient300: #929292;
-  --gradient200: #a6a6a6;
-  --gradient100: #bababa; /* Cor mais clara */
+  --gradient1000: #1f1f1f; /* Cor mais escura */
+  --gradient950:  #1f1f1f;
+  --gradient900:  #1a1a1a;
+  --gradient800:  #2e2e2e;
+  --gradient700:  #424242;
+  --gradient600:  #565656;
+  --gradient500:  #6a6a6a;
+  --gradient400:  #7e7e7e;
+  --gradient300:  #929292;
+  --gradient200:  #a6a6a6;
+  --gradient100:  #bababa;
+  --gradient50:   #e7e7e7;
+  --gradient0:    #e7e7e7; /* Cor mais clara */
 }
