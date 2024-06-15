@@ -1,15 +1,11 @@
-:root {
-    --color-primary-lightest: #f0f0f0;
-    --color-primary-lighter: #d9d9d9;
-    --color-primary-light: #c2c2c2;
-    --color-primary: #a6a6a6;
-    --color-primary-dark: #8c8c8c;
-    --color-primary-darker: #737373;
-    --color-primary-darkest: #595959;
-    --color-secondary-lightest: #ffffff;
-    --color-secondary-lighter: #f2f2f2;
-    --color-secondary-light: #e5e5e5;
-    --color-secondary: #d9d9d9;
-    --color-secondary-dark: #cccccc;
-  }
-  
+.cosmic-forest-theme {
+  --cosmicforest900: #0b3d13; /* Cor mais escura */
+  --cosmicforest800: #14521a;
+  --cosmicforest700: #1d6721;
+  --cosmicforest600: #267c28;
+  --cosmicforest500: #30812f;
+  --cosmicforest400: #469837;
+  --cosmicforest300: #5bae3f;
+  --cosmicforest200: #71c347;
+  --cosmicforest100: #87d84f; /* Cor mais clara */
+}

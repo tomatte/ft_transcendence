@@ -1,15 +1,11 @@
-:root {
-    --color-primary-lightest: #f0f0f0;
-    --color-primary-lighter: #d9d9d9;
-    --color-primary-light: #c2c2c2;
-    --color-primary: #a6a6a6;
-    --color-primary-dark: #8c8c8c;
-    --color-primary-darker: #737373;
-    --color-primary-darkest: #595959;
-    --color-secondary-lightest: #ffffff;
-    --color-secondary-lighter: #f2f2f2;
-    --color-secondary-light: #e5e5e5;
-    --color-secondary: #d9d9d9;
-    --color-secondary-dark: #cccccc;
-  }
-  
+.red-dwarf-theme {
+  --reddwarf900: #4a0000; /* Cor mais escura */
+  --reddwarf800: #660000;
+  --reddwarf700: #800000;
+  --reddwarf600: #990000;
+  --reddwarf500: #b20000;
+  --reddwarf400: #cc0000;
+  --reddwarf300: #e60000;
+  --reddwarf200: #ff1919;
+  --reddwarf100: #ff3333; /* Cor mais clara */
+}

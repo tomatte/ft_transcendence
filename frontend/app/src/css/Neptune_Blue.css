@@ -1,15 +1,11 @@
-:root {
-    --color-primary-lightest: #f0f0f0;
-    --color-primary-lighter: #d9d9d9;
-    --color-primary-light: #c2c2c2;
-    --color-primary: #a6a6a6;
-    --color-primary-dark: #8c8c8c;
-    --color-primary-darker: #737373;
-    --color-primary-darkest: #595959;
-    --color-secondary-lightest: #ffffff;
-    --color-secondary-lighter: #f2f2f2;
-    --color-secondary-light: #e5e5e5;
-    --color-secondary: #d9d9d9;
-    --color-secondary-dark: #cccccc;
-  }
-  
+.neptune-blue-theme {
+  --neptuneblue900: #0b3d91; /* Cor mais escura */
+  --neptuneblue800: #144ea3;
+  --neptuneblue700: #1d60b5;
+  --neptuneblue600: #2672c7;
+  --neptuneblue500: #3084d9;
+  --neptuneblue400: #4698e1;
+  --neptuneblue300: #5bace9;
+  --neptuneblue200: #71c1f1;
+  --neptuneblue100: #87d5f9; /* Cor mais clara */
+}
