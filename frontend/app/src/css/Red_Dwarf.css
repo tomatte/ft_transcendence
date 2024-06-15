@@ -1,15 +1,13 @@
 .red-dwarf-theme {
-  --reddwarf1000: #1f1f1f; /* Cor mais escura */
-  --reddwarf950:  #1f1f1f;
-  --reddwarf900:  #4a0000;
-  --reddwarf800:  #660000;
-  --reddwarf700:  #800000;
-  --reddwarf600:  #990000;
-  --reddwarf500:  #b20000;
-  --reddwarf400:  #cc0000;
-  --reddwarf300:  #e60000;
-  --reddwarf200:  #ff1919;
-  --reddwarf100:  #ff3333;
-  --reddwarf50:   #e7e7e7;
-  --reddwarf0:    #e7e7e7; /* Cor mais clara */
+  --reddwarf950:  rgba(72, 7, 12, 1); /* Cor mais escura */
+  --reddwarf900:  rgba(132, 24, 32, 1);
+  --reddwarf800:  rgba(160, 20, 30, 1);
+  --reddwarf700:  rgba(193, 20, 32, 1);
+  --reddwarf600:  rgba(229, 29, 43, 1);
+  --reddwarf500:  rgba(248, 59, 72, 1);
+  --reddwarf400:  rgba(255, 101, 112, 1);
+  --reddwarf300:  rgba(255, 160, 167, 1);
+  --reddwarf200:  rgba(255, 199, 203, 1);
+  --reddwarf100:  rgba(255, 225, 227, 1);
+  --reddwarf50:   rgba(255, 241, 242, 1); /* Cor mais clara */
 }
