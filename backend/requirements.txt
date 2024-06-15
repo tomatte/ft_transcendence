@@ -6,3 +6,4 @@ channels
 environs
 Pillow
 requests
+channels
