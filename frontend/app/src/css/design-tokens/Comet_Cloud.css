@@ -1,4 +1,5 @@
-.comet-cloud-theme {
+/* .comet-cloud-theme */
+:root {
   --cometcloud1000: rgba(34, 34, 43, 1); /* Cor mais escura */
   --cometcloud950:  rgba(41, 42, 61, 1);
   --cometcloud900:  rgba(70, 72, 105, 1);

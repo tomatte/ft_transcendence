@@ -25,7 +25,7 @@
 
 /* .gradient-theme {
   --gradient1000: #1f1f1f; /* Cor mais escura */
-  --gradient950:  #1f1f1f;
+  /* --gradient950:  #1f1f1f;
   --gradient900:  #1a1a1a;
   --gradient800:  #2e2e2e;
   --gradient700:  #424242;
@@ -36,8 +36,8 @@
   --gradient200:  #a6a6a6;
   --gradient100:  #bababa;
   --gradient50:   #e7e7e7;
-  --gradient0:    #e7e7e7; /* Cor mais clara */
-} */
+  --gradient0:    #e7e7e7; Cor mais clara */
+/* } */ */
 
 /* background: linear-gradient(90deg, #253361 0%, #14161D 100%);
 

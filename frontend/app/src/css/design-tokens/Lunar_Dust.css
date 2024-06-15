@@ -1,4 +1,5 @@
-.lunar-dust-theme {
+/* .lunar-dust-theme  */
+:root {
   --lunardust1000: rgba(14, 14, 16, 1);  /* Cor mais escura */
   --lunardust950:  rgba(24, 24, 27, 1);
   --lunardust900:  rgba(57, 57, 65, 1);

@@ -11,3 +11,14 @@
   --reddwarf100:  rgba(255, 225, 227, 1);
   --reddwarf50:   rgba(255, 241, 242, 1); /* Cor mais clara */
 }
+
+
+/* exemplo de como for chamar 
+
+/* Classe para aplicar uma cor específica */
+/* .special-section { */
+  /* background-color: var(--reddwarf600); */
+  /* color: white; Ajusta a cor do texto para contraste */
+  /* padding: 20 px; */
+  /* border-radius: 8px; */
+/* } */ */
