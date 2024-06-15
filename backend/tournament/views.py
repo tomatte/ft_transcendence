@@ -15,7 +15,7 @@ class CustomException(Exception):
 		self.status = status
 
 
-def is_tournament_ready(tournament: object) -> bool:
+def is_tournament_to_ready(tournament: object) -> bool:
 	"""Função para verificar se um torneio está pronto para ser iniciado.
 
 		args:
@@ -25,11 +25,11 @@ def is_tournament_ready(tournament: object) -> bool:
 			bool (BOOL): True se o torneio estiver pronto para ser iniciado.
 	"""
 
-	if (tournament.players.count() != 8 and tournament.status != 'creating'):
+	if (tournament.players.count() != 4 and tournament.status != 'creating'):
 		raise CustomException('Tournament is not ready to start!, status is not creating and tournament has not 8 players!', 405)
 
 
-def is_tournament_finished(tournament: object) -> bool:
+def is_tournament_to_finished(tournament: object) -> bool:
 	"""Função para verificar se um torneio foi finalizado.
 
 		args:
@@ -41,6 +41,7 @@ def is_tournament_finished(tournament: object) -> bool:
 
 	if tournament.status != 'active':
 		raise CustomException('Tournament is not active!', 400)
+
 
 
 def is_method_allowed(request: object, method: str) -> None:
@@ -107,51 +108,8 @@ def create_tournament(request):
 		return HttpResponse(status=e.status, content=str(e))
 
 
-def add_player_tournament(request):
-	"""Função para adicionar um jogador em um torneio.
-
-		args:
-			request (OBJ): Requisição do usuario.
-
-		return:
-			http (HTTP): status da requisição.
-	"""
-
-	try:
-		is_method_allowed(request, 'POST')
-		tournament = Tournament.objects.get(id=request.POST.get('tournament_id'))
-		player = User.objects.get(id=request.POST.get('player_id'))
-		tournament.players.add(player)
-		return HttpResponse(status=200)
-	except CustomException as e:
-		return HttpResponse(status=e.status, content=str(e))
-
-
-def start_tournament(request):
-	"""Função para iniciar um torneio.
-
-		args:
-			request (OBJ): Requisição do usuario.
-
-		return:
-			http (HTTP): status da requisição.
-	"""
-
-	try:
-		is_method_allowed(request, 'POST')
-		tournament = Tournament.objects.get(id=request.POST.get('tournament_id'))
-		is_tournament_finished(tournament)
-		tournament.status = request.POST.get('status')
-		tournament.save()
-		create_Bracket(tournament)
-		return HttpResponse(status=200)
-	except CustomException as e:
-		return HttpResponse(status=e.status, content=str(e))
-
-
-
 def format_players_bracket(bracket: object) -> dict:
-    return {
+	return {
 		"player1": {
 			"id": bracket.player1.id,
 			"nickname": bracket.player1.nickname
