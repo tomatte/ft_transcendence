@@ -1,5 +1,5 @@
 
-from tournament.models import TournamentBracket, Match
+# from tournament.models import TournamentBracket, Match
 
 
 class CustomException(Exception):
