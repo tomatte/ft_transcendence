@@ -28,23 +28,23 @@ def format_maths_list(matches: object) -> dict:
 	]
 
 
-def format_friends_list(friends: object ) -> list:
-	"""Função para formatar a query de amigos.
+# def format_friends_list(friends: object ) -> list:
+# 	"""Função para formatar a query de amigos.
 
-		args:
-			friends (OBJ ITERABLE): QuerySet de amigos.
+# 		args:
+# 			friends (OBJ ITERABLE): QuerySet de amigos.
 
-		return:
-			list (List): Lista de amigos formatada.
-	"""
+# 		return:
+# 			list (List): Lista de amigos formatada.
+# 	"""
 
-	return [
-		{
-			'id': friend['id'],
-			'from_user': friend['from_user__nickname'],
-			'to_user': friend['to_user__nickname'],
-		} for friend in friends
-	]
+# 	return [
+# 		{
+# 			'id': friend['id'],
+# 			'from_user': friend['from_user__nickname'],
+# 			'to_user': friend['to_user__nickname'],
+# 		} for friend in friends
+# 	]
 
 
 ################################################################################
@@ -62,14 +62,67 @@ def my_user(request):
 			json (JSON): informações com as informações do usuario.
 	"""
 
-	user = User.objects.prefetch_related('userMatch').get(username=request.user.username)
-	return JsonResponse({
-		'id': user.id,
-		'name': user.username,
-		'nickname': user.nickname,
-		'friends': list(Friendship.objects.filter(from_user=user, status='accepted').values_list('to_user', flat=True)),
-		'avatar': user.avatar.name,
-	})
+	try:
+		user = User.objects.prefetch_related('userMatch').get(username=request.user.username)
+		return JsonResponse({
+			'id': user.id,
+			'name': user.username,
+			'nickname': user.nickname,
+			'friends': list(Friendship.objects.filter(from_user=user, status='accepted').values_list('to_user', flat=True)),
+			'avatar': user.avatar.name,
+		})
+
+	except User.DoesNotExist:
+		return JsonResponse({'message': 'User not found!'}, status=404)
+
+
+def get_user(request):
+	"""Função para retornar o usuário logado.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			json (JSON): informações com as informações do usuario.
+	"""
+
+	try:
+		user = User.objects.prefetch_related('userMatch').get(id=request.GET.get('id'))
+		return JsonResponse({
+			'id': user.id,
+			'name': user.username,
+			'nickname': user.nickname,
+			'friends': list(Friendship.objects.filter(from_user=user, status='accepted').values_list('to_user', flat=True)),
+			'avatar': user.avatar.name,
+		})
+
+	except User.DoesNotExist:
+		return JsonResponse({'message': 'User not found!'}, status=404)
+
+
+def add_friend(request):
+	"""Função para adicionar um amigo.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			http (HTTP): status da requisição.
+	"""
+
+	if request.method != 'POST':
+		return HttpResponse(status=405, content='Method not allowed!')
+
+	try:
+		my_user = User.objects.get(username=request.user.username)
+		friends = User.objects.get(id=request.POST.get('friend_id'))
+		Friendship.objects.create(from_user=my_user, to_user=friends, status='pending')
+		return HttpResponse(status=200, content='Friend request sent!')
+
+	except User.DoesNotExist:
+		return HttpResponse(status=404, content='User not found!')
+	except Exception as e:
+		return HttpResponse(status=400, content=str(e))
 
 
 def friend_request_send(request):
@@ -81,14 +134,18 @@ def friend_request_send(request):
 		return:
 			json (JSON): informações com as informações dos pedidos de amizade enviados.
 	"""
+	try:
+		user = User.objects.get(username=request.user.username)
+		friends = Friendship.objects.filter(from_user=user, status='pending').values(
+			'id',
+			'from_user__nickname',
+			'to_user__nickname'
+		)
+		return JsonResponse(list(friends), safe=False)
 
-	user = User.objects.get(username=request.user.username)
-	friends = Friendship.objects.filter(from_user=user, status='pending').values(
-		'id',
-		'from_user__nickname',
-		'to_user__nickname'
-	)
-	return JsonResponse(format_friends_list(friends), safe=False)
+	except User.DoesNotExist:
+		return JsonResponse({'message': 'User not found!'}, status=404)
+
 
 
 def friend_request_received(request):
@@ -103,7 +160,7 @@ def friend_request_received(request):
 
 	user = User.objects.get(username=request.user.username)
 	friends = Friendship.objects.filter(to_user=user, status='pending').values('id', 'from_user__nickname', 'to_user__nickname')
-	return JsonResponse(format_friends_list(friends), safe=False)
+	return JsonResponse(list(friends), safe=False)
 
 
 def all_users(request):
@@ -166,28 +223,6 @@ def uptade_avatar(request):
 	user.avatar = request.FILES.get('avatar')
 	user.save()
 	return HttpResponse(status=200)
-
-
-def add_friend(request):
-	"""Função para adicionar um amigo.
-
-		args:
-			request (OBJ): Requisição do usuario.
-
-		return:
-			http (HTTP): status da requisição.
-	"""
-
-	if request.method != 'POST':
-		return HttpResponse(status=405, content='Method not allowed!')
-
-	try:
-		my_user = User.objects.get(username=request.user.username)
-		friends = User.objects.get(id=request.POST.get('friend_id'))
-		Friendship.objects.create(from_user=my_user, to_user=friends, status='pending')
-		return HttpResponse(status=200, content='Friend request sent!')
-	except User.DoesNotExist:
-		return HttpResponse(status=404, content='User not found!')
 
 
 def response_friend_request(request):
