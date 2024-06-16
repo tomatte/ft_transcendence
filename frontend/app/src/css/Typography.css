@@ -1,0 +1,61 @@
+:root {
+    --font-primary: 'Red Hat Display', sans-serif;
+	--font-secondary: 'Play', sans-serif;
+    --font-size-default: 16px;
+    --line-height-default: 1.0;
+
+    --h1-font-size: 48px;
+    --h1-line-height: 160%;
+    --h2-font-size: 40px;
+    --h2-line-height: 150%;
+    --h3-font-size: 34px;
+    --h3-line-height: 140%;
+    --h4-font-size: 28px;
+    --h4-line-height: 140%;
+    --h5-font-size: 24px;
+    --h5-line-height: 140%;
+    --h6-font-size: 20px;
+    --h6-line-height: 140%;
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-default);
+    line-height: var(--line-height-default);
+}
+
+h1 {
+    font-family: var(--font-primary);
+    font-size: var(--h1-font-size);
+    line-height: var(--h1-line-height);
+}
+
+h2 {
+    font-family: var(--font-primary);
+    font-size: var(--h2-font-size);
+    line-height: var(--h2-line-height);
+}
+
+h3 {
+    font-family: var(--font-primary);
+    font-size: var(--h3-font-size);
+    line-height: var(--h3-line-height);
+}
+
+h4 {
+    font-family: var(--font-primary);
+    font-size: var(--h4-font-size);
+    line-height: var(--h4-line-height);
+}
+
+h5 {
+    font-family: var(--font-primary);
+    font-size: var(--h5-font-size);
+    line-height: var(--h5-line-height);
+}
+
+h6 {
+    font-family: var(--font-primary);
+    font-size: var(--h6-font-size);
+    line-height: var(--h6-line-height);
+}
