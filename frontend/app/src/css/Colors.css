@@ -1,89 +1,89 @@
 :root
 {
 	/* COMET CLOUD */
-    --cometcloud1000:		rgba(34, 34, 43, 1); /* Darkest color */
-    --cometcloud950:		rgba(41, 42, 61, 1);
-    --cometcloud900:		rgba(70, 72, 105, 1);
-    --cometcloud800:		rgba(81, 82, 130, 1);
-    --cometcloud700:		rgba(98, 98, 160, 1);
-    --cometcloud600:		rgba(116, 118, 183, 1);
-    --cometcloud500:		rgba(140, 146, 200, 1);
-    --cometcloud400:		rgba(161, 170, 213, 1);
-    --cometcloud300:		rgba(190, 199, 227, 1);
-    --cometcloud200:		rgba(215, 221, 238, 1);
-    --cometcloud100:		rgba(233, 237, 246, 1);
-    --cometcloud50:			rgba(243, 246, 250, 1); /* Lightest color */
+    --cometcloud1000:					rgba(34, 34, 43, 1); /* Darkest color */
+    --cometcloud950:					rgba(41, 42, 61, 1);
+    --cometcloud900:					rgba(70, 72, 105, 1);
+    --cometcloud800:					rgba(81, 82, 130, 1);
+    --cometcloud700:					rgba(98, 98, 160, 1);
+    --cometcloud600:					rgba(116, 118, 183, 1);
+    --cometcloud500:					rgba(140, 146, 200, 1);
+    --cometcloud400:					rgba(161, 170, 213, 1);
+    --cometcloud300:					rgba(190, 199, 227, 1);
+    --cometcloud200:					rgba(215, 221, 238, 1);
+    --cometcloud100:					rgba(233, 237, 246, 1);
+    --cometcloud50:						rgba(243, 246, 250, 1); /* Lightest color */
 
 	/* COSMIC FOREST */
-    --cosmicforest950:		rgba(2, 44, 34, 1); /* Darkest color */
-    --cosmicforest900:		rgba(6, 78, 59, 1);
-    --cosmicforest800:		rgba(6, 95, 54, 1);
-    --cosmicforest700:		rgba(4, 120, 67, 1);
-    --cosmicforest600:		rgba(5, 150, 83, 1);
-    --cosmicforest500:		rgba(16, 185, 107, 1);
-    --cosmicforest400:		rgba(52, 211, 138, 1);
-    --cosmicforest300:		rgba(110, 231, 175, 1);
-    --cosmicforest200:		rgba(167, 243, 208, 1);
-    --cosmicforest100:		rgba(209, 250, 231, 1);
-    --cosmicforest50:		rgba(236, 253, 245, 1); /* Lightest color */
+    --cosmicforest950:					rgba(2, 44, 34, 1); /* Darkest color */
+    --cosmicforest900:					rgba(6, 78, 59, 1);
+    --cosmicforest800:					rgba(6, 95, 54, 1);
+    --cosmicforest700:					rgba(4, 120, 67, 1);
+    --cosmicforest600:					rgba(5, 150, 83, 1);
+    --cosmicforest500:					rgba(16, 185, 107, 1);
+    --cosmicforest400:					rgba(52, 211, 138, 1);
+    --cosmicforest300:					rgba(110, 231, 175, 1);
+    --cosmicforest200:					rgba(167, 243, 208, 1);
+    --cosmicforest100:					rgba(209, 250, 231, 1);
+    --cosmicforest50:					rgba(236, 253, 245, 1); /* Lightest color */
 
 	/* LUNAR DUST */
-    --lunardust1000:		rgba(14, 14, 16, 1);  /* Darkest color */
-    --lunardust950:			rgba(24, 24, 27, 1);
-    --lunardust900:			rgba(57, 57, 65, 1);
-    --lunardust800:			rgba(65, 65, 75, 1);
-    --lunardust700:			rgba(76, 77, 88, 1);
-    --lunardust600:			rgba(93, 94, 108, 1);
-    --lunardust500:			rgba(115, 117, 132, 1);
-    --lunardust400:			rgba(145, 147, 159, 1);
-    --lunardust300:			rgba(184, 185, 193, 1);
-    --lunardust200:			rgba(217, 217, 222, 1);
-    --lunardust100:			rgba(238, 238, 240, 1);
-    --lunardust50:			rgba(247, 247, 248, 1);
-    --lunardust0:			rgba(255, 255, 255, 1);   /* Lightest color */
+    --lunardust1000:					rgba(14, 14, 16, 1);  /* Darkest color */
+    --lunardust950:						rgba(24, 24, 27, 1);
+    --lunardust900:						rgba(57, 57, 65, 1);
+    --lunardust800:						rgba(65, 65, 75, 1);
+    --lunardust700:						rgba(76, 77, 88, 1);
+    --lunardust600:						rgba(93, 94, 108, 1);
+    --lunardust500:						rgba(115, 117, 132, 1);
+    --lunardust400:						rgba(145, 147, 159, 1);
+    --lunardust300:						rgba(184, 185, 193, 1);
+    --lunardust200:						rgba(217, 217, 222, 1);
+    --lunardust100:						rgba(238, 238, 240, 1);
+    --lunardust50:						rgba(247, 247, 248, 1);
+    --lunardust0:						rgba(255, 255, 255, 1);   /* Lightest color */
 
 	/* NEPTUNE BLUE */
-    --neptuneblue950:  rgba(26, 34, 81, 1); /* Darkest color */
-    --neptuneblue900:  rgba(35, 52, 133, 1);
-    --neptuneblue800:  rgba(36, 57, 169, 1);
-    --neptuneblue700:  rgba(37, 69, 208, 1);
-    --neptuneblue600:  rgba(49, 91, 227, 1);
-    --neptuneblue500:  rgba(67, 119, 238, 1);
-    --neptuneblue400:  rgba(103, 155, 243, 1);
-    --neptuneblue300:  rgba(152, 190, 248, 1);
-    --neptuneblue200:  rgba(194, 215, 251, 1);
-    --neptuneblue100:  rgba(220, 231, 253, 1);
-    --neptuneblue50:   rgba(240, 245, 254, 1); /* Lightest color */
+    --neptuneblue950:					rgba(26, 34, 81, 1); /* Darkest color */
+    --neptuneblue900:					rgba(35, 52, 133, 1);
+    --neptuneblue800:					rgba(36, 57, 169, 1);
+    --neptuneblue700:					rgba(37, 69, 208, 1);
+    --neptuneblue600:					rgba(49, 91, 227, 1);
+    --neptuneblue500:					rgba(67, 119, 238, 1);
+    --neptuneblue400:					rgba(103, 155, 243, 1);
+    --neptuneblue300:					rgba(152, 190, 248, 1);
+    --neptuneblue200:					rgba(194, 215, 251, 1);
+    --neptuneblue100:					rgba(220, 231, 253, 1);
+    --neptuneblue50:					rgba(240, 245, 254, 1); /* Lightest color */
 
 	/* RED DWARF */
-    --reddwarf950:     rgba(72, 7, 12, 1); /* Darkest color */
-    --reddwarf900:  rgba(132, 24, 32, 1);
-    --reddwarf800:  rgba(160, 20, 30, 1);
-    --reddwarf700:  rgba(193, 20, 32, 1);
-    --reddwarf600:  rgba(229, 29, 43, 1);
-    --reddwarf500:  rgba(248, 59, 72, 1);
-    --reddwarf400:  rgba(255, 101, 112, 1);
-    --reddwarf300:  rgba(255, 160, 167, 1);
-    --reddwarf200:  rgba(255, 199, 203, 1);
-    --reddwarf100:  rgba(255, 225, 227, 1);
-    --reddwarf50:   rgba(255, 241, 242, 1); /* Lightest color */
+    --reddwarf950:						rgba(72, 7, 12, 1); /* Darkest color */
+    --reddwarf900:						rgba(132, 24, 32, 1);
+    --reddwarf800:						rgba(160, 20, 30, 1);
+    --reddwarf700:						rgba(193, 20, 32, 1);
+    --reddwarf600:						rgba(229, 29, 43, 1);
+    --reddwarf500:						rgba(248, 59, 72, 1);
+    --reddwarf400:						rgba(255, 101, 112, 1);
+    --reddwarf300:						rgba(255, 160, 167, 1);
+    --reddwarf200:						rgba(255, 199, 203, 1);
+    --reddwarf100:						rgba(255, 225, 227, 1);
+    --reddwarf50:						rgba(255, 241, 242, 1); /* Lightest color */
 
 	/* SOLAR FLARE */
-    --solarflare950:  rgba(65, 19, 9, 1); /* Darkest color */
-    --solarflare900:  rgba(120, 43, 22, 1);
-    --solarflare800:  rgba(149, 49, 23, 1);
-    --solarflare700:  rgba(188, 61, 18, 1);
-    --solarflare600:  rgba(226, 81, 20, 1);
-    --solarflare500:  rgba(241, 108, 31, 1);
-    --solarflare400:  rgba(244, 139, 67, 1);
-    --solarflare300:  rgba(248, 181, 121, 1);
-    --solarflare200:  rgba(251, 212, 173, 1);
-    --solarflare100:  rgba(254, 235, 214, 1);
-    --solarflare50:   rgba(254, 246, 238, 1); /* Lightest color */
+    --solarflare950:					rgba(65, 19, 9, 1); /* Darkest color */
+    --solarflare900:					rgba(120, 43, 22, 1);
+    --solarflare800:					rgba(149, 49, 23, 1);
+    --solarflare700:					rgba(188, 61, 18, 1);
+    --solarflare600:					rgba(226, 81, 20, 1);
+    --solarflare500:					rgba(241, 108, 31, 1);
+    --solarflare400:					rgba(244, 139, 67, 1);
+    --solarflare300:					rgba(248, 181, 121, 1);
+    --solarflare200:					rgba(251, 212, 173, 1);
+    --solarflare100:					rgba(254, 235, 214, 1);
+    --solarflare50:						rgba(254, 246, 238, 1); /* Lightest color */
 
 	/* GRADIENTS */
-    --gradient-1: linear-gradient(90deg, #253361 0%, #14161D 100%);
-    --gradient-2: linear-gradient(115deg, #213370 0%, #2D438D 13.23%, #546FC9 88.17%);
-    --gradient-3: linear-gradient(180deg, #577EFB 0%, #E7ECFE 100%);
-    --gradient-4: linear-gradient(108deg, #293664 0%, #000 10.5%);
+    --gradientmenuitemblue:				linear-gradient(90deg, #253361 0%, #14161D 100%);
+    --gradientbluemenuitemhover:		linear-gradient(115deg, #213370 0%, #2D438D 13.23%, #546FC9 88.17%);
+    --gradientbluemenuitemicon:			linear-gradient(180deg, #577EFB 0%, #E7ECFE 100%);
+    --gradientbluebackground:			linear-gradient(108deg, #293664 0%, #000 10.5%);
   }
