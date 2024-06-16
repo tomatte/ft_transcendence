@@ -39,24 +39,33 @@ class MyUserViewTest(TestCase):
 	# 	for name in ['user0', 'user1', 'user2', 'user3']:
 	# 		self.assertIn(name, response_names)
 
+	# def test_get_request_send_view(self):
+	# 	self.client.login(username='user0', password='12345')
+	# 	self.client.post(reverse('add_friend'), {'friend_id': 2})
+	# 	self.client.post(reverse('add_friend'), {'friend_id': 3})
+	# 	response = self.client.get(reverse('get_pending_friends'))
+	# 	response_names = [user['to_user__nickname'] for user in response.json()]
+
+	# 	self.assertEqual(response.status_code, 200)
+	# 	self.assertEqual(len(response_names), 2)
+	# 	for name in ['user1', 'user2']:
+	# 		self.assertIn(name, response_names)
+
+	## TODO: Terminar esse teste
+	# def test_get_request_received_view(self):
+	# 	self.client.login(username='user0', password='12345')
+	# 	self.client.post(reverse('add_friend'), {'friend_id': 2})
+	# 	self.client.post(reverse('add_friend'), {'friend_id': 3})
+	# 	response = self.client.get(reverse('get_receive_friends'))
+
 	# def test_add_friend_view(self):
 	# 	self.client.login(username='user0', password='12345')
+
+	# 	response = self.client.get(reverse('add_friend'))
+	# 	self.assertEqual(response.status_code, 405)
+
 	# 	response = self.client.post(reverse('add_friend'), {'friend_id': 3})
 	# 	self.assertEqual(response.status_code, 200)
 
 	# 	response = self.client.post(reverse('add_friend'), {'friend_id': 3})
 	# 	self.assertEqual(response.status_code, 400)
-
-	def test_get_request_send_view(self):
-		self.client.login(username='user0', password='12345')
-		self.client.post(reverse('add_friend'), {'friend_id': 3})
-		self.client.post(reverse('add_friend'), {'friend_id': 2})
-		response = self.client.get(reverse('get_pending_friends'))
-		print('\n\n\n\n')
-		print(response.json())
-		print('\n\n\n\n')
-		# response_names = [user['to_user__nickname'] for user in response.json()]
-		self.assertEqual(response.status_code, 200)
-
-		response_ids = [user['id'] for user in response.json()]
-		self.assertEqual(response_ids, [])

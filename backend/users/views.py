@@ -1,31 +1,51 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from users.models import User, Friendship
-from tournament.views import create_tournament, get_tournament, create_Bracket
+from tournament.views import get_tournament, create_Bracket
 from tournament.models import Tournament
 
 ################################################################################
 # 							Auxiliaries
 ################################################################################
 
-def format_maths_list(matches: object) -> dict:
-	"""Função para formatar a query de partidas.
+class MethodNotAllowed(Exception):
+	def __init__(self):
+		super().__init__('Method not allowed!')
+
+
+def is_valid_method(request, method):
+	"""Função para verificar se o método é válido. Caso não seja, levanta uma exceção.
 
 		args:
-			matches (OBJ ITERABLE): QuerySet de partidas.
+			request (OBJ): Requisição do usuario.
+			method (STR): Método a ser verificado.
 
 		return:
-			list (List): Lista de partidas formatada.
+			None
 	"""
 
-	return [
-		{
-			'id': match.id,
-			'tournament': match.tournament.id,
-			'create_at': match.create_at,
-			'duration': match.duration,
-		} for match in matches
-	]
+	if request.method != method:
+		raise Exception('Method not allowed!')
+
+
+# def format_maths_list(matches: object) -> dict:
+# 	"""Função para formatar a query de partidas.
+
+# 		args:
+# 			matches (OBJ ITERABLE): QuerySet de partidas.
+
+# 		return:
+# 			list (List): Lista de partidas formatada.
+# 	"""
+
+# 	return [
+# 		{
+# 			'id': match.id,
+# 			'tournament': match.tournament.id,
+# 			'create_at': match.create_at,
+# 			'duration': match.duration,
+# 		} for match in matches
+# 	]
 
 
 # def format_friends_list(friends: object ) -> list:
@@ -114,6 +134,7 @@ def add_friend(request):
 		return HttpResponse(status=405, content='Method not allowed!')
 
 	try:
+		is_valid_method(request, 'POST')
 		my_user = User.objects.get(username=request.user.username)
 		friends = User.objects.get(id=request.POST.get('friend_id'))
 		Friendship.objects.create(from_user=my_user, to_user=friends, status='pending')
@@ -121,6 +142,8 @@ def add_friend(request):
 
 	except User.DoesNotExist:
 		return HttpResponse(status=404, content='User not found!')
+	except MethodNotAllowed as e:
+		return HttpResponse(status=405, content=str(e))
 	except Exception as e:
 		return HttpResponse(status=400, content=str(e))
 
@@ -137,15 +160,14 @@ def friend_request_send(request):
 	try:
 		user = User.objects.get(username=request.user.username)
 		friends = Friendship.objects.filter(from_user=user, status='pending').values(
-			'id',
-			'from_user__nickname',
-			'to_user__nickname'
+			'to_user__id',
+			'to_user__nickname',
+			'to_user__username',
 		)
 		return JsonResponse(list(friends), safe=False)
 
 	except User.DoesNotExist:
 		return JsonResponse({'message': 'User not found!'}, status=404)
-
 
 
 def friend_request_received(request):
