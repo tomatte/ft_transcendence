@@ -25,7 +25,7 @@ def is_valid_method(request, method):
 	"""
 
 	if request.method != method:
-		raise Exception('Method not allowed!')
+		raise MethodNotAllowed()
 
 
 # def format_maths_list(matches: object) -> dict:
@@ -72,6 +72,7 @@ def is_valid_method(request, method):
 ################################################################################
 
 
+##TESTADA
 def my_user(request):
 	"""Função para retornar o usuário logado.
 
@@ -96,6 +97,7 @@ def my_user(request):
 		return JsonResponse({'message': 'User not found!'}, status=404)
 
 
+##TESTADA
 def get_user(request):
 	"""Função para retornar o usuário logado.
 
@@ -107,7 +109,8 @@ def get_user(request):
 	"""
 
 	try:
-		user = User.objects.prefetch_related('userMatch').get(id=request.GET.get('id'))
+		is_valid_method(request, 'GET')
+		user = User.objects.prefetch_related('userMatch').get(id=request.GET['user_id'])
 		return JsonResponse({
 			'id': user.id,
 			'name': user.username,
@@ -118,8 +121,29 @@ def get_user(request):
 
 	except User.DoesNotExist:
 		return JsonResponse({'message': 'User not found!'}, status=404)
+	except MethodNotAllowed as e:
+		return JsonResponse({'message': str(e)}, status=405)
+	except KeyError:
+		return JsonResponse({'message': 'User not found!'}, status=404)
 
 
+##TESTADA
+def all_users(request):
+	"""Função para retornar todos os usuarios.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			json (JSON): informações com as informações de todos os usuarios.
+	"""
+
+	users = User.objects.all().values(
+		'id', 'nickname', 'avatar'
+	)
+	return JsonResponse(list(users), safe=False)
+
+##TESTADA
 def add_friend(request):
 	"""Função para adicionar um amigo.
 
@@ -129,15 +153,12 @@ def add_friend(request):
 		return:
 			http (HTTP): status da requisição.
 	"""
-
-	if request.method != 'POST':
-		return HttpResponse(status=405, content='Method not allowed!')
-
 	try:
 		is_valid_method(request, 'POST')
 		my_user = User.objects.get(username=request.user.username)
-		friends = User.objects.get(id=request.POST.get('friend_id'))
-		Friendship.objects.create(from_user=my_user, to_user=friends, status='pending')
+		friend = User.objects.get(id=request.POST['friend_id'])
+
+		Friendship.objects.create(from_user=my_user, to_user=friend, status='pending')
 		return HttpResponse(status=200, content='Friend request sent!')
 
 	except User.DoesNotExist:
@@ -148,6 +169,7 @@ def add_friend(request):
 		return HttpResponse(status=400, content=str(e))
 
 
+##TESTADA
 def friend_request_send(request):
 	"""Função para retornar os pedidos de amizade enviados.
 
@@ -164,12 +186,14 @@ def friend_request_send(request):
 			'to_user__nickname',
 			'to_user__username',
 		)
+
 		return JsonResponse(list(friends), safe=False)
 
 	except User.DoesNotExist:
 		return JsonResponse({'message': 'User not found!'}, status=404)
 
 
+##TESTADA
 def friend_request_received(request):
 	"""Função para retornar os pedidos de amizade recebidos.
 
@@ -181,24 +205,42 @@ def friend_request_received(request):
 	"""
 
 	user = User.objects.get(username=request.user.username)
-	friends = Friendship.objects.filter(to_user=user, status='pending').values('id', 'from_user__nickname', 'to_user__nickname')
+	friends = Friendship.objects.filter(to_user=user, status='pending').values(
+		'from_user__id',
+		'from_user__nickname',
+		'from_user__username',
+	)
 	return JsonResponse(list(friends), safe=False)
 
 
-def all_users(request):
-	"""Função para retornar todos os usuarios.
+##TESTADA
+def response_friend(request):
+	"""Função para aceitar um pedido de amizade.
 
 		args:
 			request (OBJ): Requisição do usuario.
 
 		return:
-			json (JSON): informações com as informações de todos os usuarios.
+			http (HTTP): status da requisição.
 	"""
 
-	users = User.objects.all().values(
-		'id', 'nickname', 'avatar'
-	)
-	return JsonResponse(list(users), safe=False)
+	try:
+		is_valid_method(request, 'POST')
+		my_user = User.objects.get(username=request.user.username)
+		friend = User.objects.get(id=request.POST['friend_id'])
+		friendship = Friendship.objects.get(from_user=friend, to_user=my_user, status='pending')
+		friendship.status = request.POST['status']
+		friendship.save()
+		return HttpResponse(status=200, content='Friend request accepted!')
+
+	except Friendship.DoesNotExist:
+		return HttpResponse(status=404, content='Friend request not found!')
+	except User.DoesNotExist as e:
+		return HttpResponse(status=404, content='User not found!')
+	except MethodNotAllowed as e:
+		return HttpResponse(status=405, content=str(e))
+	except KeyError as e:
+		return HttpResponse(status=400, content='Missing parameters!')
 
 
 def uptade_nickname(request):
