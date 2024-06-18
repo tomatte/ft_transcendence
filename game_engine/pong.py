@@ -12,9 +12,18 @@ class FPSController:
         
         if sleep_time > 0:
             time.sleep(sleep_time)
+    
+    def isNewFrame(self):
+        current_time = time.time()
+        elapsed_time = current_time - self.__last_time
+        sleep_time = self.__frame_duration - elapsed_time
+        
+        if sleep_time > 0:
+            return False
         
         self.__last_time = time.time()
-        
+        return True
+
 class Ball:
     def __init__(self) -> None:
         pass
