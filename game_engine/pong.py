@@ -79,16 +79,16 @@ class Ball(Rectangle):
     def move(self, fps):
         #table up side
         if (self.is_colliding([-BOX, 0], [TABLE_WIDTH + BOX, -BOX])):
-            self.dir += 100
+            self.dir = utils.horizontal_wall_bounce(self.dir)
         #table left side
         if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [0, -BOX])):
-            self.dir += 100
+            self.dir = utils.vertical_wall_bounce(self.dir)
         #table bottom side
         if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, TABLE_HEIGHT])):
-            self.dir += 100
+            self.dir = utils.horizontal_wall_bounce(self.dir)
         #table right side
         if (self.is_colliding([TABLE_WIDTH, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, -BOX])):
-            self.dir += 100
+            self.dir = utils.vertical_wall_bounce(self.dir)
         super().move(fps)
 
     def verify_collision(self):

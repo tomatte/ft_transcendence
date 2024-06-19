@@ -11,10 +11,10 @@ pygame.init()
 screen = pygame.display.set_mode((width, height))
 #----------------------PY GAME---------------------
 
-ball = pong.Ball([width / 2, height / 2], 30, 900, 0)
-ball2 = pong.Ball([width / 2, height / 2], 45, 900, 0)
-ball3 = pong.Ball([width / 2, height / 2], 60, 900, 0)
-ball4 = pong.Ball([width / 2, height / 2], 75, 900, 0)
+ball = pong.Ball([width / 2, height / 2], 30, 900, 30)
+ball2 = pong.Ball([width / 2, height / 2], 30, 900, 60)
+ball3 = pong.Ball([width / 2, height / 2], 30, 900, 90)
+ball4 = pong.Ball([width / 2, height / 2], 30, 900, 120)
 
 rec = pygame.Rect(10, 10, 40, 40)
 

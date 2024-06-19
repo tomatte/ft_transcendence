@@ -1,4 +1,5 @@
 from typing import List, Tuple
+import math
 
 def is_point_on_line(pl1: List[int | float], pl2: List[int | float], p: List[int | float]):
     # If the line is vertical (x1 == x2), handle it separately
@@ -20,3 +21,10 @@ def is_point_inside_rect(bottom_left, top_right, p):
     px = p[0]
     py = p[1]
     return px > x1 and px < x2 and py < y1 and py > y2
+
+def vertical_wall_bounce(angle):
+    return (180 - angle) % 360
+
+def horizontal_wall_bounce(angle):
+    new_angle = (-angle) % 360
+    return new_angle if new_angle >= 0 else (new_angle + 360)
