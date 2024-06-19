@@ -1,5 +1,23 @@
 :root
 {
+    /* Lunar Dust */
+    --Lunar-Dust-1000:					rgba(14, 14, 16, 1);  /* Darkest color */
+    --Lunar-Dust-950:					rgba(24, 24, 27, 1);
+    --Lunar-Dust-900:					rgba(57, 57, 65, 1);
+    --Lunar-Dust-800:					rgba(65, 65, 75, 1);
+    --Lunar-Dust-700:					rgba(76, 77, 88, 1);
+    --Lunar-Dust-600:					rgba(93, 94, 108, 1);
+    --Lunar-Dust-500:					rgba(115, 117, 132, 1);
+    --Lunar-Dust-400:					rgba(145, 147, 159, 1);
+    --Lunar-Dust-300:					rgba(184, 185, 193, 1);
+    --Lunar-Dust-200:					rgba(217, 217, 222, 1);
+    --Lunar-Dust-100:					rgba(238, 238, 240, 1);
+    --Lunar-Dust-50:					rgba(247, 247, 248, 1);
+    --Lunar-Dust-0:						rgba(255, 255, 255, 1);   /* Lightest color */
+
+    --Lunar-Dust-Gradient-Default:		linear-gradient(94deg, #0E0E10 70.02%, #494955 104.02%);
+    --Lunar-Dust-Gradient-Expanded:		linear-gradient(103deg, #000 9.14%, #000 37.74%, rgba(73, 73, 85, 0.65) 90.86%);
+
 	/* Comet Cloud */
     --Comet-Cloud-1000:					rgba(34, 34, 43, 1); /* Darkest color */
     --Comet-Cloud-950:					rgba(41, 42, 61, 1);
@@ -27,21 +45,6 @@
     --Cosmic-Forest-100:				rgba(209, 250, 231, 1);
     --Cosmic-Forest-50:					rgba(236, 253, 245, 1); /* Lightest color */
 
-	/* Lunar Dust */
-    --Lunar-Dust-1000:					rgba(14, 14, 16, 1);  /* Darkest color */
-    --Lunar-Dust-950:					rgba(24, 24, 27, 1);
-    --Lunar-Dust-900:					rgba(57, 57, 65, 1);
-    --Lunar-Dust-800:					rgba(65, 65, 75, 1);
-    --Lunar-Dust-700:					rgba(76, 77, 88, 1);
-    --Lunar-Dust-600:					rgba(93, 94, 108, 1);
-    --Lunar-Dust-500:					rgba(115, 117, 132, 1);
-    --Lunar-Dust-400:					rgba(145, 147, 159, 1);
-    --Lunar-Dust-300:					rgba(184, 185, 193, 1);
-    --Lunar-Dust-200:					rgba(217, 217, 222, 1);
-    --Lunar-Dust-100:					rgba(238, 238, 240, 1);
-    --Lunar-Dust-50:					rgba(247, 247, 248, 1);
-    --Lunar-Dust-0:						rgba(255, 255, 255, 1);   /* Lightest color */
-
 	/* NEPTUNE BLUE */
     --Neptune-Blue-950:					rgba(26, 34, 81, 1); /* Darkest color */
     --Neptune-Blue-900:					rgba(35, 52, 133, 1);
@@ -54,6 +57,9 @@
     --Neptune-Blue-200:					rgba(194, 215, 251, 1);
     --Neptune-Blue-100:					rgba(220, 231, 253, 1);
     --Neptune-Blue-50:					rgba(240, 245, 254, 1); /* Lightest color */
+
+    --Neptune-Blue-Gradient-Default:	linear-gradient(94deg, #0E0E10 70.02%, #23388A 104.02%);
+	--Neptune-Blue-Gradient-Expanded:	linear-gradient(103deg, #000 9.14%, #000 37.74%, rgba(47, 79, 206, 0.65) 90.86%);
 
 	/* RED DWARF */
     --Red-Dwarf-950:					rgba(72, 7, 12, 1); /* Darkest color */
@@ -80,6 +86,9 @@
     --Solar-Flare-200:					rgba(251, 212, 173, 1);
     --Solar-Flare-100:					rgba(254, 235, 214, 1);
     --Solar-Flare-50:					rgba(254, 246, 238, 1); /* Lightest color */
+
+    --Solar-Flare-Gradient-Default:		linear-gradient(94deg, #0E0E10 70.02%, #984205 104.02%);
+	--Solar-Flare-Gradient-Expanded:	linear-gradient(103deg, #000 9.14%, #000 37.74%, #984205 90.86%);
 
 	/* GRADIENTS */
     --gradient-menu-item-blue:			linear-gradient(90deg, #253361 0%, #14161D 100%);

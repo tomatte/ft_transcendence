@@ -231,6 +231,7 @@ body
 	align-items: center;
 	gap: 8px;
 	display: inline-flex;
+	text-decoration: none;
   }
 
   .ItemActive
@@ -326,5 +327,3 @@ body
 	word-wrap: break-word;
   }
 
-
-/*  */
