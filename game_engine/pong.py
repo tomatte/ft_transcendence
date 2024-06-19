@@ -7,6 +7,7 @@ import pygame
 TABLE_WIDTH = 1280
 TABLE_HEIGHT = 720
 BOX = 20
+FPS = 60
 
 class FPSController:
     def __init__(self, fps):
@@ -95,3 +96,32 @@ class Ball(Rectangle):
         for item in self.items:
             if (isinstance(item, Rectangle)):
                 print(item.type)
+                
+
+class Player(Rectangle):
+    def __init__(self, position: List[float], speed: float):
+        super().__init__(position, speed, 90)
+    
+    def move_up(self):
+        print("move up")
+        dir_rad = math.radians(270)
+
+        vy = self.speed * math.sin(dir_rad)
+        
+        dt = 1 / FPS
+        
+        self.y += vy * dt
+    
+    def move_down(self):
+        print("move down")
+        dir_rad = math.radians(90)
+
+        vy = self.speed * math.sin(dir_rad)
+        
+        dt = 1 / FPS
+        
+        self.y += vy * dt
+    
+    def is_colliding():
+        pass
+        

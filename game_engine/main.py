@@ -16,7 +16,9 @@ ball2 = pong.Ball([width / 2, height / 2], 30, 900, 60)
 ball3 = pong.Ball([width / 2, height / 2], 30, 900, 90)
 ball4 = pong.Ball([width / 2, height / 2], 30, 900, 120)
 
-rec = pygame.Rect(10, 10, 40, 40)
+player1 = pong.Player([0, height / 2], 500)
+
+rect = pygame.Rect(0, 0, 20, 100)
 
 done = False
 while not done:
@@ -25,7 +27,16 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+            
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_UP:
+            player1.move_up()
+        if event.key == pygame.K_DOWN:
+            player1.move_down()
+            
+    pygame.draw.rect(screen, [0, 0, 150], rect.move(player1.x, player1.y))
     
+
     # rect.move(fps.fps)
     # rect2.move(fps.fps)
     ball.move(fps.fps)
@@ -38,5 +49,5 @@ while not done:
     pygame.draw.circle(screen, [0, 0, 150], [ball2.x, ball2.y], 30)
     pygame.draw.circle(screen, [0, 0, 150], [ball3.x, ball3.y], 30)
     pygame.draw.circle(screen, [0, 0, 150], [ball4.x, ball4.y], 30)
-            
+
     pygame.display.flip()
