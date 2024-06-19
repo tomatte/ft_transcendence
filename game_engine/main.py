@@ -12,11 +12,10 @@ screen = pygame.display.set_mode((width, height))
 #----------------------PY GAME---------------------
 
 ball = pong.Ball([width / 2, height / 2], 30, 900, 30)
-ball2 = pong.Ball([width / 2, height / 2], 30, 900, 60)
-ball3 = pong.Ball([width / 2, height / 2], 30, 900, 90)
-ball4 = pong.Ball([width / 2, height / 2], 30, 900, 120)
 
 player1 = pong.Player([0, height / 2], 500)
+
+ball.set_players([player1])
 
 rect = pygame.Rect(0, 0, 20, 100)
 

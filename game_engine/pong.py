@@ -57,14 +57,54 @@ class Rectangle:
         self.y += vy * dt
         
 
+class Player(Rectangle):
+    def __init__(self, position: List[float], speed: float):
+        super().__init__(position, speed, 90)
+    
+    def move_up(self):
+        print("move up")
+        dir_rad = math.radians(270)
+
+        vy = self.speed * math.sin(dir_rad)
+        
+        dt = 1 / FPS
+        
+        self.y += vy * dt
+    
+    def move_down(self):
+        print("move down")
+        dir_rad = math.radians(90)
+
+        vy = self.speed * math.sin(dir_rad)
+        
+        dt = 1 / FPS
+        
+        self.y += vy * dt
+    
+    def is_colliding():
+        pass
+        
+
 class Ball(Rectangle):
     def __init__(self, position: List[float], radious: int, speed: float, direction: int):
         super().__init__(position, speed, direction)
         self.type = "ball"
         self.radious = radious
 
-    def set_collision(self, items):
-        self.items = items
+    def set_players(self, players: List[Player]):
+        self.players = players
+    
+    def is_colliding_with_player(self):
+        player = self.players[0]
+        if (utils.is_point_inside_rect([player.x, player.y - 50], [player.x, player.y + 50], [self.x, self.y + self.radious])):
+            return True
+        if (utils.is_point_inside_rect([player.x, player.y - 50], [player.x, player.y + 50], [self.x + self.radious, self.y - self.radious])):
+            return True
+        if (utils.is_point_inside_rect([player.x, player.y - 50], [player.x, player.y + 50], [self.x + self.radious, self.y])):
+            return True
+        if (utils.is_point_inside_rect([player.x, player.y - 50], [player.x, player.y + 50], [self.x - self.radious, self.y])):
+            return True
+        return False
 
     def is_colliding(self, bottom_left, top_right):
         if (utils.is_point_inside_rect(bottom_left, top_right, [self.x, self.y + self.radious])):
@@ -97,31 +137,3 @@ class Ball(Rectangle):
             if (isinstance(item, Rectangle)):
                 print(item.type)
                 
-
-class Player(Rectangle):
-    def __init__(self, position: List[float], speed: float):
-        super().__init__(position, speed, 90)
-    
-    def move_up(self):
-        print("move up")
-        dir_rad = math.radians(270)
-
-        vy = self.speed * math.sin(dir_rad)
-        
-        dt = 1 / FPS
-        
-        self.y += vy * dt
-    
-    def move_down(self):
-        print("move down")
-        dir_rad = math.radians(90)
-
-        vy = self.speed * math.sin(dir_rad)
-        
-        dt = 1 / FPS
-        
-        self.y += vy * dt
-    
-    def is_colliding():
-        pass
-        
