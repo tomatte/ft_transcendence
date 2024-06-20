@@ -2,7 +2,6 @@ import time
 import math
 import utils
 from typing import List, Tuple
-import pygame
 
 TABLE_WIDTH = 1280
 TABLE_HEIGHT = 720
@@ -62,7 +61,6 @@ class Player(Rectangle):
         super().__init__(position, speed, 90)
     
     def move_up(self):
-        print("move up")
         dir_rad = math.radians(270)
 
         vy = self.speed * math.sin(dir_rad)
@@ -72,7 +70,6 @@ class Player(Rectangle):
         self.y += vy * dt
     
     def move_down(self):
-        print("move down")
         dir_rad = math.radians(90)
 
         vy = self.speed * math.sin(dir_rad)
@@ -96,13 +93,13 @@ class Ball(Rectangle):
     
     def is_colliding_with_player(self):
         player = self.players[0]
-        if (utils.is_point_inside_rect([player.x, player.y - 50], [player.x, player.y + 50], [self.x, self.y + self.radious])):
+        if (utils.is_point_inside_rect([player.x, player.y + 50], [player.x + 20, player.y - 50], [self.x, self.y + self.radious])):
             return True
-        if (utils.is_point_inside_rect([player.x, player.y - 50], [player.x, player.y + 50], [self.x + self.radious, self.y - self.radious])):
+        if (utils.is_point_inside_rect([player.x, player.y + 50], [player.x + 20, player.y - 50], [self.x + self.radious, self.y - self.radious])):
             return True
-        if (utils.is_point_inside_rect([player.x, player.y - 50], [player.x, player.y + 50], [self.x + self.radious, self.y])):
+        if (utils.is_point_inside_rect([player.x, player.y + 50], [player.x + 20, player.y - 50], [self.x + self.radious, self.y])):
             return True
-        if (utils.is_point_inside_rect([player.x, player.y - 50], [player.x, player.y + 50], [self.x - self.radious, self.y])):
+        if (utils.is_point_inside_rect([player.x, player.y + 50], [player.x + 20, player.y - 50], [self.x - self.radious, self.y])):
             return True
         return False
 
@@ -123,6 +120,7 @@ class Ball(Rectangle):
             self.dir = utils.horizontal_wall_bounce(self.dir)
         #table left side
         if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [0, -BOX])):
+            print("player1 lost")
             self.dir = utils.vertical_wall_bounce(self.dir)
         #table bottom side
         if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, TABLE_HEIGHT])):
@@ -130,10 +128,12 @@ class Ball(Rectangle):
         #table right side
         if (self.is_colliding([TABLE_WIDTH, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, -BOX])):
             self.dir = utils.vertical_wall_bounce(self.dir)
+        if self.is_colliding_with_player():
+            print("player defended")
+            self.dir = utils.vertical_wall_bounce(self.dir)
         super().move(fps)
 
-    def verify_collision(self):
-        for item in self.items:
-            if (isinstance(item, Rectangle)):
-                print(item.type)
+    # def verify_collision(self):
+    #     for player in self.players:
+            
                 
