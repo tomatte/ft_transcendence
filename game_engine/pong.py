@@ -5,7 +5,7 @@ from typing import List, Tuple
 
 TABLE_WIDTH = 1280
 TABLE_HEIGHT = 720
-BOX = 20
+COLLISION_AREA = 20
 FPS = 60
 
 #how much the player can modify the direction of the ball; 
@@ -44,26 +44,25 @@ class FPSController:
 class Table:
     width = TABLE_WIDTH = 1280
     height = TABLE_HEIGHT = 720
-    side_width = BOX = 20
     
     up_side = {
-        "bottom_left": (-BOX, 0),
-        "top_right": (TABLE_WIDTH + BOX, -BOX)
+        "bottom_left": (-COLLISION_AREA, 0),
+        "top_right": (TABLE_WIDTH + COLLISION_AREA, -COLLISION_AREA)
     }
     
     bottom_side = {
-        "bottom_left": (-BOX, TABLE_HEIGHT + BOX),
-        "top_right": (TABLE_WIDTH + BOX, TABLE_HEIGHT)
+        "bottom_left": (-COLLISION_AREA, TABLE_HEIGHT + COLLISION_AREA),
+        "top_right": (TABLE_WIDTH + COLLISION_AREA, TABLE_HEIGHT)
     }
 
     left_side = {
-        "bottom_left": (-BOX, TABLE_HEIGHT),
+        "bottom_left": (-COLLISION_AREA, TABLE_HEIGHT),
         "top_right": (0, 0)
     }
 
     right_side = {
         "bottom_left": (TABLE_WIDTH, TABLE_HEIGHT),
-        "top_right": (TABLE_WIDTH + BOX, 0)
+        "top_right": (TABLE_WIDTH + COLLISION_AREA, 0)
     }
     
     
