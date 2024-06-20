@@ -13,7 +13,7 @@ screen = pygame.display.set_mode((width, height))
 
 ball = pong.Ball([width / 2, height / 2], 30, 900, 360)
 
-player1 = pong.Player([0, height / 2], 500, 20, 150)
+player1 = pong.Player([0, height / 2], 500, 20, 150, pong.Entity.PLAYER_LEFT)
 
 ball.set_players([player1])
 
