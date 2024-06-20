@@ -112,11 +112,29 @@ class Player(Rectangle):
         self.hits += 1
 
     def get_bottom_left(self):
-        return (self.x, self.y + self.height / 2)
+        if self.entity_type == Entity.PLAYER_LEFT:
+            return (self.x, self.y + self.height / 2)
+        else:
+            return (self.x - self.width, self.y + self.height / 2)
+        
+    def get_top_left(self):
+        if self.entity_type == Entity.PLAYER_LEFT:
+            return (self.x, self.y - self.height / 2)
+        else:
+            return (self.x - self.width, self.y - self.height / 2)
+        
     def get_top_right(self):
-        return (self.x + self.width, self.y - self.height / 2)
+        if self.entity_type == Entity.PLAYER_LEFT:
+            return (self.x + self.width, self.y - self.height / 2)
+        else:
+            return (self.x, self.y - self.height / 2)
+        
     def get_bottom_right(self):
-        return (self.x + self.width, self.y + self.height / 2)
+        if self.entity_type == Entity.PLAYER_LEFT:
+            return (self.x + self.width, self.y + self.height / 2)
+        else:
+            return (self.x, self.y + self.height / 2)
+        
     def move_up(self):
         dir_rad = math.radians(270)
 
@@ -151,8 +169,12 @@ class Ball(Rectangle):
         pixel_distance = self.y - player.y
         direction = (PLAYER_BALL_DIR_MODIFIER / (player.height / 2)) * pixel_distance
         #when direction is negative the ball hit the player's top_side, then ball will go upward
-        if direction < 0:
-            direction += 360
+        if player.entity_type == Entity.PLAYER_RIGHT:
+            if direction < 0:
+                direction = 180 + (-direction)
+            else:
+                direction = 180 - direction
+            print(f"direction: {direction}")
         self.dir = direction
         
     def is_colliding(self, bottom_left, top_right):
