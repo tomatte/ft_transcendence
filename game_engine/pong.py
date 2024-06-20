@@ -8,6 +8,10 @@ TABLE_HEIGHT = 720
 BOX = 20
 FPS = 60
 
+#how much the player can modify the direction of the ball; 
+# MAX_LIMIT: 90; MIN_LIMIT: 1; RECOMMENDED: 30
+PLAYER_BALL_DIR_MODIFIER = 30 
+
 class FPSController:
     def __init__(self, fps):
         self.__frame_duration = 1.0 / fps
@@ -101,12 +105,20 @@ class Ball(Rectangle):
 
     def set_players(self, players: List[Player]):
         self.players = players
+        
+    def change_direction_by_player(self, player: Player):
+        pixel_distance = self.y - player.y
+        direction = (PLAYER_BALL_DIR_MODIFIER / (player.height / 2)) * pixel_distance
+        #when direction is negative the ball hit the player's top_side, then ball will go upward
+        if direction < 0:
+            direction += 360
+        self.dir = direction
     
     def verify_collision_player(self):
         for player in self.players:
             if self.is_colliding(player.get_bottom_left(), player.get_top_right()):
                 print("player defended")
-                self.dir = utils.vertical_wall_bounce(self.dir)
+                self.change_direction_by_player(player)
                 return True
         return False
 
