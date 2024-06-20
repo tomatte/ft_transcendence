@@ -1,18 +1,33 @@
-// function test() {
-//     const body = document.querySelector('body');
+import routes from './router.js';
 
-//     const p = document.createElement('p');
-//     p.textContent = 'Hello from the SPA!';
-//     body.appendChild(p);
+// const container = document.querySelector('#root');
+
+// const init = () => window.addEventListener('hashchange', renderPage);
+// const validateHash = (hash) => hash === ""  ? 'home' : hash.replace('#', '');
+
+// const renderPage = () => {
+//   const page = validateHash(window.location.hash);
+//   container.innerHTML = '';
+//   container.appendChild(routes[page]);
 // }
 
-// test();
+// window.addEventListener('load', ()=> {
+//   renderPage();
+//   init();
+// });
 
-document.addEventListener("DOMContentLoaded", function() {
-	const expandCollapseButton = document.querySelector(".ExpandCollapseButton");
-	const sidebar = document.querySelector(".Sidebar");
-  
-	expandCollapseButton.addEventListener("click", function() {
-	  sidebar.classList.toggle("collapsed");
-	});
-  });
+
+const container = document.querySelector('#root');
+
+const init = () => window.addEventListener('hashchange', renderPage);
+const validateHash = (hash) => hash === ""  ? 'home' : hash.replace('#', '');
+
+const renderPage = () => {
+  const page = validateHash(window.location.hash);
+  container.innerHTML = '';
+  container.appendChild(routes[page]);
+}
+window.addEventListener('load', ()=> {
+  renderPage();
+  init();
+});
