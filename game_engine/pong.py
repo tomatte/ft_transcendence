@@ -61,9 +61,13 @@ class Player(Rectangle):
         super().__init__(position, speed, 90)
         self.width = width
         self.height = height
+        self.hits = 0
         # self.up_line = ((position[0], position[1] - height / 2), (self.top_right))
         # self.bottom_line = ((self.bottom_left), (position[0] + width / 2, position[1] + height / 2))
-        
+
+    def hit(self):
+        self.hits += 1
+
     def get_bottom_left(self):
         return (self.x, self.y + self.height / 2)
     def get_top_right(self):
@@ -115,7 +119,8 @@ class Ball(Rectangle):
             self.dir = utils.horizontal_wall_bounce(self.dir)
         #table left side
         if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [0, -BOX])):
-            print("player1 lost")
+            self.players[0].hit()
+            print(f"player1 hits: {self.players[0].hits}")
             self.dir = utils.vertical_wall_bounce(self.dir)
         #table right side
         if (self.is_colliding([TABLE_WIDTH, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, -BOX])):
