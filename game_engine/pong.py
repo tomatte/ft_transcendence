@@ -57,9 +57,19 @@ class Rectangle:
         
 
 class Player(Rectangle):
-    def __init__(self, position: List[float], speed: float):
+    def __init__(self, position: List[float], speed: float, width: int, height: int):
         super().__init__(position, speed, 90)
-    
+        self.width = width
+        self.height = height
+        # self.up_line = ((position[0], position[1] - height / 2), (self.top_right))
+        # self.bottom_line = ((self.bottom_left), (position[0] + width / 2, position[1] + height / 2))
+        
+    def get_bottom_left(self):
+        return (self.x, self.y + self.height / 2)
+    def get_top_right(self):
+        return (self.x + self.width, self.y - self.height / 2)
+    def get_bottom_right(self):
+        return (self.x + self.width, self.y + self.height / 2)
     def move_up(self):
         dir_rad = math.radians(270)
 
@@ -78,9 +88,6 @@ class Player(Rectangle):
         
         self.y += vy * dt
     
-    def is_colliding():
-        pass
-        
 
 class Ball(Rectangle):
     def __init__(self, position: List[float], radious: int, speed: float, direction: int):
@@ -93,7 +100,7 @@ class Ball(Rectangle):
     
     def verify_collision_player(self):
         for player in self.players:
-            if self.is_colliding([player.x, player.y + 50], [player.x + 20, player.y - 50]):
+            if self.is_colliding(player.get_bottom_left(), player.get_top_right()):
                 print("player defended")
                 self.dir = utils.vertical_wall_bounce(self.dir)
                 return True

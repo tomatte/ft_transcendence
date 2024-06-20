@@ -11,9 +11,9 @@ pygame.init()
 screen = pygame.display.set_mode((width, height))
 #----------------------PY GAME---------------------
 
-ball = pong.Ball([width / 2, height / 2], 30, 900, 0)
+ball = pong.Ball([width / 2, height / 2], 30, 900, 30)
 
-player1 = pong.Player([0, height / 2], 500)
+player1 = pong.Player([0, height / 2], 500, 20, 100)
 
 ball.set_players([player1])
 
@@ -33,7 +33,7 @@ while not done:
         if event.key == pygame.K_DOWN:
             player1.move_down()
             
-    pygame.draw.rect(screen, [0, 0, 150], rect.move(player1.x, player1.y))
+    pygame.draw.line(screen, [0, 0, 150], player1.get_top_right(), player1.get_bottom_right())
     
 
     # rect.move(fps.fps)
