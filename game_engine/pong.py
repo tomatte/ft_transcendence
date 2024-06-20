@@ -39,6 +39,34 @@ class FPSController:
         
         self.__last_time = time.time()
         return True
+    
+    
+class Table:
+    width = TABLE_WIDTH = 1280
+    height = TABLE_HEIGHT = 720
+    side_width = BOX = 20
+    
+    up_side = {
+        "bottom_left": (-BOX, 0),
+        "top_right": (TABLE_WIDTH + BOX, -BOX)
+    }
+    
+    bottom_side = {
+        "bottom_left": (-BOX, TABLE_HEIGHT + BOX),
+        "top_right": (TABLE_WIDTH + BOX, TABLE_HEIGHT)
+    }
+
+    left_side = {
+        "bottom_left": (-BOX, TABLE_HEIGHT),
+        "top_right": (0, 0)
+    }
+
+    right_side = {
+        "bottom_left": (TABLE_WIDTH, TABLE_HEIGHT),
+        "top_right": (TABLE_WIDTH + BOX, 0)
+    }
+    
+    
 
 
 class Rectangle:
@@ -124,18 +152,18 @@ class Ball(Rectangle):
 
     def verify_collision_wall(self):
         #table up side
-        if (self.is_colliding([-BOX, 0], [TABLE_WIDTH + BOX, -BOX])):
+        if (self.is_colliding(Table.up_side["bottom_left"], Table.up_side["top_right"])):
             self.dir = utils.horizontal_wall_bounce(self.dir)
         #table bottom side
-        if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, TABLE_HEIGHT])):
+        if (self.is_colliding(Table.bottom_side["bottom_left"], Table.bottom_side["top_right"])):
             self.dir = utils.horizontal_wall_bounce(self.dir)
         #table left side
-        if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [0, -BOX])):
+        if (self.is_colliding(Table.left_side["bottom_left"], Table.left_side["top_right"])):
             self.players[0].hit()
             print(f"player1 hits: {self.players[0].hits}")
             self.dir = utils.vertical_wall_bounce(self.dir)
         #table right side
-        if (self.is_colliding([TABLE_WIDTH, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, -BOX])):
+        if (self.is_colliding(Table.right_side["bottom_left"], Table.right_side["top_right"])):
             self.dir = utils.vertical_wall_bounce(self.dir)
 
     def is_colliding(self, bottom_left, top_right):
