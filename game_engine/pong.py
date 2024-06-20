@@ -91,17 +91,28 @@ class Ball(Rectangle):
     def set_players(self, players: List[Player]):
         self.players = players
     
-    def is_colliding_with_player(self):
-        player = self.players[0]
-        if (utils.is_point_inside_rect([player.x, player.y + 50], [player.x + 20, player.y - 50], [self.x, self.y + self.radious])):
-            return True
-        if (utils.is_point_inside_rect([player.x, player.y + 50], [player.x + 20, player.y - 50], [self.x + self.radious, self.y - self.radious])):
-            return True
-        if (utils.is_point_inside_rect([player.x, player.y + 50], [player.x + 20, player.y - 50], [self.x + self.radious, self.y])):
-            return True
-        if (utils.is_point_inside_rect([player.x, player.y + 50], [player.x + 20, player.y - 50], [self.x - self.radious, self.y])):
-            return True
+    def verify_collision_player(self):
+        for player in self.players:
+            if self.is_colliding([player.x, player.y + 50], [player.x + 20, player.y - 50]):
+                print("player defended")
+                self.dir = utils.vertical_wall_bounce(self.dir)
+                return True
         return False
+
+    def verify_collision_wall(self):
+        #table up side
+        if (self.is_colliding([-BOX, 0], [TABLE_WIDTH + BOX, -BOX])):
+            self.dir = utils.horizontal_wall_bounce(self.dir)
+        #table bottom side
+        if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, TABLE_HEIGHT])):
+            self.dir = utils.horizontal_wall_bounce(self.dir)
+        #table left side
+        if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [0, -BOX])):
+            print("player1 lost")
+            self.dir = utils.vertical_wall_bounce(self.dir)
+        #table right side
+        if (self.is_colliding([TABLE_WIDTH, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, -BOX])):
+            self.dir = utils.vertical_wall_bounce(self.dir)
 
     def is_colliding(self, bottom_left, top_right):
         if (utils.is_point_inside_rect(bottom_left, top_right, [self.x, self.y + self.radious])):
@@ -115,22 +126,8 @@ class Ball(Rectangle):
         return False
     
     def move(self, fps):
-        #table up side
-        if (self.is_colliding([-BOX, 0], [TABLE_WIDTH + BOX, -BOX])):
-            self.dir = utils.horizontal_wall_bounce(self.dir)
-        #table left side
-        if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [0, -BOX])):
-            print("player1 lost")
-            self.dir = utils.vertical_wall_bounce(self.dir)
-        #table bottom side
-        if (self.is_colliding([-BOX, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, TABLE_HEIGHT])):
-            self.dir = utils.horizontal_wall_bounce(self.dir)
-        #table right side
-        if (self.is_colliding([TABLE_WIDTH, TABLE_HEIGHT + BOX], [TABLE_WIDTH + BOX, -BOX])):
-            self.dir = utils.vertical_wall_bounce(self.dir)
-        if self.is_colliding_with_player():
-            print("player defended")
-            self.dir = utils.vertical_wall_bounce(self.dir)
+        self.verify_collision_wall()
+        self.verify_collision_player()
         super().move(fps)
 
     # def verify_collision(self):
