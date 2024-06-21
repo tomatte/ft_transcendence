@@ -129,9 +129,6 @@
     background: var(--Neptune-Blue-Gradient-Expanded);
 }
 
-
-
-
 .game-mode-banner {
     width: 100%;
     height: 160px;
@@ -188,4 +185,60 @@
     flex: 1;
     align-self: stretch;
     object-fit: cover;
+}
+
+
+/* ------------------- TAG ------------------- */
+
+.tag
+{
+    display: inline-flex;
+    padding: 4px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+}
+
+.tag--defeat
+{
+    background: var(--Red-Dwarf-900);
+    color: var(--Red-Dwarf-300)
+}
+
+.tag--victory
+{
+    background: var(--Cosmic-Forest-900);
+    color: var(--Cosmic-Forest-300)
+}
+
+
+/* ------------------- GAME ROW OPTION ------------------- */
+
+.game-row-option
+{
+    display: inline-flex;
+    padding: 10px;
+    align-items: center;
+    gap: 8px;
+    background: var(--Comet-Cloud-950);
+    color: var(--Comet-Cloud-500);
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+    transition: all 0.2s ease;
+}
+
+.game-row-option:hover
+{
+    background: var(--Comet-Cloud-900);
+    color: var(--Comet-Cloud-300);
+}
+
+.game-row-option__icon
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
