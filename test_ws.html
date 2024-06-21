@@ -24,22 +24,34 @@
 
     <script>
         let ws = new WebSocket("ws://localhost:8000/xablau/")
+        let id = null
+        let payload = {
+            key: "",
+            id: null
+        }
 
         ws.onmessage = (event) => {
-            console.log(event.data)
-            if (event.data == "connected")
-                ws.send("2")
+            message = JSON.parse(event.data)
+
+            console.log(message)
+            if (message.method == "connect") {
+                payload.id = message.id
+                id = message.id
+                return ;
+            }
+
         };
 
 
         async function sendKey(key) {
-            ws.send(key)
+            payload.key = key
+            ws.send(JSON.stringify(payload))
         }
 
         // Function to execute when the key is pressed
         async function onKeyPress(key) {
-            ws.send(key)
             //console.log(key + " key pressed");
+            sendKey(key)
             document.querySelector('.status').textContent = key + " key pressed";
         }
 
