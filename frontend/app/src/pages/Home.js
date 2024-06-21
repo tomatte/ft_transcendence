@@ -1,7 +1,9 @@
 export default () => {
+    // Criação do contêiner principal
     const container = document.createElement("div");
     container.classList.add("playground-container");
 
+    // Adição de estilos
     const style = document.createElement("style");
     style.innerHTML = `
         @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
@@ -11,9 +13,15 @@ export default () => {
         @import url('../css/Colors.css');
         @import url('../css/Typography.css');
         @import url('playground.css');
+
+        .game-mode-banner {
+            margin-bottom: 20px; /* Adiciona espaço entre os blocos */
+        }
     `;
 
+    // Conteúdo do contêiner principal
     container.innerHTML = `
+        <!-- Bloco de torneio -->
         <div class="game-mode-banner game-mode-banner--tournament">
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">TOURNAMENT</div>
@@ -22,7 +30,6 @@ export default () => {
                         <span class="material-icons-round button__icon-left">add</span>
                         <span class="button__text font-body-regular-bold">Create</span>
                     </button>
-
                 </div>
             </div>
             <div class="game-mode-banner__illustration">
@@ -30,6 +37,7 @@ export default () => {
             </div>
         </div>
 
+        <!-- Bloco de jogo aleatório -->
         <div class="game-mode-banner game-mode-banner--play-randomly">
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">1V1 MATCH</div>
@@ -40,12 +48,12 @@ export default () => {
                     </button>
                 </div>
             </div>
-
             <div class="game-mode-banner__illustration">
                 <img class="game-mode-banner__illustration__image" src="../assets/medal-dynamic-premium.png" alt="">
             </div>
         </div>
 
+        <!-- Bloco de jogo com amigo -->
         <div class="game-mode-banner game-mode-banner--friendly-match">
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">1V1 MATCH</div>
@@ -56,7 +64,6 @@ export default () => {
                     </button>
                 </div>
             </div>
-            
             <div class="game-mode-banner__illustration">
                 <img class="game-mode-banner__illustration__image" src="../assets/flag-dynamic-color.png" alt="">
             </div>
@@ -66,3 +73,4 @@ export default () => {
     container.appendChild(style);
     return container;
 }
+
