@@ -1,47 +1,35 @@
-version: '3.0'
-
-volumes:
-  frontend-files:
-    driver_opts:
-      type: none
-      device: ${PWD}/frontend/app
-      o: bind
-  backend-files:
-    driver_opts:
-      type: none
-      device: ${PWD}/backend
-      o: bind
+version: '3.4'
 
 networks:
-  trans-network:
+  trans:
 
 services:
 
-  frontend:
-    build: ./frontend/config
-    container_name: ft_frontend
-    ports:
-      - "443:443"
-    volumes:
-      - frontend-files:/var/www
-    networks:
-      - trans-network
+  # frontend:
+  #   build: ./frontend/config
+  #   container_name: ft_frontend
+  #   ports:
+  #     - "443:443"
+  #     - "4009:80"
+  #   volumes:
+  #     - ./frontend/app:/var/www
 
-  backend:
-    build: ./backend
-    container_name: ft_backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - backend-files:/app
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-    networks:
-      - trans-network
+  # backend:
+  #   build: ./backend
+  #   container_name: ft_backend
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./backend:/app
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     POSTGRES_HOST: ${POSTGRES_HOST}
+  #     PYTHONUNBUFFERED: 1
+  #   networks:
+  #     - trans-network
 
   db:
     image: postgres:latest
@@ -50,22 +38,33 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+    - "5432:5432"
     restart: always
     networks:
-      trans-network:
-    
-  mock-server:
-    image: mockoon/cli:latest
-    command: ["--data", "data", "--port", "3000"]
-    ports:
-      - "3005:3000"
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/your-healthcheck-route || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 2
-      start_period: 10s
-    volumes:
-      - ./mock-data/transcendence.json:/data:readonly
-    networks:
-      - trans-network
+      - trans
+
+  # mock-server:
+  #   image: mockoon/cli:latest
+  #   command: ["--data", "data", "--port", "3000"]
+  #   ports:
+  #     - "3005:3000"
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "curl -f http://localhost:3000/your-healthcheck-route || exit 1"]
+  #     interval: 30s
+  #     timeout: 5s
+  #     retries: 2
+  #     start_period: 10s
+  #   volumes:
+  #     - ./mock-data/transcendence.json:/data
+  #   networks:
+  #     - trans-network
+
+
+# docker stop $(docker ps -a -q)
+# docker rm $(docker ps -a -q)
+# docker rmi $(docker images -q)
+# docker network prune -f
+# docker volume prune -f
+# docker system prune -a --volumes
+# docker volume rm ft_transcendence_backend-files ft_transcendence_frontend-files

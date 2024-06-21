@@ -5,3 +5,9 @@ db.sqlite3
 *.pyc
 *.log
 *.pot
+*.my_pgpass.conf
+*.pg_service.
+*.env
+# Virtualenv
+venv/
+__init__.py
