@@ -1,0 +1,34 @@
+html, body
+{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #000;
+}
+
+.playground-container {
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    flex: 1; /* Ensure it stretches vertically */
+}
+
+.playground-container--button
+{
+    flex-direction: row;
+}
+
+.playground-container--tag
+{
+    flex-direction: column;
+}
+
+.playground-container--game-row-option
+{
+    flex-direction: row;
+}

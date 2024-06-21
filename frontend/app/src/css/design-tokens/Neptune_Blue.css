@@ -1,0 +1,15 @@
+.neptune-blue-theme {
+  --neptuneblue950:  rgba(26, 34, 81, 1); /* Cor mais escura */
+  --neptuneblue900:  rgba(35, 52, 133, 1);
+  --neptuneblue800:  rgba(36, 57, 169, 1);
+  --neptuneblue700:  rgba(37, 69, 208, 1);
+  --neptuneblue600:  rgba(49, 91, 227, 1);
+  --neptuneblue500:  rgba(67, 119, 238, 1);
+  --neptuneblue400:  rgba(103, 155, 243, 1);
+  --neptuneblue300:  rgba(152, 190, 248, 1);
+  --neptuneblue200:  rgba(194, 215, 251, 1);
+  --neptuneblue100:  rgba(220, 231, 253, 1);
+  --neptuneblue50:   rgba(240, 245, 254, 1); /* Cor mais clara */
+}
+
+

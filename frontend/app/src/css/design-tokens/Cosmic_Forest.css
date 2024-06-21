@@ -1,0 +1,13 @@
+.cosmic-forest-theme {
+  --cometcforest950:  rgba(2, 44, 34, 1); /* Cor mais escura */
+  --cosmicforest900:  rgba(6, 78, 59, 1);
+  --cosmicforest800:  rgba(6, 95, 54, 1);
+  --cosmicforest700:  rgba(4, 120, 67, 1);
+  --cosmicforest600:  rgba(5, 150, 83, 1);
+  --cosmicforest500:  rgba(16, 185, 107, 1);
+  --cosmicforest400:  rgba(52, 211, 138, 1);
+  --cosmicforest300:  rgba(110, 231, 175, 1);
+  --cosmicforest200:  rgba(167, 243, 208, 1);
+  --cosmicforest100:  rgba(209, 250, 231, 1);
+  --cometcforest50:   rgba(236, 253, 245, 1); /* Cor mais clara */
+}

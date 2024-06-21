@@ -1,0 +1,146 @@
+{
+  "uuid": "27685de4-5975-4f30-82f1-cc4faf055835",
+  "lastMigration": 32,
+  "name": "Transcendence",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3002,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "69f4ec9d-139c-4e5f-b653-40666a79d6f9",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/users/:id/all",
+      "responses": [
+        {
+          "uuid": "33d731b8-2ff1-4d55-97e4-c6c52e4c4326",
+          "body": "{\n  \"id\": \"1\",\n  \"nickname\": \"Tomatte\",\n  \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n  \"friends\": [\n    {\n      \"id\": \"2\",\n      \"nickname\": \"Mbappe\",\n      \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\"\n    },\n    {\n      \"id\": \"3\",\n      \"nickname\": \"Angelina\",\n      \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\"\n    },\n    {\n      \"id\": \"4\",\n      \"nickname\": \"Regina Soares\",\n      \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\"\n    }\n  ],\n  \"requests\": [\n    {\n      \"sender_id\": \"5\",\n      \"sender_name\": \"Farofa\",\n      \"type\": \"friendship\",\n      \"type_id\": \"\"\n    },\n    {\n      \"sender_id\": \"3\",\n      \"sender_name\": \"Angelina\",\n      \"type\": \"tournament\",\n      \"type_id\": \"uuid2137h6982d324c\"\n    }\n  ],\n  \"match_history\": [\n    {\n      \"id\": \"d87asdb8as7\",\n      \"duration\": 260,\n      \"type\": \"normal\",\n      \"is_winner\": true,\n      \"date\": \"28/05/2024\",\n      \"time\": \"11:19\",\n      \"my_score\": {\n        \"id\": \"1\",\n        \"nickname\": \"Tomatte\",\n        \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n        \"score\": 3\n      },\n      \"adversary_score\": {\n        \"id\": \"2\",\n        \"nickname\": \"Mbappe\",\n        \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n        \"score\": 2\n      }\n    },\n    {\n      \"id\": \"d8a97bs69d87as\",\n      \"duration\": 80,\n      \"type\": \"tournament\",\n      \"is_winner\": false,\n      \"date\": \"28/05/2024\",\n      \"time\": \"11:19\",\n      \"my_score\": {\n        \"id\": \"1\",\n        \"nickname\": \"Tomatte\",\n        \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n        \"score\": 3\n      },\n      \"adversary_score\": {\n        \"id\": \"3\",\n        \"nickname\": \"Angelina\",\n        \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n        \"score\": 0\n      }\n    }\n  ],\n  \"stats\": {\n    \"total_matches_played\": 40,\n    \"total_matches_won\": 23,\n    \"total_matches_lost\": 13,\n    \"tournament_played\": 2,\n    \"tournament_won\": 1,\n    \"tournament_matches_played\": 10,\n    \"tournament_matches_won\": 8,\n    \"tournament_matches_lost\": 2,\n    \"total_winrate\": \"70%\",\n    \"max_consecutive_win\": 4,\n    \"normal_game_winrate\": \"75%\",\n    \"time_playing_seconds\": \"1230\",\n    \"best_friend\": {\n      \"id\": \"2\",\n      \"nickname\": \"Mbappe\",\n      \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n      \"played_together\": 5\n    }\n  },\n  \"tournaments\": [\n    {\n      \"id\": \"da9s78d9as87d\",\n      \"number_players\": \"4\",\n      \"date\": \"27/05/2024\",\n      \"time\": \"19:30\",\n      \"total_matches\": 3,\n      \"total_rounds\": 2,\n      \"winner\": {\n        \"id\": \"1\",\n        \"nickname\": \"Tomatte\",\n        \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\"\n      },\n      \"rounds\": [\n        {\n          \"round_number\": 1,\n          \"matches\": [\n            {\n              \"id\": \"d87asdb8as7\",\n              \"duration\": 260,\n              \"type\": \"tournament\",\n              \"is_winner\": true,\n              \"date\": \"28/05/2024\",\n              \"time\": \"11:19\",\n              \"player_1\": {\n                \"id\": \"1\",\n                \"nickname\": \"Tomatte\",\n                \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n                \"score\": 3\n              },\n              \"player_2\": {\n                \"id\": \"2\",\n                \"nickname\": \"Mbappe\",\n                \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n                \"score\": 2\n              }\n            },\n            {\n              \"id\": \"dan7s8dy9a8s7\",\n              \"duration\": 220,\n              \"type\": \"tournament\",\n              \"is_winner\": true,\n              \"date\": \"28/05/2024\",\n              \"time\": \"11:19\",\n              \"player_1\": {\n                \"id\": \"7\",\n                \"nickname\": \"Cassandra\",\n                \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n                \"score\": 3\n              },\n              \"player_2\": {\n                \"id\": \"8\",\n                \"nickname\": \"Juvenal\",\n                \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n                \"score\": 2\n              }\n            }\n          ]\n        },\n        {\n          \"round_number\": 2,\n          \"matches\": [\n            {\n              \"id\": \"dan7s8dy9a8s7\",\n              \"duration\": 220,\n              \"type\": \"tournament\",\n              \"is_winner\": true,\n              \"date\": \"28/05/2024\",\n              \"time\": \"11:19\",\n              \"player_1\": {\n                \"id\": \"7\",\n                \"nickname\": \"Cassandra\",\n                \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n                \"score\": 3\n              },\n              \"player_2\": {\n                \"id\": \"8\",\n                \"nickname\": \"Juvenal\",\n                \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\",\n                \"score\": 2\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "1abb4c7f-067d-4d35-a193-f32d03f33350",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/users/:id/friends",
+      "responses": [
+        {
+          "uuid": "85ab863b-1a9a-42cc-bfc3-2387a7033b06",
+          "body": "{\n  \"friends\": [\n    {\n      \"id\": \"2\",\n      \"nickname\": \"Mbappe\",\n      \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\"\n    },\n    {\n      \"id\": \"3\",\n      \"nickname\": \"Angelina\",\n      \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\"\n    },\n    {\n      \"id\": \"4\",\n      \"nickname\": \"Regina Soares\",\n      \"picture\": \"https://static.wikia.nocookie.net/madeinabyss/images/1/1c/Nanachi_Anime_square.jpg/revision/latest?cb=20190326023041\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "2751b16d-2f72-49b3-8444-d51e3b309946",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "",
+      "responses": [
+        {
+          "uuid": "741eb6ca-9f29-4150-8313-d2115d82dc1c",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "69f4ec9d-139c-4e5f-b653-40666a79d6f9"
+    },
+    {
+      "type": "route",
+      "uuid": "1abb4c7f-067d-4d35-a193-f32d03f33350"
+    },
+    {
+      "type": "route",
+      "uuid": "2751b16d-2f72-49b3-8444-d51e3b309946"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}
