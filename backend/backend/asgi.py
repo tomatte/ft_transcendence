@@ -12,15 +12,15 @@ from channels.security.websocket import AllowedHostsOriginValidator
 
 application = ProtocolTypeRouter({
 	"http": django_asgi_app,
-	"websocket": AllowedHostsOriginValidator(
+	"websocket":
 		AuthMiddlewareStack(
 			URLRouter([
-				# path("add_player_tournament/", views.Add_player_tournament.as_asgi()),
-				# path("remove_player_tournament/", views.Remove_player_tournament.as_asgi()),
-				# path("create_bracket/", views.Create_Bracket.as_asgi()),
-				# path("start_tournament/", views.Start_Tournament.as_asgi()),
-				# path("end_tournament/", views.End_Tournament.as_asgi()),
+				path("add_player_tournament/", views.Add_player_tournament.as_asgi()),
+				path("remove_player_tournament/", views.Remove_player_tournament.as_asgi()),
+				path("create_bracket/", views.Create_Bracket.as_asgi()),
+				path("start_tournament/", views.Start_tournament.as_asgi()),
+				path("end_tournament/", views.Finish_tournament.as_asgi()),
+				path("xablau/", views.XablauConsumer.as_asgi()),
 			])
 		)
-	),
 })

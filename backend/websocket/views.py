@@ -7,7 +7,8 @@ import json
 ################################################################################
 #							websocket
 ################################################################################
-
+from channels.generic.websocket import AsyncWebsocketConsumer
+from asgiref.sync import async_to_sync
 
 class Add_player_tournament(WebsocketConsumer):
 	def connect(self):
@@ -239,3 +240,27 @@ class ManipulateTournament():
 			match = ManipulateTournament.create_match(tournament, [players[i], players[i + 1]])
 			ManipulateTournament.create_tournament_bracket(tournament, match, [players[i], players[i + 1]])
 
+
+
+
+class XablauConsumer(AsyncWebsocketConsumer):
+	async def connect(self):
+		print("hello people")
+		await self.accept()
+
+	async def disconnect(self, close_code):
+		print("disconnected here")
+		pass
+
+	async def receive(self, text_data):
+        # text_data_json = json.loads(text_data)
+		if text_data == "l":
+			await self.send("moved left")
+		elif text_data == "r":
+			await self.send("moved right")
+		elif text_data == "":
+			await self.send("jump")
+		else:
+			await self.send("xablau")
+	
+        # message = text_data_json["message"]
