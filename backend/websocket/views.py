@@ -245,22 +245,17 @@ class ManipulateTournament():
 
 class XablauConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
-		print("hello people")
 		await self.accept()
+		await self.send("connected")
 
 	async def disconnect(self, close_code):
-		print("disconnected here")
+		print(f"close_code: {close_code}")
 		pass
 
 	async def receive(self, text_data):
         # text_data_json = json.loads(text_data)
-		if text_data == "l":
-			await self.send("moved left")
-		elif text_data == "r":
-			await self.send("moved right")
-		elif text_data == "":
-			await self.send("jump")
-		else:
-			await self.send("xablau")
+		if text_data == "Up":
+			await self.send("player moved up")
+		elif text_data == "Down":
+			await self.send("player moved down")
 	
-        # message = text_data_json["message"]
