@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, hsl(198, 44%, 11%), #203a43, #2c5364);
+            color: rgba(247, 247, 248, 1);
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .login-form-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+        }
+        .carousel-container {
+            flex: 2;
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-inner {
+            width: 200%;
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .carousel-item {
+            flex: 1 0 50%;
+            min-width: 50%;
+            overflow: hidden;
+        }
+        .carousel-item img {
+            width: auto; /* Alterado para auto para manter a proporção original */
+            height: 130vh;
+            object-fit: cover;
+            object-position: right; /* Centraliza a imagem no item do carrossel */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form-container">
+            <form id="login-form2">
+                <h2>Login</h2>
+                <button type="button" class="btn btn-primary" id="login-42-button">Login with 42</button>
+                <div id="login-status"></div>
+            </form>
+        </div>
+        <div class="carousel-container">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="assets/Emmanuelson.png" alt="Slide 1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/Tomatter.png" alt="Slide 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/Caos-Otter.png" alt="Slide 3">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="assets/wwwag.png" alt="Slide 4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $('#carouselExampleIndicators').carousel({
+            interval: 2000,
+            ride: 'carousel',
+            pause: false
+        });
+
+        document.getElementById("login-42-button").addEventListener("click", function() {
+            const clientId = 'YOUR_CLIENT_ID';
+            const redirectUri = 'YOUR_REDIRECT_URI';
+            const scope = 'public';
+            const state = 'YOUR_UNIQUE_STATE_STRING'; // This should be a unique value for each request to prevent CSRF attacks
+
+            const authUrl = `https://api.intra.42.fr/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${state}`;
+            window.location.href = authUrl;
+        });
+
+        async function handleLogin() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+
+            if (code && state) {
+                try {
+                    const response = await fetch('https://api.intra.42.fr/oauth/token', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            grant_type: 'authorization_code',
+                            client_id: 'YOUR_CLIENT_ID',
+                            client_secret: 'YOUR_CLIENT_SECRET',
+                            code: code,
+                            redirect_uri: 'YOUR_REDIRECT_URI'
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.access_token) {
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('jwtToken', data.access_token);
+
+                        window.location.href = "/#profile";
+                    } else {
+                        document.getElementById("login-status").textContent = 'Login failed';
+                        document.getElementById("login-status").style.color = "red";
+                    }
+                } catch (error) {
+                    console.error("Error logging in:", error);
+                    document.getElementById("login-status").textContent = 'Error logging in';
+                    document.getElementById("login-status").style.color = "red";
+                }
+            }
+        }
+
+        handleLogin();
+    </script>
+</body>
+</html>
