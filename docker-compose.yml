@@ -1,19 +1,7 @@
 version: '3.4'
 
-volumes:
-  frontend-files:
-    driver_opts:
-      type: none
-      device: ${PWD}/frontend/app
-      o: bind
-  backend-files:
-    driver_opts:
-      type: none
-      device: ${PWD}/backend
-      o: bind
-
 networks:
-  trans-network:
+  trans:
 
 services:
 
@@ -22,10 +10,9 @@ services:
   #   container_name: ft_frontend
   #   ports:
   #     - "443:443"
+  #     - "4009:80"
   #   volumes:
-  #     - frontend-files:/var/www
-  #   networks:
-  #     - trans-network
+  #     - ./frontend/app:/var/www
 
   # backend:
   #   build: ./backend
@@ -33,7 +20,7 @@ services:
   #   ports:
   #     - "8000:8000"
   #   volumes:
-  #     - backend-files:/app
+  #     - ./backend:/app
   #   environment:
   #     POSTGRES_USER: ${POSTGRES_USER}
   #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -55,7 +42,7 @@ services:
     - "5432:5432"
     restart: always
     networks:
-      - trans-network
+      - trans
 
   # mock-server:
   #   image: mockoon/cli:latest
