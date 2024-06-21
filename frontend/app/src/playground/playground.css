@@ -22,3 +22,13 @@ html, body
 {
     flex-direction: row;
 }
+
+.playground-container--tag
+{
+    flex-direction: column;
+}
+
+.playground-container--game-row-option
+{
+    flex-direction: row;
+}
