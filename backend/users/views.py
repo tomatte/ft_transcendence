@@ -28,6 +28,13 @@ def is_valid_method(request, method):
 		raise MethodNotAllowed()
 
 
+def get_friends(user):
+	user1 = Friendship.objects.filter(from_user=user, status='accepted').values('to_user__id', 'to_user__nickname', 'to_user__username')
+	user2 = Friendship.objects.filter(to_user=user, status='accepted').values('to_user__id', 'to_user__nickname', 'to_user__username')
+	all_users = user1.union(user2)
+
+	return list(all_users)
+
 # def format_maths_list(matches: object) -> dict:
 # 	"""Função para formatar a query de partidas.
 
@@ -84,6 +91,7 @@ def my_user(request):
 	"""
 
 	try:
+		is_valid_method(request, 'GET')
 		user = User.objects.prefetch_related('userMatch').get(username=request.user.username)
 		return JsonResponse({
 			'id': user.id,
@@ -93,6 +101,8 @@ def my_user(request):
 			'avatar': user.avatar.name,
 		})
 
+	except MethodNotAllowed as e:
+		return JsonResponse({'message': str(e)}, status=405)
 	except User.DoesNotExist:
 		return JsonResponse({'message': 'User not found!'}, status=404)
 
@@ -111,18 +121,19 @@ def get_user(request):
 	try:
 		is_valid_method(request, 'GET')
 		user = User.objects.prefetch_related('userMatch').get(id=request.GET['user_id'])
+
 		return JsonResponse({
 			'id': user.id,
 			'name': user.username,
 			'nickname': user.nickname,
-			'friends': list(Friendship.objects.filter(from_user=user, status='accepted').values_list('to_user', flat=True)),
+			'friends': get_friends(user),
 			'avatar': user.avatar.name,
 		})
 
-	except User.DoesNotExist:
-		return JsonResponse({'message': 'User not found!'}, status=404)
 	except MethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
+	except User.DoesNotExist:
+		return JsonResponse({'message': 'User not found!'}, status=404)
 	except KeyError:
 		return JsonResponse({'message': 'User not found!'}, status=404)
 
@@ -159,14 +170,14 @@ def add_friend(request):
 		friend = User.objects.get(id=request.POST['friend_id'])
 
 		Friendship.objects.create(from_user=my_user, to_user=friend, status='pending')
-		return HttpResponse(status=200, content='Friend request sent!')
+		return HttpResponse({'msg': 'Friend request sent!'}, status=200)
 
 	except User.DoesNotExist:
-		return HttpResponse(status=404, content='User not found!')
+		return JsonResponse({'msg': 'User not found!'}, status=404)
 	except MethodNotAllowed as e:
-		return HttpResponse(status=405, content=str(e))
+		return JsonResponse({'msg': str(e)}, status=405)
 	except Exception as e:
-		return HttpResponse(status=400, content=str(e))
+		return JsonResponse({'msg': str(e)}, status=400)
 
 
 ##TESTADA
@@ -191,7 +202,8 @@ def friend_request_send(request):
 
 	except User.DoesNotExist:
 		return JsonResponse({'message': 'User not found!'}, status=404)
-
+	except Friendship.DoesNotExist:
+		return JsonResponse({'message': 'Friendship not found!'}, status=404)
 
 ##TESTADA
 def friend_request_received(request):
@@ -214,6 +226,32 @@ def friend_request_received(request):
 
 
 ##TESTADA
+def get_list_friends(request):
+	"""Função para retornar os pedidos de amizade recebidos.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			json (JSON): informações com as informações dos pedidos de amizade recebidos.
+	"""
+
+	try:
+		is_valid_method(request, 'POST')
+		user = User.objects.get(id=request.POST['user_id'])
+		return JsonResponse(get_friends(user), safe=False)
+
+	except MethodNotAllowed as e:
+		return JsonResponse({'message': str(e)}, status=405)
+	except User.DoesNotExist:
+		return JsonResponse({'message': 'User not found!'}, status=404)
+	except KeyError:
+		return JsonResponse({'message': 'User not found!'}, status=404)
+	except Exception as e:
+		return JsonResponse({'message': str(e)}, status=404)
+
+
+##TESTADA
 def response_friend(request):
 	"""Função para aceitar um pedido de amizade.
 
@@ -233,16 +271,18 @@ def response_friend(request):
 		friendship.save()
 		return HttpResponse(status=200, content='Friend request accepted!')
 
-	except Friendship.DoesNotExist:
-		return HttpResponse(status=404, content='Friend request not found!')
-	except User.DoesNotExist as e:
-		return HttpResponse(status=404, content='User not found!')
+
 	except MethodNotAllowed as e:
-		return HttpResponse(status=405, content=str(e))
+		return JsonResponse({"msg": str(e)}, status=405)
+	except Friendship.DoesNotExist:
+		return JsonResponse({"msg": 'Friend request not found!'}, status=404)
+	except User.DoesNotExist as e:
+		return JsonResponse({"msg": 'User not found!'}, status=404)
 	except KeyError as e:
-		return HttpResponse(status=400, content='Missing parameters!')
+		return JsonResponse({"msg": 'Missing parameters!'}, status=400)
 
 
+##TESTADA
 def uptade_nickname(request):
 	"""Função para atualizar o nickname do usuario.
 
@@ -287,27 +327,6 @@ def uptade_avatar(request):
 	user.avatar = request.FILES.get('avatar')
 	user.save()
 	return HttpResponse(status=200)
-
-
-def response_friend_request(request):
-	"""Função para aceitar um pedido de amizade.
-
-		args:
-			request (OBJ): Requisição do usuario.
-
-		return:
-			http (HTTP): status da requisição.
-	"""
-	if request.method != 'POST':
-		return HttpResponse(status=405, content='Method not allowed!')
-
-	try:
-		friendship = Friendship.objects.get(id=request.POST.get('friendship_id'))
-		friendship.status = request.POST.get('status')
-		friendship.save()
-		return HttpResponse(status=200, content='Friend request accepted!')
-	except User.DoesNotExist:
-		return HttpResponse(status=404, content='User not found!')
 
 
 def auxiliar(request):
