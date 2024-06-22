@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'tournament',
     'channels',
     'corsheaders',
+    'game'
 ]
 
 
