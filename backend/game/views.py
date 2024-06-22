@@ -27,7 +27,7 @@ class XablauConsumer(AsyncWebsocketConsumer):
         payload = {
 			"id": XablauConsumer.index,
 			"method": "connect",
-            "position": (new_player.x, new_player.y),
+            "position": (new_player.x, new_player.y - new_player.height / 2),
 		}
 
         await self.send(json.dumps(payload))
@@ -45,11 +45,11 @@ class XablauConsumer(AsyncWebsocketConsumer):
         if data["key"] == "Up":
             player.y -= 5
             payload["action"] = f"player {data["id"]} moved up!"
-            payload["position"] = (player.x, player.y)
+            payload["position"] = (player.x, player.y - player.height / 2)
             await self.send(json.dumps(payload))
         elif data["key"] == "Down":
             player.y += 5
-            payload["position"] = (player.x, player.y)
+            payload["position"] = (player.x, player.y - player.height / 2)
             payload["action"] = f"player {data["id"]} moved down!"
             await self.send(json.dumps(payload))
 	

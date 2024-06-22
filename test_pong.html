@@ -7,13 +7,16 @@
 </head>
 <body style="background-color: black; display: flex; justify-content: center; height: 100vh; align-items: center;">
     <div class="table">
-        <div class="player player_left"></div>
+        <div id="player_left" class="player player_left"></div>
         <div class="ball"></div>
         <div class="player player_right"></div>
     </div>
 </body>
 <style>
-
+    html, body {
+        overflow: hidden;
+      }
+    
     .table {
         position: relative;
         margin: 5px; 
@@ -50,4 +53,73 @@
         left: 630px;
     }
 </style>
+<script>
+    let ws = new WebSocket("ws://localhost:8000/xablau/")
+    let id = null
+    let payload = {
+        key: "",
+        id: null
+    }
+    let left_player = null
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the element by its ID
+        player_left = document.getElementById("player_left");
+
+        ws.onmessage = (event) => {
+            message = JSON.parse(event.data)
+    
+            console.log(message)
+            if (message.method == "connect") {
+                payload.id = message.id
+                id = message.id
+                return ;
+            }
+    
+            if (player_left) {
+                //player_left.style.top = `${message.position[1]}px`
+                console.log(`${message.position[1]}px`)
+                player_left.style.top = `${message.position[1]}px`
+            }
+    
+        };
+      });
+
+
+
+
+    async function sendKey(key) {
+        payload.key = key
+        ws.send(JSON.stringify(payload))
+    }
+
+    // Function to execute when the key is pressed
+    async function onKeyPress(key) {
+        //console.log(key + " key pressed");
+        sendKey(key)
+    }
+
+    // Function to execute when the key is released
+    async function onKeyRelease(key) {
+        //console.log(key + " key released");
+    }
+
+    // Event listener for keydown
+    document.addEventListener('keydown', async function(event) {
+        if (event.key === 'ArrowUp') {
+            onKeyPress('Up');
+        } else if (event.key === 'ArrowDown') {
+            onKeyPress('Down');
+        }
+    });
+
+    // Event listener for keyup
+    document.addEventListener('keyup', function(event) {
+        if (event.key === 'ArrowUp') {
+            onKeyRelease('Up');
+        } else if (event.key === 'ArrowDown') {
+            onKeyRelease('Down');
+        }
+    });
+</script>
 </html>
