@@ -1,20 +1,21 @@
-import pong
+from typing import List, Tuple
 import pygame
+from .pong import TABLE_HEIGHT, TABLE_WIDTH, FPSController, Player, Ball, FPS, Table, Entity
 
-width = pong.TABLE_WIDTH
-height = pong.TABLE_HEIGHT
+width = TABLE_WIDTH
+height = TABLE_HEIGHT
 
-fps = pong.FPSController(60)
+fps = FPSController(60)
 
 #----------------------PY GAME---------------------
 pygame.init()
 screen = pygame.display.set_mode((width, height))
 #----------------------PY GAME---------------------
 
-ball = pong.Ball([width / 2, height / 2], 30, 900, 360)
+ball = Ball([width / 2, height / 2], 30, 900, 360)
 
-player_left = pong.Player([0, height / 2], 500, 20, 150, pong.Entity.PLAYER_LEFT)
-player_right = pong.Player([pong.Table.width, height / 2], 500, 20, 150, pong.Entity.PLAYER_RIGHT)
+player_left = Player([0, height / 2], 500, 20, 150, Entity.PLAYER_LEFT)
+player_right = Player([Table.width, height / 2], 500, 20, 150, Entity.PLAYER_RIGHT)
 
 ball.set_players([player_left, player_right])
 

@@ -1,8 +1,7 @@
 from django.core.asgi import get_asgi_application
 from django.urls import path
-import game.views
 import websocket
-import game
+import game.views
 
 
 import websocket.views
