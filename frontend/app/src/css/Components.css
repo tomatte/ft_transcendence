@@ -322,6 +322,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    flex: 1 0 0;
 }
 
 .player-info img {
@@ -329,6 +330,7 @@
     height: 36px;
     border-radius: 50%;
 }
+
 .player-name {
     font-weight: bold;
     color: #BEC7E3;
