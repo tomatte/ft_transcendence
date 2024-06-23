@@ -1,6 +1,6 @@
 import time
 import math
-from .utils import is_point_inside_rect, horizontal_wall_bounce, vertical_wall_bounce
+from .pong_utils import is_point_inside_rect, horizontal_wall_bounce, vertical_wall_bounce
 from typing import List
 from enum import Enum
 

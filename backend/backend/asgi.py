@@ -24,6 +24,7 @@ application = ProtocolTypeRouter({
 				path("start_tournament/", websocket.views.Start_tournament.as_asgi()),
 				path("end_tournament/", websocket.views.Finish_tournament.as_asgi()),
 				path("xablau/", game.views.XablauConsumer.as_asgi()),
+				path("britney/", game.views.Britney.as_asgi()),
 			])
 		)
 })

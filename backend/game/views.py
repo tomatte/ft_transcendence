@@ -14,6 +14,7 @@ class XablauConsumer(AsyncWebsocketConsumer):
         await self.accept()
         
         XablauConsumer.index += 1
+        self.id = XablauConsumer.index
         new_player = Player(
             [0, 360], 
             900, 
@@ -52,3 +53,16 @@ class XablauConsumer(AsyncWebsocketConsumer):
             payload["position"] = (player.x, player.y - player.height / 2)
             payload["action"] = f"player {data["id"]} moved down!"
             await self.send(json.dumps(payload))
+            
+class Britney(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+    
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        print(data)
+        await self.send("hello bitch")
+    
+    async def disconnect(self, code):
+        return await super().disconnect(code)
+    
