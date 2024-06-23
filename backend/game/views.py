@@ -2,7 +2,7 @@ from django.shortcuts import render
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
 import json
-from .game_engine.pong import Player, Entity
+from .game_engine.pong import *
 from typing import Dict
 
 
@@ -16,10 +16,10 @@ class XablauConsumer(AsyncWebsocketConsumer):
         XablauConsumer.index += 1
         new_player = Player(
             [0, 360], 
-            500, 
+            900, 
             20, 
             100, 
-            Entity.PLAYER_LEFT if XablauConsumer.index % 2 == 0 else Entity.PLAYER_RIGHT
+            Entity.PLAYER_RIGHT if XablauConsumer.index % 2 == 0 else Entity.PLAYER_LEFT
         )
         
         XablauConsumer.players[XablauConsumer.index] = new_player
@@ -43,13 +43,12 @@ class XablauConsumer(AsyncWebsocketConsumer):
         payload = {"method": "receive"}
         
         if data["key"] == "Up":
-            player.y -= 5
+            player.move_up()
             payload["action"] = f"player {data["id"]} moved up!"
             payload["position"] = (player.x, player.y - player.height / 2)
             await self.send(json.dumps(payload))
         elif data["key"] == "Down":
-            player.y += 5
+            player.move_down()
             payload["position"] = (player.x, player.y - player.height / 2)
             payload["action"] = f"player {data["id"]} moved down!"
             await self.send(json.dumps(payload))
-	
