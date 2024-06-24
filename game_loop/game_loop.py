@@ -5,19 +5,26 @@ from pong_entities import *
 
 class Game:
     uri = "ws://localhost:8000/britney/"  # Replace with your WebSocket server URL
-    ball = Ball([630, 350], 10, 500, 30)
-    ball.set_players([Player([0,0], 500, 20, 100, Entity.PLAYER_LEFT)])
-    fps_time = 1 / 30
+    balls: List[Ball] = []
+    fps_time = 1 / FPS
     websocket: websockets.WebSocketClientProtocol = None
+    payload = {}
 
     @classmethod
-    def init(cls):
-        cls.payload = {
-            "coordinates": (cls.ball.x, cls.ball.y),
-            "entity": "ball"
-        }
+    def move_balls(cls):
+        for ball in cls.balls:
+            ball.move(FPS)
+    @classmethod
+    def create_payload(cls):
+        cls.payload.clear()
+        for ball in cls.balls:
+            cls.payload[ball.id] = (ball.x, ball.y)
 
-Game.init()
+
+Game.balls.append(Ball([630, 350], 10, 500, 30, 1))
+Game.balls.append(Ball([630, 350], 10, 500, 40, 2))
+Game.balls.append(Ball([630, 350], 10, 500, 50, 3))
+
 
 async def  connect_to_server():
     Game.websocket = await websockets.connect(Game.uri)
@@ -38,10 +45,8 @@ async def main():
 
     asyncio.create_task(communication())
     while True:
-        Game.ball.move(30)
-        
-        Game.payload["coordinates"] = (Game.ball.x, Game.ball.y)
-        Game.payload["entity"] = "ball"
+        Game.move_balls()
+        Game.create_payload()
         
         await asyncio.sleep(Game.fps_time)
         

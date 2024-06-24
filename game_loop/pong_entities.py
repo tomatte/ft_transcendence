@@ -155,11 +155,12 @@ class Player(Rectangle):
     
 
 class Ball(Rectangle):
-    def __init__(self, position: List[float], radious: int, speed: float, direction: int):
+    def __init__(self, position: List[float], radious: int, speed: float, direction: int, id: int):
         super().__init__(position, speed, direction)
         self.type = "ball"
         self.radious = radious
         self.last_collided = Entity.NONE
+        self.id = id
 
     def set_players(self, players: List[Player]):
         self.players = players
@@ -209,8 +210,8 @@ class Ball(Rectangle):
         #table left side
         if (self.last_collided != Entity.TABLE_LEFT and self.is_colliding(Table.left_side["bottom_left"], Table.left_side["top_right"])):
             self.last_collided = Entity.TABLE_LEFT
-            self.players[0].hit()
-            print(f"player1 hits: {self.players[0].hits}")
+            # self.players[0].hit()
+            # print(f"player1 hits: {self.players[0].hits}")
             self.dir = vertical_wall_bounce(self.dir)
         #table right side
         if (self.last_collided != Entity.TABLE_RIGHT and self.is_colliding(Table.right_side["bottom_left"], Table.right_side["top_right"])):
@@ -219,7 +220,7 @@ class Ball(Rectangle):
     
     def move(self, fps):
         self.verify_collision_wall()
-        self.verify_collision_player()
+        # self.verify_collision_player()
         super().move(fps)
 
     # def verify_collision(self):
