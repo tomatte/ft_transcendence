@@ -20,10 +20,13 @@ class Game:
         for ball in cls.balls:
             cls.payload[ball.id] = (ball.x, ball.y)
 
-
-Game.balls.append(Ball([630, 350], 10, 500, 30, 1))
-Game.balls.append(Ball([630, 350], 10, 500, 40, 2))
-Game.balls.append(Ball([630, 350], 10, 500, 50, 3))
+players = [
+    Player([0, 0], -1, 20, 100, Entity.PLAYER_LEFT),
+    Player([0, 0], -1, 20, 100, Entity.PLAYER_LEFT)
+]
+ball = Ball([630, 350], 10, 500, 30, 1)
+ball.set_players(players)
+Game.balls.append(ball)
 
 
 async def  connect_to_server():
