@@ -3,6 +3,10 @@ import websockets
 import json
 from pong_entities import *
 
+PLAYER_HEIGHT = 100
+PLAYER_WIDTH = 20
+PLAYER_SPEED = 900
+
 class Socket:
     uri = "ws://localhost:8000/game_loop/"
     ws: websockets.WebSocketClientProtocol = None
@@ -34,6 +38,7 @@ class Game:
     balls: List[Ball] = []
     fps_time = 1 / FPS
     payload = {}
+    matches: List['Match'] = []
 
     @classmethod
     def move_balls(cls):
@@ -54,16 +59,33 @@ class Game:
         ball = Ball([630, 350], 10, 500, 30, 1)
         ball.set_players(players)
         Game.balls.append(ball)
-
+        
+class Match:
+    def __init__(self, data) -> None:
+        self.player_left = Player(
+            [0, TABLE_HEIGHT / 2],
+            PLAYER_SPEED,
+            PLAYER_WIDTH,
+            PLAYER_HEIGHT,
+            Entity.PLAYER_LEFT,
+            data["player_left"]["id"]
+        )
+        
+        self.player_right = Player(
+            [TABLE_WIDTH, TABLE_HEIGHT / 2],
+            PLAYER_SPEED,
+            PLAYER_WIDTH,
+            PLAYER_HEIGHT,
+            Entity.PLAYER_RIGHT,
+            data["player_right"]["id"]
+        )
 
 class Actions:
     @classmethod
     def new_game(cls, data):
-        pass
-    
-    @classmethod
-    def new_player(cls, data):
-        pass
+        match = Match(data)
+        print(f"player_left {match.player_left.id} -> x:{match.player_left.x} y:{match.player_left.y}")
+        print(f"player_right {match.player_right.id} -> x:{match.player_left.x} y:{match.player_left.y}")
     
     @classmethod
     def player_move(cls, data):

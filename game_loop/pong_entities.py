@@ -80,7 +80,7 @@ class Table:
 
 
 class Rectangle:
-    def __init__(self, position: List[float], speed: float, direction: int):
+    def __init__(self, position: Tuple[float, float], speed: float, direction: int):
         self.speed = speed
         self.dir = direction
         self.x = position[0]
@@ -99,12 +99,13 @@ class Rectangle:
         
 
 class Player(Rectangle):
-    def __init__(self, position: List[float], speed: float, width: int, height: int, entity_type: Entity):
+    def __init__(self, position: Tuple[float, float], speed: float, width: int, height: int, entity_type: Entity, id: int):
         super().__init__(position, speed, 90)
         self.width = width
         self.height = height
         self.hits = 0
         self.entity_type = entity_type
+        self.id = id
         # self.up_line = ((position[0], position[1] - height / 2), (self.top_right))
         # self.bottom_line = ((self.bottom_left), (position[0] + width / 2, position[1] + height / 2))
 

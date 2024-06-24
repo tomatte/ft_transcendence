@@ -15,22 +15,9 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
         cls.clients.append(client)
         
     @classmethod
-    async def send_player_data(cls, player: Player, action: str):
+    async def send_player_data(cls, payload):
         if len(cls.clients) < 1:
             return
-        payload = {
-			"id": player.id,
-			"method": "connect",
-            "action": action,
-            "player": {
-                "x": player.x,
-                "y": player.y,
-                "speed": player.speed,
-                "width": player.width,
-                "height": player.height,
-                "type": "left" if player.entity_type == Entity.PLAYER_LEFT else "right"
-            }
-        }
         print("send player data")
         await cls.game_loop_client.send(json.dumps(payload))
     
@@ -64,26 +51,21 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         
         PlayerConsumer.index += 1
         self.id = PlayerConsumer.index
-        new_player = Player(
-            [0, 360], 
-            900, 
-            20, 
-            100, 
-            Entity.PLAYER_RIGHT if PlayerConsumer.index % 2 == 0 else Entity.PLAYER_LEFT
-        )
-        
-        new_player.set_id(PlayerConsumer.index)
-        
-        PlayerConsumer.players[PlayerConsumer.index] = new_player
-        
+
         payload = {
-			"id": PlayerConsumer.index,
 			"method": "connect",
             "action": "new_game",
-            "position": (new_player.x, new_player.y - new_player.height / 2),
+            "position": (0, 300),
+            "player_left": {
+                "id": self.id
+            },
+            "player_right": {
+                "id": 99
+            }
 		}
+        
         GameLoopConsumer.add_client(self)
-        await GameLoopConsumer.send_player_data(new_player, "new_game")
+        await GameLoopConsumer.send_player_data(payload)
         await self.send(json.dumps(payload))
 
     async def disconnect(self, close_code):
@@ -108,7 +90,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         else:
             return
         
-        await GameLoopConsumer.send_player_data(player, "move")    
+        await GameLoopConsumer.send_player_data(player)    
         await self.send(json.dumps(payload))
         
             
