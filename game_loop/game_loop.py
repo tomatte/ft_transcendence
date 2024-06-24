@@ -49,7 +49,21 @@ async def rcve_info():
             if data["action"] == "new_game":
                 create_ball()
             elif data["action"] == "move":
-                pass #get the ball and set the player
+                player_left = Player(
+                    [data["x"], data["y"]]
+                    , data["speed"], 
+                    data["width"], 
+                    data["height"], 
+                    Entity.PLAYER_LEFT
+                )
+                player_right = Player(
+                    [data["x"], data["y"]]
+                    , data["speed"], 
+                    data["width"], 
+                    data["height"], 
+                    Entity.PLAYER_RIGHT
+                )
+                Game.balls[0].set_players((player_left, player_right))
         except:
             pass
         

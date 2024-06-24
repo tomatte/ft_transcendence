@@ -8,6 +8,7 @@ from typing import Dict, List
 
 class GameLoopConsumer(AsyncWebsocketConsumer):
     clients = []
+    game_loop_client = None
     
     @classmethod
     def add_client(cls, client):
@@ -31,17 +32,23 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
             }
         }
         print("send player data")
-        await cls.clients[0].send(json.dumps(payload))
+        await cls.game_loop_client.send(json.dumps(payload))
     
     async def connect(self):
         await self.accept()
-        GameLoopConsumer.add_client(self)
+        GameLoopConsumer.game_loop_client = self
 
     
     async def receive(self, text_data):
         data = json.loads(text_data)
         print(data)
-        await self.send("hello bitch")
+        pos = data["1"]
+        payload = {
+            "position": [pos[0] - 10, pos[1] - 10],
+            "action": "ball",
+            "method": "ball"
+        }
+        await GameLoopConsumer.clients[0].send(json.dumps(payload))
     
     async def disconnect(self, code):
         GameLoopConsumer.clients.clear()
@@ -75,7 +82,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
             "action": "new_game",
             "position": (new_player.x, new_player.y - new_player.height / 2),
 		}
-        
+        GameLoopConsumer.add_client(self)
         await GameLoopConsumer.send_player_data(new_player, "new_game")
         await self.send(json.dumps(payload))
 
