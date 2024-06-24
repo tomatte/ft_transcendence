@@ -4,7 +4,7 @@ import json
 from pong_entities import *
 
 class Game:
-    uri = "ws://localhost:8000/britney/"  # Replace with your WebSocket server URL
+    uri = "ws://localhost:8000/game_loop/"
     balls: List[Ball] = []
     fps_time = 1 / FPS
     websocket: websockets.WebSocketClientProtocol = None
@@ -33,12 +33,15 @@ async def  connect_to_server():
     Game.websocket = await websockets.connect(Game.uri)
     print("connected to server")
 
-async def communication():
+async def send_info():
     while True:
         await Game.websocket.send(json.dumps(Game.payload))
-        message = await Game.websocket.recv()
-        print(message)
         await asyncio.sleep(Game.fps_time)
+        
+async def rcve_info():
+    while True:
+        msg = await Game.websocket.recv()
+        print(msg)
         
         
 
@@ -46,7 +49,8 @@ async def communication():
 async def main():
     await connect_to_server()
 
-    asyncio.create_task(communication())
+    asyncio.create_task(send_info())
+    asyncio.create_task(rcve_info())
     while True:
         Game.move_balls()
         Game.create_payload()
