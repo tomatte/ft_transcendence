@@ -61,35 +61,57 @@ class Game:
         Game.balls.append(ball)
         
 class Match:
+    players: dict[int, Player] = dict()
+    balls: List[Ball] = []
+    
     def __init__(self, data) -> None:
+        
+        self.id = data["match_id"]
+        
         self.player_left = Player(
             [0, TABLE_HEIGHT / 2],
             PLAYER_SPEED,
             PLAYER_WIDTH,
             PLAYER_HEIGHT,
             Entity.PLAYER_LEFT,
-            data["player_left"]["id"]
+            data["player_id"]
         )
+        Match.players[self.player_left.id] = self.player_left
         
-        self.player_right = Player(
-            [TABLE_WIDTH, TABLE_HEIGHT / 2],
-            PLAYER_SPEED,
-            PLAYER_WIDTH,
-            PLAYER_HEIGHT,
-            Entity.PLAYER_RIGHT,
-            data["player_right"]["id"]
+        self.ball = Ball(
+            [TABLE_WIDTH / 2, TABLE_HEIGHT / 2], 
+            30, 
+            900, 
+            360,
+            self.id
         )
+        self.ball.players.append(self.player_left)
+        Match.balls.append(self.ball)
+        
+        
+    def add_player_right(self, data):
+        pass
+    
+    def start_match(self):
+        pass
+        
 
 class Actions:
     @classmethod
     def new_game(cls, data):
         match = Match(data)
-        print(f"player_left {match.player_left.id} -> x:{match.player_left.x} y:{match.player_left.y}")
-        print(f"player_right {match.player_right.id} -> x:{match.player_left.x} y:{match.player_left.y}")
+        print("new_game()")
+        print(f"ball: x:{match.ball.x} y:{match.ball.y}")
+        print(f"player_left: x:{match.player_left.x} y:{match.player_left.y}")
     
     @classmethod
     def player_move(cls, data):
-        pass
+        player = Match.players[data["id"]]
+        if data["direction"] == "Up":
+            player.move_up()
+        else:
+            player.move_down()
+        print(f"player -> x:{player.x} y:{player.y}")
     
     @classmethod
     def player_disconnect(cls, data):

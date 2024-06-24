@@ -56,12 +56,8 @@ class PlayerConsumer(AsyncWebsocketConsumer):
 			"method": "connect",
             "action": "new_game",
             "position": (0, 300),
-            "player_left": {
-                "id": self.id
-            },
-            "player_right": {
-                "id": 99
-            }
+            "match_id": 1,
+            "player_id": self.id
 		}
         
         GameLoopConsumer.add_client(self)
@@ -74,23 +70,28 @@ class PlayerConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
+        print(f"data: {data}")
         
-        player = PlayerConsumer.players[data["id"]]
         payload = {"method": "receive"}
         
         if data["key"] == "Up":
-            player.move_up()
             payload["action"] = f"player {data["id"]} moved up!"
-            payload["position"] = (player.x, player.y - player.height / 2)
+            payload["position"] = (0, 350)
             await self.send(json.dumps(payload))
         elif data["key"] == "Down":
-            player.move_down()
-            payload["position"] = (player.x, player.y - player.height / 2)
+            payload["position"] = (0, 350)
             payload["action"] = f"player {data["id"]} moved down!"
         else:
             return
         
-        await GameLoopConsumer.send_player_data(player)    
+        game_loop_payload = {
+            "action": "player_move",
+            "direction": data["key"],
+            "match_id": 1,
+            "player_id": data["id"]
+		}
+
+        await GameLoopConsumer.send_player_data(game_loop_payload)    
         await self.send(json.dumps(payload))
         
             

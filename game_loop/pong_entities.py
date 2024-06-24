@@ -155,16 +155,16 @@ class Player(Rectangle):
         self.y += vy * dt
     
 
-type PlayersType = Tuple[Player, Player]
+type PlayersType = List[Player, Player]
 
 class Ball(Rectangle):
-    def __init__(self, position: List[float], radious: int, speed: float, direction: int, id: int):
+    def __init__(self, position: List[float], radious: int, speed: float, direction: int, match_id: int):
         super().__init__(position, speed, direction)
         self.type = "ball"
         self.radious = radious
         self.last_collided = Entity.NONE
-        self.players: PlayersType = ()
-        self.id = id
+        self.players: PlayersType = []
+        self.match_id = match_id
 
     def set_players(self, players: PlayersType):
         self.players = players
