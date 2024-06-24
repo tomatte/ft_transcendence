@@ -108,6 +108,9 @@ class Player(Rectangle):
         # self.up_line = ((position[0], position[1] - height / 2), (self.top_right))
         # self.bottom_line = ((self.bottom_left), (position[0] + width / 2, position[1] + height / 2))
 
+    def set_id(self, id):
+        self.id = id
+
     def hit(self):
         self.hits += 1
 

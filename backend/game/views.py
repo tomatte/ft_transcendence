@@ -14,11 +14,24 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
         cls.clients.append(client)
         
     @classmethod
-    async def send_player_data(cls, data):
+    async def send_player_data(cls, player: Player, action: str):
         if len(cls.clients) < 1:
             return
+        payload = {
+			"id": player.id,
+			"method": "connect",
+            "action": action,
+            "player": {
+                "x": player.x,
+                "y": player.y,
+                "speed": player.speed,
+                "width": player.width,
+                "height": player.height,
+                "type": "left" if player.entity_type == Entity.PLAYER_LEFT else "right"
+            }
+        }
         print("send player data")
-        await cls.clients[0].send(data)
+        await cls.clients[0].send(json.dumps(payload))
     
     async def connect(self):
         await self.accept()
@@ -52,14 +65,18 @@ class PlayerConsumer(AsyncWebsocketConsumer):
             Entity.PLAYER_RIGHT if PlayerConsumer.index % 2 == 0 else Entity.PLAYER_LEFT
         )
         
+        new_player.set_id(PlayerConsumer.index)
+        
         PlayerConsumer.players[PlayerConsumer.index] = new_player
         
         payload = {
 			"id": PlayerConsumer.index,
 			"method": "connect",
+            "action": "new_game",
             "position": (new_player.x, new_player.y - new_player.height / 2),
 		}
-
+        
+        await GameLoopConsumer.send_player_data(new_player, "new_game")
         await self.send(json.dumps(payload))
 
     async def disconnect(self, close_code):
@@ -67,7 +84,6 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         pass
 
     async def receive(self, text_data):
-        await GameLoopConsumer.send_player_data(text_data)
         data = json.loads(text_data)
         
         player = PlayerConsumer.players[data["id"]]
@@ -82,5 +98,10 @@ class PlayerConsumer(AsyncWebsocketConsumer):
             player.move_down()
             payload["position"] = (player.x, player.y - player.height / 2)
             payload["action"] = f"player {data["id"]} moved down!"
-            await self.send(json.dumps(payload))
+        else:
+            return
+        
+        await GameLoopConsumer.send_player_data(player, "move")    
+        await self.send(json.dumps(payload))
+        
             
