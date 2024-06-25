@@ -1,72 +1,81 @@
 export default () => {
+    // Criação do contêiner principal
     const container = document.createElement("div");
-    container.classList.add("container");
+    container.classList.add("playground-container");
 
+    // Criação de estilos
     const style = document.createElement("style");
     style.innerHTML = `
-        .container {
-            background: linear-gradient(135deg, #000428, #004e92); /* Gradiente azul espacial */
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            color: #ffffff;
-        }
-        .container h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        .container p {
-            font-size: 1.2em;
-        }
-        .notification {
-            background: linear-gradient(135deg, #4e54c8, #8f94fb); /* Gradiente azul roxo */
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 5px;
-        }
-        .notification h2 {
-            font-size: 1.5em;
-        }
-        .notification p {
-            font-size: 1.2em;
-        }
-        .add-friend {
-            background-color: #1E90FF; /* Azul Dodger */
-            border: none;
-            padding: 10px 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            color: #ffffff;
-            font-size: 1.2em;
-        }
-        .add-friend:hover {
-            background-color: #104E8B; /* Azul profundo */
-        }
+            @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
+        @import url('https://fonts.googleapis.com/css2?family=Material+Icons+Round&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
+        @import url('../css/Components.css');
+        @import url('../css/Colors.css');
+        @import url('../css/Typography.css');
+        @import url('../css/pages/friends.css');
+ 
     `;
 
+    // Conteúdo do contêiner principal  para Friends
     container.innerHTML = `
-        <h1>Amigos do Espaço Lontra</h1>
-        <p>Olá, queridos amigos lontrinhas! Preparem-se para uma reunião intergaláctica sobre quem consegue boiar melhor no espaço. 🦦🚀</p>
-        <div class="notification">
-            <h2>Notificação 1</h2>
-            <p>Uma lontra acabou de ganhar uma competição de mergulho espacial de costas. <strong>É isso aí, mantenha-se no topo!</strong></p>
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <div class="title-text">Friends</div>
+            <div class="count">[25]</div>
         </div>
-        <button class="add-friend">Adicionar Amigo Lontra Espacial</button>
-    `;
+        <div class="add-friend">
+            <div class="add-btn">Add friend</div>
+        </div>
+    </div>
+    <div class="search">
+        <input type="text" placeholder="Search for a name..." />
+    </div>
+    <div class="table">
+        <div class="table-header">
+            <div class="header-item">PLAYER</div>
+            <div class="header-item">GLOBAL RANKING</div>
+            <div class="header-item">LOSSES AGAINST YOU</div>
+            <div class="header-item">WINS AGAINST YOU</div>
+            <div class="header-item actions">ACTIONS</div>
+        </div>
+        <div class="table-row">
+            <div class="row-item">
+                <img src="https://via.placeholder.com/36x36" alt="Avatar" />
+                <div class="player-info">
+                    <div class="player-name">Caos</div>
+                    <div class="player-username">clourenc</div>
+                </div>
+            </div>
+            <div class="row-item">#1</div>
+            <div class="row-item">5</div>
+            <div class="row-item">6</div>
+            <div class="row-item actions">
+                <div class="action-icon">
+                    <div class="icon-inner"></div>
+                </div>
+                <div class="action-icon">
+                    <div class="icon-inner"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Additional rows go here -->
+    </div>
+    <div class="pagination">
+        <div class="pagination-item">Primeiro</div>
+        <div class="pagination-item">Anterior</div>
+        <div class="pagination-item">1</div>
+        <div class="pagination-item">2</div>
+        <!-- Add more pagination items as needed -->
+        <div class="pagination-item">25</div>
+        <div class="pagination-item">Próximo</div>
+        <div class="pagination-item">Último</div>
+    </div>
+</div>
 
-    const addFriendButton = container.querySelector('.add-friend');
-    addFriendButton.addEventListener('click', () => {
-        const newFriendNotification = document.createElement('div');
-        newFriendNotification.classList.add('notification');
-        newFriendNotification.innerHTML = `
-            <h2>Amigo Lontra Adicionado!</h2>
-            <p>Parabéns! Você acabou de adicionar mais um amigo lontra espacial à sua lista. 🦦🎉</p>
-        `;
-        container.appendChild(newFriendNotification);
-    });
+    `;
 
     container.appendChild(style);
+
     return container;
 }
