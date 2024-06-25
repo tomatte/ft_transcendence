@@ -5,6 +5,12 @@ import json
 from .game_engine.pong import *
 from typing import Dict, TypedDict
 
+class PlayerMoveDataType(TypedDict):
+    key: str
+    player_id: int
+    match_id: int
+    action: str
+
 class PlayerDataType(TypedDict):
     x: float
     y: float
@@ -65,6 +71,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         for match_id, match in matches.items():
             payload = {
                 "ball": match["ball"],
+                "action": "coordinates"
             }
             for player_id, player in match["players"].items():
                 payload[f"player_{player['pos']}"] = {
@@ -88,46 +95,33 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         print(f"close_code: {close_code}")
         pass
 
+    async def player_ready_action(self, data):
+        PlayerConsumer.players[data["player_id"]] = {
+            "client": self,
+            "player_id": data["player_id"],
+            "match_id": data["match_id"]
+        }
+        PlayerConsumer.show_players()
+        
+        payload = {
+            "action": "player_connect",
+            "player_id": data["player_id"],
+            "match_id": data["match_id"]
+        }
+        await GameLoopConsumer.send_to_game_loop(payload)
+        
+    async def player_move_action(self, data: PlayerMoveDataType):
+        await GameLoopConsumer.send_to_game_loop(data)
+
     async def receive(self, text_data):
         data = json.loads(text_data)
         print(f"data: {data}")
+        
+        if data["action"] == "player_move":
+            await self.player_move_action(data)
+            return
+        
         if data["action"] == "ready":
-            PlayerConsumer.players[data["player_id"]] = {
-                "client": self,
-                "player_id": data["player_id"],
-                "match_id": data["match_id"]
-            }
-            PlayerConsumer.show_players()
-            
-            payload = {
-                "action": "player_connect",
-                "player_id": data["player_id"],
-                "match_id": data["match_id"]
-            }
-            await GameLoopConsumer.send_to_game_loop(payload)
+            await self.player_ready_action(data)
             return
          
-        return 
-        payload = {"method": "receive"}
-        
-        if data["key"] == "Up":
-            payload["action"] = f"player {data["id"]} moved up!"
-            payload["position"] = (0, 350)
-            await self.send(json.dumps(payload))
-        elif data["key"] == "Down":
-            payload["position"] = (0, 350)
-            payload["action"] = f"player {data["id"]} moved down!"
-        else:
-            return
-        
-        game_loop_payload = {
-            "action": "player_move",
-            "direction": data["key"],
-            "match_id": 1,
-            "player_id": data["id"]
-		}
-
-        await GameLoopConsumer.send_player_data(game_loop_payload)    
-        await self.send(json.dumps(payload))
-        
-            

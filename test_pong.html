@@ -104,7 +104,7 @@
 
     async function sendKey(key) {
         payload.key = key
-        payload.action = "move"
+        payload.action = "player_move"
         ws.send(JSON.stringify(payload))
     }
 

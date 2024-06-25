@@ -2,6 +2,7 @@ import asyncio
 import websockets
 import json
 from pong_entities import *
+from typing import TypedDict
 
 PLAYER_HEIGHT = 100
 PLAYER_WIDTH = 20
@@ -9,6 +10,12 @@ PLAYER_SPEED = 900
 BALL_RADIOUS = 10
 BALL_SPEED = 900
 BALL_START_DIRECTION = 30
+
+class PlayerMoveDataType(TypedDict):
+    key: str
+    player_id: int
+    match_id: int
+    action: str
 
 class Socket:
     uri = "ws://localhost:8000/game_loop/"
@@ -117,6 +124,7 @@ class Match:
             Entity.PLAYER_RIGHT,
             data["player_id"]
         )
+        Match.players[self.player_right.id] = self.player_right
         self.ball.players.append(self.player_right)
     
     def start_match(self):
@@ -141,14 +149,13 @@ class Actions:
         print(f"player_left: x:{match.player_left.x} y:{match.player_left.y}")
     
     @classmethod
-    def player_move(cls, data):
+    def player_move(cls, data: PlayerMoveDataType):
         player = Match.players[data["player_id"]]
-        if data["direction"] == "Up":
+        if data["key"] == "Up":
             player.move_up()
         else:
             player.move_down()
         print(f"player -> x:{player.x} y:{player.y}")
-        ball = Game.balls[0]
         
     @classmethod
     def player_connect(cls, data):
