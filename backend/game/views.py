@@ -45,7 +45,14 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
 
 # Create your views here.
 class PlayerConsumer(AsyncWebsocketConsumer):
-    players: Dict[int, Player] = {}
+    players = {}
+    
+    @classmethod
+    def show_players(cls):
+        print("show_players():")
+        for key, value in cls.players.items():
+            print(f"{key} -> {value}")
+    
     async def connect(self):
         await self.accept()
 
@@ -64,6 +71,14 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         print(f"data: {data}")
         
+        if data["action"] == "ready":
+            PlayerConsumer.players[data["player_id"]] = {
+                "client": self,
+                "player_id": data["player_id"],
+                "match_id": data["match_id"]
+            }
+            PlayerConsumer.show_players()
+            return 
         return 
         payload = {"method": "receive"}
         
