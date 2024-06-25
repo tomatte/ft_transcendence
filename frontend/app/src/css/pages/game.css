@@ -11,7 +11,7 @@ body {
     align-items: center;
     position: relative;
     overflow: hidden;
-    background-color: black;
+    background: black;
 }
 
 .background-content {
@@ -20,8 +20,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
-    background: linear-gradient(108deg, #000 0%, #0F0707 39%, #2D221C 70.5%, #471E07 100%);
+    z-index: 1;
+    background: none;
 }
 
 .logo_match
@@ -36,11 +36,9 @@ body {
 .stars_game
 {
     position: absolute;
-    width: 100%;
-    height: 100%;
     top: 0;
     left: 0;
-    z-index: -1;
+    z-index: 1;
 }
 
 canvas {
@@ -48,6 +46,8 @@ canvas {
     top: 0;
     left: 0;
     z-index: -1;
+    background: linear-gradient(108deg, #000 0%, #0F0707 39%, #2D221C 70.5%, #471E07 100%);
+    border: 1px solid var(--Solar-Flare-950);
 }
 
 .left-score
