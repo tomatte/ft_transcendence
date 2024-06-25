@@ -155,7 +155,7 @@ class Player(Rectangle):
         self.y += vy * dt
     
 
-type PlayersType = List[Player, Player]
+type PlayersType = List[Player]
 
 class Ball(Rectangle):
     def __init__(self, position: List[float], radious: int, speed: float, direction: int, match_id: int):

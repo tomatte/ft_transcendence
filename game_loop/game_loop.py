@@ -28,11 +28,13 @@ class Socket:
         while True:
             try:
                 msg = await Socket.ws.recv()
-                data = json.loads(msg)
+                data: dict = json.loads(msg)
                 print(f"data -> {data}")
                 Actions.act(data)
-            except:
-                pass
+                data.clear()
+                msg = ""
+            except Exception as e:
+                print(f"An error occurred: {e}")
 
 class Game:
     balls: List[Ball] = []
@@ -48,17 +50,8 @@ class Game:
     def create_payload(cls):
         cls.payload.clear()
         for ball in cls.balls:
-            cls.payload[ball.id] = (ball.x, ball.y)
+            cls.payload[ball.match_id] = (ball.x, ball.y)
             
-    @classmethod
-    def create_ball():
-        players = [
-            Player([0, 0], 900, 20, 100, Entity.PLAYER_LEFT),
-            Player([0, 0], 900, 20, 100, Entity.PLAYER_LEFT)
-        ]
-        ball = Ball([630, 350], 10, 500, 30, 1)
-        ball.set_players(players)
-        Game.balls.append(ball)
         
 class Match:
     players: dict[int, Player] = dict()
@@ -86,6 +79,7 @@ class Match:
             self.id
         )
         self.ball.players.append(self.player_left)
+        self.ball.players.append(Player([1500, 1500], 0, 10, 10, Entity.PLAYER_RIGHT, 9))
         Match.balls.append(self.ball)
         
         
@@ -93,25 +87,28 @@ class Match:
         pass
     
     def start_match(self):
-        pass
+        Game.balls.append(self.ball)
         
 
 class Actions:
     @classmethod
-    def new_game(cls, data):
-        match = Match(data)
-        print("new_game()")
-        print(f"ball: x:{match.ball.x} y:{match.ball.y}")
-        print(f"player_left: x:{match.player_left.x} y:{match.player_left.y}")
+    def new_match(cls, data):
+        print("new_match()")
+        Game.matches.append(Match(data))
+        Game.matches[0].start_match()
+        print(data)
+        # print(f"ball: x:{match.ball.x} y:{match.ball.y}")
+        # print(f"player_left: x:{match.player_left.x} y:{match.player_left.y}")
     
     @classmethod
     def player_move(cls, data):
-        player = Match.players[data["id"]]
+        player = Match.players[data["player_id"]]
         if data["direction"] == "Up":
             player.move_up()
         else:
             player.move_down()
         print(f"player -> x:{player.x} y:{player.y}")
+        ball = Game.balls[0]
     
     @classmethod
     def player_disconnect(cls, data):
@@ -119,8 +116,8 @@ class Actions:
     
     @classmethod
     def act(cls, data):
-        if data["action"] == "new_game":
-            cls.new_game(data)
+        if data["action"] == "new_match":
+            cls.new_match(data)
             return 
         if data["action"] == "new_player":
             cls.new_player(data)
@@ -130,7 +127,7 @@ class Actions:
             return 
         if data["action"] == "player_disconnect":
             cls.player_disconnect(data)
-            return     
+            return
 
 
 async def main():
@@ -140,7 +137,6 @@ async def main():
         print("failed to connect to server, exited.")
         exit(1)
         
-
     asyncio.create_task(Socket.send_info())
     asyncio.create_task(Socket.rcve_info())
     while True:

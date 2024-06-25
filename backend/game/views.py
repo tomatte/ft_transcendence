@@ -1,5 +1,4 @@
 from django.shortcuts import render
-import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
 import json
@@ -54,7 +53,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
 
         payload = {
 			"method": "connect",
-            "action": "new_game",
+            "action": "new_match",
             "position": (0, 300),
             "match_id": 1,
             "player_id": self.id
