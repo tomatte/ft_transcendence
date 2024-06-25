@@ -129,6 +129,11 @@ class Actions:
             player.move_down()
         print(f"player -> x:{player.x} y:{player.y}")
         ball = Game.balls[0]
+        
+    @classmethod
+    def player_connect(cls, data):
+        print("player_connect():")
+        print(data)
     
     @classmethod
     def player_disconnect(cls, data):
@@ -139,8 +144,8 @@ class Actions:
         if data["action"] == "new_match":
             cls.new_match(data)
             return 
-        if data["action"] == "new_player":
-            cls.new_player(data)
+        if data["action"] == "player_connect":
+            cls.player_connect(data)
             return 
         if data["action"] == "player_move":
             cls.player_move(data)

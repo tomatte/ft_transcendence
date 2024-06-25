@@ -6,18 +6,16 @@ from .game_engine.pong import *
 from typing import Dict, List
 
 class GameLoopConsumer(AsyncWebsocketConsumer):
-    clients = []
     game_loop_client = None
     
     @classmethod
-    def add_client(cls, client):
-        cls.clients.append(client)
-        
-    @classmethod
-    async def send_player_data(cls, payload):
-        if len(cls.clients) < 1:
+    async def send_to_game_loop(cls, payload):
+        if cls.game_loop_client == None:
+            print("no game_loop connected")
             return
-        print("send player data")
+
+        print("send data to game_loop")
+        print(payload)
         await cls.game_loop_client.send(json.dumps(payload))
     
     async def connect(self):
@@ -36,7 +34,6 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
             "action": "coordinates",
             "method": "coordinates"
         }
-        await GameLoopConsumer.clients[0].send(json.dumps(payload))
     
     async def disconnect(self, code):
         GameLoopConsumer.clients.clear()
@@ -70,7 +67,6 @@ class PlayerConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         print(f"data: {data}")
-        
         if data["action"] == "ready":
             PlayerConsumer.players[data["player_id"]] = {
                 "client": self,
@@ -78,7 +74,15 @@ class PlayerConsumer(AsyncWebsocketConsumer):
                 "match_id": data["match_id"]
             }
             PlayerConsumer.show_players()
-            return 
+            
+            payload = {
+                "action": "player_connect",
+                "player_id": data["player_id"],
+                "match_id": data["match_id"]
+            }
+            await GameLoopConsumer.send_to_game_loop(payload)
+            return
+         
         return 
         payload = {"method": "receive"}
         
