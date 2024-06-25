@@ -6,6 +6,9 @@ from pong_entities import *
 PLAYER_HEIGHT = 100
 PLAYER_WIDTH = 20
 PLAYER_SPEED = 900
+BALL_RADIOUS = 10
+BALL_SPEED = 900
+BALL_START_DIRECTION = 30
 
 class Socket:
     uri = "ws://localhost:8000/game_loop/"
@@ -88,9 +91,9 @@ class Match:
         
         self.ball = Ball(
             [TABLE_WIDTH / 2, TABLE_HEIGHT / 2], 
-            30, 
-            900, 
-            360,
+            BALL_RADIOUS, 
+            BALL_SPEED, 
+            BALL_START_DIRECTION,
             self.id
         )
         

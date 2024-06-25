@@ -74,12 +74,14 @@
             }
     
             if (message.action == "coordinates") {
+                const player_height = 100
+                const ball_radious = 10
                 ball = document.getElementById("ball");
-                ball.style.left = `${message.ball.x}px`
-                ball.style.top = `${message.ball.y}px`
+                ball.style.left = `${message.ball.x - ball_radious}px`
+                ball.style.top = `${message.ball.y - ball_radious}px`
 
                 player = document.getElementById("player_left");
-                player.style.top = `${message.player.y}px`
+                player.style.top = `${message.player.y - (player_height / 2)}px`
             }
     
         };
