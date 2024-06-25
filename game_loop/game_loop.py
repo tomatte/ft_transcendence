@@ -49,8 +49,23 @@ class Game:
     @classmethod
     def create_payload(cls):
         cls.payload.clear()
-        for ball in cls.balls:
-            cls.payload[ball.match_id] = (ball.x, ball.y)
+        for match in cls.matches:
+            cls.payload[match.id] = {
+                "ball": {
+                    "x": match.ball.x,
+                    "y": match.ball.y
+                    },
+                "players": {
+                    match.player_left.id: {
+                        "x": match.player_left.x,
+                        "y": match.player_left.y
+                    },
+                    match.player_right.id: {
+                        "x": match.player_right.x,
+                        "y": match.player_right.y
+                    }
+                }
+            }
             
         
 class Match:
@@ -78,8 +93,10 @@ class Match:
             360,
             self.id
         )
+        
+        self.player_right = Player([1500, 1500], 0, 10, 10, Entity.PLAYER_RIGHT, 9) #TODO: remove this lite later
         self.ball.players.append(self.player_left)
-        self.ball.players.append(Player([1500, 1500], 0, 10, 10, Entity.PLAYER_RIGHT, 9))
+        self.ball.players.append(self.player_right)
         Match.balls.append(self.ball)
         
         

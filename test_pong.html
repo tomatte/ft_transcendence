@@ -73,16 +73,13 @@
                 return ;
             }
     
-            if (message.action == "ball") {
+            if (message.action == "coordinates") {
                 ball = document.getElementById("ball");
-                ball.style.left = `${message.position[0]}px`
-                ball.style.top = `${message.position[1]}px`
-            }
-            else if (player_left) {
-                player_left = document.getElementById("player_left");
-                //player_left.style.top = `${message.position[1]}px`
-                console.log(`${message.position[1]}px`)
-                player_left.style.top = `${message.position[1]}px`
+                ball.style.left = `${message.ball.x}px`
+                ball.style.top = `${message.ball.y}px`
+
+                player = document.getElementById("player_left");
+                player.style.top = `${message.player.y}px`
             }
     
         };

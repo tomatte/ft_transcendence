@@ -28,11 +28,13 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         print(data)
-        pos = data["1"]
+        temp_match_id = "1"
+        temp_player_id = "1"
         payload = {
-            "position": [pos[0] - 10, pos[1] - 10],
-            "action": "ball",
-            "method": "ball"
+            "player": data[temp_match_id]["players"][temp_player_id],
+            "ball": data[temp_match_id]["ball"],
+            "action": "coordinates",
+            "method": "coordinates"
         }
         await GameLoopConsumer.clients[0].send(json.dumps(payload))
     
