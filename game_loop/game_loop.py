@@ -53,6 +53,8 @@ class Game:
     def create_payload(cls):
         cls.payload.clear()
         for match in cls.matches:
+            if match.started == False:
+                continue
             cls.payload[match.id] = {
                 "ball": {
                     "x": match.ball.x,
@@ -77,7 +79,7 @@ class Match:
     matches = {}
     
     def __init__(self, data) -> None:
-        
+        self.started = False
         self.id = data["match_id"]
         Match.matches[self.id] = self
         
@@ -99,18 +101,25 @@ class Match:
             self.id
         )
         
-        self.player_right = Player([1500, 1500], 0, 10, 10, Entity.PLAYER_RIGHT, 9) #TODO: remove this lite later
         self.ball.players.append(self.player_left)
-        self.ball.players.append(self.player_right)
         Match.balls.append(self.ball)
         
         
         
     def add_player_right(self, data):
-        pass
+        self.player_right = Player(
+            [TABLE_WIDTH, TABLE_HEIGHT / 2],
+            PLAYER_SPEED,
+            PLAYER_WIDTH,
+            PLAYER_HEIGHT,
+            Entity.PLAYER_RIGHT,
+            data["player_id"]
+        )
+        self.ball.players.append(self.player_right)
     
     def start_match(self):
         Game.balls.append(self.ball)
+        self.started = True
         
     @classmethod
     def find_match(cls, match_id):
@@ -142,9 +151,11 @@ class Actions:
     @classmethod
     def player_connect(cls, data):
         match = Match.find_match(data["match_id"])
-        if match != None:
+        if not isinstance(match, Match):
+            cls.new_match(data)
             return
-        cls.new_match(data)
+        match.add_player_right(data)
+        match.start_match()
     
     @classmethod
     def player_disconnect(cls, data):
@@ -173,7 +184,7 @@ async def main():
         print("failed to connect to server, exited.")
         exit(1)
         
-    # asyncio.create_task(Socket.send_info())
+    asyncio.create_task(Socket.send_info())
     asyncio.create_task(Socket.rcve_info())
     while True:
         Game.move_balls()
