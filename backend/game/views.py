@@ -45,24 +45,15 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
 
 # Create your views here.
 class PlayerConsumer(AsyncWebsocketConsumer):
-    index = 0
     players: Dict[int, Player] = {}
     async def connect(self):
         await self.accept()
-        
-        PlayerConsumer.index += 1
-        self.id = PlayerConsumer.index
 
         payload = {
-			"method": "connect",
-            "action": "new_match",
-            "position": (0, 300),
+            "action": "connect",
             "match_id": 1,
-            "player_id": self.id
 		}
         
-        GameLoopConsumer.add_client(self)
-        await GameLoopConsumer.send_player_data(payload)
         await self.send(json.dumps(payload))
 
     async def disconnect(self, close_code):
@@ -73,6 +64,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         print(f"data: {data}")
         
+        return 
         payload = {"method": "receive"}
         
         if data["key"] == "Up":

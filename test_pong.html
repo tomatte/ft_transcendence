@@ -54,11 +54,18 @@
     }
 </style>
 <script>
+    function getRandomId(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
     let ws = new WebSocket("ws://localhost:8000/player/")
-    let id = null
     let payload = {
         key: "",
-        id: null
+        player_id: getRandomId(1, 3999999999),
+        match_id: -1,
+        action: ""
     }
     let left_player = null
 
@@ -67,11 +74,6 @@
             message = JSON.parse(event.data)
     
             console.log(message)
-            if (message.method == "connect") {
-                payload.id = message.player_id
-                id = message.player_id
-                return ;
-            }
     
             if (message.action == "coordinates") {
                 const player_height = 100
@@ -82,6 +84,14 @@
 
                 player = document.getElementById("player_left");
                 player.style.top = `${message.player.y - (player_height / 2)}px`
+                return ;
+            }
+
+            if (message.action == "connect") {
+                console.log("start connection")
+                payload.match_id = message.match_id
+                payload.action = "ready"
+                ws.send(JSON.stringify(payload))
             }
     
         };
