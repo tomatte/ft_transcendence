@@ -3,7 +3,24 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
 import json
 from .game_engine.pong import *
-from typing import Dict, List
+from typing import Dict, TypedDict
+
+class PlayerDataType(TypedDict):
+    x: float
+    y: float
+    pos: str
+    
+class BallDataType(TypedDict):
+    x: float
+    y: float
+
+PlayersData = Dict[int, PlayerDataType]
+
+class MatchData(TypedDict):
+    ball: BallDataType
+    players: PlayersData
+    
+MatchDict = Dict[int, MatchData]
 
 class GameLoopConsumer(AsyncWebsocketConsumer):
     game_loop_client = None
@@ -24,9 +41,9 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
 
     
     async def receive(self, text_data):
-        data = json.loads(text_data)
-        print(data)
-        #  call PlayerConsumer.broadcast_data(data)
+        matches: MatchDict = json.loads(text_data)
+        await PlayerConsumer.broadcast_data(matches)
+        print(matches)
     
     async def disconnect(self, code):
         GameLoopConsumer.game_loop_client = None
@@ -42,6 +59,20 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         print("show_players():")
         for key, value in cls.players.items():
             print(f"{key} -> {value}")
+            
+    @classmethod
+    async def broadcast_data(cls, matches: MatchDict):
+        for match_id, match in matches.items():
+            payload = {
+                "ball": match["ball"],
+            }
+            for player_id, player in match["players"].items():
+                payload[f"player_{player['pos']}"] = {
+                    "x": player["x"],
+                    "y": player["y"]
+                }
+            for player_id, player in match["players"].items():
+                await cls.players[int(player_id)]["client"].send(json.dumps(payload))
     
     async def connect(self):
         await self.accept()

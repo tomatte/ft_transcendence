@@ -63,11 +63,13 @@ class Game:
                 "players": {
                     match.player_left.id: {
                         "x": match.player_left.x,
-                        "y": match.player_left.y
+                        "y": match.player_left.y,
+                        "pos": "left"
                     },
                     match.player_right.id: {
                         "x": match.player_right.x,
-                        "y": match.player_right.y
+                        "y": match.player_right.y,
+                        "pos": "right"
                     }
                 }
             }

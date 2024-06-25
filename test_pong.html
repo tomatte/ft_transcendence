@@ -9,7 +9,7 @@
     <div class="table">
         <div id="player_left" class="player player_left"></div>
         <div id="ball" class="ball"></div>
-        <div class="player player_right"></div>
+        <div id="player_right" class="player player_right"></div>
     </div>
 </body>
 <style>
@@ -67,29 +67,31 @@
         match_id: -1,
         action: ""
     }
-    let left_player = null
 
     document.addEventListener("DOMContentLoaded", function() {
         ws.onmessage = (event) => {
-            message = JSON.parse(event.data)
+            data = JSON.parse(event.data)
     
-            console.log(message)
+            console.log(data)
     
-            if (message.action == "coordinates") {
+            if (data.action == "coordinates") {
                 const player_height = 100
                 const ball_radious = 10
                 ball = document.getElementById("ball");
-                ball.style.left = `${message.ball.x - ball_radious}px`
-                ball.style.top = `${message.ball.y - ball_radious}px`
+                ball.style.left = `${data.ball.x - ball_radious}px`
+                ball.style.top = `${data.ball.y - ball_radious}px`
 
-                player = document.getElementById("player_left");
-                player.style.top = `${message.player.y - (player_height / 2)}px`
+                player_left = document.getElementById("player_left");
+                player_left.style.top = `${data.player_left.y - (player_height / 2)}px`
+
+                player_right = document.getElementById("player_right");
+                player_right.style.top = `${data.player_right.y - (player_height / 2)}px`
                 return ;
             }
 
-            if (message.action == "connect") {
+            if (data.action == "connect") {
                 console.log("start connection")
-                payload.match_id = message.match_id
+                payload.match_id = data.match_id
                 payload.action = "ready"
                 ws.send(JSON.stringify(payload))
             }
