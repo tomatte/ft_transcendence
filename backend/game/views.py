@@ -26,17 +26,10 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         print(data)
-        temp_match_id = "1"
-        temp_player_id = "1"
-        payload = {
-            "player": data[temp_match_id]["players"][temp_player_id],
-            "ball": data[temp_match_id]["ball"],
-            "action": "coordinates",
-            "method": "coordinates"
-        }
+        #  call PlayerConsumer.broadcast_data(data)
     
     async def disconnect(self, code):
-        GameLoopConsumer.clients.clear()
+        GameLoopConsumer.game_loop_client = None
         return await super().disconnect(code)
     
 

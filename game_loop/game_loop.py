@@ -74,10 +74,12 @@ class Game:
 class Match:
     players: dict[int, Player] = dict()
     balls: List[Ball] = []
+    matches = {}
     
     def __init__(self, data) -> None:
         
         self.id = data["match_id"]
+        Match.matches[self.id] = self
         
         self.player_left = Player(
             [0, TABLE_HEIGHT / 2],
@@ -103,22 +105,29 @@ class Match:
         Match.balls.append(self.ball)
         
         
+        
     def add_player_right(self, data):
         pass
     
     def start_match(self):
         Game.balls.append(self.ball)
         
+    @classmethod
+    def find_match(cls, match_id):
+        for id, match in cls.matches.items():
+            if id == match_id:
+                return match
+        return None
+        
 
 class Actions:
     @classmethod
     def new_match(cls, data):
         print("new_match()")
-        Game.matches.append(Match(data))
-        Game.matches[0].start_match()
-        print(data)
-        # print(f"ball: x:{match.ball.x} y:{match.ball.y}")
-        # print(f"player_left: x:{match.player_left.x} y:{match.player_left.y}")
+        match = Match(data)
+        Game.matches.append(match)
+        print(f"ball: x:{match.ball.x} y:{match.ball.y}")
+        print(f"player_left: x:{match.player_left.x} y:{match.player_left.y}")
     
     @classmethod
     def player_move(cls, data):
@@ -132,8 +141,10 @@ class Actions:
         
     @classmethod
     def player_connect(cls, data):
-        print("player_connect():")
-        print(data)
+        match = Match.find_match(data["match_id"])
+        if match != None:
+            return
+        cls.new_match(data)
     
     @classmethod
     def player_disconnect(cls, data):
@@ -162,7 +173,7 @@ async def main():
         print("failed to connect to server, exited.")
         exit(1)
         
-    asyncio.create_task(Socket.send_info())
+    # asyncio.create_task(Socket.send_info())
     asyncio.create_task(Socket.rcve_info())
     while True:
         Game.move_balls()
