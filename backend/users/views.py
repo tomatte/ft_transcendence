@@ -52,6 +52,8 @@ def get_friends_list(user):
 	"""
 
 	data = []
+	rank = list(User.objects.all().order_by('winners'))
+	user_rank = rank.index(user)
 	for friendship in get_all_friends(user):
 		combats = get_all_combat_users(friendship.from_user, friendship.to_user)
 
@@ -61,14 +63,16 @@ def get_friends_list(user):
   
 		friend = {
 			"nickname": friend.nickname,
-			"winner": friend_winner,
-			"losse": friend_losses
+			"winner": int(friend_winner),
+			"losse": int(friend_losses),
+			"rank": rank.index(friend)
 		}
   
 		me = {
 			"nickname": user.nickname,
-			"winner": friend_losses,
-			"loses": friend_winner
+			"winner": int(friend_losses),
+			"loses": int(friend_winner),
+			"rank": user_rank
 		}
 		data.append({"friend": friend, "user": me})
 

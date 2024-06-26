@@ -14,8 +14,8 @@ class MyUserViewTest(TransactionTestCase):
 	@classmethod
 	def create_user(self):
 		users = [
-			{'username': 'user1', 'password': '12345', 'nickname': 'user1'},
-			{'username': 'user2', 'password': '12345', 'nickname': 'user2'},
+			{'username': 'user1', 'password': '12345', 'nickname': 'user1', 'winners': 2, 'losses': 1},
+			{'username': 'user2', 'password': '12345', 'nickname': 'user2', 'winners': 1, 'losses': 2},
 			{'username': 'user3', 'password': '12345', 'nickname': 'user3'},
 			{'username': 'user4', 'password': '12345', 'nickname': 'user4'},
 		]
