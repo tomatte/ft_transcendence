@@ -59,6 +59,9 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
 # Create your views here.
 class PlayerConsumer(AsyncWebsocketConsumer):
     players = {}
+    num_players = 0
+    new_match_id = 1
+    
     
     @classmethod
     def show_players(cls):
@@ -83,10 +86,13 @@ class PlayerConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         await self.accept()
+        PlayerConsumer.num_players += 1
+        if PlayerConsumer.num_players % 2 != 0:
+            PlayerConsumer.new_match_id += 1
 
         payload = {
             "action": "connect",
-            "match_id": 1,
+            "match_id": PlayerConsumer.new_match_id,
 		}
         
         await self.send(json.dumps(payload))
