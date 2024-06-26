@@ -2,7 +2,9 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from users.models import User, Friendship
 from tournament.views import get_tournament, create_Bracket
-from tournament.models import Tournament
+from tournament.models import Tournament, Match, MatchPlayer
+from django.db.models import Prefetch
+
 
 ################################################################################
 # 							Auxiliaries
@@ -28,12 +30,50 @@ def is_valid_method(request, method):
 		raise MethodNotAllowed()
 
 
-def get_friends(user):
-	user1 = Friendship.objects.filter(from_user=user, status='accepted').values('to_user__id', 'to_user__nickname', 'to_user__username')
-	user2 = Friendship.objects.filter(to_user=user, status='accepted').values('to_user__id', 'to_user__nickname', 'to_user__username')
-	all_users = user1.union(user2)
+def get_all_friends(user):
+	user1 = Friendship.objects.filter(from_user=user, status='accepted')
+	user2 = Friendship.objects.filter(to_user=user, status='accepted')
+	return user1.union(user2)
 
-	return list(all_users)
+def get_all_combat_users(user1, user2):
+	matchs = Match.objects.filter(players=user1).filter(players=user2)
+	info_matchs = MatchPlayer.objects.filter(match__in=matchs)
+	return info_matchs
+
+
+def get_friends_list(user):
+	"""Função para retornar a lista de amigos customizada
+
+	Args:
+		user (model.user): Query do usuario
+  
+	return:
+		friends (Dict): Dicionario formatado com ranking, losses, winners against you
+	"""
+
+	data = []
+	for friendship in get_all_friends(user):
+		combats = get_all_combat_users(friendship.from_user, friendship.to_user)
+
+		friend = friendship.from_user if friendship.from_user != user else friendship.to_user
+		friend_winner = combats.filter(user=friend, winner=True).count()
+		friend_losses = (combats.count() / 2) - friend_winner
+  
+		friend = {
+			"nickname": friend.nickname,
+			"winner": friend_winner,
+			"losse": friend_losses
+		}
+  
+		me = {
+			"nickname": user.nickname,
+			"winner": friend_losses,
+			"loses": friend_winner
+		}
+		data.append({"friend": friend, "user": me})
+
+	return data
+		
 
 # def format_maths_list(matches: object) -> dict:
 # 	"""Função para formatar a query de partidas.
@@ -126,8 +166,8 @@ def get_user(request):
 			'id': user.id,
 			'name': user.username,
 			'nickname': user.nickname,
-			'friends': get_friends(user),
 			'avatar': user.avatar.name,
+			# 'friends': get_friends(user),
 		})
 
 	except MethodNotAllowed as e:
@@ -239,7 +279,7 @@ def get_list_friends(request):
 	try:
 		is_valid_method(request, 'POST')
 		user = User.objects.get(id=request.POST['user_id'])
-		return JsonResponse(get_friends(user), safe=False)
+		return JsonResponse(get_friends_list(user), safe=False)
 
 	except MethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
