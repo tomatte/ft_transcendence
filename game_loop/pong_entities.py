@@ -106,6 +106,7 @@ class Player(Rectangle):
         self.hits = 0
         self.entity_type = entity_type
         self.id = id
+        self.movement = "stop"
         # self.up_line = ((position[0], position[1] - height / 2), (self.top_right))
         # self.bottom_line = ((self.bottom_left), (position[0] + width / 2, position[1] + height / 2))
 

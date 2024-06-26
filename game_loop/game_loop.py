@@ -6,7 +6,7 @@ from typing import TypedDict
 
 PLAYER_HEIGHT = 100
 PLAYER_WIDTH = 20
-PLAYER_SPEED = 900
+PLAYER_SPEED = 600
 BALL_RADIOUS = 10
 BALL_SPEED = 900
 BALL_START_DIRECTION = 30
@@ -137,6 +137,14 @@ class Match:
             if id == match_id:
                 return match
         return None
+    
+    @classmethod
+    def move_players(cls):
+        for id, player in cls.players.items():
+            if player.movement == "up":
+                player.move_up()
+            elif player.movement == "down":
+                player.move_down()
         
 
 class Actions:
@@ -151,11 +159,7 @@ class Actions:
     @classmethod
     def player_move(cls, data: PlayerMoveDataType):
         player = Match.players[data["player_id"]]
-        if data["key"] == "Up":
-            player.move_up()
-        else:
-            player.move_down()
-        print(f"player -> x:{player.x} y:{player.y}")
+        player.movement = data["key"]
         
     @classmethod
     def player_connect(cls, data):
@@ -197,6 +201,7 @@ async def main():
     asyncio.create_task(Socket.rcve_info())
     while True:
         Game.move_balls()
+        Match.move_players()
         Game.create_payload()
         
         await asyncio.sleep(Game.fps_time)

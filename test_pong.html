@@ -100,40 +100,29 @@
       });
 
 
-
+    let keyPressed = ""
 
     async function sendKey(key) {
+        if (keyPressed == key)
+            return
+        else
+            keyPressed = key
         payload.key = key
         payload.action = "player_move"
         ws.send(JSON.stringify(payload))
     }
 
-    // Function to execute when the key is pressed
-    async function onKeyPress(key) {
-        //console.log(key + " key pressed");
-        sendKey(key)
-    }
-
-    // Function to execute when the key is released
-    async function onKeyRelease(key) {
-        //console.log(key + " key released");
-    }
-
-    // Event listener for keydown
     document.addEventListener('keydown', async function(event) {
         if (event.key === 'ArrowUp') {
-            onKeyPress('Up');
+            sendKey('up');
         } else if (event.key === 'ArrowDown') {
-            onKeyPress('Down');
+            sendKey('down');
         }
     });
 
-    // Event listener for keyup
     document.addEventListener('keyup', function(event) {
-        if (event.key === 'ArrowUp') {
-            onKeyRelease('Up');
-        } else if (event.key === 'ArrowDown') {
-            onKeyRelease('Down');
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            sendKey("stop");
         }
     });
 </script>
