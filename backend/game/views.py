@@ -82,7 +82,9 @@ class PlayerConsumer(AsyncWebsocketConsumer):
                     "y": player["y"]
                 }
             for player_id, player in match["players"].items():
-                await cls.players[int(player_id)]["client"].send(json.dumps(payload))
+                player = cls.players.get(int(player_id), None)
+                if player is not None:
+                    await player["client"].send(json.dumps(payload))
     
     async def connect(self):
         await self.accept()
@@ -98,10 +100,12 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         await self.send(json.dumps(payload))
 
     async def disconnect(self, close_code):
-        print(f"close_code: {close_code}")
-        pass
+        PlayerConsumer.players.pop(self.player_id)
+        self.close(close_code, "bye!^^")
 
     async def player_ready_action(self, data):
+        self.player_id = data["player_id"]
+        self.match_id = data["match_id"]
         PlayerConsumer.players[data["player_id"]] = {
             "client": self,
             "player_id": data["player_id"],

@@ -7,7 +7,7 @@ from enum import Enum
 TABLE_WIDTH = 1280
 TABLE_HEIGHT = 720
 COLLISION_AREA = 50
-FPS = 60
+FPS = 45
 
 #how much the player can modify the direction of the ball; 
 # MAX_LIMIT: 90; MIN_LIMIT: 1; RECOMMENDED: 30
@@ -107,8 +107,7 @@ class Player(Rectangle):
         self.entity_type = entity_type
         self.id = id
         self.movement = "stop"
-        # self.up_line = ((position[0], position[1] - height / 2), (self.top_right))
-        # self.bottom_line = ((self.bottom_left), (position[0] + width / 2, position[1] + height / 2))
+        self.match_id = None
 
     def hit(self):
         self.hits += 1
@@ -227,8 +226,3 @@ class Ball(Rectangle):
         self.verify_collision_wall()
         self.verify_collision_player()
         super().move(fps)
-
-    # def verify_collision(self):
-    #     for player in self.players:
-            
-                

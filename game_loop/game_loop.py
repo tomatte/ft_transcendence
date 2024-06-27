@@ -101,6 +101,7 @@ class Match:
             data["player_id"]
         )
         Match.players[self.player_left.id] = self.player_left
+        self.player_left.match_id = self.id
         
         self.ball = Ball(
             [TABLE_WIDTH / 2, TABLE_HEIGHT / 2], 
@@ -125,6 +126,7 @@ class Match:
             data["player_id"]
         )
         Match.players[self.player_right.id] = self.player_right
+        self.player_right.match_id = self.id
         self.ball.players.append(self.player_right)
     
     def start_match(self):
@@ -171,7 +173,7 @@ class Actions:
         match.start_match()
     
     @classmethod
-    def player_disconnect(cls, data):
+    def match_end(cls, data):
         pass
     
     @classmethod
@@ -185,9 +187,6 @@ class Actions:
         if data["action"] == "player_move":
             cls.player_move(data)
             return 
-        if data["action"] == "player_disconnect":
-            cls.player_disconnect(data)
-            return
 
 
 async def main():
