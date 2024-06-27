@@ -163,7 +163,7 @@ class Ball(Rectangle):
         self.type = "ball"
         self.radious = radious
         self.last_collided = Entity.NONE
-        self.players: PlayersType = []
+        self.players: dict[str, Player] = dict()
         self.match_id = match_id
 
     def set_players(self, players: PlayersType):
@@ -194,7 +194,7 @@ class Ball(Rectangle):
         return False
     
     def verify_collision_player(self):
-        for player in self.players:
+        for aux, player in self.players.items():
             if self.last_collided != player.entity_type and self.is_colliding(player.get_bottom_left(), player.get_top_right()):
                 print("player defended")
                 self.last_collided = player.entity_type
@@ -214,14 +214,19 @@ class Ball(Rectangle):
         #table left side
         if (self.last_collided != Entity.TABLE_LEFT and self.is_colliding(Table.left_side["bottom_left"], Table.left_side["top_right"])):
             self.last_collided = Entity.TABLE_LEFT
-            self.players[0].hit()
-            # print(f"player1 hits: {self.players[0].hits}")
             self.dir = vertical_wall_bounce(self.dir)
+            player = self.players.get("left", None)
+            if player is not None:
+                player.hit()
+
         #table right side
         if (self.last_collided != Entity.TABLE_RIGHT and self.is_colliding(Table.right_side["bottom_left"], Table.right_side["top_right"])):
             self.last_collided = Entity.TABLE_RIGHT
             self.dir = vertical_wall_bounce(self.dir)
-    
+            player = self.players.get("right", None)
+            if player is not None:
+                player.hit()
+
     def move(self, fps):
         self.verify_collision_wall()
         self.verify_collision_player()

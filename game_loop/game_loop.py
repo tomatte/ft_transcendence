@@ -72,13 +72,13 @@ class Game:
                         "x": match.player_left.x,
                         "y": match.player_left.y,
                         "pos": "left",
-                        "points": match.player_left.hits
+                        "points": match.player_right.hits
                     },
                     match.player_right.id: {
                         "x": match.player_right.x,
                         "y": match.player_right.y,
                         "pos": "right",
-                        "points": match.player_right.hits
+                        "points": match.player_left.hits
                     }
                 }
             }
@@ -113,7 +113,7 @@ class Match:
             self.id
         )
         
-        self.ball.players.append(self.player_left)
+        self.ball.players["left"] = self.player_left
         Match.balls.append(self.ball)
         
         
@@ -129,7 +129,7 @@ class Match:
         )
         Match.players[self.player_right.id] = self.player_right
         self.player_right.match_id = self.id
-        self.ball.players.append(self.player_right)
+        self.ball.players["right"] = self.player_right
     
     def start_match(self):
         Game.balls.append(self.ball)
