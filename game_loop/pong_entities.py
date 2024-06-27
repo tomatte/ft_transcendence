@@ -169,6 +169,9 @@ class Ball(Rectangle):
     def set_players(self, players: PlayersType):
         self.players = players
         
+    def reset_ball(self):
+        self.x = TABLE_WIDTH / 2 - self.radious
+        self.y = TABLE_HEIGHT / 2 - self.radious
         
     def change_direction_by_player(self, player: Player):
         pixel_distance = self.y - player.y
@@ -215,6 +218,7 @@ class Ball(Rectangle):
         if (self.last_collided != Entity.TABLE_LEFT and self.is_colliding(Table.left_side["bottom_left"], Table.left_side["top_right"])):
             self.last_collided = Entity.TABLE_LEFT
             self.dir = vertical_wall_bounce(self.dir)
+            self.reset_ball()
             player = self.players.get("left", None)
             if player is not None:
                 player.hit()
@@ -223,6 +227,7 @@ class Ball(Rectangle):
         if (self.last_collided != Entity.TABLE_RIGHT and self.is_colliding(Table.right_side["bottom_left"], Table.right_side["top_right"])):
             self.last_collided = Entity.TABLE_RIGHT
             self.dir = vertical_wall_bounce(self.dir)
+            self.reset_ball()
             player = self.players.get("right", None)
             if player is not None:
                 player.hit()
