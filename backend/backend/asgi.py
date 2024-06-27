@@ -1,7 +1,7 @@
 from django.core.asgi import get_asgi_application
 from django.urls import path
 import websocket
-import game.views
+import game.urls
 
 
 import websocket.views
@@ -23,8 +23,7 @@ application = ProtocolTypeRouter({
 				path("create_bracket/", websocket.views.Create_Bracket.as_asgi()),
 				path("start_tournament/", websocket.views.Start_tournament.as_asgi()),
 				path("end_tournament/", websocket.views.Finish_tournament.as_asgi()),
-				path("player/", game.views.PlayerConsumer.as_asgi()),
-				path("game_loop/", game.views.GameLoopConsumer.as_asgi()),
+				*game.urls.urlpatterns
 			])
 		)
 })
