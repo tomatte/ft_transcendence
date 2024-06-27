@@ -165,6 +165,7 @@ class Ball(Rectangle):
         self.last_collided = Entity.NONE
         self.players: dict[str, Player] = dict()
         self.match_id = match_id
+        self.initial_speed = speed
 
     def set_players(self, players: PlayersType):
         self.players = players
@@ -172,6 +173,7 @@ class Ball(Rectangle):
     def reset_ball(self):
         self.x = TABLE_WIDTH / 2 - self.radious
         self.y = TABLE_HEIGHT / 2 - self.radious
+        self.speed = self.initial_speed
         
     def change_direction_by_player(self, player: Player):
         pixel_distance = self.y - player.y
@@ -202,6 +204,7 @@ class Ball(Rectangle):
                 print("player defended")
                 self.last_collided = player.entity_type
                 self.change_direction_by_player(player)
+                self.speed += 50
                 return True
         return False
 
