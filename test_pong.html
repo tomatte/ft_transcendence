@@ -6,6 +6,10 @@
     <title>Test Pong</title>
 </head>
 <body style="background-color: black; display: flex; justify-content: center; height: 100vh; align-items: center;">
+    <div id="points">
+        <h1 id="points-left">0</h1>
+        <h1 id="points-right">0</h1>
+    </div>
     <div class="table">
         <div id="player_left" class="player player_left"></div>
         <div id="ball" class="ball"></div>
@@ -52,6 +56,15 @@
         top: 340px;
         left: 630px;
     }
+
+    #points {
+        position: absolute;
+        top: 10px;
+        display: flex;
+        width: 400px;
+        justify-content: space-between;
+    }
+
 </style>
 <script>
     function getRandomId(min, max) {
@@ -86,6 +99,12 @@
 
                 player_right = document.getElementById("player_right");
                 player_right.style.top = `${data.player_right.y - (player_height / 2)}px`
+
+                points_left = document.getElementById("points-left")
+                points_left.innerText = data.player_left.points
+
+                points_right = document.getElementById("points-right")
+                points_right.innerText = data.player_right.points
                 return ;
             }
 

@@ -71,12 +71,14 @@ class Game:
                     match.player_left.id: {
                         "x": match.player_left.x,
                         "y": match.player_left.y,
-                        "pos": "left"
+                        "pos": "left",
+                        "points": match.player_left.hits
                     },
                     match.player_right.id: {
                         "x": match.player_right.x,
                         "y": match.player_right.y,
-                        "pos": "right"
+                        "pos": "right",
+                        "points": match.player_right.hits
                     }
                 }
             }

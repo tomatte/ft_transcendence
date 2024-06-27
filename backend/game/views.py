@@ -15,6 +15,7 @@ class PlayerDataType(TypedDict):
     x: float
     y: float
     pos: str
+    points: int
     
 class BallDataType(TypedDict):
     x: float
@@ -79,7 +80,8 @@ class PlayerConsumer(AsyncWebsocketConsumer):
             for player_id, player in match["players"].items():
                 payload[f"player_{player['pos']}"] = {
                     "x": player["x"],
-                    "y": player["y"]
+                    "y": player["y"],
+                    "points": player["points"]
                 }
             for player_id, player in match["players"].items():
                 player = cls.players.get(int(player_id), None)
