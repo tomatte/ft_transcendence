@@ -37,3 +37,8 @@ html, body
 {
     flex-direction: column;
 }
+
+.playground-container--menu-item
+{
+    flex-direction: column;
+}

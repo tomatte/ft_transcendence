@@ -347,3 +347,43 @@
     align-self: stretch;
     object-fit: cover;
 }
+
+/* ------------------- SIDEBAR MENU ITEM ------------------- */
+
+.menu-item {
+    display: flex;
+    width: 100%;
+    padding: 8px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    justify-content: flex-start;
+    transition: all 0.2s ease;
+}
+
+.menu-item__icon {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--Lunar-Dust-600);
+}
+
+.menu-item__text {
+    flex: 1 1 0;
+    color: var(--Lunar-Dust-600);
+    font-size: 14px;
+    font-family: 'Play', sans-serif; /* Assuming 'Play' is the font name */
+    font-weight: 700;
+    line-height: 19.60px;
+    word-wrap: break-word;
+}
+
+.menu-item__icon:hover {
+    color: var(--Comet-Cloud-500);
+}
+
+
