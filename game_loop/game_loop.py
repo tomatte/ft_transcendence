@@ -5,7 +5,7 @@ from pong_entities import *
 from typing import TypedDict
 
 PLAYER_HEIGHT = 100
-PLAYER_WIDTH = 20
+PLAYER_WIDTH = 40
 PLAYER_SPEED = 600
 BALL_RADIOUS = 10
 BALL_SPEED = 900
