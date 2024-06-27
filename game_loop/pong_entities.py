@@ -137,6 +137,8 @@ class Player(Rectangle):
             return (self.x, self.y + self.height / 2)
         
     def move_up(self):
+        if self.y - self.height / 2 <= 0:
+            return 
         dir_rad = math.radians(270)
 
         vy = self.speed * math.sin(dir_rad)
@@ -146,6 +148,8 @@ class Player(Rectangle):
         self.y += vy * dt
     
     def move_down(self):
+        if self.y + self.height / 2 >= TABLE_HEIGHT:
+            return 
         dir_rad = math.radians(90)
 
         vy = self.speed * math.sin(dir_rad)
