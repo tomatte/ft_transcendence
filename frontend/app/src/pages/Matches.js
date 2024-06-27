@@ -1,38 +1,67 @@
 export default () => {
+    // Criação do contêiner principal
     const container = document.createElement("div");
-    container.classList.add("container");
+    container.classList.add("playground-container");
 
+    // Criação de estilos
     const style = document.createElement("style");
     style.innerHTML = `
-        .container {
-            background-color: #FF5733; /* Cor de fundo laranja */
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .container h1,
-        .container p,
-        .container .notification h2,
-        .container .notification p {
-            color: rgba(255, 255, 255, 1); /* Cor branca */
-        }
-        .notification {
-            background-color: #F4D03F; /* Cor de fundo amarelo */
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 5px;
-        }
+            @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
+        @import url('https://fonts.googleapis.com/css2?family=Material+Icons+Round&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
+        @import url('../css/Components.css');
+        @import url('../css/Colors.css');
+        @import url('../css/Typography.css');
+        @import url('../css/pages/matches.css');
+
+   
     `;
 
+    // Conteúdo do contêiner principal para Matches
     container.innerHTML = `
-        <h1>Amigos Lontras: Hora do Jogo!</h1>
-        <p>E aí, galera lontrinha? Hoje é dia de mostrar quem é o rei da partida. Preparem suas nadadeiras!</p>
-        <div class="notification">
-            <h2>Notificação 1</h2>
-            <p>Alerta de jogo emocionante em andamento! Lontras habilidosas estão protagonizando um duelo épico na água. Quem vai levar a melhor?</p>
+        <div class="header">
+            <div class="title">
+                <div class="title-text">Matches</div>
+                <div class="badge">[8]</div>
+            </div>
+            <div class="filter">
+                <div class="filter-item">
+                    <div class="filter-icon"></div>
+                    <div class="filter-label">Label</div>
+                    <div class="filter-icon"></div>
+                </div>
+            </div>
+        </div>
+        <div class="matches">
+            <div class="match-item">
+                <div class="player-info">
+                    <img class="player-avatar" src="https://via.placeholder.com/36x36" />
+                    <div class="player-details">
+                        <div class="player-name">Tomatte</div>
+                        <div class="player-username">dbrandao</div>
+                    </div>
+                </div>
+                <div class="game-type">Friendly Match</div>
+                <div class="score">2 X 5</div>
+                <div class="status">
+                    <div class="status-badge defeat">Defeat</div>
+                </div>
+                <div class="date">22/06/2024</div>
+            </div>
+            <!-- Outros itens de jogo aqui -->
+        </div>
+        <div class="pagination">
+            <div class="pagination-item">Primeiro</div>
+            <div class="pagination-item">Anterior</div>
+            <div class="pagination-item active">1</div>
+            <div class="pagination-item">2</div>
+            <div class="pagination-item">3</div>
+            <div class="pagination-item">4</div>
+            <div class="pagination-item">5</div>
         </div>
     `;
 
     container.appendChild(style);
+
     return container;
 }

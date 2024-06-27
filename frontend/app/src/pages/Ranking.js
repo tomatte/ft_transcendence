@@ -1,35 +1,58 @@
 export default () => {
+    // Criação do contêiner principal
     const container = document.createElement("div");
-    container.classList.add("container");
+    container.classList.add("playground-container");
 
+    // Adição de estilos
     const style = document.createElement("style");
     style.innerHTML = `
-        .container {
-            background-color: #4CAF50; /* Cor de fundo verde */
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .container h1,
-        .container p {
-            color: rgba(255, 255, 255, 1); /* Cor branca */
+        @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
+        @import url('https://fonts.googleapis.com/css2?family=Material+Icons+Round&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
+        @import url('../css/Components.css');
+        @import url('../css/Colors.css');
+        @import url('../css/Typography.css');
+        @import url('playground.css');
+
+        .game-mode-banner {
+            margin-bottom: 20px; /* Adiciona espaço entre os blocos */
         }
     `;
 
+    // Conteúdo do contêiner principal para Ranking
     container.innerHTML = `
-        <h1>Ranking das Lontras Mais Divertidas!</h1>
-        <p>Quem disse que lontras não têm senso de humor? Confira quem está no topo do ranking de piadas aquáticas!</p>
-        <div class="notification">
-            <h2>Posição 1: Lula Cômica</h2>
-            <p>Ela é a rainha das piadas de polvos! Ninguém consegue segurar o riso quando ela começa.</p>
-        </div>
-        <div class="notification">
-            <h2>Posição 2: Otávio Piadista</h2>
-            <p>Se há uma lontra que sabe fazer um trocadilho, é o Otávio. Prepare-se para rolar de rir!</p>
-        </div>
-        <div class="notification">
-            <h2>Posição 3: Marlon Trapalhão</h2>
-            <p>Apesar de desastrado, ele sempre acaba fazendo todo mundo gargalhar com suas trapalhadas na água.</p>
+        <div style="width: 100%; height: 100%; padding: 24px;">
+            <!-- Bloco de ranking geral -->
+            <div class="game-mode-banner game-mode-banner--general-ranking">
+                <div class="game-mode-banner__info">
+                    <div class="game-mode-banner__info__title">GENERAL RANKING</div>
+                    <div class="game-mode-banner__info__button">
+                        <button class="button button--primary">
+                            <span class="material-icons-round button__icon-left">leaderboard</span>
+                            <span class="button__text font-body-regular-bold">View all</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="game-mode-banner__illustration">
+                    <img class="game-mode-banner__illustration__image" src="../assets/ranking.png" alt="">
+                </div>
+            </div>
+
+            <!-- Bloco de ranking por categoria -->
+            <div class="game-mode-banner game-mode-banner--category-ranking">
+                <div class="game-mode-banner__info">
+                    <div class="game-mode-banner__info__title">CATEGORY RANKING</div>
+                    <div class="game-mode-banner__info__button">
+                        <button class="button button--secondary">
+                            <span class="material-icons-round button__icon-left">category</span>
+                            <span class="button__text font-body-regular-bold">View categories</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="game-mode-banner__illustration">
+                    <img class="game-mode-banner__illustration__image" src="../assets/category-ranking.png" alt="">
+                </div>
+            </div>
         </div>
     `;
 

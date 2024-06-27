@@ -235,10 +235,115 @@
     color: var(--Comet-Cloud-300);
 }
 
+.game-row-option--active
+{
+    background: var(--Comet-Cloud-900);
+    color: var(--Comet-Cloud-300);
+}
+
+.game-row-option--active:hover
+{
+    background: var(--Comet-Cloud-800);
+    color: var(--Comet-Cloud-200);
+}
+
 .game-row-option__icon
 {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+
+/* ------------------- TABLE ------------------- */
+
+
+.custom-table {
+    width: 90%;
+    max-width: 800px;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #22222B;
+    color: #737584;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.custom-table caption {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    color: #BEC7E3;
+}
+
+.custom-table thead {
+    background-color: #18181B;
+}
+
+.custom-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.custom-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.custom-table tbody tr {
+    background-color: #1E1E26;
+}
+
+.custom-table tbody tr:nth-child(even) {
+    background-color: #22222B;
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status.defeat {
+    background-color: #841820;
+    color: #FFA0A7;
+}
+
+.status.victory {
+    background-color: #064E3B;
+    color: #6EE7AF;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+}
+
+.player-info img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.player-name {
+    font-weight: bold;
+    color: #BEC7E3;
+}
+.player-username {
+    color: #737584;
+    font-size: 14px;
+}
+
+.image-table {
+    width: 36px;
+    height:36px;
+    flex: 1;
+    align-self: stretch;
+    object-fit: cover;
 }
