@@ -13,9 +13,7 @@ export default () => {
         @import url('../css/Colors.css');
         @import url('../css/Typography.css');
         @import url('playground.css');
-
-        .game-mode-banner {
-            margin-bottom: 20px; /* Adiciona espaço entre os blocos */
+        @import url('../css/pages/notifications.css');
         }
     `;
 
