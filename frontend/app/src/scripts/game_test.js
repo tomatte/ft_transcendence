@@ -1,6 +1,3 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-
 function setCanvasSize() {
     const minWidth = 800; // Minimum width for the canvas
     const maxWidth = 1600; // Maximum width for the canvas
@@ -26,15 +23,9 @@ function setCanvasSize() {
     canvas.style.left = `${(window.innerWidth - desiredWidth) / 2}px`;
     canvas.style.top = `${(window.innerHeight - desiredHeight) / 2}px`;
 
-    // Redraw elements on the canvas
-    clearCanvas()
     drawLeftPaddle(canvas.height / 2)
     drawRightPaddle(canvas.height / 2)
     drawMiddleLine();
-}
-
-function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function drawLeftPaddle(y) {
@@ -54,7 +45,7 @@ function drawBall(x, y, radius) {
     ctx.fill(); // F
 }
 
-function drawScores(leftScore, rightScore) {
+function setScores(leftScore, rightScore) {
     ctx.fillStyle = '#FFFFFF'; // White color for text
     ctx.font = '30px Arial';
 
@@ -130,11 +121,10 @@ document.addEventListener("DOMContentLoaded", function() {
             player_left_points = data.player_left.points
             player_right_points = data.player_right.points
 
-            clearCanvas()
             drawLeftPaddle(player_left_y)
             drawRightPaddle(player_right_y)
             drawBall(ball_x, ball_y, ball_radious)
-            drawScores(player_left_points, player_right_points)
+            setScores(player_left_points, player_right_points)
             drawMiddleLine()
 
             return ;
