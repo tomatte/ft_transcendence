@@ -1,92 +1,28 @@
-function setCanvasSize() {
-    const minWidth = 800; // Minimum width for the canvas
-    const maxWidth = 1600; // Maximum width for the canvas
-    const maxHeight = 900; // Maximum height for the canvas
-
-    // Calculate the desired width and height based on screen size
-    let desiredWidth = Math.min(maxWidth, window.innerWidth);
-    let desiredHeight = Math.min(maxHeight, window.innerHeight);
-
-    if (desiredWidth < minWidth) {
-        desiredWidth = minWidth;
-    }
-
-    //TODO: remove this when the game size allows for dynamic sizing:
-    desiredHeight = 720
-    desiredWidth = 1280
-
-    // Apply the calculated dimensions to the canvas
-    canvas.width = desiredWidth;
-    canvas.height = desiredHeight;
-
-    // Ensure the canvas remains centered
-    canvas.style.left = `${(window.innerWidth - desiredWidth) / 2}px`;
-    canvas.style.top = `${(window.innerHeight - desiredHeight) / 2}px`;
-
-    drawLeftPaddle(canvas.height / 2)
-    drawRightPaddle(canvas.height / 2)
-    drawMiddleLine();
+function setPlayerLeft(y) {
+    const player = document.getElementById("player_left")
+    player.style.top = `${y}px`
+    player.style.left = `${30}px`
 }
 
-function drawLeftPaddle(y) {
-    ctx.fillStyle = '#FFFFFF'; // Paddle color
-    ctx.fillRect(30, y, 10, 100); // Left paddle position and size
+function setPlayerRight(y) {
+    const player = document.getElementById("player_right")
+    player.style.top = `${y}px`
+    player.style.right = `${40}px`
 }
 
-function drawRightPaddle(y) {
-    ctx.fillStyle = '#FFFFFF'; // Paddle color
-    ctx.fillRect(canvas.width - 40, y, 10, 100); // Right paddle position and size
-}
-
-function drawBall(x, y, radius) {
-    ctx.fillStyle = '#FFFFFF';
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2, true); // Draw a circle
-    ctx.fill(); // F
+function setBall(x, y) {
+    const ball = document.getElementById("ball")
+    ball.style.left = `${x}px`
+    ball.style.top = `${y}px`
 }
 
 function setScores(leftScore, rightScore) {
-    ctx.fillStyle = '#FFFFFF'; // White color for text
-    ctx.font = '30px Arial';
+    const left = document.getElementById("score_left")
+    left.innerText = leftScore
 
-    // Calculate positions based on canvas size
-    const leftScoreX = canvas.width * 0.25; // 25% from the left of the canvas
-    const rightScoreX = canvas.width * 0.75; // 75% from the left of the canvas
-    const scoreY = canvas.height * 0.1; // 10% from the top of the canvas
-
-    // Draw left score
-    ctx.textAlign = 'center'; // Center the text horizontally
-    ctx.fillText(leftScore.toString(), leftScoreX, scoreY);
-
-    // Draw right score
-    ctx.fillText(rightScore.toString(), rightScoreX, scoreY);
+    const right = document.getElementById("score_right")
+    right.innerText = rightScore
 }
-
-function drawMiddleLine() {
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 8;
-    ctx.setLineDash([32, 32]); // Dotted line style
-
-    // Calculate positions for the line
-    const startX = canvas.width / 2;
-    const startY = 0;
-    const endX = canvas.width / 2;
-    const endY = canvas.height;
-
-    // Draw the line
-    ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(endX, endY);
-    ctx.stroke();
-}
-
-window.addEventListener('resize', setCanvasSize);
-
-setCanvasSize();
-
-
-//--------------- GAME LOOP -----------------------------------------------------------------------
-//daksjdhoiashdlauisudhoanlisudhaosiduasokduhasodkuhasoiduhasodijashodiuasoifuhfgpasoijpógispgoisdh
 
 function getRandomId(min, max) {
     min = Math.ceil(min);
@@ -121,12 +57,10 @@ document.addEventListener("DOMContentLoaded", function() {
             player_left_points = data.player_left.points
             player_right_points = data.player_right.points
 
-            drawLeftPaddle(player_left_y)
-            drawRightPaddle(player_right_y)
-            drawBall(ball_x, ball_y, ball_radious)
+            setPlayerLeft(player_left_y)
+            setPlayerRight(player_right_y)
+            setBall(ball_x, ball_y)
             setScores(player_left_points, player_right_points)
-            drawMiddleLine()
-
             return ;
         }
 

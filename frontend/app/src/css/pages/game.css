@@ -67,6 +67,16 @@ body {
     height: 720px;
 }
 
+#ball
+{
+    border-radius: 100%;
+    background-color: #FFFFFF;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    z-index: 1;
+}
+
 .middle_line 
 {
     position: absolute;
