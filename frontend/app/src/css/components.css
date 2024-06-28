@@ -460,3 +460,61 @@
 .menu-control:hover .menu-control__icon {
     color: var(--Comet-Cloud-200);
 }
+
+
+/* ------------------- PROFILE INFO ------------------- */
+
+.profile-info {
+    display: inline-flex;
+    padding: 12px 8px;
+    align-items: center;
+    gap: 12px;
+    border-radius: 8px;
+    background: var(--Lunar-Dust-950);
+    transition: all 0.2s ease;
+}
+
+.profile-info:hover {
+    background: var(--Comet-Cloud-950);
+}
+
+
+.profile-info__container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-info__container__image {
+    display: flex;
+    width: 42px;
+    height: 42px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.profile-info__container__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-info__container__text__name {
+    color: var(--Comet-Cloud-300);
+}
+
+.profile-info__container__text__nickname {
+    color: var(--Lunar-Dust-500);
+}
+
+.profile-info:hover .profile-info__container__text__name {
+    color: var(--Comet-Cloud-200);
+}
+
+.profile-info:hover .profile-info__container__text__nickname {
+    color: var(--Lunar-Dust-400);
+}
