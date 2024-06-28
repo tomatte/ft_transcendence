@@ -12,13 +12,13 @@ export default () => {
         @import url('../css/components.css');
         @import url('../css/colors.css');
         @import url('../css/typography.css');
-        @import url('../css/pages/notification.css');
+        @import url('../css/pages/notifications.css');
   
     `;
 
     // Conteúdo do contêiner principal para Notifications
     container.innerHTML = `
-    <div class="frame">
+<div class="frame">
       <div class="div">
         <div class="div-wrapper"><div class="text-wrapper">Notifications</div></div>
         <button class="button">
@@ -62,89 +62,10 @@ export default () => {
             <button class="button-3">
               <div class="button-icon-left"><img class="icon" src="img/icon-5.svg" /></div>
               <div class="button-text-3">Decline match</div>
-            </button>
-          </div>
-        </div>
-        <div class="div-3">
-          <div class="table-row-message">
-            <div class="table-row-message-6"></div>
-            <div class="table-row-message-3">
-              <p class="p">Caos has challenged you to a friendly match</p>
-              <div class="table-row-message-4">22/06/2024 - 15H30</div>
-            </div>
-          </div>
-          <div class="table-row-actions">
-            <button class="button-2">
-              <div class="button-icon-left"><img class="icon" src="img/icon-2.svg" /></div>
-              <div class="button-text-2">Play match</div>
-            </button>
-            <button class="button-3">
-              <div class="button-icon-left"><img class="icon" src="img/icon-5.svg" /></div>
-              <div class="button-text-3">Decline match</div>
-            </button>
-          </div>
-        </div>
-        <div class="div-3">
-          <div class="table-row-message">
-            <div class="table-row-message-7"></div>
-            <div class="table-row-message-3">
-              <p class="p">Tomatte has invited you to a tournament</p>
-              <div class="table-row-message-4">22/06/2024 - 15H30</div>
-            </div>
-          </div>
-          <div class="table-row-actions">
-            <button class="button-4">
-              <div class="button-icon-left"><img class="icon" src="img/icon-6.svg" /></div>
-              <div class="button-text-4">Play tournament</div>
-            </button>
-            <button class="button-3">
-              <div class="button-icon-left"><img class="icon" src="img/icon-5.svg" /></div>
-              <div class="button-text-3">Decline invitation</div>
-            </button>
-          </div>
-        </div>
-        <div class="div-3">
-          <div class="table-row-message">
-            <div class="table-row-message-8"></div>
-            <div class="table-row-message-3">
-              <p class="p">Estagiario has sent you a friend request</p>
-              <div class="table-row-message-4">22/06/2024 - 15H30</div>
-            </div>
-          </div>
-          <div class="table-row-actions">
-            <button class="button-5">
-              <div class="button-icon-left"><img class="icon" src="img/image.svg" /></div>
-              <div class="button-text-5">Accept request</div>
-            </button>
-            <button class="button-3">
-              <div class="button-icon-left"><img class="icon" src="img/icon-5.svg" /></div>
-              <div class="button-text-3">Decline request</div>
-            </button>
-          </div>
-        </div>
-        <div class="div-3">
-          <div class="table-row-message">
-            <div class="table-row-message-9"></div>
-            <div class="table-row-message-3">
-              <p class="p">Estagiario has sent you a friend request</p>
-              <div class="table-row-message-4">22/06/2024 - 15H30</div>
-            </div>
-          </div>
-          <div class="table-row-actions">
-            <button class="button-5">
-              <div class="button-icon-left"><img class="icon" src="img/image.svg" /></div>
-              <div class="button-text-5">Accept request</div>
-            </button>
-            <button class="button-3">
-              <div class="button-icon-left"><img class="icon" src="img/icon-5.svg" /></div>
-              <div class="button-text-3">Decline request</div>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+
     `;
 
     container.appendChild(style);
+
     return container;
 }

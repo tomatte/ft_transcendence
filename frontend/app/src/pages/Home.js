@@ -22,6 +22,9 @@ export default () => {
     // Conteúdo do contêiner principal
     container.innerHTML = `
         <div style="width: 100%; height: 100%; padding: 24px;">
+
+        <div class="page-content__container__header__text">HOME</div>
+        
             <!-- Bloco de torneio -->
             <div class="game-mode-banner game-mode-banner--tournament">
                 <div class="game-mode-banner__info">
@@ -34,7 +37,7 @@ export default () => {
                     </div>
                 </div>
                 <div class="game-mode-banner__illustration">
-                    <img class="game-mode-banner__illustration__image" src="../assets/trophy-dynamic-premium.png" alt="">
+                    <img class="game-mode-banner__illustration__image" src="../assets/images/banners/game-mode-banner-trophy.png" alt="">
                 </div>
             </div>
 
@@ -50,7 +53,7 @@ export default () => {
                     </div>
                 </div>
                 <div class="game-mode-banner__illustration">
-                    <img class="game-mode-banner__illustration__image" src="../assets/medal-dynamic-premium.png" alt="">
+                    <img class="game-mode-banner__illustration__image" src="../assets/images/banners/game-mode-banner-medal.png" alt="">
                 </div>
             </div>
 
@@ -66,7 +69,7 @@ export default () => {
                     </div>
                 </div>
                 <div class="game-mode-banner__illustration">
-                    <img class="game-mode-banner__illustration__image" src="../assets/flag-dynamic-color.png" alt="">
+                    <img class="game-mode-banner__illustration__image" src="../assets/images/banners/game-mode-banner-flag.png" alt="">
                 </div>
             </div>
         </div>

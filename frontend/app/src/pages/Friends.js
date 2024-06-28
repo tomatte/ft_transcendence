@@ -20,7 +20,8 @@ export default () => {
 <div class="frame">
   <div class="div">
     <div class="div-2">
-      <div class="text-wrapper">Friends</div>
+                <div class="game-mode-banner__info">
+                    <div class="game-mode-banner__info__title">FRIENDS</div>
       <button class="button">
         <div class="icon-wrapper"><img class="icon" src="img/image.svg" /></div>
         <div class="button-text">Share your Friends</div>

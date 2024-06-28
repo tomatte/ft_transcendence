@@ -20,7 +20,8 @@ export default () => {
     <div class="frame">
       <div class="div">
         <div class="div-2">
-          <div class="text-wrapper">Ranking</div>
+                <div class="game-mode-banner__info">
+                    <div class="game-mode-banner__info__title">RANKING</div>
           <button class="button">
             <div class="icon-wrapper"><img class="icon" src="img/image.svg" /></div>
             <div class="button-text">Share your ranking</div>
@@ -64,8 +65,7 @@ export default () => {
           <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
           <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
           <div class="table-row-actions">
-            <div class="button-add">
-              <div class="button-types"><div class="button-text-2">Add friend</div></div>
+
             </div>
           </div>
         </div>
@@ -84,12 +84,8 @@ export default () => {
           <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
           <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
           <div class="table-row-actions-2">
-            <div class="game-row-option">
-              <div class="icon-wrapper"><img class="icon-2" src="img/icon.svg" /></div>
-            </div>
-            <div class="game-row-option">
-              <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
-            </div>
+
+
           </div>
         </div>
         <div class="div-4">
@@ -107,12 +103,7 @@ export default () => {
           <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
           <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
           <div class="table-row-actions-2">
-            <div class="game-row-option">
-              <div class="icon-wrapper"><img class="icon-2" src="img/icon.svg" /></div>
-            </div>
-            <div class="game-row-option">
-              <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
-            </div>
+
           </div>
         </div>
         <div class="div-4">
@@ -130,9 +121,7 @@ export default () => {
           <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
           <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
           <div class="table-row-actions">
-            <div class="button-add">
-              <div class="button-types"><div class="button-text-2">Add friend</div></div>
-            </div>
+
           </div>
         </div>
         <div class="div-4">
@@ -150,9 +139,7 @@ export default () => {
           <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
           <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
           <div class="table-row-actions">
-            <div class="button-add">
-              <div class="button-types"><div class="button-text-2">Add friend</div></div>
-            </div>
+
           </div>
         </div>
       </div>

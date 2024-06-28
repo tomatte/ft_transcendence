@@ -19,8 +19,8 @@ export default () => {
     container.innerHTML = `
 <div class="frame">
   <div class="div">
-    <div class="div-2">
-      <div class="text-wrapper">Matches</div>
+                <div class="game-mode-banner__info">
+                    <div class="game-mode-banner__info__title">MATCHES</div>
       <button class="button">
         <div class="icon-wrapper"><img class="icon" src="img/image.svg" /></div>
         <div class="button-text">Share your Matches</div>
