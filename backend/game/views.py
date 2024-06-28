@@ -118,7 +118,8 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         payload = {
             "action": "player_connect",
             "player_id": data["player_id"],
-            "match_id": data["match_id"]
+            "match_id": data["match_id"],
+            "max_scores": 5 #TODO: this could come from database or .env
         }
         await GameLoopConsumer.send_to_game_loop(payload)
         

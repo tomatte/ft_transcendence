@@ -47,22 +47,21 @@ class Socket:
                 print(f"An error occurred: {e}")
 
 class Game:
-    balls: List[Ball] = []
+    balls: dict[int, Ball] = dict()
     fps_time = 1 / FPS
     payload = {}
-    matches: List['Match'] = []
 
     @classmethod
     def move_balls(cls):
-        for ball in cls.balls:
+        for id, ball in cls.balls.items():
             ball.move(FPS)
     @classmethod
     def create_payload(cls):
         cls.payload.clear()
-        for match in cls.matches:
+        for match_id, match in Match.matches.items():
             if match.started == False:
                 continue
-            cls.payload[match.id] = {
+            cls.payload[match_id] = {
                 "ball": {
                     "x": match.ball.x,
                     "y": match.ball.y
@@ -80,20 +79,24 @@ class Game:
                         "pos": "right",
                         "points": match.player_left.hits
                     }
-                }
+                },
+                "action": match.action
             }
             
         
 class Match:
     players: dict[int, Player] = dict()
-    balls: List[Ball] = []
-    matches = {}
+    balls: dict[int, Ball] = dict()
+    matches: dict[int, 'Match'] = dict()
     
     def __init__(self, data) -> None:
         self.started = False
         self.id = data["match_id"]
+        self.max_scores = data["max_scores"]
+        self.action = "coordinates"
         Match.matches[self.id] = self
         
+        self.player_right: Player | None = None
         self.player_left = Player(
             [0, TABLE_HEIGHT / 2],
             PLAYER_SPEED,
@@ -114,7 +117,7 @@ class Match:
         )
         
         self.ball.players["left"] = self.player_left
-        Match.balls.append(self.ball)
+        Match.balls[self.id] = self.ball
         
         
         
@@ -132,8 +135,15 @@ class Match:
         self.ball.players["right"] = self.player_right
     
     def start_match(self):
-        Game.balls.append(self.ball)
+        Game.balls[self.id] = self.ball
         self.started = True
+        
+    def destroy(self):
+        Match.matches.pop(self.id, None)
+        Match.balls.pop(self.id, None)
+        Match.players.pop(self.player_left.id, None)
+        Match.players.pop(self.player_right.id, None)
+        Game.balls.pop(self.id, None)
         
     @classmethod
     def find_match(cls, match_id):
@@ -149,14 +159,28 @@ class Match:
                 player.move_up()
             elif player.movement == "down":
                 player.move_down()
-        
+                
+    @classmethod
+    def verify_ended_matches(cls):
+        for match_id, match in cls.matches.items():
+            if match.player_right is None:
+                continue
+            total_scores = match.player_left.hits + match.player_right.hits
+            if total_scores >= match.max_scores:
+                match.action = "match_end"
+                
+    @classmethod
+    def destroy_matches(cls):
+        for match in list(cls.matches.values()):
+            if match.action != "match_end":
+                continue
+            match.destroy()
 
 class Actions:
     @classmethod
     def new_match(cls, data):
         print("new_match()")
         match = Match(data)
-        Game.matches.append(match)
         print(f"ball: x:{match.ball.x} y:{match.ball.y}")
         print(f"player_left: x:{match.player_left.x} y:{match.player_left.y}")
     
@@ -203,8 +227,10 @@ async def main():
     while True:
         Game.move_balls()
         Match.move_players()
+        Match.verify_ended_matches()
         Game.create_payload()
-        
+        Match.destroy_matches()
+
         await asyncio.sleep(Game.fps_time)
         
 
