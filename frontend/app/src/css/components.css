@@ -1,3 +1,36 @@
+/* ------------------- ICON ------------------- */
+
+.icon--atom {
+    font-size: 10px;
+}
+
+.icon--microscopic {
+    font-size: 14px;
+}
+
+.icon--extra-small {
+    font-size: 16px;
+}
+
+.icon--small {
+    font-size: 18px;
+}
+
+.icon--medium {
+    font-size: 20px;
+}
+
+.icon--regular {
+    font-size: 24px;
+}
+
+.icon--large {
+    font-size: 28px;
+}
+
+.icon--extra-large {
+    font-size: 36px;
+}
 
 /* ------------------- BUTTON ------------------- */
 
@@ -402,4 +435,28 @@
 
 .menu-item--active .menu-item__text, .menu-item--active:hover .menu-item__text {
     color: var(--Comet-Cloud-50);
+}
+
+
+/* ------------------- MENU CONTROL ------------------- */
+
+.menu-control {
+    display: inline-flex;
+    padding: 4px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.menu-control__icon {
+    color: var(--Lunar-Dust-600);
+}
+
+.menu-control:hover {
+    background-color: var(--Comet-Cloud-950);
+}
+
+.menu-control:hover .menu-control__icon {
+    color: var(--Comet-Cloud-200);
 }

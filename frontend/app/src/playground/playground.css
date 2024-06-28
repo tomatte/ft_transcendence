@@ -42,3 +42,8 @@ html, body
 {
     flex-direction: column;
 }
+
+.playground-container--menu-control
+{
+    flex-direction: row;
+}
