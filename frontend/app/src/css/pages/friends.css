@@ -22,27 +22,18 @@
   gap: 16px;
   align-self: stretch;
   width: 100%;
-  flex: 0 0 auto;
   display: flex;
   position: relative;
+  flex: 0 0 auto;
 }
 
 .frame .div-2 {
-  align-items: flex-start;
-  justify-content: space-between;
-  align-self: stretch;
-  width: 100%;
-  flex: 0 0 auto;
-  display: flex;
-  position: relative;
-}
-
-.frame .div-3 {
-  width: 544px;
+  width: 1090px;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
   display: flex;
   position: relative;
+  flex: 0 0 auto;
 }
 
 .frame .text-wrapper {
@@ -59,18 +50,6 @@
   font-style: var(--heading-h4-font-style);
 }
 
-.frame .text-wrapper-2 {
-  font-family: "Play-Regular", Helvetica;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: normal;
-  position: relative;
-  width: fit-content;
-  color: var(--lunar-dust500);
-  letter-spacing: 0;
-  white-space: nowrap;
-}
-
 .frame .button {
   all: unset;
   box-sizing: border-box;
@@ -78,13 +57,27 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 12px;
+  padding: 10px 0px;
   position: relative;
   align-self: stretch;
   flex: 0 0 auto;
-  background-color: var(--cosmic-forest600);
   border-radius: 4px;
   overflow: hidden;
+}
+
+.frame .icon-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.frame .icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
 }
 
 .frame .button-text {
@@ -92,7 +85,7 @@
   width: fit-content;
   font-family: var(--body-regular-bold-font-family);
   font-weight: var(--body-regular-bold-font-weight);
-  color: var(--cosmic-forest50);
+  color: var(--comet-cloud400-base);
   font-size: var(--body-regular-bold-font-size);
   letter-spacing: var(--body-regular-bold-letter-spacing);
   line-height: var(--body-regular-bold-line-height);
@@ -113,16 +106,7 @@
   border-radius: 4px;
 }
 
-.frame .icon-wrapper {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.frame .icon {
+.frame .img {
   position: relative;
   width: 18px;
   height: 18px;
@@ -142,14 +126,14 @@
   font-style: var(--body-regular-font-style);
 }
 
-.frame .div-4 {
+.frame .div-3 {
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
   width: 100%;
-  flex: 0 0 auto;
   display: flex;
   position: relative;
+  flex: 0 0 auto;
 }
 
 .frame .navbar {
@@ -162,6 +146,19 @@
   flex: 0 0 auto;
   background-color: var(--comet-cloud1000);
   border-radius: 4px;
+}
+
+.frame .text-wrapper-2 {
+  position: relative;
+  width: 40px;
+  margin-top: -1px;
+  font-family: var(--body-caption-regular-font-family);
+  font-weight: var(--body-caption-regular-font-weight);
+  color: var(--lunar-dust500);
+  font-size: var(--body-caption-regular-font-size);
+  letter-spacing: var(--body-caption-regular-letter-spacing);
+  line-height: var(--body-caption-regular-line-height);
+  font-style: var(--body-caption-regular-font-style);
 }
 
 .frame .text-wrapper-3 {
@@ -179,20 +176,21 @@
 
 .frame .text-wrapper-4 {
   position: relative;
-  width: 100px;
+  flex: 1;
   margin-top: -1px;
   font-family: var(--body-caption-regular-font-family);
   font-weight: var(--body-caption-regular-font-weight);
   color: var(--lunar-dust500);
   font-size: var(--body-caption-regular-font-size);
+  text-align: right;
   letter-spacing: var(--body-caption-regular-letter-spacing);
   line-height: var(--body-caption-regular-line-height);
   font-style: var(--body-caption-regular-font-style);
 }
 
-.frame .div-5 {
+.frame .div-4 {
   display: flex;
-  height: 68px;
+  height: 76px;
   align-items: center;
   justify-content: space-between;
   padding: 16px;
@@ -203,6 +201,29 @@
   border-radius: 8px;
 }
 
+.frame .table-row-data-rank {
+  width: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  position: relative;
+}
+
+.frame .text-wrapper-5 {
+  position: relative;
+  width: fit-content;
+  margin-top: -1px;
+  font-family: var(--body-large-font-family);
+  font-weight: var(--body-large-font-weight);
+  color: var(--lunar-dust400);
+  font-size: var(--body-large-font-size);
+  letter-spacing: var(--body-large-letter-spacing);
+  line-height: var(--body-large-line-height);
+  white-space: nowrap;
+  font-style: var(--body-large-font-style);
+}
+
 .frame .table-row-player {
   display: flex;
   align-items: center;
@@ -210,8 +231,6 @@
   position: relative;
   flex: 1;
   flex-grow: 1;
-  margin-top: -3px;
-  margin-bottom: -3px;
 }
 
 .frame .table-row-player-2 {
@@ -219,7 +238,7 @@
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background-image: url(./img/table-row-player-image-2.png);
+  background-image: url(./img/image.png);
   background-size: cover;
   background-position: 50% 50%;
 }
@@ -269,46 +288,19 @@
 }
 
 .frame .table-row-data {
+  flex: 1;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
   position: relative;
-  flex: 1;
-  flex-grow: 1;
-}
-
-.frame .text-wrapper-5 {
-  margin-top: -1px;
-  font-family: var(--body-medium-bold-font-family);
-  font-weight: var(--body-medium-bold-font-weight);
-  font-size: var(--body-medium-bold-font-size);
-  line-height: var(--body-medium-bold-line-height);
-  position: relative;
-  width: fit-content;
-  color: var(--lunar-dust500);
-  letter-spacing: var(--body-medium-bold-letter-spacing);
-  white-space: nowrap;
-  font-style: var(--body-medium-bold-font-style);
-}
-
-.frame .div-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 16px;
-  align-items: flex-start;
-  justify-content: space-around;
-  gap: 8px;
-  position: relative;
-  flex: 1;
-  flex-grow: 1;
 }
 
 .frame .text-wrapper-6 {
   position: relative;
   width: fit-content;
-  margin-top: -4px;
-  margin-bottom: -2px;
+  margin-top: -1px;
   font-family: var(--body-medium-bold-font-family);
   font-weight: var(--body-medium-bold-font-weight);
   color: var(--lunar-dust500);
@@ -321,14 +313,66 @@
 
 .frame .table-row-actions {
   display: flex;
+  flex-direction: column;
+  height: 36px;
+  align-items: flex-end;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+}
+
+.frame .button-add {
+  display: inline-flex;
+  align-items: flex-start;
+  position: relative;
+  flex: 0 0 auto;
+  margin-bottom: -4px;
+}
+
+.frame .button-types {
+  display: flex;
+  width: 108px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  position: relative;
+  background-color: var(--cosmic-forest600);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.frame .button-text-2 {
+  position: relative;
+  width: fit-content;
+  font-family: var(--body-regular-bold-font-family);
+  font-weight: var(--body-regular-bold-font-weight);
+  color: var(--cosmic-forest50);
+  font-size: var(--body-regular-bold-font-size);
+  letter-spacing: var(--body-regular-bold-letter-spacing);
+  line-height: var(--body-regular-bold-line-height);
+  white-space: nowrap;
+  font-style: var(--body-regular-bold-font-style);
+}
+
+.frame .table-row-player-6 {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-image: url(./img/table-row-player-image-4.png);
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.frame .table-row-actions-2 {
+  display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 12px;
   position: relative;
   flex: 1;
   flex-grow: 1;
-  margin-top: -4px;
-  margin-bottom: -4px;
 }
 
 .frame .game-row-option {
@@ -342,13 +386,23 @@
   border-radius: 16px;
 }
 
-.frame .img {
+.frame .icon-2 {
   position: relative;
   width: 24px;
   height: 24px;
 }
 
-.frame .table-row-player-6 {
+.frame .table-row-player-7 {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-image: url(./img/table-row-player-image-2.png);
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.frame .table-row-player-8 {
   position: relative;
   width: 36px;
   height: 36px;
@@ -358,12 +412,12 @@
   background-position: 50% 50%;
 }
 
-.frame .table-row-player-7 {
+.frame .table-row-player-9 {
   position: relative;
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background-image: url(./img/image.png);
+  background-image: url(./img/table-row-player-image-3.png);
   background-size: cover;
   background-position: 50% 50%;
 }
@@ -392,7 +446,7 @@
   border-radius: 4px;
 }
 
-.frame .icon-2 {
+.frame .icon-3 {
   position: relative;
   width: 14px;
   height: 14px;
@@ -500,12 +554,6 @@
   flex: 0 0 auto;
   margin-left: -4px;
   margin-right: -4px;
-}
-
-.frame .icon-3 {
-  position: relative;
-  width: 16px;
-  height: 16px;
 }
 
 .frame .pagination-control-3 {

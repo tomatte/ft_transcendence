@@ -17,123 +17,138 @@ export default () => {
 
     // Conteúdo do contêiner principal  para Friends
     container.innerHTML = `
-   <div class="frame">
-      <div class="div">
-        <div class="div-2">
-          <div class="div-3">
-            <div class="text-wrapper">Friends</div>
-            <div class="text-wrapper-2">[25]</div>
-        <button class="button button--primary">
-            <span class="material-icons-round button__icon-left">sports_esports</span>
-            <span class="button__text font-body-regular-bold">Click me!</span>
-            <span class="material-icons-round button__icon-right">sports_esports</span>
-        </button>
-        <div class="search-bar">
-            <span class="material-icons-round search-bar__icon icon--regular">search</span>
-            <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
-        </div>
-      </div>
-      <div class="div-4">
-        <div class="navbar">
-          <div class="text-wrapper-3">PLAYER</div>
-          <div class="text-wrapper-3">GLOBAL RANKING</div>
-          <div class="text-wrapper-3">LOSSES AGAINST YOU</div>
-          <div class="text-wrapper-3">WINS AGAINST YOU</div>
-          <div class="text-wrapper-4">ACTIONS</div>
-        </div>
-        <div class="div-4">
-          <div class="div-5">
-            <div class="table-row-player">
-              <div class="table-row-player-2"></div>
-              <div class="table-row-player-3">
-                <div class="table-row-player-4">Caos</div>
-                <div class="table-row-player-5">clourenc</div>
-              </div>
-            </div>
-            <div class="table-row-data"><div class="text-wrapper-5">#1</div></div>
-            <div class="div-wrapper"><div class="text-wrapper-6">5</div></div>
-            <div class="div-wrapper"><div class="text-wrapper-6">6</div></div>
-            <div class="table-row-actions">
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="img" src="img/icon.svg" /></div>
-              </div>
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="img" src="img/icon-3.svg" /></div>
-              </div>
-            </div>
-          </div>
-          <div class="div-5">
-            <div class="table-row-player">
-              <div class="table-row-player-6"></div>
-              <div class="table-row-player-3">
-                <div class="table-row-player-4">Estagario</div>
-                <div class="table-row-player-5">etomiyos</div>
-              </div>
-            </div>
-            <div class="table-row-data"><div class="text-wrapper-5">#3</div></div>
-            <div class="div-wrapper"><div class="text-wrapper-6">8</div></div>
-            <div class="div-wrapper"><div class="text-wrapper-6">1</div></div>
-            <div class="table-row-actions">
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="img" src="img/icon.svg" /></div>
-              </div>
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="img" src="img/icon-3.svg" /></div>
-              </div>
-            </div>
-          </div>
-          <div class="div-5">
-            <div class="table-row-player">
-              <div class="table-row-player-7"></div>
-              <div class="table-row-player-3">
-                <div class="table-row-player-4">Tomatte</div>
-                <div class="table-row-player-5">dbrandao</div>
-              </div>
-            </div>
-            <div class="table-row-data"><div class="text-wrapper-5">#2</div></div>
-            <div class="div-wrapper"><div class="text-wrapper-6">3</div></div>
-            <div class="div-wrapper"><div class="text-wrapper-6">6</div></div>
-            <div class="table-row-actions">
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="img" src="img/icon.svg" /></div>
-              </div>
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="img" src="img/icon-3.svg" /></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="pagination">
-          <div class="pagination-control">
-            <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
-            <div class="pagination-control-2">Primeiro</div>
-          </div>
-        <div class="menu-control">
-            <div class="menu-control__icon">
-				<span class="material-icons-round icon--regular">keyboard_double_arrow_left</span>
-            </div>
-        </div>
-          <div class="element"><div class="pagination-position">1</div></div>
-          <div class="pagination-position-wrapper"><div class="pagination-position-2">2</div></div>
-          <div class="pagination-position-wrapper"><div class="pagination-position-2">3</div></div>
-          <div class="pagination-position-wrapper"><div class="pagination-position-2">4</div></div>
-          <div class="pagination-position-wrapper"><div class="pagination-position-2">5</div></div>
-          <div class="more">
-            <div class="img-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
-          </div>
-          <div class="pagination-position-wrapper"><div class="pagination-position-2">25</div></div>
-          <div class="pagination-control">
-            <div class="pagination-control-3">Próximo</div>
-            <div class="icon-wrapper"><img class="icon-2" src="img/image.svg" /></div>
-          </div>
-          <div class="pagination-control">
-            <div class="pagination-control-3">Último</div>
-            <div class="icon-wrapper"><img class="icon-2" src="img/image.svg" /></div>
-          </div>
-        </div>
-      </div>
+<div class="frame">
+  <div class="div">
+    <div class="div-2">
+      <div class="text-wrapper">Friends</div>
+      <button class="button">
+        <div class="icon-wrapper"><img class="icon" src="img/image.svg" /></div>
+        <div class="button-text">Share your Friends</div>
+      </button>
     </div>
- 
+
+    <div class="search-bar">
+      <span class="material-icons-round search-bar__icon icon--regular">search</span>
+      <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+    </div>
+  </div>
+
+  <div class="div-3">
+    <table class="custom-table">
+      <thead>
+        <tr class="font-body-caption-regular">
+          <th>PLAYER</th>
+          <th>GLOBAL RANKING</th>
+          <th>LOSSES AGAINST YOU</th>
+          <th>WINS AGAINST YOU</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Caos</td>
+          <td>#1</td>
+          <td>15</td>
+          <td>66%</td>
+          <td>
+            <div class="table-row-actions">
+              <div class="button-add">
+                <div class="button-types"><div class="button-text-2">Add friend</div></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>#2</td>
+          <td>80</td>
+          <td>30%</td>
+          <td>
+            <div class="table-row-actions-2">
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="icon-2" src="img/icon.svg" /></div>
+              </div>
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>#3</td>
+          <td>15</td>
+          <td>66%</td>
+          <td>
+            <div class="table-row-actions-2">
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="icon-2" src="img/icon.svg" /></div>
+              </div>
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>#4</td>
+          <td>15</td>
+          <td>66%</td>
+          <td>
+            <div class="table-row-actions">
+              <div class="button-add">
+                <div class="button-types"><div class="button-text-2">Add friend</div></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>#5</td>
+          <td>15</td>
+          <td>66%</td>
+          <td>
+            <div class="table-row-actions">
+              <div class="button-add">
+                <div class="button-types"><div class="button-text-2">Add friend</div></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <div class="pagination-control">
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
+      <div class="pagination-control-2">Primeiro</div>
+    </div>
+    <div class="pagination-control">
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
+      <div class="pagination-control-2">Anterior</div>
+    </div>
+    <div class="element"><div class="pagination-position">1</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">2</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">3</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">4</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">5</div></div>
+    <div class="more">
+      <div class="img-wrapper"><img class="icon" src="img/icon-6.svg" /></div>
+    </div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">25</div></div>
+    <div class="pagination-control">
+      <div class="pagination-control-3">Próximo</div>
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
+    </div>
+    <div class="pagination-control">
+      <div class="pagination-control-3">Último</div>
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
+    </div>
+  </div>
+</div>
+
     `;
 
     container.appendChild(style);

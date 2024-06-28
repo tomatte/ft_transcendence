@@ -9,116 +9,110 @@ export default () => {
         @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
         @import url('https://fonts.googleapis.com/css2?family=Material+Icons+Round&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
-        @import url('../css/Components.css');
-        @import url('../css/Colors.css');
-        @import url('../css/Typography.css');
+        @import url('../css/components.css');
+        @import url('../css/colors.css');
+        @import url('../css/typography.css');
         @import url('../css/pages/matches.css');
     `;
 
     // Conteúdo do contêiner principal para Matches
     container.innerHTML = `
-    <div class="page-content">
-      <div class="div">
-        <div class="div-2">
-          <div class="div-3">
-            <div class="text-wrapper">Matches</div>
-            <div class="text-wrapper-2">[8]</div>
-          </div>
-        <button class="button button--primary">
-            <span class="material-icons-round button__icon-left">sports_esports</span>
-            <span class="button__text font-body-regular-bold">Click me!</span>
-            <span class="material-icons-round button__icon-right">sports_esports</span>
-        </button>
-        </div>
-        <div class="div-4">
-          <div class="navbar">
-            <div class="table-header-group">PLAYER</div>
-            <div class="table-header-group">GAME TYPE</div>
-            <div class="table-header-group">SCORE</div>
-            <div class="table-header-group">STATUS</div>
-            <div class="table-header-group">DATE</div>
-          </div>
-          <div class="table-row-group">
-            <div class="table-row-group-row">
-              <div class="div-5">
-                <div class="table-row-player"></div>
-                <div class="table-row-player-2">
-                  <div class="table-row-player-3">Tomatte</div>
-                  <div class="table-row-player-4">dbrandao</div>
-                </div>
-              </div>
-              <div class="div-wrapper"><div class="text-wrapper-3">Friendly Match</div></div>
-              <div class="div-wrapper"><div class="text-wrapper-3">2 X 5</div></div>
-        <span class="tag tag--defeat">
-            <span class="tag__text font-body-regular-bold">Defeat</span>
-        </span>
-              <div class="div-wrapper"><div class="text-wrapper-3">22/06/2024</div></div>
-            </div>
-            <div class="table-row-group-row">
-              <div class="div-5">
-                <div class="table-row-player-5"></div>
-                <div class="table-row-player-2">
-                  <div class="table-row-player-3">Tomatte</div>
-                  <div class="table-row-player-4">dbrandao</div>
-                </div>
-              </div>
-              <div class="div-wrapper"><div class="text-wrapper-3">Tournament</div></div>
-              <div class="div-wrapper"><div class="text-wrapper-3">2 X 1</div></div>
-              <div class="div-wrapper">
-                <div class="tag-text-wrapper"><div class="tag-text-2">Victory</div></div>
-              </div>
-              <div class="div-wrapper"><div class="text-wrapper-3">22/06/2024</div></div>
-            </div>
-            <div class="table-row-group-row">
-              <div class="div-5">
-                <div class="table-row-player-6"></div>
-                <div class="table-row-player-2">
-                  <div class="table-row-player-3">Tomatte</div>
-                  <div class="table-row-player-4">dbrandao</div>
-                </div>
-              </div>
-              <div class="div-wrapper"><div class="text-wrapper-3">1V1 Match</div></div>
-              <div class="div-wrapper"><div class="text-wrapper-3">5 X 2</div></div>
-        <span class="tag tag--victory">
-            <span class="tag__text font-body-regular-bold">Victory</span>
-        </span>
-              <div class="div-wrapper"><div class="text-wrapper-3">22/06/2024</div></div>
-            </div>
-            <div class="table-row-group-row">
-              <div class="div-5">
-                <div class="table-row-player-7"></div>
-                <div class="table-row-player-2">
-                  <div class="table-row-player-3">Tomatte</div>
-                  <div class="table-row-player-4">dbrandao</div>
-                </div>
-              </div>
-              <div class="div-wrapper"><div class="text-wrapper-3">Friendly Match</div></div>
-              <div class="div-wrapper"><div class="text-wrapper-3">2 X 4</div></div>
-              <div class="div-wrapper">
-                <div class="tag"><div class="tag-text">Defeat</div></div>
-              </div>
-              <div class="div-wrapper"><div class="text-wrapper-3">22/06/2024</div></div>
-            </div>
-            <div class="table-row-group-row">
-              <div class="div-5">
-                <div class="table-row-player-8"></div>
-                <div class="table-row-player-2">
-                  <div class="table-row-player-3">Tomatte</div>
-                  <div class="table-row-player-4">dbrandao</div>
-                </div>
-              </div>
-              <div class="div-wrapper"><div class="text-wrapper-3">Friendly Match</div></div>
-              <div class="div-wrapper"><div class="text-wrapper-3">4 X 1</div></div>
-              <div class="div-wrapper">
-                <div class="tag-text-wrapper"><div class="tag-text-2">Victory</div></div>
-              </div>
-              <div class="div-wrapper"><div class="text-wrapper-3">22/06/2024</div></div>
-            </div>
-          </div>
-          <div class="pagination"></div>
-        </div>
-      </div>
+<div class="frame">
+  <div class="div">
+    <div class="div-2">
+      <div class="text-wrapper">Matches</div>
+      <button class="button">
+        <div class="icon-wrapper"><img class="icon" src="img/image.svg" /></div>
+        <div class="button-text">Share your Matches</div>
+      </button>
     </div>
+
+    <div class="search-bar">
+        <span class="material-icons-round search-bar__icon icon--regular">search</span>
+        <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+    </div>
+  </div>
+
+  <div class="div-3">
+    <table class="custom-table">
+      <thead>
+        <tr class="font-body-caption-regular">
+          <th>PLAYER</th>
+          <th>GAME TYPE</th>
+          <th>SCORE</th>
+          <th>STATUS</th>
+          <th>DATE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Caos</td>
+          <td>Single Player</td>
+          <td>102</td>
+          <td>Active</td>
+          <td>2024-06-28</td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>Multiplayer</td>
+          <td>80</td>
+          <td>Inactive</td>
+          <td>2024-06-27</td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>Single Player</td>
+          <td>66</td>
+          <td>Active</td>
+          <td>2024-06-26</td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>Multiplayer</td>
+          <td>15</td>
+          <td>Inactive</td>
+          <td>2024-06-25</td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>Single Player</td>
+          <td>30</td>
+          <td>Active</td>
+          <td>2024-06-24</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <div class="pagination-control">
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
+      <div class="pagination-control-2">Primeiro</div>
+    </div>
+    <div class="pagination-control">
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
+      <div class="pagination-control-2">Anterior</div>
+    </div>
+    <div class="element"><div class="pagination-position">1</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">2</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">3</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">4</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">5</div></div>
+    <div class="more">
+      <div class="img-wrapper"><img class="icon" src="img/icon-6.svg" /></div>
+    </div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">25</div></div>
+    <div class="pagination-control">
+      <div class="pagination-control-3">Próximo</div>
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
+    </div>
+    <div class="pagination-control">
+      <div class="pagination-control-3">Último</div>
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
+    </div>
+  </div>
+</div>
+
     `;
 
     // Adiciona o estilo ao contêiner
