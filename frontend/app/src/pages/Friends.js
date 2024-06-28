@@ -23,9 +23,11 @@ export default () => {
           <div class="div-3">
             <div class="text-wrapper">Friends</div>
             <div class="text-wrapper-2">[25]</div>
-          </div>
-          <button class="button"><div class="button-text">Add friend</div></button>
-        </div>
+        <button class="button button--primary">
+            <span class="material-icons-round button__icon-left">sports_esports</span>
+            <span class="button__text font-body-regular-bold">Click me!</span>
+            <span class="material-icons-round button__icon-right">sports_esports</span>
+        </button>
         <div class="search-bar">
           <div class="icon-wrapper"><img class="icon" src="img/icon-5.svg" /></div>
           <div class="search-bar-2">Search for a name...</div>
@@ -106,10 +108,11 @@ export default () => {
             <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
             <div class="pagination-control-2">Primeiro</div>
           </div>
-          <div class="pagination-control">
-            <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
-            <div class="pagination-control-2">Anterior</div>
-          </div>
+        <div class="menu-control">
+            <div class="menu-control__icon">
+				<span class="material-icons-round icon--regular">keyboard_double_arrow_left</span>
+            </div>
+        </div>
           <div class="element"><div class="pagination-position">1</div></div>
           <div class="pagination-position-wrapper"><div class="pagination-position-2">2</div></div>
           <div class="pagination-position-wrapper"><div class="pagination-position-2">3</div></div>

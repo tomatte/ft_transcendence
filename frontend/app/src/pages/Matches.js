@@ -24,11 +24,11 @@ export default () => {
             <div class="text-wrapper">Matches</div>
             <div class="text-wrapper-2">[8]</div>
           </div>
-          <button class="button">
-            <div class="icon-wrapper"><img class="icon" src="img/icon.svg" /></div>
-            <div class="button-text">Label</div>
-            <div class="icon-wrapper"><img class="icon" src="img/icon.svg" /></div>
-          </button>
+        <button class="button button--primary">
+            <span class="material-icons-round button__icon-left">sports_esports</span>
+            <span class="button__text font-body-regular-bold">Click me!</span>
+            <span class="material-icons-round button__icon-right">sports_esports</span>
+        </button>
         </div>
         <div class="div-4">
           <div class="navbar">
@@ -49,9 +49,9 @@ export default () => {
               </div>
               <div class="div-wrapper"><div class="text-wrapper-3">Friendly Match</div></div>
               <div class="div-wrapper"><div class="text-wrapper-3">2 X 5</div></div>
-              <div class="div-wrapper">
-                <div class="tag"><div class="tag-text">Defeat</div></div>
-              </div>
+        <span class="tag tag--defeat">
+            <span class="tag__text font-body-regular-bold">Defeat</span>
+        </span>
               <div class="div-wrapper"><div class="text-wrapper-3">22/06/2024</div></div>
             </div>
             <div class="table-row-group-row">
@@ -79,9 +79,9 @@ export default () => {
               </div>
               <div class="div-wrapper"><div class="text-wrapper-3">1V1 Match</div></div>
               <div class="div-wrapper"><div class="text-wrapper-3">5 X 2</div></div>
-              <div class="div-wrapper">
-                <div class="tag-text-wrapper"><div class="tag-text-2">Victory</div></div>
-              </div>
+        <span class="tag tag--victory">
+            <span class="tag__text font-body-regular-bold">Victory</span>
+        </span>
               <div class="div-wrapper"><div class="text-wrapper-3">22/06/2024</div></div>
             </div>
             <div class="table-row-group-row">
