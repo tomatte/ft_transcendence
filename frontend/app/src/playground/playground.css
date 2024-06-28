@@ -51,3 +51,7 @@ html, body
 .playground-container--profile-info {
     flex-direction: column;
 }
+
+.playground-container--search-bar {
+    flex-direction: column;
+}
