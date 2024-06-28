@@ -29,8 +29,8 @@ export default () => {
             <span class="material-icons-round button__icon-right">sports_esports</span>
         </button>
         <div class="search-bar">
-          <div class="icon-wrapper"><img class="icon" src="img/icon-5.svg" /></div>
-          <div class="search-bar-2">Search for a name...</div>
+            <span class="material-icons-round search-bar__icon icon--regular">search</span>
+            <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
         </div>
       </div>
       <div class="div-4">
