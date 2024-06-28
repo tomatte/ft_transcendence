@@ -18,12 +18,7 @@ application = ProtocolTypeRouter({
 	"websocket":
 		AuthMiddlewareStack(
 			URLRouter([
-				path("add_player_tournament/", websocket.views.Add_player_tournament.as_asgi()),
-				path("remove_player_tournament/", websocket.views.Remove_player_tournament.as_asgi()),
-				path("create_bracket/", websocket.views.Create_Bracket.as_asgi()),
-				path("start_tournament/", websocket.views.Start_tournament.as_asgi()),
-				path("end_tournament/", websocket.views.Finish_tournament.as_asgi()),
-				*game.urls.urlpatterns
+				*(game.urls.urlpatterns)
 			])
 		)
 })

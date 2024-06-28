@@ -138,3 +138,14 @@ class PlayerConsumer(AsyncWebsocketConsumer):
             await self.player_ready_action(data)
             return
          
+         
+class TournamentConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+        await self.send("eai meu truta")
+
+    async def receive(self, text_data):
+        print(text_data)
+
+    async def disconnect(self, close_code):
+        await self.close(close_code)

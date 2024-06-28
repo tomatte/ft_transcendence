@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament</title>
+</head>
+<body>
+    <div id="create">
+        <label id="label-create" for="btn-create">Tournament</label>
+        <button id="btn-create" onclick="createTournament()">create tournament</button>
+    </div>
+    <div id="creating" style="visibility: hidden;">
+        <h1>creating tournament...</h1>
+    </div>
+</body>
+<script>
+    function getRandomId(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+    
+    function createTournament() {
+        document.getElementById("create").style.visibility = 'hidden'
+        document.getElementById("creating").style.visibility = 'visible'
+    }
+
+    let ws = new WebSocket("ws://localhost:8000/tournament/create/")
+    let payload = {
+        key: "",
+        player_id: getRandomId(1, 3999999999),
+        match_id: -1,
+        action: ""
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        ws.onmessage = (event) => {
+            //data = JSON.parse(event.data)
+    
+            console.log(event.data)
+
+    
+        };
+      });
+</script>
+<style>
+
+    * {
+        color: whitesmoke;
+        background-color: rgb(24, 23, 23);
+    }
+</style>
+</html>
