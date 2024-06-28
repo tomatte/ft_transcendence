@@ -55,3 +55,7 @@ html, body
 .playground-container--search-bar {
     flex-direction: column;
 }
+
+.playground-container--pagination {
+    flex-direction: row;
+}
