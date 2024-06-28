@@ -348,7 +348,7 @@
     object-fit: cover;
 }
 
-/* ------------------- SIDEBAR MENU ITEM ------------------- */
+/* ------------------- MENU ITEM ------------------- */
 
 .menu-item {
     display: flex;
@@ -375,15 +375,31 @@
 .menu-item__text {
     flex: 1 1 0;
     color: var(--Lunar-Dust-600);
-    font-size: 14px;
-    font-family: 'Play', sans-serif; /* Assuming 'Play' is the font name */
-    font-weight: 700;
-    line-height: 19.60px;
     word-wrap: break-word;
 }
 
-.menu-item__icon:hover {
+.menu-item:hover{
+    background: var(--Comet-Cloud-950);
+}
+
+.menu-item:hover .menu-item__icon, .menu-item:hover .menu-item__text{
     color: var(--Comet-Cloud-500);
 }
 
+.menu-item--active {
+    background: var(--gradient-menu-item-blue);
+}
 
+.menu-item--active:hover {
+    background: var(--gradient-blue-menu-item-hover);
+}
+
+
+.menu-item--active .menu-item__icon, .menu-item--active:hover .menu-item__icon {
+    color: var(--Neptune-Blue-200);
+}
+
+
+.menu-item--active .menu-item__text, .menu-item--active:hover .menu-item__text {
+    color: var(--Comet-Cloud-50);
+}
