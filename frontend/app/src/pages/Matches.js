@@ -20,45 +20,21 @@ export default () => {
     // Conteúdo do contêiner principal para Matches
     container.innerHTML = `
         <div class="header">
-            <div class="title">
-                <div class="title-text">Matches</div>
-                <div class="badge">[8]</div>
-            </div>
-            <div class="filter">
-                <div class="filter-item">
-                    <div class="filter-icon"></div>
-                    <div class="filter-label">Label</div>
-                    <div class="filter-icon"></div>
-                </div>
-            </div>
+        <div class="header-content">
+            <div class="header-title">Matches</div>
+            <div class="header-sub
+    <div class="page-content">
+        <div class="content-block">
+            <div class="text-wrapper">Matches</div>
+            <div class="text-wrapper-2">[8]</div>
         </div>
-        <div class="matches">
-            <div class="match-item">
-                <div class="player-info">
-                    <img class="player-avatar" src="https://via.placeholder.com/36x36" />
-                    <div class="player-details">
-                        <div class="player-name">Tomatte</div>
-                        <div class="player-username">dbrandao</div>
-                    </div>
-                </div>
-                <div class="game-type">Friendly Match</div>
-                <div class="score">2 X 5</div>
-                <div class="status">
-                    <div class="status-badge defeat">Defeat</div>
-                </div>
-                <div class="date">22/06/2024</div>
-            </div>
-            <!-- Outros itens de jogo aqui -->
-        </div>
-        <div class="pagination">
-            <div class="pagination-item">Primeiro</div>
-            <div class="pagination-item">Anterior</div>
-            <div class="pagination-item active">1</div>
-            <div class="pagination-item">2</div>
-            <div class="pagination-item">3</div>
-            <div class="pagination-item">4</div>
-            <div class="pagination-item">5</div>
-        </div>
+        <button class="button">
+            <div class="icon-wrapper"><img class="icon" src="img/icon.svg" alt="Icon" /></div>
+            <div class="button-text">Label</div>
+            <div class="icon-wrapper"><img class="icon" src="img/icon.svg" alt="Icon" /></div>
+        </button>
+    </div>
+         </div>
     `;
 
     container.appendChild(style);
