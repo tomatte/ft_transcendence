@@ -59,3 +59,8 @@ html, body
 .playground-container--pagination {
     flex-direction: row;
 }
+
+.playground-container--metric-card {
+    flex-direction: column;
+}
+
