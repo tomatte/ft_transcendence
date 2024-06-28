@@ -13,6 +13,11 @@
     <div id="creating" style="visibility: hidden;">
         <h1>creating tournament...</h1>
     </div>
+
+    <ul id="players">
+    </ul>
+
+    </div>
 </body>
 <script>
     function getRandomId(min, max) {
@@ -36,11 +41,23 @@
         ws.send(JSON.stringify(payload))
     }
 
+    function addPlayerToList(data) {
+        const list = document.getElementById("players")
+        const item = document.createElement("li")
+        item.innerText = payload.player_id
+        list.appendChild(item)
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         ws.onmessage = (event) => {
             data = JSON.parse(event.data)
-    
-            console.log(data)
+                console.log(data)
+
+            if (data.status == "enter_tournament") {
+                addPlayerToList(data)
+                payload.tournament_id = data.tournament_id
+                return 
+            }
 
     
         };

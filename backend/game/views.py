@@ -161,7 +161,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         
     async def create_tournament(self, data):
         payload = {
-            "status": "created",
+            "status": "enter_tournament",
             "tournament_id": str(uuid.uuid4())
         }
         await self.send(json.dumps(payload))
