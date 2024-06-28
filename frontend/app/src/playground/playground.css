@@ -64,3 +64,14 @@ html, body
     flex-direction: column;
 }
 
+.playground-container--metric-line {
+    flex-direction: row;
+}
+
+.seila {
+    display: flex;
+   align-items: flex-start;
+   gap: 16px;
+   align-self: stretch;
+}
+

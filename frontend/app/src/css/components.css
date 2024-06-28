@@ -700,9 +700,11 @@ ul {
     color: var(--Comet-Cloud-300);
 }
 
-.seila {
-     display: flex;
-    align-items: flex-start;
+
+/* ------------------- METRIC LINE ------------------- */
+
+.metric-line {
+    display: flex;
+    align-items: center;
     gap: 16px;
-    align-self: stretch;
 }
