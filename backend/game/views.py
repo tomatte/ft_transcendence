@@ -4,6 +4,7 @@ from asgiref.sync import async_to_sync
 import json
 from .game_engine.pong import *
 from typing import Dict, TypedDict
+import uuid
 
 class PlayerMoveDataType(TypedDict):
     key: str
@@ -142,10 +143,25 @@ class PlayerConsumer(AsyncWebsocketConsumer):
 class TournamentConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
-        await self.send("eai meu truta")
+        payload = {
+            'status': 'connected'
+        }
+        await self.send(json.dumps(payload))
 
     async def receive(self, text_data):
         print(text_data)
 
+        data = json.loads(text_data)
+        
+        if data["action"] == "create":
+            await self.create_tournament(data)
+
     async def disconnect(self, close_code):
         await self.close(close_code)
+        
+    async def create_tournament(self, data):
+        payload = {
+            "status": "created",
+            "tournament_id": str(uuid.uuid4())
+        }
+        await self.send(json.dumps(payload))

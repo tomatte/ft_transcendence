@@ -20,26 +20,27 @@
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
-    
-    function createTournament() {
-        document.getElementById("create").style.visibility = 'hidden'
-        document.getElementById("creating").style.visibility = 'visible'
-    }
 
     let ws = new WebSocket("ws://localhost:8000/tournament/create/")
     let payload = {
-        key: "",
+        action: "",
         player_id: getRandomId(1, 3999999999),
-        match_id: -1,
-        action: ""
+        tournament_id: null,
     }
 
+    function createTournament() {
+        document.getElementById("create").style.visibility = 'hidden'
+        document.getElementById("creating").style.visibility = 'visible'
+        
+        payload.action = "create"
+        ws.send(JSON.stringify(payload))
+    }
 
     document.addEventListener("DOMContentLoaded", function() {
         ws.onmessage = (event) => {
-            //data = JSON.parse(event.data)
+            data = JSON.parse(event.data)
     
-            console.log(event.data)
+            console.log(data)
 
     
         };
