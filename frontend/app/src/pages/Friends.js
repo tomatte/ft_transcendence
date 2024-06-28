@@ -6,73 +6,131 @@ export default () => {
     // Criação de estilos
     const style = document.createElement("style");
     style.innerHTML = `
-            @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
+        @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
         @import url('https://fonts.googleapis.com/css2?family=Material+Icons+Round&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
         @import url('../css/components.css');
         @import url('../css/colors.css');
         @import url('../css/typography.css');
         @import url('../css/pages/friends.css');
- 
-    `;
+     `;
 
     // Conteúdo do contêiner principal  para Friends
     container.innerHTML = `
-<div class="container">
-    <div class="header">
-        <div class="title">
-            <div class="title-text">Friends</div>
-            <div class="count">[25]</div>
+   <div class="frame">
+      <div class="div">
+        <div class="div-2">
+          <div class="div-3">
+            <div class="text-wrapper">Friends</div>
+            <div class="text-wrapper-2">[25]</div>
+          </div>
+          <button class="button"><div class="button-text">Add friend</div></button>
         </div>
-        <div class="add-friend">
-            <div class="add-btn">Add friend</div>
+        <div class="search-bar">
+          <div class="icon-wrapper"><img class="icon" src="img/icon-5.svg" /></div>
+          <div class="search-bar-2">Search for a name...</div>
         </div>
-    </div>
-    <div class="search">
-        <input type="text" placeholder="Search for a name..." />
-    </div>
-    <div class="table">
-        <div class="table-header">
-            <div class="header-item">PLAYER</div>
-            <div class="header-item">GLOBAL RANKING</div>
-            <div class="header-item">LOSSES AGAINST YOU</div>
-            <div class="header-item">WINS AGAINST YOU</div>
-            <div class="header-item actions">ACTIONS</div>
+      </div>
+      <div class="div-4">
+        <div class="navbar">
+          <div class="text-wrapper-3">PLAYER</div>
+          <div class="text-wrapper-3">GLOBAL RANKING</div>
+          <div class="text-wrapper-3">LOSSES AGAINST YOU</div>
+          <div class="text-wrapper-3">WINS AGAINST YOU</div>
+          <div class="text-wrapper-4">ACTIONS</div>
         </div>
-        <div class="table-row">
-            <div class="row-item">
-                <img src="https://via.placeholder.com/36x36" alt="Avatar" />
-                <div class="player-info">
-                    <div class="player-name">Caos</div>
-                    <div class="player-username">clourenc</div>
-                </div>
+        <div class="div-4">
+          <div class="div-5">
+            <div class="table-row-player">
+              <div class="table-row-player-2"></div>
+              <div class="table-row-player-3">
+                <div class="table-row-player-4">Caos</div>
+                <div class="table-row-player-5">clourenc</div>
+              </div>
             </div>
-            <div class="row-item">#1</div>
-            <div class="row-item">5</div>
-            <div class="row-item">6</div>
-            <div class="row-item actions">
-                <div class="action-icon">
-                    <div class="icon-inner"></div>
-                </div>
-                <div class="action-icon">
-                    <div class="icon-inner"></div>
-                </div>
+            <div class="table-row-data"><div class="text-wrapper-5">#1</div></div>
+            <div class="div-wrapper"><div class="text-wrapper-6">5</div></div>
+            <div class="div-wrapper"><div class="text-wrapper-6">6</div></div>
+            <div class="table-row-actions">
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="img" src="img/icon.svg" /></div>
+              </div>
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="img" src="img/icon-3.svg" /></div>
+              </div>
             </div>
+          </div>
+          <div class="div-5">
+            <div class="table-row-player">
+              <div class="table-row-player-6"></div>
+              <div class="table-row-player-3">
+                <div class="table-row-player-4">Estagario</div>
+                <div class="table-row-player-5">etomiyos</div>
+              </div>
+            </div>
+            <div class="table-row-data"><div class="text-wrapper-5">#3</div></div>
+            <div class="div-wrapper"><div class="text-wrapper-6">8</div></div>
+            <div class="div-wrapper"><div class="text-wrapper-6">1</div></div>
+            <div class="table-row-actions">
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="img" src="img/icon.svg" /></div>
+              </div>
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="img" src="img/icon-3.svg" /></div>
+              </div>
+            </div>
+          </div>
+          <div class="div-5">
+            <div class="table-row-player">
+              <div class="table-row-player-7"></div>
+              <div class="table-row-player-3">
+                <div class="table-row-player-4">Tomatte</div>
+                <div class="table-row-player-5">dbrandao</div>
+              </div>
+            </div>
+            <div class="table-row-data"><div class="text-wrapper-5">#2</div></div>
+            <div class="div-wrapper"><div class="text-wrapper-6">3</div></div>
+            <div class="div-wrapper"><div class="text-wrapper-6">6</div></div>
+            <div class="table-row-actions">
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="img" src="img/icon.svg" /></div>
+              </div>
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="img" src="img/icon-3.svg" /></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- Additional rows go here -->
+        <div class="pagination">
+          <div class="pagination-control">
+            <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
+            <div class="pagination-control-2">Primeiro</div>
+          </div>
+          <div class="pagination-control">
+            <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
+            <div class="pagination-control-2">Anterior</div>
+          </div>
+          <div class="element"><div class="pagination-position">1</div></div>
+          <div class="pagination-position-wrapper"><div class="pagination-position-2">2</div></div>
+          <div class="pagination-position-wrapper"><div class="pagination-position-2">3</div></div>
+          <div class="pagination-position-wrapper"><div class="pagination-position-2">4</div></div>
+          <div class="pagination-position-wrapper"><div class="pagination-position-2">5</div></div>
+          <div class="more">
+            <div class="img-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
+          </div>
+          <div class="pagination-position-wrapper"><div class="pagination-position-2">25</div></div>
+          <div class="pagination-control">
+            <div class="pagination-control-3">Próximo</div>
+            <div class="icon-wrapper"><img class="icon-2" src="img/image.svg" /></div>
+          </div>
+          <div class="pagination-control">
+            <div class="pagination-control-3">Último</div>
+            <div class="icon-wrapper"><img class="icon-2" src="img/image.svg" /></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="pagination">
-        <div class="pagination-item">Primeiro</div>
-        <div class="pagination-item">Anterior</div>
-        <div class="pagination-item">1</div>
-        <div class="pagination-item">2</div>
-        <!-- Add more pagination items as needed -->
-        <div class="pagination-item">25</div>
-        <div class="pagination-item">Próximo</div>
-        <div class="pagination-item">Último</div>
-    </div>
-</div>
-
+ 
     `;
 
     container.appendChild(style);

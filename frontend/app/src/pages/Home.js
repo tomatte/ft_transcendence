@@ -12,7 +12,7 @@ export default () => {
         @import url('../css/components.css');
         @import url('../css/colors.css');
         @import url('../css/typography.css');
-        @import url('playground.css');
+        @import url('../css/pages/home.css');
 
         .game-mode-banner {
             margin-bottom: 20px; /* Adiciona espaço entre os blocos */
