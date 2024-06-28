@@ -165,3 +165,34 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             "tournament_id": str(uuid.uuid4())
         }
         await self.send(json.dumps(payload))
+        
+         
+class NotificationConsumer(AsyncWebsocketConsumer):
+    clients: dict[int, 'NotificationConsumer'] = dict()
+    
+    async def connect(self):
+        await self.accept()
+        payload = {
+            'status': 'connected'
+        }
+        await self.send(json.dumps(payload))
+
+    async def receive(self, text_data):
+        print(text_data)
+
+        data = json.loads(text_data)
+        
+        if data["action"] == "register":
+            await self.register_player(data)
+
+    async def disconnect(self, close_code):
+        await self.close(close_code)
+        
+    async def register_player(self, data):
+        if "player_id" not in data:
+            await self.disconnect(None)
+            return
+
+        NotificationConsumer.clients[data["player_id"]] = self
+        await self.send(json.dumps({"status": "registered"}))
+        

@@ -26,7 +26,8 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
-    let ws = new WebSocket("ws://localhost:8000/tournament/create/")
+    let ws_notification = new WebSocket("ws://localhost:8000/notification/")
+    let ws_tournament = new WebSocket("ws://localhost:8000/tournament/")
     let payload = {
         action: "",
         player_id: getRandomId(1, 3999999999),
@@ -38,7 +39,7 @@
         document.getElementById("creating").style.visibility = 'visible'
         
         payload.action = "create"
-        ws.send(JSON.stringify(payload))
+        ws_tournament.send(JSON.stringify(payload))
     }
 
     function addPlayerToList(data) {
@@ -48,8 +49,13 @@
         list.appendChild(item)
     }
 
+    function registerToNotification() {
+        payload.action = "register"
+        ws_notification.send(JSON.stringify(payload))
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
-        ws.onmessage = (event) => {
+        ws_tournament.onmessage = (event) => {
             data = JSON.parse(event.data)
                 console.log(data)
 
@@ -58,9 +64,19 @@
                 payload.tournament_id = data.tournament_id
                 return 
             }
-
-    
         };
+
+        ws_notification.onmessage = (event) => {
+            data = JSON.parse(event.data)
+                console.log(data)
+
+            if (data.status == "connected") {
+                registerToNotification()
+                payload.tournament_id = data.tournament_id
+                return 
+            }
+        };
+
       });
 </script>
 <style>
