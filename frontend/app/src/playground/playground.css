@@ -47,3 +47,11 @@ html, body
 {
     flex-direction: row;
 }
+
+.playground-container--profile-info {
+    flex-direction: column;
+}
+
+.playground-container--search-bar {
+    flex-direction: column;
+}
