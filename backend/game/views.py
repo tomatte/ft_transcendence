@@ -169,8 +169,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         
          
 class NotificationConsumer(AsyncWebsocketConsumer):
-    clients: dict[int, 'NotificationConsumer'] = dict()
-    
     async def connect(self):
         await self.accept()
         
@@ -189,6 +187,10 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         if data["action"] == "register":
             await self.register_player(data)
             return 
+        
+        if data["action"] == "invite_to_tournament":
+            await self.invite_to_tournament(data)
+            return
 
         await self.channel_layer.group_send(
             "notification",
@@ -201,8 +203,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def notification_message(self, event):
         await self.send(text_data=event["text"])
 
-
-
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("chat", self.channel_name)
         await self.close(close_code)
@@ -212,6 +212,34 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             await self.disconnect(None)
             return
 
-        NotificationConsumer.clients[data["player_id"]] = self
+        redis_client.set(data["player_id"], self.channel_name)
         await self.send(json.dumps({"status": "registered"}))
         
+    async def tournament_invitation(self, event):
+        print(event["text"])
+        await self.send(event["text"])
+        
+    async def invite_to_tournament(self, data):
+        if "friend_id" not in data:
+            return
+        if "tournament_id" not in data:
+            return
+        
+        channel_name = redis_client.get(data["friend_id"]).decode('utf-8')
+        
+        payload = {
+            "action": "do_something",
+            "tournament_id": data["tournament_id"]
+        }
+        
+        print(f"channel_name: {channel_name}")
+        await self.channel_layer.send(channel_name, {
+            "type": "tournament.invitation",
+            "text": json.dumps(payload)
+        })
+        
+        payload = {
+            "status": "success",
+            "text": "invitation sent"
+        }
+        await self.send(json.dumps(payload))

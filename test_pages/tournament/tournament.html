@@ -11,16 +11,19 @@
         <button id="btn-create" onclick="createTournament()">create tournament</button>
     </div>
 
-    <br>
-    <div>
-        <label for="custom-message">Custom Message</label>
-        <input id="custom-message" type="text">
-        <button onclick="sendCustomMessage()">send</button>
-    </div>
-    <br>
-
     <div id="creating" style="visibility: hidden;">
-        <h1>creating tournament...</h1>
+        <div>
+            <h1>creating tournament...</h1>
+            <h2 id="tournament_id"></h2>
+        </div>
+
+        <br>
+        <div>
+            <label for="tournament-invitation">Invite to Tournament</label>
+            <input id="friend-id" type="text" placeholder="player_id...">
+            <button onclick="sendTournamentInvitation()">send</button>
+        </div>
+        <br>
     </div>
 
     <ul id="players">
@@ -63,10 +66,10 @@
         ws_notification.send(JSON.stringify(payload))
     }
 
-    function sendCustomMessage() {
-        const message = document.getElementById("custom-message").value
-        payload.action = "message"
-        payload.message = message
+    function sendTournamentInvitation() {
+        const friend_id = document.getElementById("friend-id").value
+        payload.friend_id = friend_id
+        payload.action = "invite_to_tournament"
         ws_notification.send(JSON.stringify(payload))
     }
 
@@ -76,8 +79,9 @@
                 console.log(data)
 
             if (data.status == "enter_tournament") {
-                addPlayerToList(data)
                 payload.tournament_id = data.tournament_id
+                document.getElementById("tournament_id").innerText = data.tournament_id
+                addPlayerToList(data)
                 return 
             }
         };
