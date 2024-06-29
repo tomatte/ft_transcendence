@@ -1,19 +1,7 @@
-version: '3.0'
-
-volumes:
-  frontend-files:
-    driver_opts:
-      type: none
-      device: ${PWD}/frontend/app
-      o: bind
-  backend-files:
-    driver_opts:
-      type: none
-      device: ${PWD}/backend
-      o: bind
+version: '3.4'
 
 networks:
-  trans-network:
+  trans:
 
 services:
 
@@ -25,8 +13,6 @@ services:
       - "4009:80"
     volumes:
       - ./frontend/app:/var/www
-    networks:
-      - trans-network
 
   # backend:
   #   build: ./backend
@@ -34,27 +20,30 @@ services:
   #   ports:
   #     - "8000:8000"
   #   volumes:
-  #     - backend-files:/app
+  #     - ./backend:/app
   #   environment:
   #     POSTGRES_USER: ${POSTGRES_USER}
   #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   #     POSTGRES_DB: ${POSTGRES_DB}
   #     POSTGRES_PORT: ${POSTGRES_PORT}
   #     POSTGRES_HOST: ${POSTGRES_HOST}
+  #     PYTHONUNBUFFERED: 1
   #   networks:
   #     - trans-network
 
-  # db:
-  #   image: postgres:latest
-  #   container_name: ft_db
-  #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_DB: ${POSTGRES_DB}
-  #   restart: always
-  #   networks:
-  #     trans-network:
-    
+  db:
+    image: postgres:latest
+    container_name: ft_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+    - "5432:5432"
+    restart: always
+    networks:
+      - trans
+
   # mock-server:
   #   image: mockoon/cli:latest
   #   command: ["--data", "data", "--port", "3000"]
@@ -67,6 +56,21 @@ services:
   #     retries: 2
   #     start_period: 10s
   #   volumes:
-  #     - ./mock-data/transcendence.json:/data:readonly
+  #     - ./mock-data/transcendence.json:/data
   #   networks:
   #     - trans-network
+
+  redis:
+    image: redis:latest
+    container_name: ft_redis
+    ports:
+      - "6379:6379"
+
+
+# docker stop $(docker ps -a -q)
+# docker rm $(docker ps -a -q)
+# docker rmi $(docker images -q)
+# docker network prune -f
+# docker volume prune -f
+# docker system prune -a --volumes
+# docker volume rm ft_transcendence_backend-files ft_transcendence_frontend-files

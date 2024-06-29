@@ -1,66 +1,103 @@
-// Get the canvas element
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+function setPlayerLeft(y) {
+    const player = document.getElementById("player_left")
+    player.style.top = `${y}px`
+    player.style.left = `${30}px`
+}
 
-// Function to set canvas dimensions
-function setCanvasSize() {
-    const minWidth = 800; // Minimum width for the canvas
-    const maxWidth = 1600; // Maximum width for the canvas
-    const maxHeight = 900; // Maximum height for the canvas
+function setPlayerRight(y) {
+    const player = document.getElementById("player_right")
+    player.style.top = `${y}px`
+    player.style.right = `${40}px`
+}
 
-    // Calculate the desired width and height based on screen size
-    let desiredWidth = Math.min(maxWidth, window.innerWidth);
-    let desiredHeight = Math.min(maxHeight, window.innerHeight);
+function setBall(x, y) {
+    const ball = document.getElementById("ball")
+    ball.style.left = `${x}px`
+    ball.style.top = `${y}px`
+}
 
-    if (desiredWidth < minWidth) {
-        desiredWidth = minWidth;
+function setScores(leftScore, rightScore) {
+    const left = document.getElementById("score_left")
+    left.innerText = leftScore
+
+    const right = document.getElementById("score_right")
+    right.innerText = rightScore
+}
+
+function getRandomId(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+let ws = new WebSocket("ws://localhost:8000/player/")
+let payload = {
+    key: "",
+    player_id: 0,
+    match_id: -1,
+    action: ""
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    ws.onmessage = (event) => {
+        data = JSON.parse(event.data)
+
+        console.log(data)
+
+        if (data.action == "coordinates") {
+            const player_height = 100
+            const ball_radious = 10
+
+            ball_x = data.ball.x - ball_radious
+            ball_y = data.ball.y - ball_radious
+
+            player_left_y = data.player_left.y - (player_height / 2)
+            player_right_y = data.player_right.y - (player_height / 2)
+
+            player_left_points = data.player_left.points
+            player_right_points = data.player_right.points
+
+            setPlayerLeft(player_left_y)
+            setPlayerRight(player_right_y)
+            setBall(ball_x, ball_y)
+            setScores(player_left_points, player_right_points)
+            return ;
+        }
+
+        if (data.action == "connect") {
+            console.log("start connection")
+            payload.match_id = data.match_id
+            payload.action = "ready"
+            payload.player_id = data.player_id
+            ws.send(JSON.stringify(payload))
+        }
+
+    };
+  });
+
+
+let keyPressed = ""
+
+async function sendKey(key) {
+    if (keyPressed == key)
+        return
+    else
+        keyPressed = key
+    payload.key = key
+    payload.action = "player_move"
+    ws.send(JSON.stringify(payload))
+}
+
+document.addEventListener('keydown', async function(event) {
+    if (event.key === 'ArrowUp') {
+        sendKey('up');
+    } else if (event.key === 'ArrowDown') {
+        sendKey('down');
     }
+});
 
-    // Apply the calculated dimensions to the canvas
-    canvas.width = desiredWidth;
-    canvas.height = desiredHeight;
-
-    // Ensure the canvas remains centered
-    canvas.style.left = `${(window.innerWidth - desiredWidth) / 2}px`;
-    canvas.style.top = `${(window.innerHeight - desiredHeight) / 2}px`;
-
-    // Redraw elements on the canvas
-    drawPaddles();
-    drawMiddleLine();
-}
-
-// Function to draw paddles
-function drawPaddles() {
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Set paddle styles
-    ctx.fillStyle = '#FFFFFF'; // Paddle color
-    ctx.fillRect(20, canvas.height / 2 - 50, 10, 100); // Left paddle position and size
-    ctx.fillRect(canvas.width - 30, canvas.height / 2 - 50, 10, 100); // Right paddle position and size
-}
-
-// Function to draw the middle line
-function drawMiddleLine() {
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 8;
-    ctx.setLineDash([32, 32]); // Dotted line style
-
-    // Calculate positions for the line
-    const startX = canvas.width / 2;
-    const startY = 0;
-    const endX = canvas.width / 2;
-    const endY = canvas.height;
-
-    // Draw the line
-    ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(endX, endY);
-    ctx.stroke();
-}
-
-// Event listener for window resize
-window.addEventListener('resize', setCanvasSize);
-
-// Initial call to set canvas size and draw elements
-setCanvasSize();
+document.addEventListener('keyup', function(event) {
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+        sendKey("stop");
+    }
+});

@@ -1,0 +1,7 @@
+POST http://127.0.0.1:8000/api/users/add_friend/ HTTP/1.1
+content-type: application/json
+X-CSRFToken: bOuJezWr0vB0lH4WOr5KSbwgADgaMN87nW5MPbjh8vOStLzWBkaUYZ6NHcpYNxOm
+
+{
+	"friend_id": "2"
+}

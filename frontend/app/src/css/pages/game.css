@@ -41,16 +41,7 @@ body {
     z-index: 1;
 }
 
-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    background: linear-gradient(108deg, #000 0%, #0F0707 39%, #2D221C 70.5%, #471E07 100%);
-    border: 1px solid var(--Solar-Flare-950);
-}
-
-.left-score
+#score_left
 {
     color: white;
     position: absolute;
@@ -58,10 +49,64 @@ canvas {
     left: 25%;
 }
 
-.right-score
+#score_right
 {
     color: white;
     position: absolute;
     top: 10%;
     left: 75%;
+}
+
+#table
+{
+    position: relative;
+    z-index: -1;
+    background: linear-gradient(108deg, #000 0%, #0F0707 39%, #2D221C 70.5%, #471E07 100%);
+    border: 1px solid var(--Solar-Flare-950);
+    width: 1280px;
+    height: 720px;
+}
+
+#ball
+{
+    border-radius: 100%;
+    background-color: #FFFFFF;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    z-index: 1;
+}
+
+.middle_line 
+{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    width: 8px; /* Width of the line */
+    background: repeating-linear-gradient(
+        to bottom,
+        white 0, white 30px, /* 20px dash */
+        transparent 30px, transparent 60px /* 20px gap */
+    );
+    box-sizing: border-box;
+}
+
+.player
+{
+    background-color: #FFFFFF;
+    position: absolute;
+    top: 300px;
+    width: 10px;
+    height: 100px;
+}
+
+#player_left
+{
+    left: 30px;
+}
+
+#player_right
+{
+    right: 40px;
 }

@@ -5,4 +5,11 @@ db.sqlite3
 *.pyc
 *.log
 *.pot
-venv
+*.my_pgpass.conf
+*.pg_service.
+*.env
+# Virtualenv
+venv/
+__init__.py
+.vscode
+launch.json
