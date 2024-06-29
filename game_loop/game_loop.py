@@ -13,8 +13,8 @@ BALL_START_DIRECTION = 30
 
 class PlayerMoveDataType(TypedDict):
     key: str
-    player_id: int
-    match_id: int
+    player_id: str
+    match_id: str
     action: str
 
 class Socket:

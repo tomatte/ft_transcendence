@@ -99,7 +99,7 @@ class Rectangle:
         
 
 class Player(Rectangle):
-    def __init__(self, position: Tuple[float, float], speed: float, width: int, height: int, entity_type: Entity, id: int):
+    def __init__(self, position: Tuple[float, float], speed: float, width: int, height: int, entity_type: Entity, id: str):
         super().__init__(position, speed, 90)
         self.width = width
         self.height = height
@@ -162,7 +162,7 @@ class Player(Rectangle):
 type PlayersType = List[Player]
 
 class Ball(Rectangle):
-    def __init__(self, position: List[float], radious: int, speed: float, direction: int, match_id: int):
+    def __init__(self, position: List[float], radious: int, speed: float, direction: int, match_id: str):
         super().__init__(position, speed, direction)
         self.type = "ball"
         self.radious = radious

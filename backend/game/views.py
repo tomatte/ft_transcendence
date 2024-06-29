@@ -9,8 +9,8 @@ from backend.utils import redis_client
 
 class PlayerMoveDataType(TypedDict):
     key: str
-    player_id: int
-    match_id: int
+    player_id: str
+    match_id: str
     action: str
 
 class PlayerDataType(TypedDict):
@@ -63,7 +63,7 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
 class PlayerConsumer(AsyncWebsocketConsumer):
     players = {}
     num_players = 0
-    new_match_id = 1
+    new_match_id = str(uuid.uuid4())
     
     
     @classmethod
@@ -86,7 +86,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
                     "points": player["points"]
                 }
             for player_id, player in match["players"].items():
-                player = cls.players.get(int(player_id), None)
+                player = cls.players.get(player_id, None)
                 if player is not None:
                     await player["client"].send(json.dumps(payload))
     
@@ -94,11 +94,12 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         await self.accept()
         PlayerConsumer.num_players += 1
         if PlayerConsumer.num_players % 2 != 0:
-            PlayerConsumer.new_match_id += 1
+            PlayerConsumer.new_match_id = str(uuid.uuid4())
 
         payload = {
             "action": "connect",
             "match_id": PlayerConsumer.new_match_id,
+            "player_id": str(uuid.uuid4()),
 		}
         
         await self.send(json.dumps(payload))

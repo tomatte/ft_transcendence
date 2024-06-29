@@ -33,7 +33,7 @@ function getRandomId(min, max) {
 let ws = new WebSocket("ws://localhost:8000/player/")
 let payload = {
     key: "",
-    player_id: getRandomId(1, 3999999999),
+    player_id: 0,
     match_id: -1,
     action: ""
 }
@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("start connection")
             payload.match_id = data.match_id
             payload.action = "ready"
+            payload.player_id = data.player_id
             ws.send(JSON.stringify(payload))
         }
 
