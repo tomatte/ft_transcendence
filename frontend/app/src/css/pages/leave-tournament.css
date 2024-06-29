@@ -48,14 +48,41 @@ gap: 24px;
 align-self: stretch;
 }
 
-.Title-Frame-10072{
+.Title-Frame-10072 {
     align-self: stretch;
-    color: var(--Lunar-Dust-500);
+    color: var(--Lunar-Dust-500, #737584);
+    font-family: Play;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 22.4px */
 }
 
-.icon{
-    display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+
+.Title-frame10073 {
+    color: var(--Lunar-Dust-50);
+    font-family: "Red Hat Display";
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%; /* 42px */
 }
+
+
+.Frame-10101 {
+    display: flex;
+    justify-content: space-between; /* Ajusta o espaço entre os botões */
+    align-items: center;
+    gap: 16px; /* Espaço entre os botões */
+    align-self: stretch; /* Para estender ao longo da largura */
+}
+
+.button {
+    border-radius: 4px;
+    display: flex;
+    padding: 10px 16px;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+}
+
