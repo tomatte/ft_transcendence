@@ -95,6 +95,10 @@
                 payload.tournament_id = data.tournament_id
                 return 
             }
+
+            if (data.status == "tournament_invitation") {
+                console.log("we got an invite!!!")
+            }
         };
 
       });

@@ -32,7 +32,6 @@ class MatchData(TypedDict):
 MatchDict = Dict[str, MatchData]
 
 class GameLoopConsumer(AsyncWebsocketConsumer):
-    
     async def connect(self):
         await self.accept()
         redis_client.set("game_loop", self.channel_name)
@@ -223,10 +222,11 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         await self.send(json.dumps({"status": "registered"}))
         
     async def tournament_invitation(self, event):
-        print(event["text"])
-        await self.send(event["text"])
+        print("tournament_invitation()")
+        await self.send(json.dumps(event))
         
     async def invite_to_tournament(self, data):
+        print("invite_to_tournament()")
         if "friend_id" not in data:
             return
         if "tournament_id" not in data:
@@ -235,18 +235,14 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         channel_name = redis_client.get(data["friend_id"]).decode('utf-8')
         
         payload = {
-            "action": "do_something",
+            "type": "tournament.invitation",
+            "status": "tournament_invitation",
             "tournament_id": data["tournament_id"]
         }
         
-        print(f"channel_name: {channel_name}")
-        await self.channel_layer.send(channel_name, {
-            "type": "tournament.invitation",
-            "text": json.dumps(payload)
-        })
+        await self.channel_layer.send(channel_name, payload)
         
         payload = {
-            "status": "success",
-            "text": "invitation sent"
+            "status": "invitation_sent"
         }
         await self.send(json.dumps(payload))
