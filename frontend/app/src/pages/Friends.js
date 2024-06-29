@@ -1,72 +1,141 @@
-export default () => {
-    const container = document.createElement("div");
-    container.classList.add("container");
+const Friends = () => {
+  const component = document.createElement('div');
+  component.innerHTML = `
+<div class="frame">
+  <div class="div">
+    <div class="div-2">
+                <div class="game-mode-banner__info">
+                    <div class="game-mode-banner__info__title">FRIENDS</div>
+      <button class="button">
+        <div class="icon-wrapper"><img class="icon" src="img/image.svg" /></div>
+        <div class="button-text">Share your Friends</div>
+      </button>
+    </div>
 
-    const style = document.createElement("style");
-    style.innerHTML = `
-        .container {
-            background: linear-gradient(135deg, #000428, #004e92); /* Gradiente azul espacial */
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            color: #ffffff;
-        }
-        .container h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        .container p {
-            font-size: 1.2em;
-        }
-        .notification {
-            background: linear-gradient(135deg, #4e54c8, #8f94fb); /* Gradiente azul roxo */
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 5px;
-        }
-        .notification h2 {
-            font-size: 1.5em;
-        }
-        .notification p {
-            font-size: 1.2em;
-        }
-        .add-friend {
-            background-color: #1E90FF; /* Azul Dodger */
-            border: none;
-            padding: 10px 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            color: #ffffff;
-            font-size: 1.2em;
-        }
-        .add-friend:hover {
-            background-color: #104E8B; /* Azul profundo */
-        }
-    `;
+    <div class="search-bar">
+      <span class="material-icons-round search-bar__icon icon--regular">search</span>
+      <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+    </div>
+  </div>
 
-    container.innerHTML = `
-        <h1>Amigos do Espaço Lontra</h1>
-        <p>Olá, queridos amigos lontrinhas! Preparem-se para uma reunião intergaláctica sobre quem consegue boiar melhor no espaço. 🦦🚀</p>
-        <div class="notification">
-            <h2>Notificação 1</h2>
-            <p>Uma lontra acabou de ganhar uma competição de mergulho espacial de costas. <strong>É isso aí, mantenha-se no topo!</strong></p>
-        </div>
-        <button class="add-friend">Adicionar Amigo Lontra Espacial</button>
-    `;
+  <div class="div-3">
+    <table class="custom-table">
+      <thead>
+        <tr class="font-body-caption-regular">
+          <th>PLAYER</th>
+          <th>GLOBAL RANKING</th>
+          <th>LOSSES AGAINST YOU</th>
+          <th>WINS AGAINST YOU</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Caos</td>
+          <td>#1</td>
+          <td>15</td>
+          <td>66%</td>
+          <td>
+            <div class="table-row-actions">
+              <div class="button-add">
+                <div class="button-types"><div class="button-text-2">Add friend</div></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>#2</td>
+          <td>80</td>
+          <td>30%</td>
+          <td>
+            <div class="table-row-actions-2">
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="icon-2" src="img/icon.svg" /></div>
+              </div>
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>#3</td>
+          <td>15</td>
+          <td>66%</td>
+          <td>
+            <div class="table-row-actions-2">
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="icon-2" src="img/icon.svg" /></div>
+              </div>
+              <div class="game-row-option">
+                <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>#4</td>
+          <td>15</td>
+          <td>66%</td>
+          <td>
+            <div class="table-row-actions">
+              <div class="button-add">
+                <div class="button-types"><div class="button-text-2">Add friend</div></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Caos</td>
+          <td>#5</td>
+          <td>15</td>
+          <td>66%</td>
+          <td>
+            <div class="table-row-actions">
+              <div class="button-add">
+                <div class="button-types"><div class="button-text-2">Add friend</div></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    const addFriendButton = container.querySelector('.add-friend');
-    addFriendButton.addEventListener('click', () => {
-        const newFriendNotification = document.createElement('div');
-        newFriendNotification.classList.add('notification');
-        newFriendNotification.innerHTML = `
-            <h2>Amigo Lontra Adicionado!</h2>
-            <p>Parabéns! Você acabou de adicionar mais um amigo lontra espacial à sua lista. 🦦🎉</p>
-        `;
-        container.appendChild(newFriendNotification);
-    });
+  <div class="pagination">
+    <div class="pagination-control">
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
+      <div class="pagination-control-2">Primeiro</div>
+    </div>
+    <div class="pagination-control">
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
+      <div class="pagination-control-2">Anterior</div>
+    </div>
+    <div class="element"><div class="pagination-position">1</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">2</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">3</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">4</div></div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">5</div></div>
+    <div class="more">
+      <div class="img-wrapper"><img class="icon" src="img/icon-6.svg" /></div>
+    </div>
+    <div class="pagination-position-wrapper"><div class="pagination-position-2">25</div></div>
+    <div class="pagination-control">
+      <div class="pagination-control-3">Próximo</div>
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
+    </div>
+    <div class="pagination-control">
+      <div class="pagination-control-3">Último</div>
+      <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
+    </div>
+  </div>
+</div>
 
-    container.appendChild(style);
-    return container;
-}
+`;
+return component;
+};
+
+export default Friends;

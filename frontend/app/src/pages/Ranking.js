@@ -1,38 +1,163 @@
-export default () => {
-    const container = document.createElement("div");
-    container.classList.add("container");
+const Ranking = () => {
+  const component = document.createElement('div');
+  component.innerHTML = `
+    <div class="frame">
+      <div class="div">
+        <div class="div-2">
+                <div class="game-mode-banner__info">
+                    <div class="game-mode-banner__info__title">RANKING</div>
+          <button class="button">
+            <div class="icon-wrapper"><img class="icon" src="img/image.svg" /></div>
+            <div class="button-text">Share your ranking</div>
+          </button>
+        </div>
 
-    const style = document.createElement("style");
-    style.innerHTML = `
-        .container {
-            background-color: #4CAF50; /* Cor de fundo verde */
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .container h1,
-        .container p {
-            color: rgba(255, 255, 255, 1); /* Cor branca */
-        }
+        <div class="search-bar">
+            <span class="material-icons-round search-bar__icon icon--regular">search</span>
+            <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+        </div>
+      </div>
+
+      <table class="custom-table">
+          <thead>
+              <tr class="font-body-caption-regular">
+                  <th>PLAYER</th>
+                  <th>TOTAL SCORE</th>
+                  <th>WINS</th>
+                  <th>LOSSES</th>
+                  <th>WIN RATE</th>
+                  <th>LOSS RATE</th>
+                  <th>ACTIONS</th>
+              </tr>
+          </thead>
+          <tbody>
+      </table>
+
+      <div class="div-3">
+        <div class="div-4">
+          <div class="table-row-data-rank"><div class="text-wrapper-5">#1</div></div>
+          <div class="table-row-player">
+            <div class="table-row-player-2"></div>
+            <div class="table-row-player-3">
+              <div class="table-row-player-4">Caos</div>
+              <div class="table-row-player-5">clourenc</div>
+            </div>
+          </div>
+          <div class="table-row-data"><div class="text-wrapper-6">102</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">80</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">15</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
+          <div class="table-row-actions">
+
+            </div>
+          </div>
+        </div>
+        <div class="div-4">
+          <div class="table-row-data-rank"><div class="text-wrapper-5">#2</div></div>
+          <div class="table-row-player">
+            <div class="table-row-player-6"></div>
+            <div class="table-row-player-3">
+              <div class="table-row-player-4">Caos</div>
+              <div class="table-row-player-5">clourenc</div>
+            </div>
+          </div>
+          <div class="table-row-data"><div class="text-wrapper-6">102</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">80</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">15</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
+          <div class="table-row-actions-2">
+
+
+          </div>
+        </div>
+        <div class="div-4">
+          <div class="table-row-data-rank"><div class="text-wrapper-5">#3</div></div>
+          <div class="table-row-player">
+            <div class="table-row-player-7"></div>
+            <div class="table-row-player-3">
+              <div class="table-row-player-4">Caos</div>
+              <div class="table-row-player-5">clourenc</div>
+            </div>
+          </div>
+          <div class="table-row-data"><div class="text-wrapper-6">102</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">80</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">15</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
+          <div class="table-row-actions-2">
+
+          </div>
+        </div>
+        <div class="div-4">
+          <div class="table-row-data-rank"><div class="text-wrapper-5">#4</div></div>
+          <div class="table-row-player">
+            <div class="table-row-player-8"></div>
+            <div class="table-row-player-3">
+              <div class="table-row-player-4">Caos</div>
+              <div class="table-row-player-5">clourenc</div>
+            </div>
+          </div>
+          <div class="table-row-data"><div class="text-wrapper-6">102</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">80</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">15</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
+          <div class="table-row-actions">
+
+          </div>
+        </div>
+        <div class="div-4">
+          <div class="table-row-data-rank"><div class="text-wrapper-5">#5</div></div>
+          <div class="table-row-player">
+            <div class="table-row-player-9"></div>
+            <div class="table-row-player-3">
+              <div class="table-row-player-4">Caos</div>
+              <div class="table-row-player-5">clourenc</div>
+            </div>
+          </div>
+          <div class="table-row-data"><div class="text-wrapper-6">102</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">80</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">15</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">66%</div></div>
+          <div class="table-row-data"><div class="text-wrapper-6">30%</div></div>
+          <div class="table-row-actions">
+
+          </div>
+        </div>
+      </div>
+      <div class="pagination">
+        <div class="pagination-control">
+          <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
+          <div class="pagination-control-2">Primeiro</div>
+        </div>
+        <div class="pagination-control">
+          <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
+          <div class="pagination-control-2">Anterior</div>
+        </div>
+        <div class="element"><div class="pagination-position">1</div></div>
+        <div class="pagination-position-wrapper"><div class="pagination-position-2">2</div></div>
+        <div class="pagination-position-wrapper"><div class="pagination-position-2">3</div></div>
+        <div class="pagination-position-wrapper"><div class="pagination-position-2">4</div></div>
+        <div class="pagination-position-wrapper"><div class="pagination-position-2">5</div></div>
+        <div class="more">
+          <div class="img-wrapper"><img class="icon" src="img/icon-6.svg" /></div>
+        </div>
+        <div class="pagination-position-wrapper"><div class="pagination-position-2">25</div></div>
+        <div class="pagination-control">
+          <div class="pagination-control-3">Próximo</div>
+          <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
+        </div>
+        <div class="pagination-control">
+          <div class="pagination-control-3">Último</div>
+          <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
+        </div>
+      </div>
+    </div>
+
     `;
-
-    container.innerHTML = `
-        <h1>Ranking das Lontras Mais Divertidas!</h1>
-        <p>Quem disse que lontras não têm senso de humor? Confira quem está no topo do ranking de piadas aquáticas!</p>
-        <div class="notification">
-            <h2>Posição 1: Lula Cômica</h2>
-            <p>Ela é a rainha das piadas de polvos! Ninguém consegue segurar o riso quando ela começa.</p>
-        </div>
-        <div class="notification">
-            <h2>Posição 2: Otávio Piadista</h2>
-            <p>Se há uma lontra que sabe fazer um trocadilho, é o Otávio. Prepare-se para rolar de rir!</p>
-        </div>
-        <div class="notification">
-            <h2>Posição 3: Marlon Trapalhão</h2>
-            <p>Apesar de desastrado, ele sempre acaba fazendo todo mundo gargalhar com suas trapalhadas na água.</p>
-        </div>
-    `;
-
-    container.appendChild(style);
-    return container;
-}
+    return component;
+  };
+  
+  export default Ranking;

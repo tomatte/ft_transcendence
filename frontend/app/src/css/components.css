@@ -1,0 +1,874 @@
+/* ------------------- SYSTEM ------------------- */
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+/* ------------------- ICON ------------------- */
+
+.icon--atom {
+    font-size: 10px;
+}
+
+.icon--microscopic {
+    font-size: 14px;
+}
+
+.icon--extra-small {
+    font-size: 16px;
+}
+
+.icon--small {
+    font-size: 18px;
+}
+
+.icon--medium {
+    font-size: 20px;
+}
+
+.icon--regular {
+    font-size: 24px;
+}
+
+.icon--large {
+    font-size: 28px;
+}
+
+.icon--extra-large {
+    font-size: 36px;
+}
+
+/* ------------------- BUTTON ------------------- */
+
+.button
+{
+    display: inline-flex;
+    padding: 10px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.button--primary
+{
+    background-color: var(--Neptune-Blue-600);
+    color: var(--Neptune-Blue-50);
+}
+
+.button--primary:hover
+{
+    color: var(--Neptune-Blue-100);
+    background: var(--Neptune-Blue-500);
+}
+
+.button--secondary
+{
+    color: var(--Lunar-Dust-50);
+    background-color: var(--Lunar-Dust-700);
+}
+
+.button--secondary:hover
+{
+    color: var(--Lunar-Dust-100);
+    background-color: var(--Lunar-Dust-600);
+}
+
+.button--outline
+{
+    color: var(--Comet-Cloud-400);
+    background-color: transparent;
+}
+
+.button--outline:hover
+{
+    color: var(--Comet-Cloud-300);
+    background-color: transparent;
+}
+
+.button--tertiary
+{
+    color: var(--Solar-Flare-50);
+    background-color: var(--Solar-Flare-600);
+}
+
+.button--tertiary:hover
+{
+    color: var(--Solar-Flare-100);
+    background-color: var(--Solar-Flare-700);
+}
+
+.button--success
+{
+    color: var(--Cosmic-Forest-50);
+    background-color: var(--Cosmic-Forest-600);
+}
+
+.button--success:hover
+{
+    color: var(--Cosmic-Forest-100);
+    background-color: var(--Cosmic-Forest-700);
+}
+
+.button--danger
+{
+    color: var(--Red-Dwarf-50);
+    background-color: var(--Red-Dwarf-600);
+}
+
+.button--danger:hover
+{
+    color: var(--Red-Dwarf-100);
+    background-color: var(--Red-Dwarf-700);
+}
+
+.button__icon-left,
+.button__icon-right
+{
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ------------------- GAME MODE BANNER ------------------- */
+
+.game-mode-banner--tournament
+{
+    background: var(--Solar-Flare-Gradient-Default);
+}
+
+.game-mode-banner--tournament:hover
+{
+    background: var(--Solar-Flare-Gradient-Expanded);
+}
+
+.game-mode-banner--play-randomly
+{
+    background: var(--Lunar-Dust-Gradient-Default);
+}
+
+.game-mode-banner--play-randomly:hover
+{
+    background: var(--Lunar-Dust-Gradient-Expanded);
+}
+
+.game-mode-banner--friendly-match
+{
+    background: var(--Neptune-Blue-Gradient-Default);
+}
+
+.game-mode-banner--friendly-match:hover
+{
+    background: var(--Neptune-Blue-Gradient-Expanded);
+}
+
+.game-mode-banner {
+    width: 100%;
+    height: 160px;
+    padding-left: 24px;
+    padding-right: 24px;
+    border-radius: 16px;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    display: inline-flex;
+}
+
+
+.game-mode-banner__info {
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+    display: inline-flex;
+}
+
+.game-mode-banner__info__title {
+    color: #FEF6EE;
+    font-size: 20px;
+    font-family: "Red Hat Display", sans-serif;
+    font-weight: 700;
+    line-height: 32px;
+    word-wrap: break-word;
+}
+
+.game-mode-banner__info__button {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+}
+
+.game-mode-banner__illustration {
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    align-self: stretch;
+    transition: width 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+.game-mode-banner:hover .game-mode-banner__illustration {
+    width: 264px;
+}
+
+.game-mode-banner__illustration__image {
+    flex: 1;
+    align-self: stretch;
+    object-fit: cover;
+}
+
+
+/* ------------------- TAG ------------------- */
+
+.tag
+{
+    display: inline-flex;
+    padding: 4px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+}
+
+.tag--defeat
+{
+    background: var(--Red-Dwarf-900);
+    color: var(--Red-Dwarf-300)
+}
+
+.tag--victory
+{
+    background: var(--Cosmic-Forest-900);
+    color: var(--Cosmic-Forest-300)
+}
+
+
+/* ------------------- GAME ROW OPTION ------------------- */
+
+.game-row-option
+{
+    display: inline-flex;
+    padding: 10px;
+    align-items: center;
+    gap: 8px;
+    background: var(--Comet-Cloud-950);
+    color: var(--Comet-Cloud-500);
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+    transition: all 0.2s ease;
+}
+
+.game-row-option:hover
+{
+    background: var(--Comet-Cloud-900);
+    color: var(--Comet-Cloud-300);
+}
+
+.game-row-option--active
+{
+    background: var(--Comet-Cloud-900);
+    color: var(--Comet-Cloud-300);
+}
+
+.game-row-option--active:hover
+{
+    background: var(--Comet-Cloud-800);
+    color: var(--Comet-Cloud-200);
+}
+
+.game-row-option__icon
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ------------------- TABLE ------------------- */
+
+
+.custom-table {
+    width: 90%;
+    max-width: 800px;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #22222B;
+    color: #737584;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.custom-table caption {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    color: #BEC7E3;
+}
+
+.custom-table thead {
+    background-color: #18181B;
+}
+
+.custom-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.custom-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.custom-table tbody tr {
+    background-color: #1E1E26;
+}
+
+.custom-table tbody tr:nth-child(even) {
+    background-color: #22222B;
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status.defeat {
+    background-color: #841820;
+    color: #FFA0A7;
+}
+
+.status.victory {
+    background-color: #064E3B;
+    color: #6EE7AF;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+}
+
+.player-info img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.player-name {
+    font-weight: bold;
+    color: #BEC7E3;
+}
+.player-username {
+    color: #737584;
+    font-size: 14px;
+}
+
+.image-table {
+    width: 36px;
+    height:36px;
+    flex: 1;
+    align-self: stretch;
+    object-fit: cover;
+}
+
+/* ------------------- MENU ITEM ------------------- */
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 4px;
+    justify-content: flex-start;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.menu-item a {
+    display: flex;
+    width: 100%;
+    padding: 8px;
+    align-items: center;
+    align-self: stretch;
+    text-decoration: none;
+    gap: 8px;
+    color: var(--Lunar-Dust-600);
+    border-radius: inherit;
+}
+
+.menu-item__icon {
+    color: inherit;
+}
+
+.menu-item__text {
+    flex: 1;
+    color: inherit;
+}
+
+.menu-item:hover{
+    background: var(--Comet-Cloud-950);
+}
+
+.menu-item:hover .menu-item__icon,
+.menu-item:hover .menu-item__text {
+    color: var(--Comet-Cloud-500);
+}
+
+.menu-item--active {
+    background: var(--gradient-menu-item-blue);
+}
+
+.menu-item--active .menu-item__icon, .menu-item--active:hover .menu-item__icon {
+    color: var(--Neptune-Blue-200);
+}
+
+.menu-item--active .menu-item__text, .menu-item--active:hover .menu-item__text {
+    color: var(--Comet-Cloud-50);
+}
+
+.menu-item--active:hover {
+    background: var(--gradient-blue-menu-item-hover);
+}
+
+
+/* ------------------- MENU CONTROL ------------------- */
+
+.menu-control {
+    display: inline-flex;
+    padding: 4px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.menu-control__icon {
+    color: var(--Lunar-Dust-600);
+}
+
+.menu-control:hover {
+    background-color: var(--Comet-Cloud-950);
+}
+
+.menu-control:hover .menu-control__icon {
+    color: var(--Comet-Cloud-200);
+}
+
+
+/* ------------------- PROFILE INFO ------------------- */
+
+.profile-info {
+    display: inline-flex;
+    padding: 12px 8px;
+    align-items: center;
+    gap: 12px;
+    border-radius: 8px;
+    background: var(--Lunar-Dust-950);
+    transition: all 0.2s ease;
+}
+
+.profile-info:hover {
+    background: var(--Comet-Cloud-950);
+}
+
+
+.profile-info__container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-info__container__image {
+    display: flex;
+    width: 42px;
+    height: 42px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.profile-info__container__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-info__container__text__name {
+    color: var(--Comet-Cloud-300);
+}
+
+.profile-info__container__text__nickname {
+    color: var(--Lunar-Dust-500);
+}
+
+.profile-info:hover .profile-info__container__text__name {
+    color: var(--Comet-Cloud-200);
+}
+
+.profile-info:hover .profile-info__container__text__nickname {
+    color: var(--Lunar-Dust-400);
+}
+
+
+/* ------------------- SEARCH BAR ------------------- */
+
+.search-bar {
+    display: inline-flex;
+    padding: 12px 16px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    background: var(--Lunar-Dust-1000);
+    color: var(--Lunar-Dust-600);
+}
+
+.search-bar__input {
+    border: none;
+    outline: none;
+    background: none;
+    color: var(--Comet-Cloud-200);
+}
+
+.search-bar__input::selection {
+    color: var(--Comet-Cloud-100);
+    background-color: var(--Comet-Cloud-900);
+}
+
+
+/* ------------------- PAGINATION ------------------- */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination__control {
+    position: relative;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--Comet-Cloud-1000);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.pagination__control a {
+    text-decoration: none;
+    color: var(--Lunar-Dust-500);
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.pagination__control:hover {
+    background: var(--Comet-Cloud-950);
+}
+
+.pagination__control__text {
+    text-decoration: none;
+    color: var(--Lunar-Dust-500);
+}
+
+.pagination__control__icon-left, .pagination__control__icon-right {
+    text-decoration: none;
+    color: var(--Lunar-Dust-500);
+}
+
+.pagination__control:hover .pagination__control__text,
+.pagination__control:hover .pagination__control__icon-left,
+.pagination__control:hover .pagination__control__icon-right {
+    color: var(--Comet-Cloud-300);
+}
+
+.pagination__control--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.pagination__item-number {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--Comet-Cloud-1000);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+
+.pagination__item-number a {
+    color: var(--Lunar-Dust-400);
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 12px;
+    width: 100%;
+    height: 100%;
+}
+
+.pagination__item-number:hover a {
+    color: var(--Comet-Cloud-300);
+}
+
+.pagination__item-number:hover {
+    background: var(--Comet-Cloud-950);
+}
+
+.pagination__item-number--active, .pagination__item-number--active:hover{
+    background: var(--Comet-Cloud-900);
+}
+
+.pagination__item-number--active a, .pagination__item-number--active:hover a{
+    color: var(--Comet-Cloud-200);
+}
+
+
+/* ------------------- METRIC CARD ------------------- */
+
+.metric-card {
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    gap: 12px;
+    flex: 1 0 0;
+
+    border-radius: 8px;
+    background: var(--Comet-Cloud-1000);
+}
+
+.metric-card__icon {
+    color: var(--Comet-Cloud-300);
+}
+
+.metric-card__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1 0 0;
+}
+
+.metric-card__info__label {
+    color: var(--Comet-Cloud-600);
+}
+
+.metric-card__info__data {
+    color: var(--Comet-Cloud-300);
+}
+
+
+/* ------------------- METRIC LINE ------------------- */
+
+.metric-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+}
+
+.metric-line__line {
+    display: flex;
+    height: 1px;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1 0 0;
+    border: 1px solid var(--Comet-Cloud-600);
+}
+
+.metric-line__label {
+    color: var(--Comet-Cloud-600);
+}
+
+.metric-line__data {
+    color: var(--Comet-Cloud-300);
+}
+
+
+/* ------------------- SIDEBAR ------------------ */
+
+.sidebar {
+    display: flex;
+    width: 220px;
+    height: 100%;
+    padding: 24px 0px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: all 300ms ease-in;
+}
+
+.sidebar__logo-container {
+    display: flex;
+    padding: 8px 8px 8px 16px;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.sidebar__logo-container__logo {
+    height: 32px;
+}
+
+.sidebar__menu-container {
+    display: flex;
+    padding: 0px 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.sidebar__menu-container .profile-info {
+    display: flex;
+    align-self: stretch;
+}
+
+.sidebar__menu-container__itens {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.sidebar__menu-container__itens__up {
+    display: flex;
+    padding: 8px 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+}
+
+.sidebar__menu-container__itens__down {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+
+/* logo toggle */
+
+.sidebar #logomark {
+	display: none;
+}
+
+.sidebar.collapsed #logomark {
+	display: flex;
+}
+
+.sidebar #combinationMark {
+	display: flex;
+}
+
+.sidebar.collapsed #combinationMark {
+	display: none;
+}
+
+.sidebar.collapsed .sidebar__logo-container {
+    padding: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: auto;
+}
+
+
+/* menu-item toggle */
+
+.sidebar.collapsed .sidebar__menu-container__itens .menu-item__text {
+    display: none;
+}
+
+.sidebar.collapsed .profile-info__container__text {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar {
+    width: auto;
+}
+
+.sidebar.collapsed .profile-info {
+    align-self: auto;
+}
+
+.sidebar.collapsed .sidebar__menu-container__itens {
+    align-self: auto;
+}
+
+
+/* ------------------- TABLE HEADER ------------------ */
+
+.table-header {
+    display: flex;
+    width: 100%;
+    padding: 12px 16px;
+    align-items: center;
+    gap: 16px;
+    border-radius: 4px;
+    background: var(--Comet-Cloud-1000);
+}
+
+.table-header__text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    flex: 1 0 0;
+    overflow: hidden;
+    color: var(--Lunar-Dust-500);
+    text-overflow: ellipsis;
+}
+

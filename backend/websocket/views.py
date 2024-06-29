@@ -8,7 +8,6 @@ import json
 #							websocket
 ################################################################################
 
-
 class Add_player_tournament(WebsocketConsumer):
 	def connect(self):
 		pass
@@ -238,4 +237,6 @@ class ManipulateTournament():
 		for i in range(0, len(players), 2):
 			match = ManipulateTournament.create_match(tournament, [players[i], players[i + 1]])
 			ManipulateTournament.create_tournament_bracket(tournament, match, [players[i], players[i + 1]])
+
+
 
