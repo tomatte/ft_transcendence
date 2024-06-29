@@ -5,6 +5,7 @@ import json
 from .game_engine.pong import *
 from typing import Dict, TypedDict
 import uuid
+from backend.utils import redis_client
 
 class PlayerMoveDataType(TypedDict):
     key: str
