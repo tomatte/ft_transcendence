@@ -32,21 +32,10 @@ class MatchData(TypedDict):
 MatchDict = Dict[str, MatchData]
 
 class GameLoopConsumer(AsyncWebsocketConsumer):
-    game_loop_client = None
-    
-    @classmethod
-    async def send_to_game_loop(cls, payload):
-        if cls.game_loop_client == None:
-            print("no game_loop connected")
-            return
-
-        print("send data to game_loop")
-        print(payload)
-        await cls.game_loop_client.send(json.dumps(payload))
     
     async def connect(self):
         await self.accept()
-        GameLoopConsumer.game_loop_client = self
+        redis_client.set("game_loop", self.channel_name)
 
     
     async def receive(self, text_data):
@@ -56,12 +45,17 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
             "type": "match.coordinates",
             "text": "new"
         })
-        
-        print(text_data)
 
     async def disconnect(self, code):
-        GameLoopConsumer.game_loop_client = None
+        redis_client.delete("game_loop")
         return await super().disconnect(code)
+    
+    async def player_move(self, event):
+        print(event)
+        await self.send(json.dumps(event))
+        
+    async def player_connect(self, event):
+        await self.send(json.dumps(event))
     
 
 # Create your views here.
@@ -100,32 +94,39 @@ class PlayerConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("match", self.channel_name)
-        self.close(close_code, "bye!^^")
+        return await super().disconnect(close_code)
     
 
     async def player_ready_action(self, data):
         self.player_id = data["player_id"]
         self.match_id = data["match_id"]
         
-        # match_data = dict()
-        # if redis_client.exists(self.match_id):
-        #     match_data = redis_client.get(self.match_id).decode()
-        #     match_data = json.loads(match_data)
+        match_data = dict()
+        if redis_client.exists(self.match_id):
+            match_data = redis_client.get(self.match_id).decode()
+            match_data = json.loads(match_data)
         
-        # print(f"match_data: {match_data}")
-        # match_data[data["player_id"]] = self.channel_name
-        # redis_client.set(self.match_id, json.dumps(match_data))
+        print(f"match_data: {match_data}")
+        match_data[data["player_id"]] = self.channel_name
+        redis_client.set(self.match_id, json.dumps(match_data))
         
         payload = {
+            "type": "player.connect",
             "action": "player_connect",
             "player_id": data["player_id"],
             "match_id": data["match_id"],
             "max_scores": 5 #TODO: this could come from database or .env
         }
-        await GameLoopConsumer.send_to_game_loop(payload)
+        
+        game_loop_channel = redis_client.get("game_loop").decode()
+        
+        await self.channel_layer.send(game_loop_channel, payload)
         
     async def player_move_action(self, data: PlayerMoveDataType):
-        await GameLoopConsumer.send_to_game_loop(data)
+        game_loop_channel = redis_client.get("game_loop").decode()
+        
+        data["type"] = "player.move"
+        await self.channel_layer.send(game_loop_channel, data)
         
     async def match_coordinates(self, event):
         matches_data = redis_client.get("matches").decode()
@@ -144,7 +145,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
             }
 
         await self.send(json.dumps(payload))
-        print(f"p_id: {self.player_id} match: {match}")
+        # print(f"p_id: {self.player_id} match: {match}")
          
          
 class TournamentConsumer(AsyncWebsocketConsumer):
@@ -164,7 +165,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             await self.create_tournament(data)
 
     async def disconnect(self, close_code):
-        await self.close(close_code)
+        return await super().disconnect(close_code)
         
     async def create_tournament(self, data):
         payload = {
@@ -211,7 +212,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("chat", self.channel_name)
-        await self.close(close_code)
+        return await super().disconnect(close_code)
         
     async def register_player(self, data):
         if "player_id" not in data:
