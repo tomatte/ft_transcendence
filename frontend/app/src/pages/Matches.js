@@ -1,3 +1,7 @@
+import 'css/pages/matches.css';
+
+
+
 const Matches = () => {
   const component = document.createElement('div');
   component.innerHTML = `
