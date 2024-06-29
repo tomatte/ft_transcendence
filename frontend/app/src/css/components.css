@@ -848,3 +848,27 @@ ul {
 .sidebar.collapsed .sidebar__menu-container__itens {
     align-self: auto;
 }
+
+
+/* ------------------- TABLE HEADER ------------------ */
+
+.table-header {
+    display: flex;
+    width: 100%;
+    padding: 12px 16px;
+    align-items: center;
+    gap: 16px;
+    border-radius: 4px;
+    background: var(--Comet-Cloud-1000);
+}
+
+.table-header__text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    flex: 1 0 0;
+    overflow: hidden;
+    color: var(--Lunar-Dust-500);
+    text-overflow: ellipsis;
+}
+

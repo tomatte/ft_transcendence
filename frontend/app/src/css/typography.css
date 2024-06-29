@@ -118,4 +118,5 @@ h6 {
     font-family: var(--font-primary);
     font-size: var(--caption-regular-font-size);
     line-height: var(--caption-regular-line-height);
+    text-transform: uppercase;
 }

@@ -72,6 +72,11 @@ html, body
     flex-direction: row;
 }
 
+.playground-container--table-header {
+    flex-direction: column;
+}
+
+
 /*  */
 
 .seila {
