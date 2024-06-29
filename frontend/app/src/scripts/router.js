@@ -5,11 +5,13 @@ import Notifications from "../pages/Notifications.js";
 import Statistics from "../pages/Statistics.js";
 import Home from "../pages/Home.js";
 
-export default {
-  Matches: Matches(),
-  Friends: Friends(),
-  Ranking: Ranking(),
-  Notifications: Notifications(),
-  Statistics: Statistics(),
-  Home : Home(),
+const routes = {
+  'Matches': Matches,
+  'Friends': Friends,
+  'Ranking': Ranking,
+  'Notifications': Notifications,
+  'Statistics': Statistics,
+  'Home': Home
 };
+
+export default routes;

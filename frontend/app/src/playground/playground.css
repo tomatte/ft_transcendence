@@ -15,7 +15,7 @@ html, body
     justify-content: center;
     align-items: center;
     gap: 32px;
-    flex: 1; /* Ensure it stretches vertically */
+    flex: 1;
 }
 
 .playground-container--button
@@ -42,3 +42,56 @@ html, body
 {
     flex-direction: column;
 }
+
+.playground-container--menu-control
+{
+    flex-direction: row;
+}
+
+.playground-container--profile-info {
+    flex-direction: column;
+}
+
+.playground-container--search-bar {
+    flex-direction: column;
+}
+
+.playground-container--pagination {
+    flex-direction: row;
+}
+
+.playground-container--metric-card {
+    flex-direction: column;
+}
+
+.playground-container--metric-line {
+    flex-direction: row;
+}
+
+.playground-container--sidebar {
+    flex-direction: row;
+}
+
+.playground-container--table-header {
+    flex-direction: column;
+}
+
+
+/*  */
+
+.seila {
+display: flex;
+   align-items: flex-start;
+   gap: 16px;
+   align-self: stretch;
+}
+
+.container__metric-line {
+    display: flex;
+    width: 429px;
+    padding: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+

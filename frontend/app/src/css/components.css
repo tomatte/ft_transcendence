@@ -1,3 +1,46 @@
+/* ------------------- SYSTEM ------------------- */
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+/* ------------------- ICON ------------------- */
+
+.icon--atom {
+    font-size: 10px;
+}
+
+.icon--microscopic {
+    font-size: 14px;
+}
+
+.icon--extra-small {
+    font-size: 16px;
+}
+
+.icon--small {
+    font-size: 18px;
+}
+
+.icon--medium {
+    font-size: 20px;
+}
+
+.icon--regular {
+    font-size: 24px;
+}
+
+.icon--large {
+    font-size: 28px;
+}
+
+.icon--extra-large {
+    font-size: 36px;
+}
 
 /* ------------------- BUTTON ------------------- */
 
@@ -348,42 +391,484 @@
     object-fit: cover;
 }
 
-/* ------------------- SIDEBAR MENU ITEM ------------------- */
+/* ------------------- MENU ITEM ------------------- */
 
 .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 4px;
+    justify-content: flex-start;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.menu-item a {
     display: flex;
     width: 100%;
     padding: 8px;
     align-items: center;
+    align-self: stretch;
+    text-decoration: none;
     gap: 8px;
-    border-radius: 4px;
-    justify-content: flex-start;
-    transition: all 0.2s ease;
+    color: var(--Lunar-Dust-600);
+    border-radius: inherit;
 }
 
 .menu-item__icon {
-    display: flex;
-    width: 24px;
-    height: 24px;
-    position: relative;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: var(--Lunar-Dust-600);
+    color: inherit;
 }
 
 .menu-item__text {
-    flex: 1 1 0;
-    color: var(--Lunar-Dust-600);
-    font-size: 14px;
-    font-family: 'Play', sans-serif; /* Assuming 'Play' is the font name */
-    font-weight: 700;
-    line-height: 19.60px;
-    word-wrap: break-word;
+    flex: 1;
+    color: inherit;
 }
 
-.menu-item__icon:hover {
+.menu-item:hover{
+    background: var(--Comet-Cloud-950);
+}
+
+.menu-item:hover .menu-item__icon,
+.menu-item:hover .menu-item__text {
     color: var(--Comet-Cloud-500);
 }
 
+.menu-item--active {
+    background: var(--gradient-menu-item-blue);
+}
+
+.menu-item--active .menu-item__icon, .menu-item--active:hover .menu-item__icon {
+    color: var(--Neptune-Blue-200);
+}
+
+.menu-item--active .menu-item__text, .menu-item--active:hover .menu-item__text {
+    color: var(--Comet-Cloud-50);
+}
+
+.menu-item--active:hover {
+    background: var(--gradient-blue-menu-item-hover);
+}
+
+
+/* ------------------- MENU CONTROL ------------------- */
+
+.menu-control {
+    display: inline-flex;
+    padding: 4px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.menu-control__icon {
+    color: var(--Lunar-Dust-600);
+}
+
+.menu-control:hover {
+    background-color: var(--Comet-Cloud-950);
+}
+
+.menu-control:hover .menu-control__icon {
+    color: var(--Comet-Cloud-200);
+}
+
+
+/* ------------------- PROFILE INFO ------------------- */
+
+.profile-info {
+    display: inline-flex;
+    padding: 12px 8px;
+    align-items: center;
+    gap: 12px;
+    border-radius: 8px;
+    background: var(--Lunar-Dust-950);
+    transition: all 0.2s ease;
+}
+
+.profile-info:hover {
+    background: var(--Comet-Cloud-950);
+}
+
+
+.profile-info__container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-info__container__image {
+    display: flex;
+    width: 42px;
+    height: 42px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.profile-info__container__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-info__container__text__name {
+    color: var(--Comet-Cloud-300);
+}
+
+.profile-info__container__text__nickname {
+    color: var(--Lunar-Dust-500);
+}
+
+.profile-info:hover .profile-info__container__text__name {
+    color: var(--Comet-Cloud-200);
+}
+
+.profile-info:hover .profile-info__container__text__nickname {
+    color: var(--Lunar-Dust-400);
+}
+
+
+/* ------------------- SEARCH BAR ------------------- */
+
+.search-bar {
+    display: inline-flex;
+    padding: 12px 16px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    background: var(--Lunar-Dust-1000);
+    color: var(--Lunar-Dust-600);
+}
+
+.search-bar__input {
+    border: none;
+    outline: none;
+    background: none;
+    color: var(--Comet-Cloud-200);
+}
+
+.search-bar__input::selection {
+    color: var(--Comet-Cloud-100);
+    background-color: var(--Comet-Cloud-900);
+}
+
+
+/* ------------------- PAGINATION ------------------- */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination__control {
+    position: relative;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--Comet-Cloud-1000);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.pagination__control a {
+    text-decoration: none;
+    color: var(--Lunar-Dust-500);
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.pagination__control:hover {
+    background: var(--Comet-Cloud-950);
+}
+
+.pagination__control__text {
+    text-decoration: none;
+    color: var(--Lunar-Dust-500);
+}
+
+.pagination__control__icon-left, .pagination__control__icon-right {
+    text-decoration: none;
+    color: var(--Lunar-Dust-500);
+}
+
+.pagination__control:hover .pagination__control__text,
+.pagination__control:hover .pagination__control__icon-left,
+.pagination__control:hover .pagination__control__icon-right {
+    color: var(--Comet-Cloud-300);
+}
+
+.pagination__control--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.pagination__item-number {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--Comet-Cloud-1000);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+
+.pagination__item-number a {
+    color: var(--Lunar-Dust-400);
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 12px;
+    width: 100%;
+    height: 100%;
+}
+
+.pagination__item-number:hover a {
+    color: var(--Comet-Cloud-300);
+}
+
+.pagination__item-number:hover {
+    background: var(--Comet-Cloud-950);
+}
+
+.pagination__item-number--active, .pagination__item-number--active:hover{
+    background: var(--Comet-Cloud-900);
+}
+
+.pagination__item-number--active a, .pagination__item-number--active:hover a{
+    color: var(--Comet-Cloud-200);
+}
+
+
+/* ------------------- METRIC CARD ------------------- */
+
+.metric-card {
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    gap: 12px;
+    flex: 1 0 0;
+
+    border-radius: 8px;
+    background: var(--Comet-Cloud-1000);
+}
+
+.metric-card__icon {
+    color: var(--Comet-Cloud-300);
+}
+
+.metric-card__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1 0 0;
+}
+
+.metric-card__info__label {
+    color: var(--Comet-Cloud-600);
+}
+
+.metric-card__info__data {
+    color: var(--Comet-Cloud-300);
+}
+
+
+/* ------------------- METRIC LINE ------------------- */
+
+.metric-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+}
+
+.metric-line__line {
+    display: flex;
+    height: 1px;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1 0 0;
+    border: 1px solid var(--Comet-Cloud-600);
+}
+
+.metric-line__label {
+    color: var(--Comet-Cloud-600);
+}
+
+.metric-line__data {
+    color: var(--Comet-Cloud-300);
+}
+
+
+/* ------------------- SIDEBAR ------------------ */
+
+.sidebar {
+    display: flex;
+    width: 220px;
+    height: 100%;
+    padding: 24px 0px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: all 300ms ease-in;
+}
+
+.sidebar__logo-container {
+    display: flex;
+    padding: 8px 8px 8px 16px;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.sidebar__logo-container__logo {
+    height: 32px;
+}
+
+.sidebar__menu-container {
+    display: flex;
+    padding: 0px 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.sidebar__menu-container .profile-info {
+    display: flex;
+    align-self: stretch;
+}
+
+.sidebar__menu-container__itens {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.sidebar__menu-container__itens__up {
+    display: flex;
+    padding: 8px 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+}
+
+.sidebar__menu-container__itens__down {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+
+/* logo toggle */
+
+.sidebar #logomark {
+	display: none;
+}
+
+.sidebar.collapsed #logomark {
+	display: flex;
+}
+
+.sidebar #combinationMark {
+	display: flex;
+}
+
+.sidebar.collapsed #combinationMark {
+	display: none;
+}
+
+.sidebar.collapsed .sidebar__logo-container {
+    padding: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: auto;
+}
+
+
+/* menu-item toggle */
+
+.sidebar.collapsed .sidebar__menu-container__itens .menu-item__text {
+    display: none;
+}
+
+.sidebar.collapsed .profile-info__container__text {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar {
+    width: auto;
+}
+
+.sidebar.collapsed .profile-info {
+    align-self: auto;
+}
+
+.sidebar.collapsed .sidebar__menu-container__itens {
+    align-self: auto;
+}
+
+
+/* ------------------- TABLE HEADER ------------------ */
+
+.table-header {
+    display: flex;
+    width: 100%;
+    padding: 12px 16px;
+    align-items: center;
+    gap: 16px;
+    border-radius: 4px;
+    background: var(--Comet-Cloud-1000);
+}
+
+.table-header__text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    flex: 1 0 0;
+    overflow: hidden;
+    color: var(--Lunar-Dust-500);
+    text-overflow: ellipsis;
+}
 

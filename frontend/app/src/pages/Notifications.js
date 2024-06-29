@@ -1,61 +1,53 @@
-export default () => {
-    // Criação do contêiner principal
-    const container = document.createElement("div");
-    container.classList.add("playground-container");
-
-    // Adição de estilos
-    const style = document.createElement("style");
-    style.innerHTML = `
-        @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
-        @import url('https://fonts.googleapis.com/css2?family=Material+Icons+Round&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
-        @import url('../css/Components.css');
-        @import url('../css/Colors.css');
-        @import url('../css/Typography.css');
-        @import url('playground.css');
-
-        .game-mode-banner {
-            margin-bottom: 20px; /* Adiciona espaço entre os blocos */
-        }
-    `;
-
-    // Conteúdo do contêiner principal para Notifications
-    container.innerHTML = `
-        <div style="width: 100%; height: 100%; padding: 24px;">
-            <!-- Bloco de notificações recentes -->
-            <div class="game-mode-banner game-mode-banner--recent-notifications">
-                <div class="game-mode-banner__info">
-                    <div class="game-mode-banner__info__title">RECENT NOTIFICATIONS</div>
-                    <div class="game-mode-banner__info__button">
-                        <button class="button button--primary">
-                            <span class="material-icons-round button__icon-left">notifications</span>
-                            <span class="button__text font-body-regular-bold">View all</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="game-mode-banner__illustration">
-                    <img class="game-mode-banner__illustration__image" src="../assets/notifications.png" alt="">
-                </div>
+const Notifications = () => {
+  const component = document.createElement('div');
+  component.innerHTML = `
+<div class="frame">
+      <div class="div">
+        <div class="div-wrapper"><div class="text-wrapper">Notifications</div></div>
+        <button class="button">
+          <div class="button-icon-left"><img class="icon" src="img/icon-4.svg" /></div>
+          <div class="button-text">Refresh</div>
+        </button>
+      </div>
+      <div class="div-2">
+        <div class="div-3">
+          <div class="table-row-message">
+            <div class="table-row-message-2"></div>
+            <div class="table-row-message-3">
+              <p class="p">Caos has challenged you to a friendly match</p>
+              <div class="table-row-message-4">22/06/2024 - 15H30</div>
             </div>
-
-            <!-- Bloco de configurações de notificações -->
-            <div class="game-mode-banner game-mode-banner--notification-settings">
-                <div class="game-mode-banner__info">
-                    <div class="game-mode-banner__info__title">NOTIFICATION SETTINGS</div>
-                    <div class="game-mode-banner__info__button">
-                        <button class="button button--secondary">
-                            <span class="material-icons-round button__icon-left">settings</span>
-                            <span class="button__text font-body-regular-bold">Manage settings</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="game-mode-banner__illustration">
-                    <img class="game-mode-banner__illustration__image" src="../assets/notification-settings.png" alt="">
-                </div>
-            </div>
+          </div>
+          <div class="table-row-actions">
+            <button class="button-2">
+              <div class="button-icon-left"><img class="icon" src="img/icon.svg" /></div>
+              <div class="button-text-2">Play match</div>
+            </button>
+            <button class="button-3">
+              <div class="button-icon-left"><img class="icon" src="img/icon-3.svg" /></div>
+              <div class="button-text-3">Decline match</div>
+            </button>
+          </div>
         </div>
-    `;
+        <div class="div-3">
+          <div class="table-row-message">
+            <div class="table-row-message-5"></div>
+            <div class="table-row-message-3">
+              <p class="p">Caos has challenged you to a friendly match</p>
+              <div class="table-row-message-4">22/06/2024 - 15H30</div>
+            </div>
+          </div>
+          <div class="table-row-actions">
+            <button class="button-2">
+              <div class="button-icon-left"><img class="icon" src="img/icon-2.svg" /></div>
+              <div class="button-text-2">Play match</div>
+            </button>
+            <button class="button-3">
+              <div class="button-icon-left"><img class="icon" src="img/icon-5.svg" /></div>
+              <div class="button-text-3">Decline match</div>
 
-    container.appendChild(style);
-    return container;
-}
+ `;
+  return component;
+};
+
+export default Notifications;

@@ -79,6 +79,7 @@ h6 {
     font-family: var(--font-primary);
     font-size: var(--extra-large-font-size);
     line-height: var(--extra-large-line-height);
+    font-weight: bold;
 }
 
 .font-body-large {
@@ -117,4 +118,5 @@ h6 {
     font-family: var(--font-primary);
     font-size: var(--caption-regular-font-size);
     line-height: var(--caption-regular-line-height);
+    text-transform: uppercase;
 }
