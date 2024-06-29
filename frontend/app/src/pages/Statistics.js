@@ -19,15 +19,7 @@ export default () => {
 
   // Conteúdo do contêiner principal para Statistics
   container.innerHTML = `
-      <div class="frame">
-
-                     <div class="game-mode-banner__info__title">STATISTICS</div>
-
-        <button class="button button--secondary">
-            <span class="material-icons-round button__icon-left">refresh</span>
-            <span class="button__text font-body-regular-bold">Refresh</span>
-        </button>
-
+  
 
   `;
 
