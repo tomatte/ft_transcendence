@@ -15,7 +15,7 @@ html, body
     justify-content: center;
     align-items: center;
     gap: 32px;
-    flex: 1; /* Ensure it stretches vertically */
+    flex: 1;
 }
 
 .playground-container--button
@@ -67,6 +67,12 @@ html, body
 .playground-container--metric-line {
     flex-direction: row;
 }
+
+.playground-container--sidebar {
+    flex-direction: row;
+}
+
+/*  */
 
 .seila {
 display: flex;
