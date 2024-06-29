@@ -172,6 +172,9 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     
     async def connect(self):
         await self.accept()
+        
+        await self.channel_layer.group_add("notification", self.channel_name)
+        
         payload = {
             'status': 'connected'
         }
@@ -179,13 +182,28 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         print(text_data)
-
+        
         data = json.loads(text_data)
         
         if data["action"] == "register":
             await self.register_player(data)
+            return 
+
+        await self.channel_layer.group_send(
+            "notification",
+            {
+                "type": "notification.message",
+                "text": text_data,
+            },
+        )
+        
+    async def notification_message(self, event):
+        await self.send(text_data=event["text"])
+
+
 
     async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("chat", self.channel_name)
         await self.close(close_code)
         
     async def register_player(self, data):

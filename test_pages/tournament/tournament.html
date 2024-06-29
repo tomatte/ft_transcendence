@@ -10,6 +10,15 @@
         <label id="label-create" for="btn-create">Tournament</label>
         <button id="btn-create" onclick="createTournament()">create tournament</button>
     </div>
+
+    <br>
+    <div>
+        <label for="custom-message">Custom Message</label>
+        <input id="custom-message" type="text">
+        <button onclick="sendCustomMessage()">send</button>
+    </div>
+    <br>
+
     <div id="creating" style="visibility: hidden;">
         <h1>creating tournament...</h1>
     </div>
@@ -51,6 +60,13 @@
 
     function registerToNotification() {
         payload.action = "register"
+        ws_notification.send(JSON.stringify(payload))
+    }
+
+    function sendCustomMessage() {
+        const message = document.getElementById("custom-message").value
+        payload.action = "message"
+        payload.message = message
         ws_notification.send(JSON.stringify(payload))
     }
 

@@ -60,6 +60,12 @@ services:
   #   networks:
   #     - trans-network
 
+  redis:
+    image: redis:latest
+    container_name: ft_redis
+    ports:
+      - "6379:6379"
+
 
 # docker stop $(docker ps -a -q)
 # docker rm $(docker ps -a -q)
