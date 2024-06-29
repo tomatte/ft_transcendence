@@ -64,7 +64,8 @@ class Game:
             cls.payload[match_id] = {
                 "ball": {
                     "x": match.ball.x,
-                    "y": match.ball.y
+                    "y": match.ball.y,
+                    "bounced": match.ball.bounced
                     },
                 "players": {
                     match.player_left.id: {

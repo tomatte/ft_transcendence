@@ -24,11 +24,14 @@ function setScores(leftScore, rightScore) {
     right.innerText = rightScore
 }
 
-function getRandomId(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+function playBallKickSound(ball) {
+    if (ball.bounced == false) {
+        return
+    }
+    const kickSound = document.getElementById("ball-kick")
+    kickSound.currentTime = 0
+    kickSound.play()
+}
 
 let ws = new WebSocket("ws://localhost:8000/player/")
 let payload = {
@@ -56,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             player_left_points = data.player_left.points
             player_right_points = data.player_right.points
-
+            playBallKickSound(data.ball)
             setPlayerLeft(player_left_y)
             setPlayerRight(player_right_y)
             setBall(ball_x, ball_y)
