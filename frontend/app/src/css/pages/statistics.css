@@ -3,6 +3,7 @@
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
+  width: 100%;
 }
 
 .page-content__container__header__info {
@@ -30,6 +31,7 @@ flex-direction: column;
 align-items: flex-start;
 gap: 16px;
 align-self: stretch;
+width: relative;
 }
 
 .page-content__container__content__line-metrics {

@@ -1,6 +1,6 @@
 import routes from './router.js';
 
-const container = document.querySelector('#root');
+const container = document.querySelector('.page-content__container');
 
 const renderPage = () => {
   const hash = window.location.hash.slice(1); 
@@ -9,6 +9,7 @@ const renderPage = () => {
   if (routes[page]) {
     container.innerHTML = '';
     container.appendChild(routes[page]);
+
   } else {
     container.innerHTML = '<p>Página não encontrada</p>';
   }
