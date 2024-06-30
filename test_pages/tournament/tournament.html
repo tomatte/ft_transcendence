@@ -91,8 +91,10 @@
         document.getElementById("my-id").innerText = data.player_id
     }
 
-    function joinTournament(data) {
-        console.log(data)
+    function joinTournament(tournament_id) {
+        payload.action = "join",
+        payload.tournament_id = tournament_id
+        ws_tournament.send(JSON.stringify(payload))
     }
 
     function invitationReceived(data) {
@@ -104,12 +106,8 @@
 
         span.innerText = data.tournament_id
 
-        data = {
-            player_id: payload.player_id,
-            tournament_id: data.tournament_id
-        }
         button.onclick = function() {
-            joinTournament(data)
+            joinTournament(data.tournament_id)
         }
         button.innerText = "join"
 

@@ -162,16 +162,52 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         
         if data["action"] == "create":
             await self.create_tournament(data)
+            return
+        
+        if data["action"] == "join":
+            await self.join_tournament(data)
+            return
 
     async def disconnect(self, close_code):
+        if self.tournament_id:
+            self.channel_layer.group_discard(self.tournament_id)
         return await super().disconnect(close_code)
         
     async def create_tournament(self, data):
+        self.tournament_id = str(uuid.uuid4())
+        await self.channel_layer.group_add(self.tournament_id, self.channel_name)
+        self.player_id = data["player_id"]
+        
         payload = {
             "status": "enter_tournament",
-            "tournament_id": str(uuid.uuid4())
+            "tournament_id": self.tournament_id,
         }
         await self.send(json.dumps(payload))
+        
+    async def join_tournament(self, data):
+        has_tournament_id = "tournament_id" in data
+        has_player_id = "player_id" in data
+        if not has_player_id or not has_tournament_id:
+            payload = {"status": "failed_to_join_tournament"}
+            await self.send(json.dumps(payload))
+            return
+
+        self.player_id = data["player_id"]
+        self.tournament_id = data["tournament_id"]
+        await self.channel_layer.group_add(self.tournament_id, self.channel_name)
+        
+        payload = {"status": "joined tournament succesfuly"}
+        await self.send(json.dumps(payload))
+        
+        event_payload = {
+            "type": "tournament.new.player",
+            "joiner_id": self.player_id
+        }
+        await self.channel_layer.group_send(self.tournament_id, event_payload)
+        
+    async def tournament_new_player(self, event):
+        await self.send(json.dumps(event))
+        
         
          
 class NotificationConsumer(AsyncWebsocketConsumer):
