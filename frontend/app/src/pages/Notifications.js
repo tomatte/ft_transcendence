@@ -2,7 +2,7 @@ const Notifications = () => {
 	const pageContentContainer = document.querySelector('.page-content__container');
   
 	pageContentContainer.innerHTML = `
-   <div class="page-content__container__header">
+<div class="page-content__container__header">
   <div class="page-content__container__header__info">
     <h4 class="page-content__container__header__info__title">Notifications</h4>
   </div>
@@ -34,8 +34,6 @@ const Notifications = () => {
         </button>
       </td>
     </tr>
-
-    
 
     <!-- NOTIFICATION TOURNAMENT -->
     <tr class="table-row">

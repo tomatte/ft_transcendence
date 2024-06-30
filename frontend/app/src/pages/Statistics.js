@@ -1,4 +1,5 @@
 const Statistics = () => {
+	
 	const pageContentContainer = document.querySelector('.page-content__container');
   
 	pageContentContainer.innerHTML = `
