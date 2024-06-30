@@ -483,9 +483,10 @@ ul {
 /* ------------------- PROFILE INFO ------------------- */
 
 .profile-info {
-    display: inline-flex;
+    display: flex;
     padding: 12px 8px;
     align-items: center;
+    align-self: stretch;
     gap: 12px;
     border-radius: 8px;
     background: var(--Lunar-Dust-950);
@@ -519,13 +520,26 @@ ul {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    flex: 1 0 0;
 }
 
 .profile-info__container__text__name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    align-self: stretch;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: var(--Comet-Cloud-300);
 }
 
 .profile-info__container__text__nickname {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    align-self: stretch;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: var(--Lunar-Dust-500);
 }
 
