@@ -13,9 +13,7 @@ const Notifications = () => {
             </div>
             <table class="notifications-table">
               <tbody>
- 
-              
-                <tr class="table-row">
+                  <tr class="table-row">
                   <td class="table-row__message">
                     <img class="table-row__message__image" src="../assets/images/players/caos.png" alt="player">
                     <div class="table-row__message__text">
@@ -34,7 +32,6 @@ const Notifications = () => {
                     </button>
                   </td>
                 </tr>
-
  
                 <tr class="table-row">
                   <td class="table-row__message">
@@ -55,7 +52,6 @@ const Notifications = () => {
                     </button>
                   </td>
                 </tr>
-
                
                 <tr class="table-row">
                   <td class="table-row__message">
@@ -76,8 +72,7 @@ const Notifications = () => {
                     </button>
                   </td>
                 </tr>
-
-                
+               
                 <tr class="table-row">
                   <td class="table-row__message">
                     <img class="table-row__message__image" src="../assets/images/players/caos.png" alt="player">
