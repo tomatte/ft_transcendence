@@ -50,123 +50,138 @@
         </div>
     </div>
 
-</body>
-<script>
-    function getRandomId(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
+    <!-- NOTIFICATION EVENT SCRIPT -->
+    <script>
+        let ws_notification = new WebSocket("ws://localhost:8000/notification/")
 
-    let ws_notification = new WebSocket("ws://localhost:8000/notification/")
-    let ws_tournament = new WebSocket("ws://localhost:8000/tournament/")
-    let payload = {
-        action: "",
-        player_id: getRandomId(1, 3999999999),
-        tournament_id: null,
-    }
-
-    function createTournament() {
-        document.getElementById("create").style.visibility = 'hidden'
-        document.getElementById("creating").style.visibility = 'visible'
-        
-        payload.action = "create"
-        ws_tournament.send(JSON.stringify(payload))
-    }
-
-    function addPlayerToList(data) {
-        const list = document.getElementById("players")
-        const item = document.createElement("li")
-        item.innerText = payload.player_id
-        list.appendChild(item)
-    }
-
-    function sendTournamentInvitation() {
-        const friend_id = document.getElementById("friend-id").value
-        payload.friend_id = friend_id
-        payload.action = "invite_to_tournament"
-        ws_notification.send(JSON.stringify(payload))
-    }
-
-    function initialSetup(data) {
-        payload.tournament_id = data.tournament_id
-        payload.player_id = data.player_id
-        document.getElementById("my-id").innerText = data.player_id
-    }
-
-    function joinTournament(tournament_id) {
-        payload.action = "join",
-        payload.tournament_id = tournament_id
-        ws_tournament.send(JSON.stringify(payload))
-    }
-
-    function invitationReceived(data) {
-        console.log("inviation received!!!")
-        const ul = document.getElementById("invitation-list")
-        const li = document.createElement("li")
-        const span = document.createElement("span")
-        const button = document.createElement("button")
-
-        span.innerText = data.tournament_id
-
-        button.onclick = function() {
-            joinTournament(data.tournament_id)
+        let payload = {
+            action: "",
+            player_id: "",
+            tournament_id: "",
         }
-        button.innerText = "join"
-
-        li.appendChild(span)
-        li.appendChild(button)
-        ul.appendChild(li)
-    }
-
-    function playerJoined(data) {
-        console.log("player joined!!")
-        const ul = document.getElementById("players")
-        ul.innerHTML = ''
-        players = data.players
-        players.forEach((player) => {
+        
+        
+        function initialSetup(data) {
+            payload.tournament_id = data.tournament_id
+            payload.player_id = data.player_id
+            document.getElementById("my-id").innerText = data.player_id
+        }
+        
+        function sendTournamentInvitation() {
+            const friend_id = document.getElementById("friend-id").value
+            payload.friend_id = friend_id
+            payload.action = "invite_to_tournament"
+            ws_notification.send(JSON.stringify(payload))
+        }
+        
+        function invitationReceived(data) {
+            console.log("inviation received!!!")
+            const ul = document.getElementById("invitation-list")
             const li = document.createElement("li")
-            li.innerText = player
+            const span = document.createElement("span")
+            const button = document.createElement("button")
+        
+            span.innerText = data.tournament_id
+        
+            button.onclick = function() {
+                joinTournament(data.tournament_id)
+            }
+            button.innerText = "join"
+        
+            li.appendChild(span)
+            li.appendChild(button)
             ul.appendChild(li)
-        })
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        ws_tournament.onmessage = (event) => {
-            data = JSON.parse(event.data)
-                console.log(data)
-
-            if (data.status == "enter_tournament") {
-                payload.tournament_id = data.tournament_id
-                document.getElementById("tournament_id").innerText = data.tournament_id
-                addPlayerToList(data)
-                return 
-            }
-
-            if (data.status == "player_joined") {
-                playerJoined(data)
-                return
-            }
-        };
-
-        ws_notification.onmessage = (event) => {
-            data = JSON.parse(event.data)
-                console.log(data)
-
-            if (data.status == "connected") {
-                initialSetup(data)
-                return 
-            }
-
-            if (data.status == "tournament_invitation") {
-                invitationReceived(data)
-                return
-            }
+        }
+        
+        function listenNotificationEvents() {
+            document.addEventListener("DOMContentLoaded", function() {
+                ws_notification.onmessage = (event) => {
+                    data = JSON.parse(event.data)
+                        console.log(data)
             
-        };
+                    if (data.status == "connected") {
+                        initialSetup(data)
+                        return 
+                    }
+            
+                    if (data.status == "tournament_invitation") {
+                        invitationReceived(data)
+                        return
+                    }
+                };
+            });
+        
+        }
 
-      });
-</script>
+        listenNotificationEvents()
+    </script>
+
+    <!-- TOURNAMENT EVENT SCRIPT -->
+     <script>
+        let ws_tournament = new WebSocket("ws://localhost:8000/tournament/")
+        
+        function joinTournament(tournament_id) {
+            payload.action = "join",
+            payload.tournament_id = tournament_id
+            ws_tournament.send(JSON.stringify(payload))
+        }
+        
+        function createTournament() {
+            document.getElementById("create").style.visibility = 'hidden'
+            document.getElementById("creating").style.visibility = 'visible'
+            
+            payload.action = "create"
+            ws_tournament.send(JSON.stringify(payload))
+        }
+        
+        function addPlayerToList(data) {
+            const list = document.getElementById("players")
+            const item = document.createElement("li")
+            item.innerText = payload.player_id
+            list.appendChild(item)
+        }
+        
+        function playerJoined(data) {
+            console.log("player joined!!")
+            const ul = document.getElementById("players")
+            ul.innerHTML = ''
+            players = data.players
+            players.forEach((player) => {
+                const li = document.createElement("li")
+                li.innerText = player
+                ul.appendChild(li)
+            })
+        }
+        
+        function listenTournamentEvents() {
+            document.addEventListener("DOMContentLoaded", function() {
+                ws_tournament.onmessage = (event) => {
+                    data = JSON.parse(event.data)
+                        console.log(data)
+            
+                    if (data.status == "enter_tournament") {
+                        payload.tournament_id = data.tournament_id
+                        document.getElementById("tournament_id").innerText = data.tournament_id
+                        addPlayerToList(data)
+                        return 
+                    }
+            
+                    if (data.status == "player_joined") {
+                        playerJoined(data)
+                        return
+                    }
+                };
+            })
+        }
+
+     </script>
+
+     <!-- START LISTENING -->
+     <script>
+        listenNotificationEvents()
+        listenTournamentEvents()
+     </script>
+</body>
 <style>
 
     * {
