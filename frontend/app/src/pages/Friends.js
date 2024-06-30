@@ -1,137 +1,104 @@
+
 const Friends = () => {
 	const pageContentContainer = document.querySelector('.page-content__container');
-
-  component.innerHTML = `
-  			<div class="page-content__container__header">
-				<div class="page-content__container__header__info">
-					<h4 class="page-content__container__header__info__title">Friends</h4>
-				</div>
-
+  
+	pageContentContainer.innerHTML = `
+ 
+     <div class="page-content__container__header">
+        <div class="page-content__container__header__info">
+            <h4 class="page-content__container__header__info__title">Friends</h4>
+        </div>
+        <button class="button button--success">
+            <span class="button__text font-body-regular-bold">Add Friend</span>
+        </button>
+    </div>
 
     <div class="search-bar">
-      <span class="material-icons-round search-bar__icon icon--regular">search</span>
-      <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+        <span class="material-icons-round search-bar__icon icon--regular">search</span>
+        <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name..." onclick="openModal()">
     </div>
-  </div>
 
-  <div class="div-3">
-    <table class="custom-table">
-      <thead>
-        <tr class="font-body-caption-regular">
-          <th>PLAYER</th>
-          <th>GLOBAL RANKING</th>
-          <th>LOSSES AGAINST YOU</th>
-          <th>WINS AGAINST YOU</th>
-          <th>ACTIONS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Caos</td>
-          <td>#1</td>
-          <td>15</td>
-          <td>66%</td>
-          <td>
-            <div class="table-row-actions">
-              <div class="button-add">
-                <div class="button-types"><div class="button-text-2">Add friend</div></div>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Caos</td>
-          <td>#2</td>
-          <td>80</td>
-          <td>30%</td>
-          <td>
-            <div class="table-row-actions-2">
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="icon-2" src="img/icon.svg" /></div>
-              </div>
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Caos</td>
-          <td>#3</td>
-          <td>15</td>
-          <td>66%</td>
-          <td>
-            <div class="table-row-actions-2">
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="icon-2" src="img/icon.svg" /></div>
-              </div>
-              <div class="game-row-option">
-                <div class="icon-wrapper"><img class="icon-2" src="img/icon-4.svg" /></div>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Caos</td>
-          <td>#4</td>
-          <td>15</td>
-          <td>66%</td>
-          <td>
-            <div class="table-row-actions">
-              <div class="button-add">
-                <div class="button-types"><div class="button-text-2">Add friend</div></div>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Caos</td>
-          <td>#5</td>
-          <td>15</td>
-          <td>66%</td>
-          <td>
-            <div class="table-row-actions">
-              <div class="button-add">
-                <div class="button-types"><div class="button-text-2">Add friend</div></div>
-              </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="playground-container playground-container--table-header">
+        <table>
+            <thead>
+                <tr class="table-header">
+                    <th class="table-header__text font-body-caption-regular">Player</th>
+                    <th class="table-header__text font-body-caption-regular">Global ranking</th>
+                    <th class="table-header__text font-body-caption-regular">Losses against you</th>
+                    <th class="table-header__text font-body-caption-regular">Wins against you</th>
+                    <th class="table-header__text font-body-caption-regular">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-row">
+                    <td class="table-row__player">
+                        <img class="table-row__player__image" src="../assets/images/players/caos.png" alt="player">
+                        <div class="table-row__player__text">
+                            <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
+                            <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
+                        </div>
+                    </td>
+                    <td class="table-row__data-default font-body-medium-bold">#1</td>
+                    <td class="table-row__data-default font-body-medium-bold">5</td>
+                    <td class="table-row__data-default font-body-medium-bold">6</td>
+                    <td class="table-row__actions">
+                        <button class="game-row-option">
+                            <span class="material-icons-round game-row-option__icon">sports_esports</span>
+                        </button>
+                        <button class="game-row-option">
+                            <span class="material-icons-round game-row-option__icon">person_remove</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-  <div class="pagination">
-    <div class="pagination-control">
-      <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
-      <div class="pagination-control-2">Primeiro</div>
+    <div class="playground-container playground-container--pagination">
+        <nav class="pagination font-body-regular-bold">
+            <ul class="pagination__list">
+                <li class="pagination__control pagination__control--disabled">
+                    <a href="#">
+                        <span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_left</span>
+                        <span class="pagination__control__text">First</span>
+                    </a>
+                </li>
+                <li class="pagination__control pagination__control--disabled">
+                    <a href="#">
+                        <span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_left</span>
+                        <span class="pagination__control__text">Previous</span>
+                    </a>
+                </li>
+                <li class="pagination__item-number pagination__item-number--active"><a href="#">1</a></li>
+                <li class="pagination__item-number"><a href="#">2</a></li>
+                <li class="pagination__item-number"><a href="#">3</a></li>
+                <li class="pagination__item-number"><a href="#">4</a></li>
+                <li class="pagination__item-number"><a href="#">5</a></li>
+                <li class="pagination__item-number">
+                    <a href="#">
+                        <span class="material-icons-round icon--small">more_horiz</span>
+                    </a>
+                </li>
+                <li class="pagination__item-number"><a href="#">25</a></li>
+                <li class="pagination__control">
+                    <a class="pagination__control__link" href="#">
+                        <span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_right</span>
+                        <span class="pagination__control__text">Next</span>
+                    </a>
+                </li>
+                <li class="pagination__control">
+                    <a class="pagination__control__link" href="#">
+                        <span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_right</span>
+                        <span class="pagination__control__text">Last</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
-    <div class="pagination-control">
-      <div class="icon-wrapper"><img class="icon-3" src="img/icon-5.svg" /></div>
-      <div class="pagination-control-2">Anterior</div>
-    </div>
-    <div class="element"><div class="pagination-position">1</div></div>
-    <div class="pagination-position-wrapper"><div class="pagination-position-2">2</div></div>
-    <div class="pagination-position-wrapper"><div class="pagination-position-2">3</div></div>
-    <div class="pagination-position-wrapper"><div class="pagination-position-2">4</div></div>
-    <div class="pagination-position-wrapper"><div class="pagination-position-2">5</div></div>
-    <div class="more">
-      <div class="img-wrapper"><img class="icon" src="img/icon-6.svg" /></div>
-    </div>
-    <div class="pagination-position-wrapper"><div class="pagination-position-2">25</div></div>
-    <div class="pagination-control">
-      <div class="pagination-control-3">Próximo</div>
-      <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
-    </div>
-    <div class="pagination-control">
-      <div class="pagination-control-3">Último</div>
-      <div class="icon-wrapper"><img class="icon-3" src="img/icon-2.svg" /></div>
-    </div>
-  </div>
-</div>
+  
+    `;
 
-`;
-return pageContentContainer;
-};
-
-export default Friends;
+    return pageContentContainer;
+  }
+  
+  export default Friends;
