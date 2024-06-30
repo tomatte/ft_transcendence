@@ -14,14 +14,14 @@ const Home = () => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">TOURNAMENT</div>
                 <div class="game-mode-banner__info__button">
-                    <button onclick="openModal(console.log('Button clicked!'))" class="button button--tertiary">
+                    <button onclick="openModal()" class="button button--tertiary">
                         <span class="material-icons-round button__icon-left">add</span>
                         <span class="button__text font-body-regular-bold">Create</span>
                     </button>
                 </div>
             </div>
             <div class="game-mode-banner__illustration">
-                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/trophy.png" alt="">
+                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/trophy.png" alt="An illustration of a Trophy">
             </div>
         </div>
 
@@ -36,7 +36,7 @@ const Home = () => {
                 </div>
             </div>
             <div class="game-mode-banner__illustration">
-                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/medal.png" alt="">
+                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/medal.png" alt="An illustration of a medal">
             </div>
         </div>
 
@@ -51,7 +51,7 @@ const Home = () => {
                 </div>
             </div>
             <div class="game-mode-banner__illustration">
-                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/flag.png" alt="">
+                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/flag.png" alt="An illustration of a flag">
             </div>
         </div>
 
