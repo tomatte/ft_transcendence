@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament</title>
+</head>
+<body>
+    <div id="create">
+        <label id="label-create" for="btn-create">Tournament</label>
+        <button id="btn-create" onclick="createTournament()">create tournament</button>
+    </div>
+
+    <div id="creating" style="visibility: hidden;">
+        <div>
+            <h1>creating tournament...</h1>
+            <h2 id="tournament_id"></h2>
+        </div>
+
+        <br>
+        <div>
+            <label for="tournament-invitation">Invite to Tournament</label>
+            <input id="friend-id" type="text" placeholder="player_id...">
+            <button onclick="sendTournamentInvitation()">send</button>
+        </div>
+        <br>
+    </div>
+
+    <ul id="players">
+    </ul>
+
+    </div>
+</body>
+<script>
+    function getRandomId(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+    let ws_notification = new WebSocket("ws://localhost:8000/notification/")
+    let ws_tournament = new WebSocket("ws://localhost:8000/tournament/")
+    let payload = {
+        action: "",
+        player_id: getRandomId(1, 3999999999),
+        tournament_id: null,
+    }
+
+    function createTournament() {
+        document.getElementById("create").style.visibility = 'hidden'
+        document.getElementById("creating").style.visibility = 'visible'
+        
+        payload.action = "create"
+        ws_tournament.send(JSON.stringify(payload))
+    }
+
+    function addPlayerToList(data) {
+        const list = document.getElementById("players")
+        const item = document.createElement("li")
+        item.innerText = payload.player_id
+        list.appendChild(item)
+    }
+
+    function registerToNotification() {
+        payload.action = "register"
+        ws_notification.send(JSON.stringify(payload))
+    }
+
+    function sendTournamentInvitation() {
+        const friend_id = document.getElementById("friend-id").value
+        payload.friend_id = friend_id
+        payload.action = "invite_to_tournament"
+        ws_notification.send(JSON.stringify(payload))
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        ws_tournament.onmessage = (event) => {
+            data = JSON.parse(event.data)
+                console.log(data)
+
+            if (data.status == "enter_tournament") {
+                payload.tournament_id = data.tournament_id
+                document.getElementById("tournament_id").innerText = data.tournament_id
+                addPlayerToList(data)
+                return 
+            }
+        };
+
+        ws_notification.onmessage = (event) => {
+            data = JSON.parse(event.data)
+                console.log(data)
+
+            if (data.status == "connected") {
+                registerToNotification()
+                payload.tournament_id = data.tournament_id
+                return 
+            }
+
+            if (data.status == "tournament_invitation") {
+                console.log("we got an invite!!!")
+            }
+        };
+
+      });
+</script>
+<style>
+
+    * {
+        color: whitesmoke;
+        background-color: rgb(24, 23, 23);
+    }
+</style>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Pong</title>
+</head>
+<body style="background-color: black; display: flex; justify-content: center; height: 100vh; align-items: center;">
+    <div id="points">
+        <h1 id="points-left">0</h1>
+        <h1 id="points-right">0</h1>
+    </div>
+    <div class="table">
+        <div id="player_left" class="player player_left"></div>
+        <div id="ball" class="ball"></div>
+        <div id="player_right" class="player player_right"></div>
+    </div>
+</body>
+<style>
+    html, body {
+        overflow: hidden;
+      }
+    
+    .table {
+        position: relative;
+        margin: 5px; 
+        width: 1280px; 
+        height: 720px; 
+        border: 1px; 
+        border-color: black; 
+        background-color: rgb(39, 56, 56);
+    }
+
+    .player {
+        position: absolute;
+        height: 100px;
+        width: 40px;
+        background-color: aqua;
+    }
+
+    .player_left {
+        top: 310px;
+    }
+
+    .player_right {
+        top: 310px;
+        right: 0;
+    }
+
+    .ball {
+        border-radius: 100%;
+        height: 20px;
+        width: 20px;
+        background-color: aquamarine;
+        position: absolute;
+        top: 340px;
+        left: 630px;
+    }
+
+    #points {
+        position: absolute;
+        top: 10px;
+        display: flex;
+        width: 400px;
+        justify-content: space-between;
+    }
+
+</style>
+<script>
+    function getRandomId(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+    let ws = new WebSocket("ws://localhost:8000/player/")
+    let payload = {
+        key: "",
+        player_id: getRandomId(1, 3999999999),
+        match_id: -1,
+        action: ""
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        ws.onmessage = (event) => {
+            data = JSON.parse(event.data)
+    
+            console.log(data)
+    
+            if (data.action == "coordinates") {
+                const player_height = 100
+                const ball_radious = 10
+                ball = document.getElementById("ball");
+                ball.style.left = `${data.ball.x - ball_radious}px`
+                ball.style.top = `${data.ball.y - ball_radious}px`
+
+                player_left = document.getElementById("player_left");
+                player_left.style.top = `${data.player_left.y - (player_height / 2)}px`
+
+                player_right = document.getElementById("player_right");
+                player_right.style.top = `${data.player_right.y - (player_height / 2)}px`
+
+                points_left = document.getElementById("points-left")
+                points_left.innerText = data.player_left.points
+
+                points_right = document.getElementById("points-right")
+                points_right.innerText = data.player_right.points
+                return ;
+            }
+
+            if (data.action == "connect") {
+                console.log("start connection")
+                payload.match_id = data.match_id
+                payload.action = "ready"
+                ws.send(JSON.stringify(payload))
+            }
+    
+        };
+      });
+
+
+    let keyPressed = ""
+
+    async function sendKey(key) {
+        if (keyPressed == key)
+            return
+        else
+            keyPressed = key
+        payload.key = key
+        payload.action = "player_move"
+        ws.send(JSON.stringify(payload))
+    }
+
+    document.addEventListener('keydown', async function(event) {
+        if (event.key === 'ArrowUp') {
+            sendKey('up');
+        } else if (event.key === 'ArrowDown') {
+            sendKey('down');
+        }
+    });
+
+    document.addEventListener('keyup', function(event) {
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            sendKey("stop");
+        }
+    });
+</script>
+</html>

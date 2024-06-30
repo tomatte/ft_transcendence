@@ -1,276 +1,51 @@
-.hero-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 48px;
-    position: relative;
-  }
-  
-  .hero-content .title-and-subheading {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 24px;
-    position: relative;
-    align-self: stretch;
-    width: 100%;
-    flex: 0 0 auto;
-  }
-  
-  .hero-content .title {
-    position: relative;
-    align-self: stretch;
-    margin-top: -1px;
-    font-family: var(--heading-h1-font-family);
-    font-weight: var(--heading-h1-font-weight);
-    color: var(--comet-cloud200);
-    font-size: var(--heading-h1-font-size);
-    letter-spacing: var(--heading-h1-letter-spacing);
-    line-height: var(--heading-h1-line-height);
-    font-style: var(--heading-h1-font-style);
-  }
-  
-  .hero-content .subheading {
-    position: relative;
-    align-self: stretch;
-    font-family: var(--body-medium-font-family);
-    font-weight: var(--body-medium-font-weight);
-    color: var(--comet-cloud400-base);
-    font-size: var(--body-medium-font-size);
-    letter-spacing: var(--body-medium-letter-spacing);
-    line-height: var(--body-medium-line-height);
-    font-style: var(--body-medium-font-style);
-  }
-  
-  .hero-content .login-button {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    position: relative;
-    align-self: stretch;
-    width: 100%;
-    flex: 0 0 auto;
-  }
-  
-  .hero-content .button {
-    all: unset;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    padding: 10px 16px;
-    position: relative;
-    align-self: stretch;
-    width: 100%;
-    flex: 0 0 auto;
-    background-color: var(--lunar-dust700);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  
-  .hero-content .logo {
-    position: relative;
-    flex: 0 0 auto;
-  }
-  
-  .hero-content .button-text {
-    position: relative;
-    width: fit-content;
-    font-family: var(--body-regular-bold-font-family);
-    font-weight: var(--body-regular-bold-font-weight);
-    color: var(--lunar-dust50);
-    font-size: var(--body-regular-bold-font-size);
-    letter-spacing: var(--body-regular-bold-letter-spacing);
-    line-height: var(--body-regular-bold-line-height);
-    white-space: nowrap;
-    font-style: var(--body-regular-bold-font-style);
-  }
+.login {
+  display: flex;
+  width: var(--Desktop-width, 1366px);
+  height: var(--Desktop-height, 768px);
+  align-items: center;
+  gap: 8px;
+}
 
-  
-  -------
-  :root {
-    --lunar-dust1000: rgba(14, 14, 16, 1);
-    --lunar-dust950-base: rgba(24, 24, 27, 1);
-    --lunar-dust900: rgba(57, 57, 65, 1);
-    --lunar-dust800: rgba(65, 65, 75, 1);
-    --lunar-dust700: rgba(76, 77, 88, 1);
-    --lunar-dust600: rgba(93, 94, 108, 1);
-    --lunar-dust500: rgba(115, 117, 132, 1);
-    --lunar-dust400: rgba(145, 147, 159, 1);
-    --lunar-dust300: rgba(184, 185, 193, 1);
-    --lunar-dust200: rgba(217, 217, 222, 1);
-    --lunar-dust100: rgba(238, 238, 240, 1);
-    --lunar-dust50: rgba(247, 247, 248, 1);
-    --lunar-dust0: rgba(255, 255, 255, 1);
-    --comet-cloud1000: rgba(34, 34, 43, 1);
-    --comet-cloud950: rgba(41, 42, 61, 1);
-    --comet-cloud900: rgba(70, 72, 105, 1);
-    --comet-cloud800: rgba(81, 82, 130, 1);
-    --comet-cloud700: rgba(98, 98, 160, 1);
-    --comet-cloud600: rgba(116, 118, 183, 1);
-    --comet-cloud500: rgba(140, 146, 200, 1);
-    --comet-cloud400-base: rgba(161, 170, 213, 1);
-    --comet-cloud300: rgba(190, 199, 227, 1);
-    --comet-cloud200: rgba(215, 221, 238, 1);
-    --comet-cloud100: rgba(233, 237, 246, 1);
-    --comet-cloud50: rgba(243, 246, 250, 1);
-    --neptune-blue950: rgba(26, 34, 81, 1);
-    --neptune-blue900: rgba(35, 52, 133, 1);
-    --neptune-blue800: rgba(36, 57, 169, 1);
-    --neptune-blue700: rgba(37, 69, 208, 1);
-    --neptune-blue600-base: rgba(49, 91, 227, 1);
-    --neptune-blue500: rgba(67, 119, 238, 1);
-    --neptune-blue400: rgba(103, 155, 243, 1);
-    --neptune-blue300: rgba(152, 190, 248, 1);
-    --neptune-blue200: rgba(194, 215, 251, 1);
-    --neptune-blue100: rgba(220, 231, 253, 1);
-    --neptune-blue50: rgba(240, 245, 254, 1);
-    --cosmic-forest950: rgba(2, 44, 34, 1);
-    --cosmic-forest900: rgba(6, 78, 59, 1);
-    --cosmic-forest800: rgba(6, 95, 54, 1);
-    --cosmic-forest700: rgba(4, 120, 67, 1);
-    --cosmic-forest600: rgba(5, 150, 83, 1);
-    --cosmic-forest500: rgba(16, 185, 107, 1);
-    --cosmic-forest400: rgba(52, 211, 138, 1);
-    --cosmic-forest300: rgba(110, 231, 175, 1);
-    --cosmic-forest200-base: rgba(167, 243, 208, 1);
-    --cosmic-forest100: rgba(209, 250, 231, 1);
-    --cosmic-forest50: rgba(236, 253, 245, 1);
-    --solar-flare950: rgba(65, 19, 9, 1);
-    --solar-flare900: rgba(120, 43, 22, 1);
-    --solar-flare800: rgba(149, 49, 23, 1);
-    --solar-flare700: rgba(188, 61, 18, 1);
-    --solar-flare600: rgba(226, 81, 20, 1);
-    --solar-flare500-base: rgba(241, 108, 31, 1);
-    --solar-flare400: rgba(244, 139, 67, 1);
-    --solar-flare300: rgba(248, 181, 121, 1);
-    --solar-flare200: rgba(251, 212, 173, 1);
-    --solar-flare100: rgba(254, 235, 214, 1);
-    --solar-flare50: rgba(254, 246, 238, 1);
-    --red-dwarf950: rgba(72, 7, 12, 1);
-    --red-dwarf900: rgba(132, 24, 32, 1);
-    --red-dwarf800: rgba(160, 20, 30, 1);
-    --red-dwarf700: rgba(193, 20, 32, 1);
-    --red-dwarf600: rgba(229, 29, 43, 1);
-    --red-dwarf500: rgba(248, 59, 72, 1);
-    --red-dwarf400-base: rgba(255, 101, 112, 1);
-    --red-dwarf300: rgba(255, 160, 167, 1);
-    --red-dwarf200: rgba(255, 199, 203, 1);
-    --red-dwarf100: rgba(255, 225, 227, 1);
-    --red-dwarf50: rgba(255, 241, 242, 1);
-    --figmacomponent-background: rgba(12, 12, 12, 1);
-    --logowhite: rgba(255, 255, 255, 1);
-    --logoblack: rgba(0, 0, 0, 1);
-    --heading-h1-font-family: "Red Hat Display", Helvetica;
-    --heading-h1-font-weight: 700;
-    --heading-h1-font-size: 48px;
-    --heading-h1-letter-spacing: 0px;
-    --heading-h1-line-height: 120.00000476837158%;
-    --heading-h1-font-style: normal;
-    --heading-h2-font-family: "Red Hat Display", Helvetica;
-    --heading-h2-font-weight: 700;
-    --heading-h2-font-size: 40px;
-    --heading-h2-letter-spacing: 0px;
-    --heading-h2-line-height: 120.00000476837158%;
-    --heading-h2-font-style: normal;
-    --heading-h3-font-family: "Red Hat Display", Helvetica;
-    --heading-h3-font-weight: 700;
-    --heading-h3-font-size: 34px;
-    --heading-h3-letter-spacing: 0px;
-    --heading-h3-line-height: 139.9999976158142%;
-    --heading-h3-font-style: normal;
-    --heading-h4-font-family: "Red Hat Display", Helvetica;
-    --heading-h4-font-weight: 700;
-    --heading-h4-font-size: 28px;
-    --heading-h4-letter-spacing: 0px;
-    --heading-h4-line-height: 150%;
-    --heading-h4-font-style: normal;
-    --heading-h5-font-family: "Red Hat Display", Helvetica;
-    --heading-h5-font-weight: 700;
-    --heading-h5-font-size: 24px;
-    --heading-h5-letter-spacing: 0px;
-    --heading-h5-line-height: 160.0000023841858%;
-    --heading-h5-font-style: normal;
-    --heading-h6-font-family: "Red Hat Display", Helvetica;
-    --heading-h6-font-weight: 700;
-    --heading-h6-font-size: 20px;
-    --heading-h6-letter-spacing: 0px;
-    --heading-h6-line-height: 160.0000023841858%;
-    --heading-h6-font-style: normal;
-    --body-extra-large-font-family: "Play", Helvetica;
-    --body-extra-large-font-weight: 700;
-    --body-extra-large-font-size: 28px;
-    --body-extra-large-letter-spacing: 0px;
-    --body-extra-large-line-height: 100%;
-    --body-extra-large-font-style: normal;
-    --body-large-font-family: "Play", Helvetica;
-    --body-large-font-weight: 700;
-    --body-large-font-size: 20px;
-    --body-large-letter-spacing: 0px;
-    --body-large-line-height: 100%;
-    --body-large-font-style: normal;
-    --body-medium-bold-font-family: "Play", Helvetica;
-    --body-medium-bold-font-weight: 700;
-    --body-medium-bold-font-size: 16px;
-    --body-medium-bold-letter-spacing: 0px;
-    --body-medium-bold-line-height: 139.9999976158142%;
-    --body-medium-bold-font-style: normal;
-    --body-medium-font-family: "Play", Helvetica;
-    --body-medium-font-weight: 400;
-    --body-medium-font-size: 16px;
-    --body-medium-letter-spacing: 0px;
-    --body-medium-line-height: 139.9999976158142%;
-    --body-medium-font-style: normal;
-    --body-regular-bold-font-family: "Play", Helvetica;
-    --body-regular-bold-font-weight: 700;
-    --body-regular-bold-font-size: 14px;
-    --body-regular-bold-letter-spacing: 0px;
-    --body-regular-bold-line-height: 139.9999976158142%;
-    --body-regular-bold-font-style: normal;
-    --body-regular-font-family: "Play", Helvetica;
-    --body-regular-font-weight: 400;
-    --body-regular-font-size: 14px;
-    --body-regular-letter-spacing: 0px;
-    --body-regular-line-height: 139.9999976158142%;
-    --body-regular-font-style: normal;
-    --body-caption-regular-font-family: "Play", Helvetica;
-    --body-caption-regular-font-weight: 700;
-    --body-caption-regular-font-size: 12px;
-    --body-caption-regular-letter-spacing: 0px;
-    --body-caption-regular-line-height: 129.99999523162842%;
-    --body-caption-regular-font-style: normal;
-    --general-desktop-width: 1366px;
-    --general-desktop-height: 768px;
-    --general-variables-right: 0px;
-    --general-variables-left: 0px;
-    --general-variables-maximum: 640px;
-    --general-variables-minimum: 0px;
-    --general-variables-ball-left-right: 44px;
-    --general-variables-ball-up-down: 0px;
-  }
-  
-  /*
-  
-  To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
-  
-  <body data-general-mode="desktop">
-      <!-- the rest of your content -->
-  </body>
-  
-  You can apply the theme on any DOM node, not just the `body`
-  
-  */
-  
-  [data-general-mode="desktop"] {
-    --general-desktop-width: 1366px;
-    --general-desktop-height: 768px;
-  }
-  
-  [data-general-mode="mobile"] {
-    --general-desktop-width: 0px;
-    --general-desktop-height: 0px;
-  }
-  
+.login-container {
+  display: flex;
+padding: 40px 32px;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+gap: 32px;
+flex: 1 0 0;
+align-self: stretch;
+}
+
+.login__hero-image {
+  display: flex;
+width: 800px;
+padding: 24px;
+align-items: center;
+gap: 8px;
+flex-shrink: 0;
+align-self: stretch;
+}
+
+.login__hero-image {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.login__hero-image__carousel {
+  display: flex; /* Para alinhar os itens lado a lado */
+  transition: transform 0.5s ease; /* Efeito de transição suave */
+}
+
+.login__hero-image__carousel__item {
+  flex: 0 0 100%; /* Cada item ocupa toda a largura */
+  max-width: 100%;
+}
+
+/* Opcional: Estilize as imagens dentro de cada slide */
+.login__hero-image__carousel__item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow Key Listener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .status {
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="status">Press the up or down arrow key</div>
+
+    <script>
+        let ws = new WebSocket("ws://localhost:8000/xablau/")
+        let id = null
+        let payload = {
+            key: "",
+            id: null
+        }
+
+        ws.onmessage = (event) => {
+            message = JSON.parse(event.data)
+
+            console.log(message)
+            if (message.method == "connect") {
+                payload.id = message.id
+                id = message.id
+                return ;
+            }
+
+        };
+
+
+        async function sendKey(key) {
+            payload.key = key
+            ws.send(JSON.stringify(payload))
+        }
+
+        // Function to execute when the key is pressed
+        async function onKeyPress(key) {
+            //console.log(key + " key pressed");
+            sendKey(key)
+            document.querySelector('.status').textContent = key + " key pressed";
+        }
+
+        // Function to execute when the key is released
+        async function onKeyRelease(key) {
+            //console.log(key + " key released");
+            document.querySelector('.status').textContent = key + " key released";
+        }
+
+        // Event listener for keydown
+        document.addEventListener('keydown', async function(event) {
+            if (event.key === 'ArrowUp') {
+                onKeyPress('Up');
+            } else if (event.key === 'ArrowDown') {
+                onKeyPress('Down');
+            }
+        });
+
+        // Event listener for keyup
+        document.addEventListener('keyup', function(event) {
+            if (event.key === 'ArrowUp') {
+                onKeyRelease('Up');
+            } else if (event.key === 'ArrowDown') {
+                onKeyRelease('Down');
+            }
+        });
+    </script>
+</body>
+</html>
