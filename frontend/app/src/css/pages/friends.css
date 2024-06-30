@@ -1,190 +1,25 @@
-.page-content__container {
+.page-content__container__header{
   display: flex;
-  padding: 24px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
-  flex: 1 0 0;
-  align-self: stretch;
-  border-radius: 16px 0px 0px 16px;
-  border-top: 1px solid var(--Lunar-Dust-900);
-  border-bottom: 1px solid var(--Lunar-Dust-900);
-  border-left: 1px solid var(--Lunar-Dust-900);
-  background: var(--Lunar-Dust-950-base);
+justify-content: space-between;
+align-items: flex-start;
+align-self: stretch;
 }
 
-.page-content__container__header {
+.page-content__container__header__search-bar{
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  align-self: stretch;
+padding: 12px 16px;
+align-items: center;
+gap: 8px;
+align-self: stretch;
+border-radius: 4px;
+background: var(--Lunar-Dust-1000);
 }
 
-.page-content__container__header__info {
-  flex: 1;
-}
-
-.page-content__container__header__info__title {
-  font-size: var(--heading-h4-font-size);
-  color: var(--lunar-dust50);
-}
-
-.button {
-  all: unset;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px;
-  background-color: var(--cosmic-forest600);
-  border-radius: 4px;
-}
-
-.button--success {
-  background-color: var(--success-color);
-}
-
-.button__text {
-  font-size: var(--body-regular-bold-font-size);
-  color: var(--comet-cloud50);
-}
-
-.search-bar {
+.page-content__container__content{
   display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: var(--lunar-dust1000);
-  border-radius: 4px;
-  padding: 12px 16px;
-}
-
-.search-bar__icon {
-  font-size: var(--icon-size); 
-  color: var(--icon-color); 
-}
-
-.search-bar__input {
-  font-size: var(--body-regular-font-size);
-  color: var(--lunar-dust600);
-}
-
-.playground-container {
-  margin-top: 24px; 
-}
-
-.table-header {
-  background-color: var(--comet-cloud1000);
-  color: var(--comet-cloud300);
-  font-size: var(--body-caption-regular-font-size);
-}
-
-.table-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background-color: var(--lunar-dust950-base);
-  border-radius: 8px;
-}
-
-.table-row__player {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.table-row__player__image {
-  width: 36px; /* Adjust size as needed */
-  height: 36px; /* Adjust size as needed */
-  border-radius: 50%;
-}
-
-.table-row__player__text {
-  display: flex;
-  flex-direction: column;
-}
-
-.table-row__player__text__name {
-  font-size: var(--body-medium-bold-font-size);
-  color: var(--comet-cloud400);
-}
-
-.table-row__player__text__nickname {
-  font-size: var(--body-regular-font-size);
-  color: var(--lunar-dust500);
-}
-
-.table-row__data-default {
-  font-size: var(--body-medium-bold-font-size);
-  color: var(--comet-cloud400);
-}
-
-.table-row__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.game-row-option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--comet-cloud950);
-  border-radius: 50%;
-  padding: 8px;
-}
-
-.game-row-option:hover {
-  background-color: var(--comet-cloud900);
-}
-
-.game-row-option__icon {
-  font-size: var(--icon-size); /* Define your icon size variable */
-  color: var(--icon-color); /* Define your icon color variable */
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 24px; /* Adjust as needed */
-}
-
-.pagination__list {
-  list-style-type: none;
-  display: flex;
-  gap: 8px;
-}
-
-.pagination__control,
-.pagination__item-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 12px;
-  background-color: var(--comet-cloud1000);
-  border-radius: 4px;
-}
-
-.pagination__control--disabled {
-  opacity: 0.5; /* Example: Make disabled controls less visible */
-}
-
-.pagination__item-number--active {
-  background-color: var(--cosmic-forest600);
-}
-
-.pagination__control__icon-left {
-  font-size: var(--icon-medium-size); /* Define your medium icon size */
-  color: var(--icon-color); /* Define your icon color variable */
-}
-
-.pagination__control__text {
-  font-size: var(--body-caption-regular-font-size);
-  color: var(--lunar-dust500);
-}
-
-.icon--small {
-  font-size: var(--icon-small-size); /* Define your small icon size */
+flex-direction: column;
+justify-content: space-between;
+align-items: flex-start;
+flex: 1 0 0;
+align-self: stretch;
 }

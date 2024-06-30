@@ -13,6 +13,7 @@ const Matches = () => {
             <span class="button__text font-body-regular-bold">Refresh</span>
           </button>
         </div>
+        
         <div class="page-content__container__content page-content__container__content--matches">
     	<table>
 			<thead>
