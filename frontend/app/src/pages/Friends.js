@@ -1,5 +1,6 @@
 const Friends = () => {
-  const component = document.createElement('div');
+	const pageContentContainer = document.querySelector('.page-content__container');
+
   component.innerHTML = `
   			<div class="page-content__container__header">
 				<div class="page-content__container__header__info">
@@ -130,7 +131,7 @@ const Friends = () => {
 </div>
 
 `;
-return component;
+return pageContentContainer;
 };
 
 export default Friends;

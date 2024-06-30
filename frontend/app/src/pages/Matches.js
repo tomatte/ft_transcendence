@@ -18,10 +18,10 @@ const Matches = () => {
 			<thead>
 				<tr class="table-header">
 					<th class="table-header__text font-body-caption-regular">Player</th>
-					<th class="table-header__text font-body-caption-regular">Global ranking</th>
-					<th class="table-header__text font-body-caption-regular">Losses against you</th>
-					<th class="table-header__text font-body-caption-regular">Wins against you</th>
-					<th class="table-header__text font-body-caption-regular">Actions</th>
+					<th class="table-header__text font-body-caption-regular">Game type</th>
+					<th class="table-header__text font-body-caption-regular">Score</th>
+					<th class="table-header__text font-body-caption-regular">Status</th>
+					<th class="table-header__text font-body-caption-regular">Date</th>
 				</tr>
             </thead>
 			<tbody>
@@ -70,8 +70,8 @@ const Matches = () => {
                     <td class="table-row__data-default font-body-medium-bold">Friendly Match</td>
                     <td class="table-row__data-default font-body-medium-bold">2 X 1</td>
                     <td class="table-row__tag">
-                        <span class="tag tag--defeat">
-                            <span class="tag__text font-body-regular-bold">Defeat</span>
+                        <span class="tag tag--victory">
+                            <span class="tag__text font-body-regular-bold">Victory</span>
                         </span>
                     </td>
                     <td class="table-row__data-default font-body-medium-bold">30/06/2024</td>

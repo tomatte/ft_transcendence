@@ -13,7 +13,7 @@ const renderPage = () => {
 
   if (routes[page]) {
     container.innerHTML = ''; // Clear previous content
-    container.appendChild(routes[page]()); // Render the selected page component
+    routes[page](); // Render the selected page component
     
     // Find the corresponding menu item and add 'menu-item--active' class
     const menuItem = document.querySelector(`.sidebar__menu-container .menu-item a[href="/#${page}"]`);
