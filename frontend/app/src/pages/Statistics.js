@@ -1,7 +1,6 @@
-export default () => {
-
-const pageContentContainer = document.querySelector('.page-content__container');
-
+const Statistics = () => {
+	const pageContentContainer = document.querySelector('.page-content__container');
+  
 	pageContentContainer.innerHTML = `
   			<div class="page-content__container__header">
 				<div class="page-content__container__header__info">
@@ -71,13 +70,9 @@ const pageContentContainer = document.querySelector('.page-content__container');
 					</div>
 				</div>
 			</div>
-
   `;
 
-  if (pageContentContainer) {
-    // Append a new element (in this case, 'container') to the selected div
-    pageContentContainer.appendChild(container);
+  return pageContentContainer;
 }
 
-  return container;
-}
+export default Statistics;

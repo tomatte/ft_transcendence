@@ -160,4 +160,4 @@ const Ranking = () => {
     return component;
   };
   
-  export default Ranking;
+export default Ranking;
