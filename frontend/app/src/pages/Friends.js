@@ -4,20 +4,19 @@ const Friends = () => {
   
 	pageContentContainer.innerHTML = `
  
-    <div class="page-content__container__header">
+     <div class="page-content__container__header">
         <div class="page-content__container__header__info">
             <h4 class="page-content__container__header__info__title">Friends</h4>
         </div>
-     
-          <button class="button button--success">
+        <button class="button button--success">
             <span class="button__text font-body-regular-bold">Add Friend</span>
-         </button>
-        </div>
+        </button>
+    </div>
 
-        <div class="search-bar">
-            <span class="material-icons-round search-bar__icon icon--regular">search</span>
-            <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
-        </div>
+    <div class="search-bar">
+        <span class="material-icons-round search-bar__icon icon--regular">search</span>
+        <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name..." onclick="openModal()">
+    </div>
 
     <div class="playground-container playground-container--table-header">
         <table>
@@ -31,9 +30,7 @@ const Friends = () => {
                 </tr>
             </thead>
             <tbody>
-
-
-                 <tr class="table-row">
+                <tr class="table-row">
                     <td class="table-row__player">
                         <img class="table-row__player__image" src="../assets/images/players/caos.png" alt="player">
                         <div class="table-row__player__text">
@@ -98,7 +95,6 @@ const Friends = () => {
             </ul>
         </nav>
     </div>
- 
   
     `;
 
