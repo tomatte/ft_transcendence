@@ -81,6 +81,8 @@ const Home = () => {
             </div>
         </div>
 
+        <div id="modalOverlay"></div>
+
     
       `;
 
