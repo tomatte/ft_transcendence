@@ -178,6 +178,11 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         self.player_id = data["player_id"]
         
+        tournament_data = {
+            "players": [self.player_id]
+        }
+        redis_client.set(self.tournament_id, json.dumps(tournament_data))
+        
         payload = {
             "status": "enter_tournament",
             "tournament_id": self.tournament_id,
@@ -196,17 +201,21 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         self.tournament_id = data["tournament_id"]
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
+        tournament_data = redis_client.get(self.tournament_id).decode()
+        tournament_data = json.loads(tournament_data)
+        tournament_data["players"].append(self.player_id)
+        redis_client.set(self.tournament_id, json.dumps(tournament_data))
+        
         payload = {"status": "joined tournament succesfuly"}
         await self.send(json.dumps(payload))
         
-        event_payload = {
-            "type": "tournament.new.player",
-            "joiner_id": self.player_id
-        }
-        await self.channel_layer.group_send(self.tournament_id, event_payload)
+        await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.new.player"})
         
     async def tournament_new_player(self, event):
-        await self.send(json.dumps(event))
+        payload = redis_client.get(self.tournament_id).decode()
+        payload = json.loads(payload)
+        payload["status"] = "player_joined"
+        await self.send(json.dumps(payload))
         
         
          

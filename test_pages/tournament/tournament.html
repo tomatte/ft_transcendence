@@ -30,8 +30,11 @@
             <br>
         </div>
 
-        <ul id="players">
-        </ul>
+        <div>
+            <h3>Players</h3>
+            <ul id="players">
+            </ul>
+        </div>
 
         </div>
     </div>
@@ -116,6 +119,18 @@
         ul.appendChild(li)
     }
 
+    function playerJoined(data) {
+        console.log("player joined!!")
+        const ul = document.getElementById("players")
+        ul.innerHTML = ''
+        players = data.players
+        players.forEach((player) => {
+            const li = document.createElement("li")
+            li.innerText = player
+            ul.appendChild(li)
+        })
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         ws_tournament.onmessage = (event) => {
             data = JSON.parse(event.data)
@@ -126,6 +141,11 @@
                 document.getElementById("tournament_id").innerText = data.tournament_id
                 addPlayerToList(data)
                 return 
+            }
+
+            if (data.status == "player_joined") {
+                playerJoined(data)
+                return
             }
         };
 
@@ -140,6 +160,7 @@
 
             if (data.status == "tournament_invitation") {
                 invitationReceived(data)
+                return
             }
             
         };
