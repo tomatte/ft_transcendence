@@ -6,6 +6,7 @@
     <title>Tournament</title>
 </head>
 <body>
+    <div><span>My id: </span><span id="my-id"></span></div>
     <div id="create">
         <label id="label-create" for="btn-create">Tournament</label>
         <button id="btn-create" onclick="createTournament()">create tournament</button>
@@ -61,16 +62,17 @@
         list.appendChild(item)
     }
 
-    function registerToNotification() {
-        payload.action = "register"
-        ws_notification.send(JSON.stringify(payload))
-    }
-
     function sendTournamentInvitation() {
         const friend_id = document.getElementById("friend-id").value
         payload.friend_id = friend_id
         payload.action = "invite_to_tournament"
         ws_notification.send(JSON.stringify(payload))
+    }
+
+    function initialSetup(data) {
+        payload.tournament_id = data.tournament_id
+        payload.player_id = data.player_id
+        document.getElementById("my-id").innerText = data.player_id
     }
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -91,8 +93,7 @@
                 console.log(data)
 
             if (data.status == "connected") {
-                registerToNotification()
-                payload.tournament_id = data.tournament_id
+                initialSetup(data)
                 return 
             }
 

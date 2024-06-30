@@ -180,8 +180,12 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         
         await self.channel_layer.group_add("notification", self.channel_name)
         
+        self.player_id = str(uuid.uuid4())
+        redis_client.set(self.player_id, self.channel_name)
+
         payload = {
-            'status': 'connected'
+            'status': 'connected',
+            'player_id': self.player_id
         }
         await self.send(json.dumps(payload))
 
@@ -189,10 +193,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         print(text_data)
         
         data = json.loads(text_data)
-        
-        if data["action"] == "register":
-            await self.register_player(data)
-            return 
         
         if data["action"] == "invite_to_tournament":
             await self.invite_to_tournament(data)
@@ -212,14 +212,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("chat", self.channel_name)
         return await super().disconnect(close_code)
-        
-    async def register_player(self, data):
-        if "player_id" not in data:
-            await self.disconnect(None)
-            return
-
-        redis_client.set(data["player_id"], self.channel_name)
-        await self.send(json.dumps({"status": "registered"}))
         
     async def tournament_invitation(self, event):
         print("tournament_invitation()")
