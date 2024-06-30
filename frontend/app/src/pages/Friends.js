@@ -57,8 +57,10 @@ const Friends = () => {
         </table>
       </div>
 
+ 
       <div class="playground-container playground-container--pagination">
         <nav class="pagination font-body-regular-bold">
+
           <ul class="pagination__list">
             <li class="pagination__control pagination__control--disabled">
               <a href="#">
@@ -72,7 +74,7 @@ const Friends = () => {
                 <span class="pagination__control__text">Previous</span>
               </a>
             </li>
-            <li class="pagination__item-number pagination__item-number--active"><a href="#">1</a></li>
+            <li class="pagination__item-number"><a href="#">1</a></li>
             <li class="pagination__item-number"><a href="#">2</a></li>
             <li class="pagination__item-number"><a href="#">3</a></li>
             <li class="pagination__item-number"><a href="#">4</a></li>
@@ -99,7 +101,7 @@ const Friends = () => {
         </nav>
       </div>
     </div>
-
+ 
     `;
 
     return pageContentContainer;
