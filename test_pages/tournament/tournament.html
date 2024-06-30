@@ -5,32 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tournament</title>
 </head>
-<body>
-    <div><span>My id: </span><span id="my-id"></span></div>
-    <div id="create">
-        <label id="label-create" for="btn-create">Tournament</label>
-        <button id="btn-create" onclick="createTournament()">create tournament</button>
-    </div>
-
-    <div id="creating" style="visibility: hidden;">
-        <div>
-            <h1>creating tournament...</h1>
-            <h2 id="tournament_id"></h2>
+<body style="display: flex; justify-content: space-between;">
+    <div id="col-1">
+                <div id="row-1" style="display: flex; justify-content: space-between; min-width: 400px;">
+            <div><span>My id: </span><span id="my-id"></span></div>
+        </div>
+        <div id="create">
+            <label id="label-create" for="btn-create">Tournament</label>
+            <button id="btn-create" onclick="createTournament()">create tournament</button>
         </div>
 
-        <br>
-        <div>
-            <label for="tournament-invitation">Invite to Tournament</label>
-            <input id="friend-id" type="text" placeholder="player_id...">
-            <button onclick="sendTournamentInvitation()">send</button>
+        <div id="creating" style="visibility: hidden;">
+            <div>
+                <h1>creating tournament...</h1>
+                <h2 id="tournament_id"></h2>
+            </div>
+
+            <br>
+            <div>
+                <label for="tournament-invitation">Invite to Tournament</label>
+                <input id="friend-id" type="text" placeholder="player_id...">
+                <button onclick="sendTournamentInvitation()">send</button>
+            </div>
+            <br>
         </div>
-        <br>
+
+        <ul id="players">
+        </ul>
+
+        </div>
     </div>
 
-    <ul id="players">
-    </ul>
-
+    <div id="col-2" style="min-width: 500px;">
+        <div >
+            <div>
+                <span style="margin-right: 5px;">Tournament invitations</span>
+                <ul id="invitation-list">
+                </ul>
+            </div>
+            <button onclick="">join</button>
+        </div>
     </div>
+
 </body>
 <script>
     function getRandomId(min, max) {
@@ -75,6 +91,33 @@
         document.getElementById("my-id").innerText = data.player_id
     }
 
+    function joinTournament(data) {
+        console.log(data)
+    }
+
+    function invitationReceived(data) {
+        console.log("inviation received!!!")
+        const ul = document.getElementById("invitation-list")
+        const li = document.createElement("li")
+        const span = document.createElement("span")
+        const button = document.createElement("button")
+
+        span.innerText = data.tournament_id
+
+        data = {
+            player_id: payload.player_id,
+            tournament_id: data.tournament_id
+        }
+        button.onclick = function() {
+            joinTournament(data)
+        }
+        button.innerText = "join"
+
+        li.appendChild(span)
+        li.appendChild(button)
+        ul.appendChild(li)
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         ws_tournament.onmessage = (event) => {
             data = JSON.parse(event.data)
@@ -98,8 +141,9 @@
             }
 
             if (data.status == "tournament_invitation") {
-                console.log("we got an invite!!!")
+                invitationReceived(data)
             }
+            
         };
 
       });
@@ -109,6 +153,10 @@
     * {
         color: whitesmoke;
         background-color: rgb(24, 23, 23);
+    }
+
+    #invitation-list > li > span {
+        margin-right: 10px;
     }
 </style>
 </html>
