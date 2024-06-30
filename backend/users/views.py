@@ -373,39 +373,20 @@ def uptade_avatar(request):
 	return HttpResponse(status=200)
 
 
-def auxiliar(request):
-	return render(request, 'auxiliar.html')
-
-
-
-
-
-################################################################################
-# Auxiliaries
-################################################################################
-
-
-def populate_users():
-	for i in range(1, 10):
-		username = f'username{i}'
-		nickname = f'nickname{i}'
-		User.objects.create(nickname=nickname, username=username)
-	return JsonResponse({'message': 'Populate success!'})
-
-
-def add_users_tournament():
-	tournament = Tournament.objects.get(pk=1)
-	for i in range(1, 8):
-		user = User.objects.get(username=f'username{i}')
-		tournament.players.add(user)
-
-def populate(request):
-	# populate_users()
-	# create_tournament(request)
-	# add_users_tournament()
-	create_Bracket(Tournament.objects.get(pk=1), 1)
-	get_tournament(request)
-
-	return JsonResponse({'message': 'Populate success!'})
-
-
+def ranking(request):
+    rank = []
+    for user in User.objects.all().order_by('winners'):
+        tot = user.winners + user.losses
+        win_rate = (user.winners / tot) * 100 if tot > 0 else 0
+        los_rate = (user.losses / tot) * 100 if tot > 0 else 0
+        info = {
+            "nickname": user.nickname,
+            "username": user.username,
+            "avatar": user.avatar,
+            "winners": user.winners,
+            "losses": user.losses,
+            "win_rate": win_rate,
+            "los_rate": los_rate
+        }
+        rank.append(info)
+    return rank

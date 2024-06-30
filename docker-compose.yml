@@ -5,14 +5,14 @@ networks:
 
 services:
 
-  # frontend:
-  #   build: ./frontend/config
-  #   container_name: ft_frontend
-  #   ports:
-  #     - "443:443"
-  #     - "4009:80"
-  #   volumes:
-  #     - ./frontend/app:/var/www
+  frontend:
+    build: ./frontend/config
+    container_name: ft_frontend
+    ports:
+      - "443:443"
+      - "4009:80"
+    volumes:
+      - ./frontend/app:/var/www
 
   # backend:
   #   build: ./backend
