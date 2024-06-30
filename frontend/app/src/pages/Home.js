@@ -14,7 +14,7 @@ const Home = () => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">TOURNAMENT</div>
                 <div class="game-mode-banner__info__button">
-                    <button class="button button--tertiary">
+                    <button onclick="openModal(console.log('Button clicked!'))" class="button button--tertiary">
                         <span class="material-icons-round button__icon-left">add</span>
                         <span class="button__text font-body-regular-bold">Create</span>
                     </button>
@@ -42,7 +42,7 @@ const Home = () => {
 
         <div class="game-mode-banner game-mode-banner--friendly-match">
             <div class="game-mode-banner__info">
-                <div class="game-mode-banner__info__title">1V1 MATCH</div>
+                <div class="game-mode-banner__info__title">FRIENDLY MATCH</div>
                 <div class="game-mode-banner__info__button">
                     <button class="button button--primary">
                         <span class="material-icons-round button__icon-left">sports_esports</span>
@@ -54,7 +54,32 @@ const Home = () => {
                 <img class="game-mode-banner__illustration__image" src="../assets/images/banners/flag.png" alt="">
             </div>
         </div>
- 
+
+
+
+        <div class="modal modal--leave-tournament" id="modalLeaveTournament">
+            <div class="modal__header">
+                <div class="modal__header__title">
+                    <div class="modal__header__title__text">
+                        <h4>Leave tournament</h4>
+                    </div>
+                    <button onclick="closeModal()" class="button">
+                        <span class="material-icons-round modal__header__title__close icon--regular">close</span>
+                    </button>
+                </div>
+                <span class="modal__header__description font-body-medium">
+                    Are you sure you want to leave this tournament? This action is irreversible and you will no longer be part of the tournament.
+                </span>
+            </div>
+            <div class="modal__actions">
+                <button class="button button--secondary">
+                    <span class="button__text font-body-regular-bold">No, cancel</span>
+                </button>
+                <button class="button button--danger">
+                    <span class="button__text font-body-regular-bold">Yes, leave tournament</span>
+                </button>
+            </div>
+        </div>
 
     
       `;

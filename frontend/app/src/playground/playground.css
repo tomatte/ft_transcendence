@@ -80,6 +80,11 @@ html, body
     flex-direction: column;
 }
 
+.playground-container--modal-leave-tournament {
+    flex-direction: row;
+}
+
+
 
 /*  */
 
