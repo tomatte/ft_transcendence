@@ -404,7 +404,10 @@ ul {
     justify-content: flex-start;
     transition: all 0.2s ease;
     cursor: pointer;
-    user-select: none;
+
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
 }
 
 .menu-item a {
@@ -464,7 +467,10 @@ ul {
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
-    user-select: none;
+
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
 }
 
 .menu-control__icon {
@@ -607,7 +613,10 @@ ul {
     background: var(--Comet-Cloud-1000);
     transition: all 0.2s ease;
     cursor: pointer;
-    user-select: none;
+
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
 }
 
 .pagination__control a {
@@ -655,8 +664,11 @@ ul {
     border-radius: 4px;
     background: var(--Comet-Cloud-1000);
     cursor: pointer;
-    user-select: none;
     transition: all 0.2s ease;
+
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
 }
 
 
