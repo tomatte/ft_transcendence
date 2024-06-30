@@ -46,20 +46,20 @@ INSTALLED_APPS = [
     'websocket',
     'tournament',
     'channels',
-    'corsheaders',
+    # 'corsheaders',
     'game'
 ]
 
 ASGI_APPLICATION = 'backend.asgi.application'
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(env('REDIS_HOST'), env('REDIS_PORT'))],
-        },
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [(env('REDIS_HOST'), env('REDIS_PORT'))],
+#         },
+#     },
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,7 +72,7 @@ MIDDLEWARE = [
 
     ## mys
     'backend.CustomMiddleware.CustomMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -109,7 +109,7 @@ DATABASES = {
         'NAME': env('POSTGRES_DB'),
         'USER': env('POSTGRES_USER'),
         'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': env('POSTGRES_HOST'),
+        'HOST': '172.25.232.93',
         'PORT': env('POSTGRES_PORT'),
     }
 }
