@@ -76,11 +76,16 @@ html, body
     flex-direction: column;
 }
 
+.playground-container--table-row {
+    flex-direction: column;
+}
+
 
 /*  */
 
+
 .seila {
-display: flex;
+   display: flex;
    align-items: flex-start;
    gap: 16px;
    align-self: stretch;
