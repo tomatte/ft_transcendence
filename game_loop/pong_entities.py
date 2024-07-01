@@ -7,7 +7,7 @@ from enum import Enum
 TABLE_WIDTH = 1280
 TABLE_HEIGHT = 720
 COLLISION_AREA = 50
-FPS = 90
+FPS = 40
 
 #how much the player can modify the direction of the ball; 
 # MAX_LIMIT: 90; MIN_LIMIT: 1; RECOMMENDED: 30

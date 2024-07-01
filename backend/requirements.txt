@@ -7,3 +7,7 @@ environs
 Pillow
 requests
 channels
+django-cors-headers
+redis
+channels-redis
+celery[redis]
