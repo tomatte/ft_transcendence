@@ -141,8 +141,7 @@
             list.appendChild(item)
         }
         
-        function playerJoined(data) {
-            console.log("player joined!!")
+        function updatePlayers(data) {
             const ul = document.getElementById("players")
             ul.innerHTML = ''
             players = data.players
@@ -166,8 +165,8 @@
                         return 
                     }
             
-                    if (data.status == "player_joined") {
-                        playerJoined(data)
+                    if (data.status == "update_players") {
+                        updatePlayers(data)
                         return
                     }
                 };
