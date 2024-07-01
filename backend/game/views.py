@@ -5,7 +5,7 @@ import json
 from .game_engine.pong import *
 from typing import Dict, TypedDict
 import uuid
-from backend.utils import redis_client
+from backend.utils import redis_client, MyAsyncWebsocketConsumer
 from .tasks import add
 
 class PlayerMoveDataType(TypedDict):
@@ -148,7 +148,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         # print(f"p_id: {self.player_id} match: {match}")
          
          
-class TournamentConsumer(AsyncWebsocketConsumer):
+class TournamentConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
         payload = {
@@ -197,13 +197,18 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             payload = {"status": "failed_to_join_tournament"}
             await self.send(json.dumps(payload))
             return
-
+        
         self.player_id = data["player_id"]
         self.tournament_id = data["tournament_id"]
-        await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
         tournament_data = redis_client.get(self.tournament_id).decode()
+        if not tournament_data:
+            #TODO: send error message to client
+            return
         tournament_data = json.loads(tournament_data)
+
+        await self.channel_layer.group_add(self.tournament_id, self.channel_name)
+        
         tournament_data["players"].append(self.player_id)
         redis_client.set(self.tournament_id, json.dumps(tournament_data))
         
@@ -216,7 +221,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         payload = redis_client.get(self.tournament_id).decode()
         payload = json.loads(payload)
         payload["status"] = "update_players"
-        await self.send(json.dumps(payload))
+        await self.send_json(payload)
         
         
          
