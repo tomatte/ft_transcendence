@@ -6,7 +6,7 @@ from typing import Dict, TypedDict
 import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer
 from .validations import TournamentValidation
-from .tasks import add
+from .tasks import emit_group_event_task
 from .my_types import *
 import random
 
@@ -207,17 +207,25 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         payload = {"status": "joined tournament succesfuly"}
         await self.send_json(payload)
             
-        
         await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.update.players"})
         
+        if len(tournament_data["players"]) == 4:
+            self.create_start_tournament_task()
+            
     async def tournament_update_players(self, event):
         payload = redis_client.get_json(self.tournament_id)
         payload["status"] = "update_players"
         await self.send_json(payload)
         
+    async def tournament_start(self, event):
+        await self.send_json({"status": "start_tournament"})
+        
     def get_tournament_data(self) -> TournamentData:
         return redis_client.get_json(self.tournament_id)
-        
+    
+    def create_start_tournament_task(self):
+        args = (self.tournament_id, {"type": "tournament.start"})
+        emit_group_event_task.apply_async(args=args, countdown=5)
         
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
