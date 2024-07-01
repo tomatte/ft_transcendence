@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
 import json
 from .game_engine.pong import *
@@ -8,32 +7,12 @@ import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer
 from .validations import TournamentValidation
 from .tasks import add
+from .my_types import *
 
-class PlayerMoveDataType(TypedDict):
-    key: str
-    player_id: str
-    match_id: str
-    action: str
-
-class PlayerDataType(TypedDict):
-    x: float
-    y: float
-    pos: str
-    points: int
-    
-class BallDataType(TypedDict):
-    x: float
-    y: float
-
-PlayersData = Dict[str, PlayerDataType]
-
-class MatchData(TypedDict):
-    ball: BallDataType
-    players: PlayersData
     
 MatchDict = Dict[str, MatchData]
 
-class GameLoopConsumer(AsyncWebsocketConsumer):
+class GameLoopConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
         redis_client.set("game_loop", self.channel_name)
@@ -53,14 +32,14 @@ class GameLoopConsumer(AsyncWebsocketConsumer):
     
     async def player_move(self, event):
         print(event)
-        await self.send(json.dumps(event))
+        await self.send_json(event)
         
     async def player_connect(self, event):
-        await self.send(json.dumps(event))
+        await self.send_json(event)
     
 
 # Create your views here.
-class PlayerConsumer(AsyncWebsocketConsumer):
+class PlayerConsumer(MyAsyncWebsocketConsumer):
     num_players = 0
     new_match_id = str(uuid.uuid4())
     
@@ -79,7 +58,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
             "player_id": str(uuid.uuid4()), #this is temporary, the player_id should come somewhere else like from an http route or from the client
 		}
         
-        await self.send(json.dumps(payload))
+        await self.send_json(payload)
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -143,7 +122,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
                 "points": player["points"]
             }
 
-        await self.send(json.dumps(payload))
+        await self.send_json(payload)
         # print(f"p_id: {self.player_id} match: {match}")
          
          
@@ -157,7 +136,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         payload = {
             'status': 'connected'
         }
-        await self.send(json.dumps(payload))
+        await self.send_json(payload)
 
     async def receive(self, text_data):
         print(text_data)
@@ -173,8 +152,20 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             return
 
     async def disconnect(self, close_code):
-        if self.tournament_id:
-            self.channel_layer.group_discard(self.tournament_id, self.channel_name)
+        if not self.tournament_id:
+            return await super().disconnect(close_code)
+    
+        self.channel_layer.group_discard(self.tournament_id, self.channel_name)
+
+        tournament_data = self.get_tournament_data()
+        for index, player_id in enumerate(tournament_data["players"]):
+            if player_id == self.player_id:
+                tournament_data["players"].pop(index)
+                
+        redis_client.set_json(self.tournament_id, tournament_data)
+        
+        await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.update.players"})
+        
         return await super().disconnect(close_code)
         
     async def create_tournament(self, data):
@@ -191,7 +182,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "status": "enter_tournament",
             "tournament_id": self.tournament_id,
         }
-        await self.send(json.dumps(payload))
+        await self.send_json(payload)
         
     async def join_tournament(self, data):
         self.validation.joinTournament.validateData(data)
@@ -215,9 +206,12 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         payload["status"] = "update_players"
         await self.send_json(payload)
         
+    def get_tournament_data(self) -> TournamentData:
+        return redis_client.get_json(self.tournament_id)
+        
         
          
-class NotificationConsumer(AsyncWebsocketConsumer):
+class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
         
@@ -230,7 +224,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             'status': 'connected',
             'player_id': self.player_id
         }
-        await self.send(json.dumps(payload))
+        await self.send_json(payload)
 
     async def receive(self, text_data):
         print(text_data)
@@ -258,7 +252,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         
     async def tournament_invitation(self, event):
         print("tournament_invitation()")
-        await self.send(json.dumps(event))
+        await self.send_json(event)
         
     async def invite_to_tournament(self, data):
         print("invite_to_tournament()")
@@ -280,4 +274,4 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         payload = {
             "status": "invitation_sent"
         }
-        await self.send(json.dumps(payload))
+        await self.send_json(payload)
