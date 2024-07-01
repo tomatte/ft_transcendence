@@ -6,6 +6,7 @@ from .game_engine.pong import *
 from typing import Dict, TypedDict
 import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer
+from .validations import TournamentValidation
 from .tasks import add
 
 class PlayerMoveDataType(TypedDict):
@@ -147,6 +148,10 @@ class PlayerConsumer(AsyncWebsocketConsumer):
          
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.validation = TournamentValidation(self)
+    
     async def connect(self):
         await self.accept()
         payload = {
@@ -169,7 +174,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         if self.tournament_id:
-            self.channel_layer.group_discard(self.tournament_id)
+            self.channel_layer.group_discard(self.tournament_id, self.channel_name)
         return await super().disconnect(close_code)
         
     async def create_tournament(self, data):
@@ -189,12 +194,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         await self.send(json.dumps(payload))
         
     async def join_tournament(self, data):
-        has_tournament_id = "tournament_id" in data
-        has_player_id = "player_id" in data
-        if not has_player_id or not has_tournament_id:
-            payload = {"status": "failed_to_join_tournament"}
-            await self.send_json(payload)
-            return
+        self.validation.joinTournament.validateData(data)
         
         self.player_id = data["player_id"]
         self.tournament_id = data["tournament_id"]
