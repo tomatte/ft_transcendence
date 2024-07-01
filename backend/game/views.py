@@ -103,12 +103,11 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         
         match_data = dict()
         if redis_client.exists(self.match_id):
-            match_data = redis_client.get(self.match_id).decode()
-            match_data = json.loads(match_data)
+            match_data = redis_client.get_json(self.match_id)
         
         print(f"match_data: {match_data}")
         match_data[data["player_id"]] = self.channel_name
-        redis_client.set(self.match_id, json.dumps(match_data))
+        redis_client.set_json(self.match_id, match_data)
         
         payload = {
             "type": "player.connect",
@@ -129,8 +128,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.send(game_loop_channel, data)
         
     async def match_coordinates(self, event):
-        matches_data = redis_client.get("matches").decode()
-        matches_data = json.loads(matches_data)
+        matches_data = redis_client.get_json("matches")
         match = matches_data[self.match_id]
 
         payload = {
@@ -182,7 +180,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         tournament_data = {
             "players": [self.player_id]
         }
-        redis_client.set(self.tournament_id, json.dumps(tournament_data))
+        redis_client.set_json(self.tournament_id, tournament_data)
         
         payload = {
             "status": "enter_tournament",
@@ -195,31 +193,25 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         has_player_id = "player_id" in data
         if not has_player_id or not has_tournament_id:
             payload = {"status": "failed_to_join_tournament"}
-            await self.send(json.dumps(payload))
+            await self.send_json(payload)
             return
         
         self.player_id = data["player_id"]
         self.tournament_id = data["tournament_id"]
         
-        tournament_data = redis_client.get(self.tournament_id).decode()
-        if not tournament_data:
-            #TODO: send error message to client
-            return
-        tournament_data = json.loads(tournament_data)
-
+        tournament_data = redis_client.get_json(self.tournament_id)
+        tournament_data["players"].append(self.player_id)
+        redis_client.set_json(self.tournament_id, tournament_data)
+        
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
-        tournament_data["players"].append(self.player_id)
-        redis_client.set(self.tournament_id, json.dumps(tournament_data))
-        
         payload = {"status": "joined tournament succesfuly"}
-        await self.send(json.dumps(payload))
+        await self.send_json(payload)
         
         await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.update.players"})
         
     async def tournament_update_players(self, event):
-        payload = redis_client.get(self.tournament_id).decode()
-        payload = json.loads(payload)
+        payload = redis_client.get_json(self.tournament_id)
         payload["status"] = "update_players"
         await self.send_json(payload)
         
