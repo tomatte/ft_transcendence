@@ -161,6 +161,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         for index, player_id in enumerate(tournament_data["players"]):
             if player_id == self.player_id:
                 tournament_data["players"].pop(index)
+                break
                 
         redis_client.set_json(self.tournament_id, tournament_data)
         
@@ -185,8 +186,12 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         await self.send_json(payload)
         
     async def join_tournament(self, data):
-        self.validation.joinTournament.validateData(data)
-        
+        self.validation.join_tournament.validate_data(data)
+        if not self.validation.join_tournament.can_join(data):
+            print("player forbidden to join tournament")
+            #TODO: send error message to client
+            return 
+
         self.player_id = data["player_id"]
         self.tournament_id = data["tournament_id"]
         

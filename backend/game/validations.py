@@ -1,4 +1,5 @@
 from backend.utils import redis_client
+from .my_types import *
 
 class ClientPayloadError(Exception):
     def __init__(self, *args: object) -> None:
@@ -9,7 +10,7 @@ class _JoinTournamentValiadation:
     def __init__(self, parent) -> None:
         self.parent = parent
     
-    def validateData(self, data: dict):
+    def validate_data(self, data: dict):
         if not isinstance(data, dict):
             raise TypeError("data must be dict")
         
@@ -18,7 +19,23 @@ class _JoinTournamentValiadation:
         if not "player_id" in data:
             raise  ClientPayloadError("no player_id found")
         
+    def can_join(self, data):
+        try:
+            tournament_id = data["tournament_id"]
+            tournament_data: TournamentData = redis_client.get_json(tournament_id)
+            if len(tournament_data["players"]) == 4:
+                return False
+            for player_id in tournament_data["players"]:
+                if player_id == data["player_id"]:
+                    return False
+            return True
+        except:
+            return False
+        
+        
+
+        
 # TOURNAMENT VALIDATIONS
 class TournamentValidation:
     def __init__(self, parent) -> None:
-        self.joinTournament = _JoinTournamentValiadation(parent)
+        self.join_tournament = _JoinTournamentValiadation(parent)
