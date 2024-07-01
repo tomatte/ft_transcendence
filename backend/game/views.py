@@ -8,6 +8,7 @@ from backend.utils import redis_client, MyAsyncWebsocketConsumer
 from .validations import TournamentValidation
 from .tasks import add
 from .my_types import *
+import random
 
     
 MatchDict = Dict[str, MatchData]
@@ -195,14 +196,17 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.player_id = data["player_id"]
         self.tournament_id = data["tournament_id"]
         
-        tournament_data = redis_client.get_json(self.tournament_id)
+        tournament_data: TournamentData = redis_client.get_json(self.tournament_id)
         tournament_data["players"].append(self.player_id)
+        if len(tournament_data["players"]) == 4:
+            random.shuffle(tournament_data["players"])
         redis_client.set_json(self.tournament_id, tournament_data)
         
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
         payload = {"status": "joined tournament succesfuly"}
         await self.send_json(payload)
+            
         
         await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.update.players"})
         

@@ -21,6 +21,8 @@ class _JoinTournamentValiadation:
         
     def can_join(self, data):
         try:
+            if hasattr(self.parent, "tournament_id"):
+                return False
             tournament_id = data["tournament_id"]
             tournament_data: TournamentData = redis_client.get_json(tournament_id)
             if len(tournament_data["players"]) == 4:
