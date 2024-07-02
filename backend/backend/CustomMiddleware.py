@@ -11,3 +11,4 @@ class CustomMiddleware:
 		if not request.user.is_authenticated:
 			return redirect('/api/notAuthorized/')
 		return self.get_response(request)
+

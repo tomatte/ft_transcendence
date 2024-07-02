@@ -7,3 +7,4 @@ environs
 Pillow
 requests
 channels
+
