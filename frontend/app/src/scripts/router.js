@@ -4,6 +4,7 @@ import Friends from "../pages/Friends.js";
 import Ranking from "../pages/Ranking.js";
 import Statistics from "../pages/Statistics.js";
 import Notifications from "../pages/Notifications.js";
+import Game from "../pages/Game.js"
 
 const routes = {
   'Home': Home,
@@ -11,7 +12,8 @@ const routes = {
   'Friends': Friends,
   'Ranking': Ranking,
   'Statistics': Statistics,
-  'Notifications': Notifications
+  'Notifications': Notifications,
+  'Game': Game
 };
 
 export default routes;
