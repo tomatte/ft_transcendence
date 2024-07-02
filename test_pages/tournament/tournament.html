@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament</title>
+</head>
+<body style="display: flex; justify-content: space-between;">
+    <div id="col-1">
+                <div id="row-1" style="display: flex; justify-content: space-between; min-width: 400px;">
+            <div><span>My id: </span><span id="my-id"></span></div>
+        </div>
+        <div id="create">
+            <label id="label-create" for="btn-create">Tournament</label>
+            <button id="btn-create" onclick="createTournament()">create tournament</button>
+        </div>
+
+        <div id="creating" style="visibility: hidden;">
+            <div>
+                <h1>creating tournament...</h1>
+                <h2 id="tournament_id"></h2>
+            </div>
+
+            <br>
+            <div>
+                <label for="tournament-invitation">Invite to Tournament</label>
+                <input id="friend-id" type="text" placeholder="player_id...">
+                <button onclick="sendTournamentInvitation()">send</button>
+            </div>
+            <br>
+        </div>
+
+        <div>
+            <h3>Players</h3>
+            <ul id="players">
+            </ul>
+        </div>
+
+        </div>
+    </div>
+
+    <div id="col-2" style="min-width: 500px;">
+        <div >
+            <div>
+                <span style="margin-right: 5px;">Tournament invitations</span>
+                <ul id="invitation-list">
+                </ul>
+            </div>
+            <button onclick="">join</button>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION EVENT SCRIPT -->
+    <script>
+        let ws_notification = new WebSocket("ws://localhost:8000/notification/")
+
+        let payload = {
+            action: "",
+            player_id: "",
+            tournament_id: "",
+        }
+        
+        
+        function initialSetup(data) {
+            payload.tournament_id = data.tournament_id
+            payload.player_id = data.player_id
+            document.getElementById("my-id").innerText = data.player_id
+        }
+        
+        function sendTournamentInvitation() {
+            const friend_id = document.getElementById("friend-id").value
+            payload.friend_id = friend_id
+            payload.action = "invite_to_tournament"
+            ws_notification.send(JSON.stringify(payload))
+        }
+        
+        function invitationReceived(data) {
+            console.log("inviation received!!!")
+            const ul = document.getElementById("invitation-list")
+            const li = document.createElement("li")
+            const span = document.createElement("span")
+            const button = document.createElement("button")
+        
+            span.innerText = data.tournament_id
+        
+            button.onclick = function() {
+                joinTournament(data.tournament_id)
+            }
+            button.innerText = "join"
+        
+            li.appendChild(span)
+            li.appendChild(button)
+            ul.appendChild(li)
+        }
+        
+        function listenNotificationEvents() {
+            document.addEventListener("DOMContentLoaded", function() {
+                ws_notification.onmessage = (event) => {
+                    data = JSON.parse(event.data)
+                        console.log(data)
+            
+                    if (data.status == "connected") {
+                        initialSetup(data)
+                        return 
+                    }
+            
+                    if (data.status == "tournament_invitation") {
+                        invitationReceived(data)
+                        return
+                    }
+                };
+            });
+        
+        }
+
+        listenNotificationEvents()
+    </script>
+
+    <!-- TOURNAMENT EVENT SCRIPT -->
+     <script>
+        let ws_tournament = new WebSocket("ws://localhost:8000/tournament/")
+        
+        function joinTournament(tournament_id) {
+            payload.action = "join",
+            payload.tournament_id = tournament_id
+            ws_tournament.send(JSON.stringify(payload))
+        }
+        
+        function createTournament() {
+            document.getElementById("create").style.visibility = 'hidden'
+            document.getElementById("creating").style.visibility = 'visible'
+            
+            payload.action = "create"
+            ws_tournament.send(JSON.stringify(payload))
+        }
+        
+        function addPlayerToList(data) {
+            const list = document.getElementById("players")
+            const item = document.createElement("li")
+            item.innerText = payload.player_id
+            list.appendChild(item)
+        }
+        
+        function updatePlayers(data) {
+            const ul = document.getElementById("players")
+            ul.innerHTML = ''
+            players = data.players
+            players.forEach((player) => {
+                const li = document.createElement("li")
+                li.innerText = player
+                ul.appendChild(li)
+            })
+        }
+        
+        function listenTournamentEvents() {
+            document.addEventListener("DOMContentLoaded", function() {
+                ws_tournament.onmessage = (event) => {
+                    data = JSON.parse(event.data)
+                        console.log(data)
+            
+                    if (data.status == "enter_tournament") {
+                        payload.tournament_id = data.tournament_id
+                        document.getElementById("tournament_id").innerText = data.tournament_id
+                        addPlayerToList(data)
+                        return 
+                    }
+            
+                    if (data.status == "update_players") {
+                        updatePlayers(data)
+                        return
+                    }
+                };
+            })
+        }
+
+     </script>
+
+     <!-- START LISTENING -->
+     <script>
+        listenNotificationEvents()
+        listenTournamentEvents()
+     </script>
+</body>
+<style>
+
+    * {
+        color: whitesmoke;
+        background-color: rgb(24, 23, 23);
+    }
+
+    #invitation-list > li > span {
+        margin-right: 10px;
+    }
+</style>
+</html>

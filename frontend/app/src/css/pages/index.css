@@ -3,6 +3,7 @@ html, body
     margin: 0;
     padding: 0;
 	height: 100%;
+	width: 100%;
 }
 
 body
@@ -50,6 +51,7 @@ body
 
   .Sidebar .LogoWithTrademark {
 	display: block;
+	height: 32px;
   }
 
   .Sidebar.collapsed .LogoWithTrademark {
@@ -74,6 +76,7 @@ body
   
   .Sidebar .OnlyLogo {
 	display: none;
+	height: 32px;
   }
 
   .Sidebar.collapsed .OnlyLogo {
@@ -327,3 +330,29 @@ body
 	word-wrap: break-word;
   }
 
+/* ----------------------------------------- */
+
+.page-content {
+	display: flex;
+	padding: 24px 0px;
+	align-items: flex-start;
+	gap: 8px;
+	flex: 1 0 0;
+	align-self: stretch;
+	width: 100%;
+}
+
+.page-content__container{
+	display: flex;
+	padding: 24px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 24px;
+	flex: 1 0 0;
+	align-self: stretch;
+	border-radius: 16px 0px 0px 16px;
+	border-top: 1px solid var(--Lunar-Dust-900);
+	border-bottom: 1px solid var(--Lunar-Dust-900);
+	border-left: 1px solid var(--Lunar-Dust-900);
+	background: var(--Lunar-Dust-950);
+}

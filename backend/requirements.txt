@@ -2,9 +2,13 @@ Django==5.0.6
 environs==11.0.0
 daphne
 psycopg2-binary
-channels
+psycopg[binary]
+channels[daphne]
 environs
 Pillow
 requests
 channels
-
+django-cors-headers
+redis
+channels-redis
+celery[redis]
