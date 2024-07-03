@@ -1,0 +1,80 @@
+.Brackets{
+    /* display: flex; */
+/* width: var(--Desktop-width, 1366px);
+height: var(--Desktop-height, 768px); */
+padding: 32px;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+gap: 16px;
+/* border-radius: 16px; */
+background: linear-gradient(248deg, #B96C13 -10.67%, #0B0501 26.8%, #000 64.28%);
+
+}
+
+
+.Frame-10140{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.Frame-10139{
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    gap: 32px;
+    flex: 1 0 0;
+    align-self: stretch;
+    border-radius: 16px;
+}
+
+.Frame-10064{
+    display: flex;
+    padding-bottom: 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+}
+
+.Frame-10141{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 64px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.Frame-10144{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 32px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.Frame-10145{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 32px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.Frame-10146{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 64px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
