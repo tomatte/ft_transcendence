@@ -91,7 +91,7 @@
 				<div class="profile-info__container">
 					<img class="profile-info__container__image" src="../assets/images/players/caos.png" alt="user profile picture">
 					<div class="profile-info__container__text">
-						<span class="profile-info__container__text__name font-body-medium-bold">Caos Lourenco pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp</span>
+						<span class="profile-info__container__text__name font-body-medium-bold">Caos Lourenco 
 						<span class="profile-info__container__text__nickname font-body-regular">clourenc</span>
 					</div>
 				</div>
@@ -100,12 +100,8 @@
 	</aside>
 	<div class="page-content">
 		<div class="page-content__container">
-
-
 		</div>
 	</div>	
-
-	<a href='https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-9fc0845267bce949c5cf5e83db67b91730ba9fab5ffd6c62f001ec8802ec6f83&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fautenticate&response_type=code'>Login</a>
 
 	<div class="page-game__container">
 
@@ -115,13 +111,10 @@
 		function get_user_data() {
 			console.log("cookies", document.cookie)
 			fetch('http://127.0.0.1:8000/api/users/get/my_user/', {method: 'GET', credentials: 'include'})
-			.then(resp => {
-				if (resp.status === 401) {
-					alert('Você não está logado');
-				}
-				//return resp.json();
-			}).then(data => {
-				console.log(data);
+			.then(resp => resp.status === 401 ? window.location.href = '/test_login.html' : resp.json())
+			.then(data => {
+				document.getElementsByClassName('profile-info__container__text__nickname')[0].innerText = data.name
+				//console.log(data)
 			}).catch(err => {
 				console.log(err.message);
 			});
