@@ -97,7 +97,7 @@
             document.addEventListener("DOMContentLoaded", function() {
                 ws_notification.onmessage = (event) => {
                     data = JSON.parse(event.data)
-                        console.log(data)
+                    console.log(data)
             
                     if (data.status == "connected") {
                         initialSetup(data)

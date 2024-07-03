@@ -30,7 +30,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_HOST: db
       BACKEND_PORT: ${BACKEND_PORT}
-      BACKEND_HOST: ${BACKEND_HOST}
+      BACKEND_HOST: backend
       PYTHONUNBUFFERED: 1
       REDIS_HOST: redis
       REDIS_PORT: ${REDIS_PORT}
@@ -63,18 +63,6 @@ services:
       - "6379:6379"
     networks:
       - trans
-
-  game_loop:
-    build: ./game_loop
-    container_name: ft_game_loop
-    environment:
-      - BACKEND_HOST=${BACKEND_HOST}
-      - BACKEND_PORT=${BACKEND_PORT}
-    networks:
-      - trans
-    depends_on:
-      - backend
-
 
 # docker stop $(docker ps -a -q)
 # docker rm $(docker ps -a -q)

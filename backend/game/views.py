@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from asgiref.sync import async_to_sync
 import json
-from .game_engine.pong import *
+from .game_engine.pong_entities import *
 from typing import Dict, TypedDict
 import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer
@@ -97,16 +97,10 @@ class PlayerConsumer(MyAsyncWebsocketConsumer):
             "match_id": data["match_id"],
             "max_scores": 5 #TODO: this could come from database or .env
         }
-        
-        game_loop_channel = redis_client.get("game_loop").decode()
-        
-        await self.channel_layer.send(game_loop_channel, payload)
+        redis_client.lpush("game_loop", json.dumps(payload))
         
     async def player_move_action(self, data: PlayerMoveDataType):
-        game_loop_channel = redis_client.get("game_loop").decode()
-        
-        data["type"] = "player.move"
-        await self.channel_layer.send(game_loop_channel, data)
+        redis_client.lpush("game_loop", json.dumps(data))
         
     async def match_coordinates(self, event):
         matches_data = redis_client.get_json("matches")

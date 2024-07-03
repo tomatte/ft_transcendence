@@ -1,9 +1,11 @@
 import asyncio
-import websockets
 import json
-from pong_entities import *
+from .pong_entities import *
 from typing import TypedDict
 from environs import Env
+from channels.layers import get_channel_layer
+from backend.utils import  redis_client
+
 env = Env()
 env.read_env()
 
@@ -20,41 +22,29 @@ class PlayerMoveDataType(TypedDict):
     match_id: str
     action: str
 
-class Socket:
-    uri = f"ws://{env("BACKEND_HOST")}:{env("BACKEND_PORT")}/game_loop/"
-    ws: websockets.WebSocketClientProtocol = None
+class Info:
+    channel_layer = get_channel_layer()
     
     @classmethod
-    async def  connect_to_server(cls):
-        max = 10
-        while max > 0:
-            try:
-                print("trying to connect to server")
-                cls.ws = await websockets.connect(cls.uri)
-                print("connected successfuly!!!")
-                return
-            except:
-                max -= 1
-                await asyncio.sleep(1)
-        raise ConnectionError("failed to connect with backend")
-
-    @classmethod
-    async def send_info(cls):
+    async def send(cls):
         while True:
             if len(Game.payload) > 0:
-                await cls.ws.send(json.dumps(Game.payload))
+                redis_client.set_json("matches", Game.payload)
+                await cls.channel_layer.group_send("match", {
+                    "type": "match.coordinates",
+                    "text": "new"
+                })
             await asyncio.sleep(Game.fps_time)
             
     @classmethod
-    async def rcve_info(cls):
+    async def rcve(cls):
         while True:
             try:
-                msg = await Socket.ws.recv()
-                data: dict = json.loads(msg)
+                data = redis_client.brpop("game_loop", 0)[1].decode()
+                data: dict = json.loads(data)
                 print(f"data -> {data}")
                 Actions.act(data)
                 data.clear()
-                msg = ""
             except Exception as e:
                 print(f"An error occurred: {e}")
 
@@ -229,10 +219,6 @@ class Actions:
 
 
 async def main():
-    await Socket.connect_to_server()
-        
-    asyncio.create_task(Socket.send_info())
-    asyncio.create_task(Socket.rcve_info())
     while True:
         Game.move_balls()
         Match.move_players()
@@ -241,6 +227,12 @@ async def main():
         Match.destroy_matches()
 
         await asyncio.sleep(Game.fps_time)
-        
 
-asyncio.run(main())
+def info_rcve():
+    asyncio.run(Info.rcve())
+    
+def info_send():
+    asyncio.run(Info.send())
+
+def game_loop():
+    asyncio.run(main())

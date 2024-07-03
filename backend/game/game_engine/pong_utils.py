@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 def is_point_on_line(pl1: List[int | float], pl2: List[int | float], p: List[int | float]):
     # If the line is vertical (x1 == x2), handle it separately

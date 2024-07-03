@@ -69,7 +69,7 @@ ws.onmessage = (event) => {
     if (data.action == "connect") {
         console.log("start connection")
         payload.match_id = data.match_id
-        payload.action = "ready"
+        payload.action = "player_connect"
         payload.player_id = data.player_id
         ws.send(JSON.stringify(payload))
     }
