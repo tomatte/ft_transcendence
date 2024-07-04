@@ -1,6 +1,6 @@
 import time
 import math
-from .pong_utils import *
+from pong_utils import *
 from typing import List, Tuple
 from enum import Enum
 

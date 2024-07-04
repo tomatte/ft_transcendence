@@ -1,13 +1,17 @@
 import asyncio
 import json
-from .pong_entities import *
+from pong_entities import *
 from typing import TypedDict
 from environs import Env
-from channels.layers import get_channel_layer
-from backend.utils import  redis_client
+import redis
 
 env = Env()
 env.read_env()
+
+redis_host = env("REDIS_HOST")
+redis_port = env("REDIS_PORT")
+redis_client = redis.StrictRedis(host=redis_host, port=redis_port)
+
 
 PLAYER_HEIGHT = 100
 PLAYER_WIDTH = 40
@@ -21,23 +25,25 @@ class PlayerMoveDataType(TypedDict):
     player_id: str
     match_id: str
     action: str
-
+    
 class Info:
-    channel_layer = get_channel_layer()
+    match_event_payload = {
+                    "type": "match.coordinates",
+                    "text": "new"
+                }
     
     @classmethod
     async def send(cls):
+        print("send started")
         while True:
             if len(Game.payload) > 0:
-                redis_client.set_json("matches", Game.payload)
-                await cls.channel_layer.group_send("match", {
-                    "type": "match.coordinates",
-                    "text": "new"
-                })
+                redis_client.set("matches", json.dumps(Game.payload))
+                # use redis queue
             await asyncio.sleep(Game.fps_time)
             
     @classmethod
     async def rcve(cls):
+        print("rcve started")
         while True:
             try:
                 data = redis_client.brpop("game_loop", 0)[1].decode()
@@ -219,6 +225,9 @@ class Actions:
 
 
 async def main():
+    
+    asyncio.create_task(Info.rcve())
+    asyncio.create_task(Info.send())
     while True:
         Game.move_balls()
         Match.move_players()
@@ -228,11 +237,4 @@ async def main():
 
         await asyncio.sleep(Game.fps_time)
 
-def info_rcve():
-    asyncio.run(Info.rcve())
-    
-def info_send():
-    asyncio.run(Info.send())
-
-def game_loop():
-    asyncio.run(main())
+asyncio.run(main())

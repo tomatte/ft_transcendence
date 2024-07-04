@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from asgiref.sync import async_to_sync
 import json
-from .game_engine.pong_entities import *
 from typing import Dict, TypedDict
 import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer
@@ -69,7 +68,7 @@ class PlayerConsumer(MyAsyncWebsocketConsumer):
             await self.player_move_action(data)
             return
         
-        if data["action"] == "ready":
+        if data["action"] == "player_connect":
             await self.player_ready_action(data)
             return
 
@@ -86,9 +85,9 @@ class PlayerConsumer(MyAsyncWebsocketConsumer):
         if redis_client.exists(self.match_id):
             match_data = redis_client.get_json(self.match_id)
         
-        print(f"match_data: {match_data}")
         match_data[data["player_id"]] = self.channel_name
         redis_client.set_json(self.match_id, match_data)
+        print(f"match_data: {match_data}")
         
         payload = {
             "type": "player.connect",
