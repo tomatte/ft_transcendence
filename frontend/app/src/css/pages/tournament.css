@@ -1,7 +1,7 @@
 .Brackets{
-    /* display: flex; */
-/* width: var(--Desktop-width, 1366px);
-height: var(--Desktop-height, 768px); */
+    display: flex;
+width: var(--Desktop-width, 1366px);
+height: var(--Desktop-height, 768px);
 padding: 32px;
 flex-direction: column;
 justify-content: center;
@@ -77,4 +77,47 @@ background: linear-gradient(248deg, #B96C13 -10.67%, #0B0501 26.8%, #000 64.28%)
     gap: 64px;
     flex: 1 0 0;
     align-self: stretch;
+}
+
+.tournament-bracket {
+    display: flex;
+    height: 60px;
+    padding: 12px;
+    align-items: center;
+    gap: 8px;
+    /* align-self: stretch; */
+    border-radius: 8px;
+    background: var(--Lunar-Dust-950-base, #18181B);
+}
+
+.tournament-bracket img {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 8px;
+}
+
+
+.tournament-bracket p {
+    text-align: center;
+    font-size: 14px;
+    color: #fff; /* Ajuste a cor do texto conforme necessário */
+}
+
+.ImageFrame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 32px; /* Ajuste o espaçamento conforme necessário */
+}
+
+.ImageFrame img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%; /* Exemplo de borda arredondada para a imagem */
 }
