@@ -17,7 +17,7 @@ const Ranking = () => {
       <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
     </div>
     </div>
-        <div class="page-content__container__content page-content__container__content--matches">
+        <div class="page-content__container__content page-content__container__content--ranking">
     	<table>
 			<thead>
 				<tr class="table-header">
