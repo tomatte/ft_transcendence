@@ -121,3 +121,71 @@ background: linear-gradient(248deg, #B96C13 -10.67%, #0B0501 26.8%, #000 64.28%)
     object-fit: cover;
     border-radius: 50%; /* Exemplo de borda arredondada para a imagem */
 }
+
+
+.Frame-100141{
+
+    display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 64px;
+flex: 1 0 0;
+align-self: stretch;
+}
+
+.Frame-100164{
+    display: flex;
+    padding-bottom: 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+}
+
+.Frame-10150{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 64px;
+}
+
+.Frame-10148{
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 32px;
+}
+
+.Frame-10149{
+    display: flex;
+justify-content: center;
+align-items: center;
+gap: 24px;
+}
+
+.tournament_title{
+    
+/* Heading/H1 */
+font-family: "Red Hat Display";
+font-size: 48px;
+font-style: normal;
+font-weight: 700;
+line-height: 120%; /* 57.6px */
+background: linear-gradient(90deg, #E2A60C 0%, #D4470B 85%);
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.tourment__info{
+    color: #FFF;
+
+/* Heading/H1 */
+font-family: "Red Hat Display";
+font-size: 48px;
+font-style: normal;
+font-weight: 700;
+line-height: 120%; /* 57.6px */
+}
