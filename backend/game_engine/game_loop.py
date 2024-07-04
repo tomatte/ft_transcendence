@@ -1,4 +1,3 @@
-import asyncio
 import json
 from pong_entities import *
 from typing import TypedDict
@@ -234,7 +233,7 @@ class Actions:
             return 
 
 
-async def main():
+def main():
     print("main loop started")
     while True:
         Game.move_balls()
@@ -243,7 +242,7 @@ async def main():
         Game.create_payload()
         Match.destroy_matches()
 
-        await asyncio.sleep(Game.fps_time)
+        time.sleep(Game.fps_time)
 
 send_thread = Thread(target=Info.send)
 rcve_thread = Thread(target=Info.rcve)
@@ -251,4 +250,4 @@ rcve_thread = Thread(target=Info.rcve)
 send_thread.start()
 rcve_thread.start()
 
-asyncio.run(main())
+main()
