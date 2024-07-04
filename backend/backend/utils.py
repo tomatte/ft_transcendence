@@ -29,3 +29,8 @@ class MyRedisClient(redis.StrictRedis):
 redis_host = env("REDIS_HOST")
 redis_port = env("REDIS_PORT")
 redis_client = MyRedisClient(host=redis_host, port=redis_port, db = 1)
+
+# Disable snapshotting (RDB)
+redis_client.config_set('save', '')
+# Disable AOF (Append Only File)
+redis_client.config_set('appendonly', 'no')

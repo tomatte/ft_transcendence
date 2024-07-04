@@ -26,7 +26,7 @@ class Socket:
     
     @classmethod
     async def  connect_to_server(cls):
-        max = 10
+        max = 20
         while max > 0:
             try:
                 print("trying to connect to server")
@@ -35,7 +35,7 @@ class Socket:
                 return
             except:
                 max -= 1
-                await asyncio.sleep(1)
+                await asyncio.sleep(2)
         raise ConnectionError("failed to connect with backend")
 
     @classmethod

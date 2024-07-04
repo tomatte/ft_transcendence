@@ -30,7 +30,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_HOST: db
       BACKEND_PORT: ${BACKEND_PORT}
-      BACKEND_HOST: ${BACKEND_HOST}
+      BACKEND_HOST: backend
       PYTHONUNBUFFERED: 1
       REDIS_HOST: redis
       REDIS_PORT: ${REDIS_PORT}
@@ -68,7 +68,7 @@ services:
     build: ./game_loop
     container_name: ft_game_loop
     environment:
-      - BACKEND_HOST=${BACKEND_HOST}
+      - BACKEND_HOST=backend
       - BACKEND_PORT=${BACKEND_PORT}
     networks:
       - trans
