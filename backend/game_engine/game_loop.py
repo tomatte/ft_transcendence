@@ -4,14 +4,11 @@ from pong_entities import *
 from typing import TypedDict
 from environs import Env
 import redis
+from threading import Thread
+import time
 
 env = Env()
 env.read_env()
-
-redis_host = env("REDIS_HOST")
-redis_port = env("REDIS_PORT")
-redis_client = redis.StrictRedis(host=redis_host, port=redis_port)
-
 
 PLAYER_HEIGHT = 100
 PLAYER_WIDTH = 40
@@ -26,29 +23,42 @@ class PlayerMoveDataType(TypedDict):
     match_id: str
     action: str
     
+redis_client = redis.StrictRedis(host=env("REDIS_HOST"), port=env("REDIS_PORT"), db=1)
+    
 class Info:
     match_event_payload = {
                     "type": "match.coordinates",
                     "text": "new"
                 }
+
+    @classmethod
+    def emit_event(cls, group_name, event):
+        data = {
+            "group_name": group_name,
+            "event": event
+        }
+        redis_client.lpush("emit_event", json.dumps(data))
     
     @classmethod
-    async def send(cls):
+    def send(cls):
+        print(f"fps_time: {Game.fps_time}")
         print("send started")
         while True:
             if len(Game.payload) > 0:
                 redis_client.set("matches", json.dumps(Game.payload))
-                # use redis queue
-            await asyncio.sleep(Game.fps_time)
+                print("send -> sent")
+                cls.emit_event("match", {"type": "match.coordinates"})
+            time.sleep(Game.fps_time)
             
     @classmethod
-    async def rcve(cls):
+    def rcve(cls):
         print("rcve started")
         while True:
             try:
                 data = redis_client.brpop("game_loop", 0)[1].decode()
                 data: dict = json.loads(data)
-                print(f"data -> {data}")
+                print(f"rcve -> {data}")
+                cls.emit_event("match", {"type": "match.coordinates"})
                 Actions.act(data)
                 data.clear()
             except Exception as e:
@@ -91,8 +101,8 @@ class Game:
                 },
                 "action": match.action
             }
-            
-        
+
+ 
 class Match:
     players: dict[int, Player] = dict()
     balls: dict[int, Ball] = dict()
@@ -225,9 +235,7 @@ class Actions:
 
 
 async def main():
-    
-    asyncio.create_task(Info.rcve())
-    asyncio.create_task(Info.send())
+    print("main loop started")
     while True:
         Game.move_balls()
         Match.move_players()
@@ -236,5 +244,11 @@ async def main():
         Match.destroy_matches()
 
         await asyncio.sleep(Game.fps_time)
+
+send_thread = Thread(target=Info.send)
+rcve_thread = Thread(target=Info.rcve)
+
+send_thread.start()
+rcve_thread.start()
 
 asyncio.run(main())
