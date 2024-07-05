@@ -78,7 +78,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
-# SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'
 
@@ -90,6 +90,7 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
+
 ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
@@ -124,6 +125,7 @@ DATABASES = {
         'PORT': env('POSTGRES_PORT'),
     }
 }
+       # 'HOST': '172.25.232.93',
 
 
 # Password validation

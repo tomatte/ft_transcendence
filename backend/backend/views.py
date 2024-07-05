@@ -11,7 +11,7 @@ def get_access_token(code):
 	data = {
 		'grant_type': 'authorization_code',
 		'client_id': 'u-s4t2ud-9fc0845267bce949c5cf5e83db67b91730ba9fab5ffd6c62f001ec8802ec6f83',
-		'client_secret': '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',
+		'client_secret': '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',
 		'code': code,
 		'redirect_uri': 'http://127.0.0.1:8000/api/autenticate'
 	}
@@ -44,8 +44,9 @@ def autenticate(request):
 		access_token = get_access_token(request.GET.get('code'))
 		data_user = get_intra_data(access_token)
 		user, created = User.objects.get_or_create(username=data_user['username'], defaults=data_user)
+		response = redirect('http://localhost:4009/')
 		auth_login(request, user)
-		return redirect('http://localhost:4009/')
+		return response
 	except Exception as e:
 		return JsonResponse({'message': str(e)})
 
