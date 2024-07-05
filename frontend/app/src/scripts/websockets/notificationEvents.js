@@ -40,18 +40,19 @@ function invitationReceived(data) {
     ul.appendChild(li)
 }
 
-export default function listenNotificationEvents() {
+export default function listenNotificationEvents(state) {
     ws_notification.onmessage = (event) => {
         let data = JSON.parse(event.data)
-            console.log(data)
+        console.log(data)
 
         if (data.status == "connected") {
             // initialSetup(data)
             return 
         }
 
-        if (data.status == "tournament_invitation") {
-            invitationReceived(data)
+        if (data.hasOwnProperty('type')) {
+            state['notifications'].push(data)
+            console.log({state})
             return
         }
     };

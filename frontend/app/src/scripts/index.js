@@ -38,5 +38,5 @@ const init = () => {
 window.addEventListener('load', () => {
   renderPage(); // Initial rendering based on current hash
   init(); // Initialize hashchange listener
-  listenNotificationEvents()
+  listenNotificationEvents(state)
 });

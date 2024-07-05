@@ -268,7 +268,16 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
     async def tournament_invitation(self, event):
         print("tournament_invitation()")
-        await self.send_json(event)
+        # TODO: user data needs to come somewhere
+        payload = {
+            "type": "tournament",
+            "img": "https://kanto.legiaodosherois.com.br/w250-h250-gnw-cfill-q95-gcc/wp-content/uploads/2021/07/legiao_Ry1hNJoxOzpY.jpg.webp",
+            "name": "Avatar",
+            'date': "05/07",
+            'time': "08:46",
+            "tournament_id": event["tournament_id"],
+        }
+        await self.send_json(payload)
         
     async def invite_to_tournament(self, data):
         print("invite_to_tournament()")
