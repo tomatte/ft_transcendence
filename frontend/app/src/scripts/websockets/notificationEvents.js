@@ -53,6 +53,9 @@ export default function listenNotificationEvents(state) {
         if (data.hasOwnProperty('type')) {
             state['notifications'].push(data)
             console.log({state})
+            if (state.currentPage == 'Notifications') {
+                state.renderPage(state.currentPage)
+            }
             return
         }
     };

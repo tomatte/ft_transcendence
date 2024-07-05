@@ -10,6 +10,7 @@ const sidebarMenuItems = document.querySelectorAll('.sidebar__menu-container .me
 const renderPage = () => {
   const hash = window.location.hash.slice(1); // Get the hash excluding the '#'
   const page = hash || 'Home'; // Default to 'Home' if hash is empty
+  state.currentPage = page
 
   sidebarMenuItems.forEach(item => {
     item.classList.remove('menu-item--active');
@@ -29,11 +30,11 @@ const renderPage = () => {
 }
 };
 
+state.renderPage = renderPage
+
 const init = () => {
   window.addEventListener('hashchange', renderPage); // Listen for hash changes
 };
-
-
 
 window.addEventListener('load', () => {
   renderPage(); // Initial rendering based on current hash
