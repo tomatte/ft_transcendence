@@ -5,7 +5,7 @@ from users.models import User
 class Match(models.Model):
 	"""Model to represent a match in a tournament."""
 	players = models.ManyToManyField('users.User', through='MatchPlayer')
-	tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE, blank=True, null=True)
+	tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE, default=None, blank=True, null=True)
 	create_at = models.DateTimeField(auto_now_add=True)
 	duration = models.DurationField(null=True, blank=True)
 
