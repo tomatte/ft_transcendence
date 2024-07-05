@@ -49,37 +49,6 @@ function createRow(profile_img, sender_name, date, time, type) {
     `
 }
 
-const mockData = [
-    {
-        img: "../assets/images/players/caos.png",
-        'name': "Caos",
-        'date': "05/07",
-        'time': "08:46",
-        'type': "friend"
-    },
-    {
-        img: "../assets/images/players/caos.png",
-        'name': "Caos",
-        'date': "05/07",
-        'time': "08:46",
-        'type': "match"
-    },
-    {
-        img: "../assets/images/players/caos.png",
-        'name': "Caos",
-        'date': "05/07",
-        'time': "08:46",
-        'type': "tournament"
-    },
-    {
-        img: "../assets/images/players/caos.png",
-        'name': "Caos",
-        'date': "05/07",
-        'time': "08:46",
-        'type': "friend"
-    }
-]
-
 function createRows(data) {
     let rows = ""
     data.forEach((info) => {
@@ -95,6 +64,7 @@ function createRows(data) {
 }
 
 const Notifications = (state) => {
+    console.log(state)
     console.log(state.notifications)
 	const pageContentContainer = document.querySelector('.page-content__container');
   
@@ -113,7 +83,7 @@ const Notifications = (state) => {
     	<table>
  
 			<tbody>
-                ${createRows(mockData)}
+                ${createRows(state['notifications'])}
 			</tbody>
           </table>
 		 

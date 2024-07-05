@@ -1,9 +1,8 @@
 import routes from './router.js';
+import mockState from './websockets/mockState.js';
 import listenNotificationEvents from './websockets/notificationEvents.js'
 
-const state = {
-  notifications: ["notify1", "notify2", "notify3"],
-}
+const state = mockState //TODO: temp mockState
 
 const container = document.querySelector('.page-content__container');
 const sidebarMenuItems = document.querySelectorAll('.sidebar__menu-container .menu-item');
