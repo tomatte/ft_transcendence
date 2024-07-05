@@ -1,3 +1,99 @@
+const tournamentRequestInfo = {
+    accept_message: "Join Tournament",
+    refuse_message: "Decline invitation",
+    icon: "emoji_events",
+    buttonStyle: "button--tertiary",
+}
+const friendRequestInfo = {
+    accept_message: "Accept request",
+    refuse_message: "Decline request",
+    icon: "person_add",
+    buttonStyle: "button--success",
+}
+
+const matchRequestInfo = {
+    accept_message: "Play match",
+    refuse_message: "Decline match",
+    icon: "sports_esports",
+    buttonStyle: "button--primary",
+}
+
+const infoTypes = {
+    'tournament': tournamentRequestInfo,
+    'friend': friendRequestInfo,
+    'match': matchRequestInfo,
+}
+
+function createRow(profile_img, sender_name, date, time, type) {
+    const info = infoTypes[type]
+    
+    return `<tr class="table-row">
+            <td class="table-row__message">
+                <img class="table-row__message__image" src="${profile_img}" alt="player">
+                <div class="table-row__message__text">
+                    <span class="table-row__message__text__content font-body-medium">${sender_name} has challenged you to a friendly match</span>
+                    <span class="table-row__message__text__timestamp font-body-regular">${date} - ${time}</span>
+                </div>
+            </td>
+            <td class="table-row__actions">
+                <button class="button ${info.buttonStyle}">
+                    <span class="material-icons-round button__icon-left">${info.icon}</span>
+                    <span class="button__text font-body-regular-bold">${info.accept_message}</span>
+                </button>
+                <button class="button button--outline">
+                    <span class="material-icons-round button__icon-left">close</span>
+                    <span class="button__text font-body-regular-bold">${info.refuse_message}</span>
+                </button>
+            </td>
+        </tr>
+    `
+}
+
+const mockData = [
+    {
+        img: "../assets/images/players/caos.png",
+        'name': "Caos",
+        'date': "05/07",
+        'time': "08:46",
+        'type': "friend"
+    },
+    {
+        img: "../assets/images/players/caos.png",
+        'name': "Caos",
+        'date': "05/07",
+        'time': "08:46",
+        'type': "match"
+    },
+    {
+        img: "../assets/images/players/caos.png",
+        'name': "Caos",
+        'date': "05/07",
+        'time': "08:46",
+        'type': "tournament"
+    },
+    {
+        img: "../assets/images/players/caos.png",
+        'name': "Caos",
+        'date': "05/07",
+        'time': "08:46",
+        'type': "friend"
+    }
+]
+
+function createRows(data) {
+    let rows = ""
+    data.forEach((info) => {
+        rows += createRow(
+            info.img,
+            info.name,
+            info.date,
+            info.time,
+            info.type
+        )
+    })
+    return rows
+}
+
 const Notifications = (state) => {
     console.log(state.notifications)
 	const pageContentContainer = document.querySelector('.page-content__container');
@@ -17,109 +113,11 @@ const Notifications = (state) => {
     	<table>
  
 			<tbody>
-      <tr class="table-row">
-                    <td class="table-row__message">
-                        <img class="table-row__message__image" src="../assets/images/players/caos.png" alt="player">
-                        <div class="table-row__message__text">
-                            <span class="table-row__message__text__content font-body-medium">Caos has challenged you to a friendly match</span>
-                            <span class="table-row__message__text__timestamp font-body-regular">22/06/2024 - 15H30</span>
-                        </div>
-                    </td>
-                    <td class="table-row__actions">
-                        <button class="button button--primary">
-                            <span class="material-icons-round button__icon-left">sports_esports</span>
-                            <span class="button__text font-body-regular-bold">Play match</span>
-                        </button>
-                        <button class="button button--outline">
-                            <span class="material-icons-round button__icon-left">close</span>
-                            <span class="button__text font-body-regular-bold">Decline match</span>
-                        </button>
-                    </td>
-                </tr>
-
-            <tr class="table-row">
-                    <td class="table-row__message">
-                        <img class="table-row__message__image" src="../assets/images/players/caos.png" alt="player">
-                        <div class="table-row__message__text">
-                            <span class="table-row__message__text__content font-body-medium">Caos has challenged you to a friendly match</span>
-                            <span class="table-row__message__text__timestamp font-body-regular">22/06/2024 - 15H30</span>
-                        </div>
-                    </td>
-                    <td class="table-row__actions">
-                        <button class="button button--success">
-                            <span class="material-icons-round button__icon-left">person_add</span>
-                            <span class="button__text font-body-regular-bold">Accept request</span>
-                        </button>
-                        <button class="button button--outline">
-                            <span class="material-icons-round button__icon-left">close</span>
-                            <span class="button__text font-body-regular-bold">Decline request</span>
-                        </button>
-                    </td>
-                </tr>
-                                <tr class="table-row">
-                    <td class="table-row__message">
-                        <img class="table-row__message__image" src="../assets/images/players/caos.png" alt="player">
-                        <div class="table-row__message__text">
-                            <span class="table-row__message__text__content font-body-medium">Caos has challenged you to a friendly match</span>
-                            <span class="table-row__message__text__timestamp font-body-regular">22/06/2024 - 15H30</span>
-                        </div>
-                    </td>
-                    <td class="table-row__actions">
-                        <button class="button button--tertiary">
-                            <span class="material-icons-round button__icon-left">emoji_events</span>
-                            <span class="button__text font-body-regular-bold">Play tournament</span>
-                        </button>
-                        <button class="button button--outline">
-                            <span class="material-icons-round button__icon-left">close</span>
-                            <span class="button__text font-body-regular-bold">Decline invitation</span>
-                        </button>
-                    </td>
-                </tr>
-
-                <tr class="table-row">
-                    <td class="table-row__message">
-                        <img class="table-row__message__image" src="../assets/images/players/caos.png" alt="player">
-                        <div class="table-row__message__text">
-                            <span class="table-row__message__text__content font-body-medium">Caos has challenged you to a friendly match</span>
-                            <span class="table-row__message__text__timestamp font-body-regular">22/06/2024 - 15H30</span>
-                        </div>
-                    </td>
-                    <td class="table-row__actions">
-                        <button class="button button--tertiary">
-                            <span class="material-icons-round button__icon-left">emoji_events</span>
-                            <span class="button__text font-body-regular-bold">Play tournament</span>
-                        </button>
-                        <button class="button button--outline">
-                            <span class="material-icons-round button__icon-left">close</span>
-                            <span class="button__text font-body-regular-bold">Decline invitation</span>
-                        </button>
-                    </td>
-                </tr>
-
-                <tr class="table-row">
-                    <td class="table-row__message">
-                        <img class="table-row__message__image" src="../assets/images/players/caos.png" alt="player">
-                        <div class="table-row__message__text">
-                            <span class="table-row__message__text__content font-body-medium">Caos has challenged you to a friendly match</span>
-                            <span class="table-row__message__text__timestamp font-body-regular">22/06/2024 - 15H30</span>
-                        </div>
-                    </td>
-                    <td class="table-row__actions">
-                        <button class="button button--primary">
-                            <span class="material-icons-round button__icon-left">sports_esports</span>
-                            <span class="button__text font-body-regular-bold">Play match</span>
-                        </button>
-                        <button class="button button--outline">
-                            <span class="material-icons-round button__icon-left">close</span>
-                            <span class="button__text font-body-regular-bold">Decline match</span>
-                        </button>
-                    </td>
-                </tr>
+                ${createRows(mockData)}
 			</tbody>
           </table>
 		 
         </div>
-
   `;
 
   return pageContentContainer;
