@@ -13,11 +13,9 @@ const Notifications = (state) => {
           </button>
         </div>
         
-        <div class="page-content__container__content page-content__container__content--matches">
+        <div class="page-content__container__content page-content__container__content--notification">
     	<table>
-			<thead>
-				 
-            </thead>
+ 
 			<tbody>
       <tr class="table-row">
                     <td class="table-row__message">
