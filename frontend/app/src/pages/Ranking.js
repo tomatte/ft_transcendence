@@ -17,15 +17,22 @@ const Ranking = () => {
       <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
     </div>
     </div>
-        <div class="page-content__container__content page-content__container__content--matches">
+        <div class="page-content__container__content page-content__container__content--ranking">
     	<table>
 			<thead>
 				<tr class="table-header">
-					<th class="table-header__text font-body-caption-regular">Player</th>
-					<th class="table-header__text font-body-caption-regular">Global ranking</th>
-					<th class="table-header__text font-body-caption-regular">Losses against you</th>
-					<th class="table-header__text font-body-caption-regular">Wins against you</th>
-					<th class="table-header__text font-body-caption-regular">Actions</th>
+					<th class="table-header__text font-body-caption-regular">PLAYER</th>
+					<th class="table-header__text font-body-caption-regular">TOTAL SCORE</th>
+                    <th class="table-header__text font-body-caption-regular">WINS</th>
+                    <th class="table-header__text font-body-caption-regular">LOSSES</th>
+					<th class="table-header__text font-body-caption-regular">WIN RATE</th>
+					<th class="table-header__text font-body-caption-regular">LOSS RATE</th>
+					<th class="table-header__text font-body-caption-regular">ACTIONS</th>
+                    
+
+
+
+
 				</tr>
             </thead>
 			<tbody>
