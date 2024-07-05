@@ -1,4 +1,9 @@
 import routes from './router.js';
+import listenNotificationEvents from './websockets/notificationEvents.js'
+
+const state = {
+  notifications: ["notify1", "notify2", "notify3"],
+}
 
 const container = document.querySelector('.page-content__container');
 const sidebarMenuItems = document.querySelectorAll('.sidebar__menu-container .menu-item');
@@ -13,7 +18,7 @@ const renderPage = () => {
 
   if (routes[page]) {
     container.innerHTML = ''; // Clear previous content
-    routes[page](); // Render the selected page component
+    routes[page](state); // Render the selected page component
     
     // Find the corresponding menu item and add 'menu-item--active' class
     const menuItem = document.querySelector(`.sidebar__menu-container .menu-item a[href="/#${page}"]`);
@@ -29,7 +34,10 @@ const init = () => {
   window.addEventListener('hashchange', renderPage); // Listen for hash changes
 };
 
+
+
 window.addEventListener('load', () => {
   renderPage(); // Initial rendering based on current hash
   init(); // Initialize hashchange listener
+  listenNotificationEvents()
 });

@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from asgiref.sync import async_to_sync
 import json
-from .game_engine.pong import *
 from typing import Dict, TypedDict
 import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer
@@ -153,7 +152,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             return
 
     async def disconnect(self, close_code):
-        if not self.tournament_id:
+        if not hasattr(self, "tournament_id"):
             return await super().disconnect(close_code)
     
         self.channel_layer.group_discard(self.tournament_id, self.channel_name)

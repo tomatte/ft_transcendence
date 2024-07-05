@@ -22,7 +22,8 @@ function addElements() {
     document.body.appendChild(scriptElement);    
 }
 
-const Game = () => {
+const Game = (state) => {
+    console.log(state)
     hideContents()
     addGameStyles()
     addElements()

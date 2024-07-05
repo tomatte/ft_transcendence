@@ -1,4 +1,5 @@
-const Ranking = () => {
+const Ranking = (state) => {
+    console.log({ranking: state})
     const pageContentContainer = document.querySelector('.page-content__container');
 
     pageContentContainer.innerHTML = `

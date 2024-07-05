@@ -1,4 +1,5 @@
-const Statistics = () => {
+const Statistics = (state) => {
+    console.log({ranking: state})
 	
 	const pageContentContainer = document.querySelector('.page-content__container');
   
