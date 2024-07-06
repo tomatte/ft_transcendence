@@ -3,6 +3,9 @@ import websockets
 import json
 from pong_entities import *
 from typing import TypedDict
+from environs import Env
+env = Env()
+env.read_env()
 
 PLAYER_HEIGHT = 100
 PLAYER_WIDTH = 40
@@ -18,13 +21,22 @@ class PlayerMoveDataType(TypedDict):
     action: str
 
 class Socket:
-    uri = "ws://localhost:8000/game_loop/"
+    uri = f"ws://{env("BACKEND_HOST")}:{env("BACKEND_PORT")}/game_loop/"
     ws: websockets.WebSocketClientProtocol = None
     
     @classmethod
     async def  connect_to_server(cls):
-        cls.ws = await websockets.connect(cls.uri)
-        print("connected to server")
+        max = 20
+        while max > 0:
+            try:
+                print("trying to connect to server")
+                cls.ws = await websockets.connect(cls.uri)
+                print("connected successfuly!!!")
+                return
+            except:
+                max -= 1
+                await asyncio.sleep(2)
+        raise ConnectionError("failed to connect with backend")
 
     @classmethod
     async def send_info(cls):
@@ -64,7 +76,8 @@ class Game:
             cls.payload[match_id] = {
                 "ball": {
                     "x": match.ball.x,
-                    "y": match.ball.y
+                    "y": match.ball.y,
+                    "bounced": match.ball.bounced
                     },
                 "players": {
                     match.player_left.id: {
@@ -216,11 +229,7 @@ class Actions:
 
 
 async def main():
-    try:
-        await Socket.connect_to_server()
-    except:
-        print("failed to connect to server, exited.")
-        exit(1)
+    await Socket.connect_to_server()
         
     asyncio.create_task(Socket.send_info())
     asyncio.create_task(Socket.rcve_info())

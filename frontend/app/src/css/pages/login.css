@@ -1,9 +1,10 @@
 .login {
   display: flex;
-  width: var(--Desktop-width, 1366px);
-  height: var(--Desktop-height, 768px);
+  /* width: var(--Desktop-width, 1366px);
+  height: var(--Desktop-height, 768px); */
   align-items: center;
   gap: 8px;
+  background: var(--Gradient-Blue-Background, linear-gradient(108deg, #293664 0%, #000 10.5%));
 }
 
 .login-container {
@@ -19,33 +20,92 @@ align-self: stretch;
 
 .login__hero-image {
   display: flex;
-width: 800px;
-padding: 24px;
+  width: 800px;
+  padding: 24px;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+
+
+
+.login-container__credits-text{
+  color: var(--Lunar-Dust-500, #737584);
+
+  /* Body/Regular */
+  font-family: Play;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 19.6px */
+}
+
+.login-container__content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 48px;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+
+.login-container__content__button{
+  display: flex;
+padding: 10px 12px;
+justify-content: center;
 align-items: center;
 gap: 8px;
-flex-shrink: 0;
 align-self: stretch;
 }
 
+.login-container__content__info__title{
+  align-self: stretch;
+  color: var(--Comet-Cloud-100, #E9EDF6);
+/* Heading/H1 */
+font-family: "Red Hat Display";
+font-size: 48px;
+font-style: normal;
+font-weight: 700;
+line-height: 120%; /* 57.6px */
+}
+
+
+.login-container__content__info__subtitle{
+  align-self: stretch;
+  color: var(--Comet-Cloud-500, #8C92C8);
+
+/* Body/Medium */
+font-family: Play;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%; /* 22.4px */
+}
+
 .login__hero-image {
+  display: flex;
+  width: 800px;
+  padding: 24px;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+.login__hero-image__carousel{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 0 0;
+  align-self: stretch;
+
+  
+}
+ 
+.login__hero-image__carousel img {
   width: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.login__hero-image__carousel {
-  display: flex; /* Para alinhar os itens lado a lado */
-  transition: transform 0.5s ease; /* Efeito de transição suave */
-}
-
-.login__hero-image__carousel__item {
-  flex: 0 0 100%; /* Cada item ocupa toda a largura */
-  max-width: 100%;
-}
-
-/* Opcional: Estilize as imagens dentro de cada slide */
-.login__hero-image__carousel__item img {
-  width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
+  object-fit: cover; /* Para garantir que a imagem cubra toda a área da div */
 }

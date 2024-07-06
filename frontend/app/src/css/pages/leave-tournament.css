@@ -71,10 +71,10 @@ align-self: stretch;
 
 .Frame-10101 {
     display: flex;
-    justify-content: space-between; /* Ajusta o espaço entre os botões */
+    justify-content: space-between;  
     align-items: center;
-    gap: 16px; /* Espaço entre os botões */
-    align-self: stretch; /* Para estender ao longo da largura */
+    gap: 16px; 
+    align-self: stretch;  
 }
 
 .button {

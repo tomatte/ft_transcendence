@@ -7,6 +7,8 @@ class User(AbstractUser):
 	nickname = models.CharField(max_length=25)
 	avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 	friends = models.ManyToManyField('self', through='Friendship', symmetrical=False)
+	winners = models.IntegerField(default=0)
+	losses = models.IntegerField(default=0)
 	def __str__(self):
 		return self.nickname
 

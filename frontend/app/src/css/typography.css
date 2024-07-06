@@ -86,6 +86,7 @@ h6 {
     font-family: var(--font-primary);
     font-size: var(--large-font-size);
     line-height: var(--large-line-height);
+    font-weight: bold;
 }
 
 .font-body-medium-bold {
