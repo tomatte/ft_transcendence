@@ -2,13 +2,13 @@
     display: flex;
 /* width: 1080px;
 height: 680px; */
-height: 650px;
+
 padding: 32px;
 flex-direction: column;
 align-items: flex-start;
-gap: 24px;
-border-radius: 16px;
-border: 1px solid #2C2F3E;
+gap: 26px;
+border-radius: flex;
+ 
 background: linear-gradient(64deg, #000 0%, #000 38.5%, #E68B02 100%);
 }
 
@@ -34,21 +34,31 @@ gap: 12px;
 }
 
 .Share-ranking{
-    color: #FFF;
-font-family: Audiowide;
+    /* color: #FFF;
+    font-family: "Red Hat Display";
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: normal; */
+
+font-family: "Red Hat Display";
 font-size: 24px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;
+background: #FFF;
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
 }
 
 .Frame-10074{
     display: flex;
-justify-content: center;
-align-items: center;
-gap: 16px;
-flex: 1 0 0;
-align-self: stretch;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex: 1 0 0;
+    align-self: stretch;
 }
 
 .Frame-10106{
@@ -65,8 +75,14 @@ align-self: stretch;
 height: 520px;
 display: flex;
 padding: 9px 40.021px 6.488px 0px;
-align-items: center;
+ 
 }
+
+.trophy-dynamic-premium img{
+    width: 520px;
+    height: 520px;
+}
+
 
 .Frame-10105{
     display: flex;
@@ -75,4 +91,181 @@ justify-content: space-between;
 align-items: flex-start;
 flex: 1 0 0;
 align-self: stretch;
+}
+
+.Frame-10108{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.Frame-10104{
+    display: flex;
+    padding-bottom: 16px;
+    align-items: center;
+    gap: 12px;
+    align-self: stretch;
+}
+
+.Frame-10107{
+    display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 16px;
+align-self: stretch;
+}
+
+.Frame-10102{
+    display: flex;
+justify-content: center;
+align-items: center;
+gap: 16px;
+align-self: stretch;
+}
+
+
+.tornament-first-header{
+    align-self: stretch;
+    
+/* Heading/H1 */
+font-family: "Red Hat Display";
+font-size: 48px;
+font-style: normal;
+font-weight: 700;
+line-height: 120%; /* 57.6px */
+background: linear-gradient(90deg, #E2A60C 0%, #D4470B 85%);
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.tornament-second-header{
+    align-self: stretch;
+    color: #737993;
+
+/* Heading/H6 */
+font-family: "Red Hat Display";
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: 160%; /* 32px */
+display: flex;
+padding: 9px 40.021px 6.488px 0px;
+align-items: center;
+}
+
+.Frame-10035 {
+    display: flex;
+    width: 56px;
+    height: 56px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 9px 40.021px 6.488px 0px;
+}
+
+.Frame-10035 img {
+    display: flex;
+    width: 56px;
+    height: 56px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 30px
+
+
+}
+
+
+.Frame-10037{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    flex: 1 0 0;
+}
+
+
+.player-name-tournament{
+    display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 1;
+align-self: stretch;
+overflow: hidden;
+color: #D3D9F4;
+text-overflow: ellipsis;
+font-family: Play;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 100%; /* 24px */
+}
+
+
+.player-nick-tournament{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    align-self: stretch;
+    overflow: hidden;
+color: #737993;
+text-overflow: ellipsis;
+font-family: Play;
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: 100%; /* 20px */
+}
+
+
+/* ---- secound page ---- */
+
+.sharesecound{
+    display: flex;
+    /* width: 1080px;
+    height: 680px; */
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 26px;
+    border-radius: flex;
+ 
+background: linear-gradient(64deg, #000 0%, #000 38.5%, rgba(73, 73, 85, 0.65) 100%);
+}
+
+.tornament-first-header-two{
+    align-self: stretch;
+ 
+    
+/* Heading/H1 */
+font-family: "Red Hat Display";
+font-size: 48px;
+font-style: normal;
+font-weight: 700;
+line-height: 120%; /* 57.6px */
+background: linear-gradient(90deg, #A7A7BF 0%, #606084 85%);
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+
+/* ----Third page ---- */
+
+.sharethird{
+    display: flex;
+/* width: 1080px;
+height: 680px; */
+padding: 32px;
+flex-direction: column;
+align-items: flex-start;
+gap: 26px;
+border-radius: flex;
+ 
+background: linear-gradient(64deg, #000 0%, #000 38.5%, #4377EE 100%);
 }
