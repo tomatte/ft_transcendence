@@ -5,7 +5,6 @@ async function fetch_api_ranking() {
 
 const Ranking = async () => {
     let raking_data = await fetch_api_ranking()
-    console.log(raking_data)
     let table_lines = raking_data.reduce((acc, item) => {return acc + `
         <tr class="table-row">
           <td class="table-row__data-rank font-body-large">#1</td>

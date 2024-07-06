@@ -108,11 +108,9 @@
 
 	<script>
 		function get_user_data() {
-			console.log("cookies", document.cookie)
 			fetch('http://127.0.0.1:8000/api/users/get/my_user/', {method: 'GET', credentials: 'include'})
 			.then(resp => resp.status === 401 ? window.location.href = '/test_login.html' : resp.json())
 			.then(data => {
-				console.log(data);
 				document.getElementsByClassName('profile-info__container__text__name')[0].innerText = data.username;
 				document.getElementsByClassName('profile-info__container__text__nickname')[0].innerText = data.nickname;
 				document.getElementsByClassName('profile-info__container__image')[0].src = data.avatar;
@@ -123,18 +121,7 @@
 		window.onload = get_user_data;
 
 	</script>
-    <!-- <script>
-      document.getElementById('logoutBtn').addEventListener('click', function(e) {
-          e.preventDefault();
 
-          // Limpa os dados de login (se necessário)
-          localStorage.removeItem('isLoggedIn');
-          localStorage.removeItem('jwtToken');
-
-          // Redireciona para a página inicial
-          window.location.href = "/test_login.html"; // Altere para o caminho correto da sua página inicial
-      });
-    </script> -->
 </body>
 </html>
 
