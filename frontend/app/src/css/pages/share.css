@@ -1,0 +1,78 @@
+.share{
+    display: flex;
+/* width: 1080px;
+height: 680px; */
+height: 650px;
+padding: 32px;
+flex-direction: column;
+align-items: flex-start;
+gap: 24px;
+border-radius: 16px;
+border: 1px solid #2C2F3E;
+background: linear-gradient(64deg, #000 0%, #000 38.5%, #E68B02 100%);
+}
+
+.Frame-10092{
+    display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 16px;
+align-self: stretch;
+}
+
+.Frame-10072{
+    display: flex;
+justify-content: space-between;
+align-items: center;
+align-self: stretch;
+}
+
+.Frame-10073{
+    display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.Share-ranking{
+    color: #FFF;
+font-family: Audiowide;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+.Frame-10074{
+    display: flex;
+justify-content: center;
+align-items: center;
+gap: 16px;
+flex: 1 0 0;
+align-self: stretch;
+}
+
+.Frame-10106{
+    display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: flex-start;
+flex: 1 0 0;
+align-self: stretch;
+}
+
+.trophy-dynamic-premium{
+    width: 520px;
+height: 520px;
+display: flex;
+padding: 9px 40.021px 6.488px 0px;
+align-items: center;
+}
+
+.Frame-10105{
+    display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: flex-start;
+flex: 1 0 0;
+align-self: stretch;
+}

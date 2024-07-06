@@ -7,7 +7,7 @@ from enum import Enum
 TABLE_WIDTH = 1280
 TABLE_HEIGHT = 720
 COLLISION_AREA = 50
-FPS = 90
+FPS = 30
 
 #how much the player can modify the direction of the ball; 
 # MAX_LIMIT: 90; MIN_LIMIT: 1; RECOMMENDED: 30
@@ -170,6 +170,7 @@ class Ball(Rectangle):
         self.players: dict[str, Player] = dict()
         self.match_id = match_id
         self.initial_speed = speed
+        self.bounced = False
 
     def set_players(self, players: PlayersType):
         self.players = players
@@ -192,14 +193,16 @@ class Ball(Rectangle):
         self.dir = direction
         
     def is_colliding(self, bottom_left, top_right):
-        if (is_point_inside_rect(bottom_left, top_right, [self.x, self.y + self.radious])):
-            return True
-        if (is_point_inside_rect(bottom_left, top_right, [self.x + self.radious, self.y - self.radious])):
-            return True
-        if (is_point_inside_rect(bottom_left, top_right, [self.x + self.radious, self.y])):
-            return True
-        if (is_point_inside_rect(bottom_left, top_right, [self.x - self.radious, self.y])):
-            return True
+        points_to_check = [
+            [self.x, self.y + self.radious],
+            [self.x + self.radious, self.y - self.radious],
+            [self.x + self.radious, self.y],
+            [self.x - self.radious, self.y]
+        ]
+
+        for point in points_to_check:
+            if is_point_inside_rect(bottom_left, top_right, point):
+                return True
         return False
     
     def verify_collision_player(self):
@@ -217,10 +220,12 @@ class Ball(Rectangle):
         if (self.last_collided != Entity.TABLE_TOP and self.is_colliding(Table.top_side["bottom_left"], Table.top_side["top_right"])):
             self.last_collided = Entity.TABLE_TOP
             self.dir = horizontal_wall_bounce(self.dir)
+            return True
         #table bottom side
         if (self.last_collided != Entity.TABLE_BOTTOM and self.is_colliding(Table.bottom_side["bottom_left"], Table.bottom_side["top_right"])):
             self.last_collided = Entity.TABLE_BOTTOM
             self.dir = horizontal_wall_bounce(self.dir)
+            return True
         #table left side
         if (self.last_collided != Entity.TABLE_LEFT and self.is_colliding(Table.left_side["bottom_left"], Table.left_side["top_right"])):
             self.last_collided = Entity.TABLE_LEFT
@@ -229,6 +234,7 @@ class Ball(Rectangle):
             player = self.players.get("left", None)
             if player is not None:
                 player.hit()
+            return True
 
         #table right side
         if (self.last_collided != Entity.TABLE_RIGHT and self.is_colliding(Table.right_side["bottom_left"], Table.right_side["top_right"])):
@@ -238,8 +244,9 @@ class Ball(Rectangle):
             player = self.players.get("right", None)
             if player is not None:
                 player.hit()
+            return True
+        return False
 
     def move(self, fps):
-        self.verify_collision_wall()
-        self.verify_collision_player()
+        self.bounced = self.verify_collision_wall() or self.verify_collision_player()
         super().move(fps)
