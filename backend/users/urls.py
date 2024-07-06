@@ -8,6 +8,7 @@ urlpatterns = [
 	re_path('get/friends-request-send' , views.friend_request_send, name='get_pending_friends'),
 	re_path('get/friends-request-receive' , views.friend_request_received, name='get_receive_friends'),
 	re_path('get/ranking' , views.ranking, name='ranking'),
+	re_path('get/statistics' , views.statistics, name='statistics'),
 	##Do manel
 	re_path('get/get-list-friends' , views.get_list_friends, name='get_list_friends'),
 	# re_path('get/friends', views.get_friends, name='get_friends'),

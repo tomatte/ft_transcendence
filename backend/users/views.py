@@ -3,6 +3,7 @@ from django.shortcuts import render
 from users.models import User, Friendship
 from tournament.views import get_tournament, create_Bracket
 from tournament.models import Match, MatchPlayer
+from statistics import mean
 
 
 ################################################################################
@@ -56,7 +57,7 @@ class ManipulateUser:
 		info_matchs = MatchPlayer.objects.filter(match__in=matchs)
 		return info_matchs
 
-	def statistics(self):
+	def rank_statistics(self):
 		return {
 			"username": self.me.username,
 			"nickname": self.me.nickname,
@@ -106,7 +107,7 @@ class ManipulateUser:
 			Exception('Error: get_statistics_by_you() line 100: Users not found!')
 
 		if (self.me == friend):
-			return self.statistics()
+			return self.rank_statistics()
 
 		combats = self.combats_with_player(friend)
 		total_matchs = combats.count() / 2
@@ -154,9 +155,55 @@ class ManipulateUser:
 
 	def table_ranking(self):
 		all_players = User.objects.all().order_by('-winners')
-		print([self.player_statistics_by_you(friend=play) for play in all_players])
 		return [self.player_statistics_by_you(friend=play) for play in all_players]
 
+	def number_of_matchs(self):
+		return Match.objects.filter(players=self.me).count()
+
+	def dictionary_matchs(self):
+		return {
+			'max_consecutives': 0,
+			'all_matchs': 0,
+			'all_points': 0,
+			'average_points': 0,
+		}
+
+	def statistic_match(self):
+		try:
+			dict = self.dictionary_matchs()
+			all_matchs = MatchPlayer.objects.filter(user=self.me).order_by('match__create_at')
+			consecutives = 0
+			points = list()
+			for match in all_matchs:
+				score = match.score
+				dict['all_points'] += score
+				points.append(score)
+				if match.winner:
+					consecutives += 1
+				else:
+					dict['max_consecutives'] = consecutives if consecutives > dict['max_consecutives'] else dict['max_consecutives']
+					consecutives = 0
+			dict['all_matchs'] = all_matchs.count()
+			dict['average_points'] = mean(points)
+			return dict
+
+		except MatchPlayer.DoesNotExist as e:
+			return 0
+
+	def statistics(self):
+		data_match = self.statistic_match()
+		data_match.update({
+			"username": self.me.username,
+			"nickname": self.me.nickname,
+			"avatar": self.me.avatar.name,
+			"winners": self.me.winners,
+			"losses": self.me.losses,
+			"global_ranking": self.ranking(),
+			"percent_winner": 0,
+			"percent_losses": 0,
+
+		})
+		return data_match
 ################################################################################
 #							Routes
 ################################################################################
@@ -367,4 +414,14 @@ def ranking(request):
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Exception as e:
 		print(e)
+		return JsonResponse({"msg": str(e)}, status=400)
+
+def statistics(request):
+	try:
+		is_valid_method(request, 'GET')
+		return JsonResponse(ManipulateUser(username=request.user.username).statistics(), safe=False)
+	except MethodNotAllowed as e:
+		return JsonResponse({"msg": str(e)}, status=405)
+	except Exception as e:
+		print("\n\n\n\n", str(e), "\n\n\n\n")
 		return JsonResponse({"msg": str(e)}, status=400)
