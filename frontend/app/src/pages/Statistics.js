@@ -1,9 +1,15 @@
-const Statistics = () => {
-	
+async function fetch_statistics() {
+	const response = await fetch('http://127.0.0.1:8000/api/users/get/statistics/', { method: 'GET', credentials: 'include'});
+	if (response.status !== 200) throw new Error('Error status is '+ response.status); else return await response.json();
+}
+
+const Statistics = async(state) => {
 	const pageContentContainer = document.querySelector('.page-content__container');
-  
-	pageContentContainer.innerHTML = `
-  			<div class="page-content__container__header">
+	try {
+		const statistics_data = await fetch_statistics();
+		let percent_winnes = Math.round(statistics_data.winners / statistics_data.all_matchs * 100);
+		pageContentContainer.innerHTML = `
+			<div class="page-content__container__header">
 				<div class="page-content__container__header__info">
 					<h4 class="page-content__container__header__info__title">Statistics</h4>
 				</div>
@@ -18,28 +24,28 @@ const Statistics = () => {
 						<span class="material-icons-round metric-card__icon icon--extra-large">sports_esports</span>
 						<div class="metric-card__info">
 							<span class="metric-card__info__label font-body-medium">Played Games</span>
-							<span class="metric-card__info__data font-body-extra-large">48</span>
+							<span class="metric-card__info__data font-body-extra-large">${statistics_data.all_matchs}</span>
 						</div>
 					</div>
 					<div class="metric-card">
 						<span class="material-icons-round metric-card__icon icon--extra-large">emoji_events</span>
 						<div class="metric-card__info">
 							<span class="metric-card__info__label font-body-medium">Total Victories</span>
-							<span class="metric-card__info__data font-body-extra-large">28</span>
+							<span class="metric-card__info__data font-body-extra-large">${statistics_data.winners}</span>
 						</div>
 					</div>
 					<div class="metric-card">
 						<span class="material-icons-round metric-card__icon icon--extra-large">show_chart</span>
 						<div class="metric-card__info">
 							<span class="metric-card__info__label font-body-medium">Max. Consecutive Wins</span>
-							<span class="metric-card__info__data font-body-extra-large">5</span>
+							<span class="metric-card__info__data font-body-extra-large">${statistics_data.max_consecutives}</span>
 						</div>
 					</div>
 					<div class="metric-card">
 						<span class="material-icons-round metric-card__icon icon--extra-large">flare</span>
 						<div class="metric-card__info">
 							<span class="metric-card__info__label font-body-medium">Total Points</span>
-							<span class="metric-card__info__data font-body-extra-large">240</span>
+							<span class="metric-card__info__data font-body-extra-large">${statistics_data.all_points}</span>
 						</div>
 					</div>
 				</div>
@@ -47,33 +53,36 @@ const Statistics = () => {
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Losses</span>
 						<div class="metric-line__line"></div>
-						<span class="metric-line__data font-body-medium-bold">20</span>
+						<span class="metric-line__data font-body-medium-bold">${statistics_data.losses}</span>
 					</div>
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Total Win Rate</span>
 						<div class="metric-line__line"></div>
-						<span class="metric-line__data font-body-medium-bold">64%</span>
+						<span class="metric-line__data font-body-medium-bold">${percent_winnes}%</span>
 					</div>
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Total Lost Rate</span>
 						<div class="metric-line__line"></div>
-						<span class="metric-line__data font-body-medium-bold">36%</span>
+						<span class="metric-line__data font-body-medium-bold">${100 - percent_winnes}%</span>
 					</div>
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Average Points per Match</span>
 						<div class="metric-line__line"></div>
-						<span class="metric-line__data font-body-medium-bold">3</span>
+						<span class="metric-line__data font-body-medium-bold">${statistics_data.average_points}</span>
 					</div>
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Average Points Taken per Match</span>
 						<div class="metric-line__line"></div>
-						<span class="metric-line__data font-body-medium-bold">2</span>
+						<span class="metric-line__data font-body-medium-bold">Um dia eu faço</span>
 					</div>
 				</div>
 			</div>
-  `;
+	`;
+	return pageContentContainer;
 
-  return pageContentContainer;
+	} catch (error) {
+		console.error(error);
+	}
 }
 
-export default Statistics;
+	export default Statistics;

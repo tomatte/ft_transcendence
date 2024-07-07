@@ -2,20 +2,17 @@ const tournamentRequestInfo = {
     accept_message: "Join Tournament",
     refuse_message: "Decline invitation",
     icon: "emoji_events",
-    buttonStyle: "button--tertiary",
 }
 const friendRequestInfo = {
     accept_message: "Accept request",
     refuse_message: "Decline request",
     icon: "person_add",
-    buttonStyle: "button--success",
 }
 
 const matchRequestInfo = {
     accept_message: "Play match",
     refuse_message: "Decline match",
     icon: "sports_esports",
-    buttonStyle: "button--primary",
 }
 
 const infoTypes = {
@@ -36,7 +33,7 @@ function createRow(profile_img, sender_name, date, time, type) {
                 </div>
             </td>
             <td class="table-row__actions">
-                <button class="button ${info.buttonStyle}">
+                <button class="button button--primary">
                     <span class="material-icons-round button__icon-left">${info.icon}</span>
                     <span class="button__text font-body-regular-bold">${info.accept_message}</span>
                 </button>
@@ -48,49 +45,3 @@ function createRow(profile_img, sender_name, date, time, type) {
         </tr>
     `
 }
-
-function createRows(data) {
-    let rows = ""
-    data.forEach((info) => {
-        rows += createRow(
-            info.img,
-            info.name,
-            info.date,
-            info.time,
-            info.type
-        )
-    })
-    return rows
-}
-
-const Notifications = (state) => {
-    console.log(state)
-    console.log(state.notifications)
-	const pageContentContainer = document.querySelector('.page-content__container');
-  
-	pageContentContainer.innerHTML = `
-        <div class="page-content__container__header">
-          <div class="page-content__container__header__info">
-            <h4 class="page-content__container__header__info__title">Notifications</h4>
-          </div>
-          <button class="button button--secondary">
-            <span class="material-icons-round button__icon-left">refresh</span>
-            <span class="button__text font-body-regular-bold">Refresh</span>
-          </button>
-        </div>
-        
-        <div class="page-content__container__content page-content__container__content--notification">
-    	<table>
- 
-			<tbody>
-                ${createRows(state['notifications'])}
-			</tbody>
-          </table>
-		 
-        </div>
-  `;
-
-  return pageContentContainer;
-}
-
-export default Notifications;

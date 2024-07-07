@@ -50,6 +50,8 @@
         </div>
     </div>
 
+    <div class="page-game__container"></div>
+
     <!-- NOTIFICATION EVENT SCRIPT -->
     <script>
         let ws_notification = new WebSocket("ws://localhost:8000/notification/")
@@ -179,6 +181,14 @@
      <script>
         listenNotificationEvents()
         listenTournamentEvents()
+     </script>
+
+     <script>
+        function startGame() {
+            document.querySelector("col-1").style.display = 'none'
+            document.querySelector("col-2").style.display = 'none'
+            Game()
+        }
      </script>
 </body>
 <style>

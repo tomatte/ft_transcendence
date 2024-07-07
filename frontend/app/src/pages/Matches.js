@@ -1,4 +1,5 @@
-const Matches = () => {
+const Matches = (state) => {
+    console.log({state})
 	const pageContentContainer = document.querySelector('.page-content__container');
   
   
