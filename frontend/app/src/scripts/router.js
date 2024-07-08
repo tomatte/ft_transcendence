@@ -4,6 +4,7 @@ import Friends from "../pages/Friends.js";
 import Ranking from "../pages/Ranking.js";
 import Statistics from "../pages/Statistics.js";
 import Notifications from "../pages/Notifications.js";
+import Game from "../pages/Game.js"
 import Tournament from "../pages/Tournament.js"
 
 const routes = {
@@ -13,6 +14,7 @@ const routes = {
   'Ranking': Ranking,
   'Statistics': Statistics,
   'Notifications': Notifications,
+  'Game': Game,
   'Tournament': Tournament,
 };
 

@@ -2,11 +2,14 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from users.models import User, Friendship
 from tournament.views import get_tournament, create_Bracket
-from tournament.models import Tournament
+from tournament.models import Match, MatchPlayer
+from statistics import mean
+
 
 ################################################################################
 # 							Auxiliaries
 ################################################################################
+
 
 class MethodNotAllowed(Exception):
 	def __init__(self):
@@ -28,83 +31,182 @@ def is_valid_method(request, method):
 		raise MethodNotAllowed()
 
 
-def get_friends(user):
-	user1 = Friendship.objects.filter(from_user=user, status='accepted').values('to_user__id', 'to_user__nickname', 'to_user__username')
-	user2 = Friendship.objects.filter(to_user=user, status='accepted').values('to_user__id', 'to_user__nickname', 'to_user__username')
-	all_users = user1.union(user2)
-
-	return list(all_users)
-
-# def format_maths_list(matches: object) -> dict:
-# 	"""Função para formatar a query de partidas.
-
-# 		args:
-# 			matches (OBJ ITERABLE): QuerySet de partidas.
-
-# 		return:
-# 			list (List): Lista de partidas formatada.
-# 	"""
-
-# 	return [
-# 		{
-# 			'id': match.id,
-# 			'tournament': match.tournament.id,
-# 			'create_at': match.create_at,
-# 			'duration': match.duration,
-# 		} for match in matches
-# 	]
+def get_global_ranking(player):
+	users_by_winners = User.objects.all().order_by('-winners')
+	return list(users_by_winners).index(player) + 1
 
 
-# def format_friends_list(friends: object ) -> list:
-# 	"""Função para formatar a query de amigos.
+class ManipulateUser:
+	def __init__(self, username) -> None:
+		self.me = User.objects.get(username=username)
 
-# 		args:
-# 			friends (OBJ ITERABLE): QuerySet de amigos.
+	def ranking(self):
+		all_players = User.objects.all().order_by('winners')
+		return list(all_players).index(self.me) + 1
 
-# 		return:
-# 			list (List): Lista de amigos formatada.
-# 	"""
+	def friends(self):
+		user1 = Friendship.objects.filter(from_user=self.me, status='accepted')
+		user2 = Friendship.objects.filter(to_user=self.me, status='accepted')
+		return user1.union(user2)
 
-# 	return [
-# 		{
-# 			'id': friend['id'],
-# 			'from_user': friend['from_user__nickname'],
-# 			'to_user': friend['to_user__nickname'],
-# 		} for friend in friends
-# 	]
+	def combats_with_player(self, player):
+		if not player:
+			Exception('Error: get_all_combat_users() line 48: Player not found!')
 
+		matchs = Match.objects.filter(players=self.me).filter(players=player)
+		info_matchs = MatchPlayer.objects.filter(match__in=matchs)
+		return info_matchs
 
+	def rank_statistics(self):
+		return {
+			"username": self.me.username,
+			"nickname": self.me.nickname,
+			"avatar": self.me.avatar.name,
+			"winners_against_you": 0,
+			"losses_against_you": 0,
+			"global_ranking": self.ranking(),
+			"percent_winner": 0,
+			"percent_losses": 0,
+		}
+
+	def profile(self):
+		return {
+			"username": self.me.username,
+			"nickname": self.me.nickname,
+			"avatar": self.me.avatar.name,
+		}
+
+	def add_friend(self, friend_username):
+		friend = User.objects.get(id=friend_username)
+		Friendship.objects.create(from_user=self.me, to_user=friend, status='pending')
+
+	def seding_friends(self):
+		response = Friendship.objects.filter(from_user=self.me, status='pending').values(
+			'to_user__id',
+			'to_user__nickname',
+			'to_user__username',
+		)
+		return list(response)
+
+	def receive_friends(self):
+		response = Friendship.objects.filter(to_user=self.me, status='pending').values(
+			'from_user__id',
+			'from_user__nickname',
+			'from_user__username',
+		)
+		return list(response)
+
+	def response_friend(self, friend_username, status):
+		friend = User.objects.get(username=friend_username)
+		friendship = Friendship.objects.get(from_user_id=friend, to_user=self.me)
+		friendship.status = status
+		friendship.save()
+
+	def player_statistics_by_you(self, friend: object) -> dict:
+		if not friend:
+			Exception('Error: get_statistics_by_you() line 100: Users not found!')
+
+		if (self.me == friend):
+			return self.rank_statistics()
+
+		combats = self.combats_with_player(friend)
+		total_matchs = combats.count() / 2
+		friend_winner = combats.filter(user=friend, winner=True).count()
+		friend_losses = total_matchs - friend_winner
+		percent_winner = int((friend_winner / total_matchs) * 100 if total_matchs > 0 else 0)
+		percent_losses = 100 - percent_winner
+
+		return {
+			"username": friend.username,
+			"nickname": friend.nickname,
+			"avatar": friend.avatar.name,
+			"winners_against_you": int(friend_winner),
+			"losses_against_you": int(friend_losses),
+			"global_ranking": get_global_ranking(friend),
+			"percent_winner": percent_winner,
+			"percent_losses": percent_losses,
+		}
+
+	def get_friends_list(self):
+		"""Função para retornar a lista de amigos customizada
+
+		Args:
+			user (model.user): Query do usuario
+
+		return:
+			friends (Dict): Dicionario formatado com ranking, losses, winners against you
+		"""
+
+		data = []
+		for friendship in self.friends():
+			friend = friendship.from_user if friendship.from_user != self.me else friendship.to_user
+			data.append(self.player_statistics_by_you(friend=friend))
+		return data
+
+	def uptade_nickname(self, nickname):
+		self.me.nickname = nickname
+		self.me.save()
+
+	def uptade_avatar(self, avatar):
+		if self.me.avatar:
+			self.me.avatar.delete(save=False)
+		self.me.avatar = avatar
+		self.me.save()
+
+	def table_ranking(self):
+		all_players = User.objects.all().order_by('-winners')
+		return [self.player_statistics_by_you(friend=play) for play in all_players]
+
+	def number_of_matchs(self):
+		return Match.objects.filter(players=self.me).count()
+
+	def dictionary_matchs(self):
+		return {
+			'max_consecutives': 0,
+			'all_matchs': 0,
+			'all_points': 0,
+			'average_points': 0,
+		}
+
+	def statistic_match(self):
+		try:
+			dict = self.dictionary_matchs()
+			all_matchs = MatchPlayer.objects.filter(user=self.me).order_by('match__create_at')
+			consecutives = 0
+			points = list()
+			for match in all_matchs:
+				score = match.score
+				dict['all_points'] += score
+				points.append(score)
+				if match.winner:
+					consecutives += 1
+				else:
+					dict['max_consecutives'] = consecutives if consecutives > dict['max_consecutives'] else dict['max_consecutives']
+					consecutives = 0
+			dict['all_matchs'] = all_matchs.count()
+			dict['average_points'] = mean(points)
+			return dict
+
+		except MatchPlayer.DoesNotExist as e:
+			return 0
+
+	def statistics(self):
+		data_match = self.statistic_match()
+		data_match.update({
+			"username": self.me.username,
+			"nickname": self.me.nickname,
+			"avatar": self.me.avatar.name,
+			"winners": self.me.winners,
+			"losses": self.me.losses,
+			"global_ranking": self.ranking(),
+			"percent_winner": 0,
+			"percent_losses": 0,
+
+		})
+		return data_match
 ################################################################################
 #							Routes
 ################################################################################
-
-
-##TESTADA
-def my_user(request):
-	"""Função para retornar o usuário logado.
-
-		args:
-			request (OBJ): Requisição do usuario.
-
-		return:
-			json (JSON): informações com as informações do usuario.
-	"""
-
-	try:
-		is_valid_method(request, 'GET')
-		user = User.objects.prefetch_related('userMatch').get(username=request.user.username)
-		return JsonResponse({
-			'id': user.id,
-			'name': user.username,
-			'nickname': user.nickname,
-			'friends': list(Friendship.objects.filter(from_user=user, status='accepted').values_list('to_user', flat=True)),
-			'avatar': user.avatar.name,
-		})
-
-	except MethodNotAllowed as e:
-		return JsonResponse({'message': str(e)}, status=405)
-	except User.DoesNotExist:
-		return JsonResponse({'message': 'User not found!'}, status=404)
 
 
 ##TESTADA
@@ -120,22 +222,31 @@ def get_user(request):
 
 	try:
 		is_valid_method(request, 'GET')
-		user = User.objects.prefetch_related('userMatch').get(id=request.GET['user_id'])
-
-		return JsonResponse({
-			'id': user.id,
-			'name': user.username,
-			'nickname': user.nickname,
-			'friends': get_friends(user),
-			'avatar': user.avatar.name,
-		})
-
+		return ManipulateUser(username=request.POST['username']).profile()
 	except MethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 	except User.DoesNotExist:
 		return JsonResponse({'message': 'User not found!'}, status=404)
 	except KeyError:
 		return JsonResponse({'message': 'User not found!'}, status=404)
+
+
+##TESTADA
+def my_user(request):
+	"""Função para retornar os dados do usuario.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			json (JSON): informações com as informações do usuario.
+	"""
+
+	try:
+		is_valid_method(request, 'GET')
+		return JsonResponse(ManipulateUser(username=request.user.username).profile())
+	except MethodNotAllowed as e:
+		return JsonResponse({'message': str(e)}, status=405)
 
 
 ##TESTADA
@@ -148,11 +259,8 @@ def all_users(request):
 		return:
 			json (JSON): informações com as informações de todos os usuarios.
 	"""
+	return JsonResponse(list(User.objects.all().values('id', 'nickname', 'avatar')), safe=False)
 
-	users = User.objects.all().values(
-		'id', 'nickname', 'avatar'
-	)
-	return JsonResponse(list(users), safe=False)
 
 ##TESTADA
 def add_friend(request):
@@ -166,10 +274,7 @@ def add_friend(request):
 	"""
 	try:
 		is_valid_method(request, 'POST')
-		my_user = User.objects.get(username=request.user.username)
-		friend = User.objects.get(id=request.POST['friend_id'])
-
-		Friendship.objects.create(from_user=my_user, to_user=friend, status='pending')
+		ManipulateUser(username=request.user.username).add_friend(request.POST.get['username'])
 		return HttpResponse({'msg': 'Friend request sent!'}, status=200)
 
 	except User.DoesNotExist:
@@ -191,19 +296,10 @@ def friend_request_send(request):
 			json (JSON): informações com as informações dos pedidos de amizade enviados.
 	"""
 	try:
-		user = User.objects.get(username=request.user.username)
-		friends = Friendship.objects.filter(from_user=user, status='pending').values(
-			'to_user__id',
-			'to_user__nickname',
-			'to_user__username',
-		)
-
-		return JsonResponse(list(friends), safe=False)
-
-	except User.DoesNotExist:
-		return JsonResponse({'message': 'User not found!'}, status=404)
+		return JsonResponse(ManipulateUser(request.user.username).seding_friends(), safe=False)
 	except Friendship.DoesNotExist:
-		return JsonResponse({'message': 'Friendship not found!'}, status=404)
+		return JsonResponse({'message': 'no friend requests sent'}, status=404)
+
 
 ##TESTADA
 def friend_request_received(request):
@@ -215,14 +311,11 @@ def friend_request_received(request):
 		return:
 			json (JSON): informações com as informações dos pedidos de amizade recebidos.
 	"""
+	try:
+		return JsonResponse(ManipulateUser(request.user.username).receive_friends(), safe=False)
+	except Friendship.DoesNotExist:
+		return JsonResponse({'message': 'no friend requests sent'}, status=404)
 
-	user = User.objects.get(username=request.user.username)
-	friends = Friendship.objects.filter(to_user=user, status='pending').values(
-		'from_user__id',
-		'from_user__nickname',
-		'from_user__username',
-	)
-	return JsonResponse(list(friends), safe=False)
 
 
 ##TESTADA
@@ -237,14 +330,12 @@ def get_list_friends(request):
 	"""
 
 	try:
-		is_valid_method(request, 'POST')
-		user = User.objects.get(id=request.POST['user_id'])
-		return JsonResponse(get_friends(user), safe=False)
-
+		is_valid_method(request, 'GET')
+		return JsonResponse(ManipulateUser(username=request.user.username).get_friends_list(), safe=False)
 	except MethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
-	except User.DoesNotExist:
-		return JsonResponse({'message': 'User not found!'}, status=404)
+	except Friendship.DoesNotExist:
+		return JsonResponse({'message': 'You do not have friends'}, status=404)
 	except KeyError:
 		return JsonResponse({'message': 'User not found!'}, status=404)
 	except Exception as e:
@@ -264,14 +355,8 @@ def response_friend(request):
 
 	try:
 		is_valid_method(request, 'POST')
-		my_user = User.objects.get(username=request.user.username)
-		friend = User.objects.get(id=request.POST['friend_id'])
-		friendship = Friendship.objects.get(from_user=friend, to_user=my_user, status='pending')
-		friendship.status = request.POST['status']
-		friendship.save()
+		ManipulateUser(username=request.user.username).response_friend(request.POST['username'], request.POST['status'])
 		return HttpResponse(status=200, content='Friend request accepted!')
-
-
 	except MethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Friendship.DoesNotExist:
@@ -293,15 +378,14 @@ def uptade_nickname(request):
 			http (HTTP): status da requisição.
 	"""
 
-	if request.method != 'POST':
-		return HttpResponse(status=405)
-
-	nickname = request.POST.get('nickname')
-	user = User.objects.get(username=request.user.username)
-	user.nickname = nickname
-	user.save()
-	return HttpResponse(status=200)
-
+	try:
+		is_valid_method(request, 'POST')
+		ManipulateUser(username=request.user.username).uptade_nickname(request.POST.get['nickname'])
+		return HttpResponse(status=200)
+	except MethodNotAllowed as e:
+		return JsonResponse({"msg": str(e)}, status=405)
+	except KeyError as e:
+		return JsonResponse({"msg": 'Missing parameters!'}, status=400)
 
 def uptade_avatar(request):
 	"""Função para atualizar o avatar do usuario.
@@ -312,56 +396,32 @@ def uptade_avatar(request):
 		return:
 			http (HTTP): status da requisição.
 	"""
-
-	if request.method != 'POST':
-		return HttpResponse(status=405)
-
-	if 'avatar' not in request.FILES:
-		return HttpResponse(status=400)
-
-	user = User.objects.get(username=request.user.username)
-
-	if user.avatar:
-		user.avatar.delete(save=False)
-
-	user.avatar = request.FILES.get('avatar')
-	user.save()
-	return HttpResponse(status=200)
+	try:
+		is_valid_method(request, 'POST')
+		ManipulateUser(username=request.user.username).uptade_avatar(request.FILES.get('avatar'))
+		return HttpResponse(status=200)
+	except MethodNotAllowed as e:
+		return JsonResponse({"msg": str(e)}, status=405)
+	except KeyError as e:
+		return JsonResponse({"msg": 'Missing parameters!'}, status=400)
 
 
-def auxiliar(request):
-	return render(request, 'auxiliar.html')
+def ranking(request):
+	try:
+		is_valid_method(request, 'GET')
+		return JsonResponse(ManipulateUser(username=request.user.username).table_ranking(), safe=False)
+	except MethodNotAllowed as e:
+		return JsonResponse({"msg": str(e)}, status=405)
+	except Exception as e:
+		print(e)
+		return JsonResponse({"msg": str(e)}, status=400)
 
-
-
-
-
-################################################################################
-# Auxiliaries
-################################################################################
-
-
-def populate_users():
-	for i in range(1, 10):
-		username = f'username{i}'
-		nickname = f'nickname{i}'
-		User.objects.create(nickname=nickname, username=username)
-	return JsonResponse({'message': 'Populate success!'})
-
-
-def add_users_tournament():
-	tournament = Tournament.objects.get(pk=1)
-	for i in range(1, 8):
-		user = User.objects.get(username=f'username{i}')
-		tournament.players.add(user)
-
-def populate(request):
-	# populate_users()
-	# create_tournament(request)
-	# add_users_tournament()
-	create_Bracket(Tournament.objects.get(pk=1), 1)
-	get_tournament(request)
-
-	return JsonResponse({'message': 'Populate success!'})
-
-
+def statistics(request):
+	try:
+		is_valid_method(request, 'GET')
+		return JsonResponse(ManipulateUser(username=request.user.username).statistics(), safe=False)
+	except MethodNotAllowed as e:
+		return JsonResponse({"msg": str(e)}, status=405)
+	except Exception as e:
+		print("\n\n\n\n", str(e), "\n\n\n\n")
+		return JsonResponse({"msg": str(e)}, status=400)

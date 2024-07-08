@@ -1,6 +1,37 @@
-const Ranking = () => {
-    const pageContentContainer = document.querySelector('.page-content__container');
+async function fetch_api_ranking() {
+    let response = await fetch('http://127.0.0.1:8000/api/users/get/ranking', { method: 'GET', credentials: 'include' })
+    if (response.status !== 200) throw new Error('Error status is not 200' + response.method); else return await response.json()
+}
 
+const Ranking = async () => {
+    let raking_data = await fetch_api_ranking()
+    let table_lines = raking_data.reduce((acc, item) => {return acc + `
+        <tr class="table-row">
+          <td class="table-row__data-rank font-body-large">#1</td>
+          <td class="table-row__player">
+              <img class="table-row__player__image" src="${item.avatar}">
+              <div class="table-row__player__text">
+                  <span class="table-row__player__text__name font-body-medium-bold">${item.nickname}</span>
+                  <span class="table-row__player__text__nickname font-body-regular">${item.username}</span>
+              </div>
+          </td>
+          <td class="table-row__data-default font-body-medium-bold">${item.global_ranking}</td>
+          <td class="table-row__data-default font-body-medium-bold">${item.losses_against_you}</td>
+          <td class="table-row__data-default font-body-medium-bold">${item.winners_against_you}</td>
+          <td class="table-row__data-default font-body-medium-bold">${item.percent_winner}%</td>
+          <td class="table-row__data-default font-body-medium-bold">${item.percent_losses}</td>
+          <td class="table-row__actions">
+              <button class="game-row-option">
+                  <span class="material-icons-round game-row-option__icon">sports_esports</span>
+              </button>
+              <button class="game-row-option">
+                  <span class="material-icons-round game-row-option__icon">person_remove</span>
+              </button>
+          </td>
+        </tr>
+    `},'')
+
+    const pageContentContainer = document.querySelector('.page-content__container');
     pageContentContainer.innerHTML = `
     <div class="page-content__container__header">
 		<div class="page-content__container__header__info">
@@ -36,69 +67,7 @@ const Ranking = () => {
             </thead>
 			<tbody>
 
-                <tr class="table-row">
-                    <td class="table-row__data-rank font-body-large">#1</td>
-                    <td class="table-row__player">
-                        <img class="table-row__player__image" src="../assets/images/players/caos.png" alt="player">
-                        <div class="table-row__player__text">
-                            <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-                            <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
-                        </div>
-                    </td>
-                    <td class="table-row__data-default font-body-medium-bold">102</td>
-                    <td class="table-row__data-default font-body-medium-bold">80</td>
-                    <td class="table-row__data-default font-body-medium-bold">15</td>
-                    <td class="table-row__data-default font-body-medium-bold">66%</td>
-                    <td class="table-row__data-default font-body-medium-bold">34%</td>
-                    <td class="table-row__actions">
-                        <button class="game-row-option">
-                            <span class="material-icons-round game-row-option__icon">sports_esports</span>
-                        </button>
-                        <button class="game-row-option">
-                            <span class="material-icons-round game-row-option__icon">person_remove</span>
-                        </button>
-                    </td>
-                </tr>
-                <tr class="table-row">
-                    <td class="table-row__data-rank font-body-large">#1</td>
-                    <td class="table-row__player">
-                        <img class="table-row__player__image" src="../assets/images/players/caos.png" alt="player">
-                        <div class="table-row__player__text">
-                            <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-                            <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
-                        </div>
-                    </td>
-                    <td class="table-row__data-default font-body-medium-bold">102</td>
-                    <td class="table-row__data-default font-body-medium-bold">80</td>
-                    <td class="table-row__data-default font-body-medium-bold">15</td>
-                    <td class="table-row__data-default font-body-medium-bold">66%</td>
-                    <td class="table-row__data-default font-body-medium-bold">34%</td>
-                    <td class="table-row__actions">
-                        <button class="button button--success">
-                            <span class="button__text font-body-regular-bold">Add friend</span>
-                        </button>
-                    </td>
-                </tr>
-                <tr class="table-row">
-                    <td class="table-row__data-rank font-body-large">#1</td>
-                    <td class="table-row__player">
-                        <img class="table-row__player__image" src="../assets/images/players/caos.png" alt="player">
-                        <div class="table-row__player__text">
-                            <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-                            <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
-                        </div>
-                    </td>
-                    <td class="table-row__data-default font-body-medium-bold">102</td>
-                    <td class="table-row__data-default font-body-medium-bold">80</td>
-                    <td class="table-row__data-default font-body-medium-bold">15</td>
-                    <td class="table-row__data-default font-body-medium-bold">66%</td>
-                    <td class="table-row__data-default font-body-medium-bold">34%</td>
-                    <td class="table-row__actions">
-                        <button class="button button--success">
-                            <span class="button__text font-body-regular-bold">Add friend</span>
-                        </button>
-                    </td>
-                </tr>
+                ${table_lines}
       
 			</tbody>
           </table>

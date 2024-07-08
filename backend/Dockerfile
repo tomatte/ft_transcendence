@@ -7,10 +7,9 @@ RUN apt-get update \
 	&& apt autoremove -y \
 	&& apt autoclean
 
-WORKDIR /app
+WORKDIR /backend
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
-RUN pip install -U channels["daphne"] psycopg[binary]
 COPY . .
 COPY startDB.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/startDB.sh
