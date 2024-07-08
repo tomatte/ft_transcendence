@@ -8,16 +8,18 @@ def populate_data(apps, schema_editor):
     #Modelos
 
     User = apps.get_model('users', 'User')
+    friendship = apps.get_model('users', 'Friendship')
     Match = apps.get_model('tournament', 'Match')
     MatchPlayer = apps.get_model('tournament', 'MatchPlayer')
+
 
     # Criando usuários
     User.objects.create(username='wwallas-', nickname='bankai', avatar='https://geekdama.com/wp-content/uploads/2023/04/one-piece-luffy-sorriso-sorrindo-postcover.jpg')
     for i in range(0, 10):
         User.objects.create(username=f'user{i}', nickname=f'user{i}', avatar=f'https://picsum.photos/id/{i}/200/300')
 
-    # Criando partidas
 
+    # Criando partidas
     match1 = Match.objects.create()
     match2 = Match.objects.create()
     match3 = Match.objects.create()
@@ -40,6 +42,25 @@ def populate_data(apps, schema_editor):
     other_players.losses = 2
     other_players.winners = 1
     other_players.save()
+
+
+    ##Adicionado amigos
+    user1 = User.objects.get(username='wwallas-')
+    user2 = User.objects.get(username='user0')
+    user3 = User.objects.get(username='user1')
+    user4 = User.objects.get(username='user2')
+    user5 = User.objects.get(username='user3')
+    user6 = User.objects.get(username='user4')
+    user7 = User.objects.get(username='user5')
+    friendship.objects.create(from_user=user1, to_user=user2, status='accepted')
+    friendship.objects.create(from_user=user1, to_user=user3, status='accepted')
+    friendship.objects.create(from_user=user4, to_user=user1, status='accepted')
+
+    friendship.objects.create(from_user=user6, to_user=user1, status='pending')
+    friendship.objects.create(from_user=user7, to_user=user1, status='pending')
+    friendship.objects.create(from_user=user1, to_user=user1, status='pending')
+
+
 
 class Migration(migrations.Migration):
 
