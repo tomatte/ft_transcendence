@@ -2,32 +2,31 @@ const Ranking = () => {
     const pageContentContainer = document.querySelector('.page-content__container');
 
     pageContentContainer.innerHTML = `
-  <div class="page-content__container__header">
-          <div class="page-content__container__header__info">
-            <h4 class="page-content__container__header__info__title">Ranking</h4>
-          </div>
-        <button class="button button--secondary">
-            <span class="material-icons-round button__icon-left">ios_share</span>
-            <span class="button__text font-body-regular-bold">Share your ranking</span>
-          </button>
-        </div>
-        <div class="page-content__container__header__search-bar">
+    <div class="page-content__container__header">
+		<div class="page-content__container__header__info">
+			<h4 class="page-content__container__header__info__title">Ranking</h4>
+		</div>
+		<button class="button button--secondary">
+			<span class="material-icons-round button__icon-left">ios_share</span>
+			<span class="button__text font-body-regular-bold">Share your ranking</span>
+		</button>
+    </div>
     <div class="search-bar">
       <span class="material-icons-round search-bar__icon icon--regular">search</span>
       <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
-    </div>
     </div>
         <div class="page-content__container__content page-content__container__content--ranking">
     	<table>
 			<thead>
 				<tr class="table-header">
-					<th class="table-header__text font-body-caption-regular">PLAYER</th>
-					<th class="table-header__text font-body-caption-regular">TOTAL SCORE</th>
-                    <th class="table-header__text font-body-caption-regular">WINS</th>
-                    <th class="table-header__text font-body-caption-regular">LOSSES</th>
-					<th class="table-header__text font-body-caption-regular">WIN RATE</th>
-					<th class="table-header__text font-body-caption-regular">LOSS RATE</th>
-					<th class="table-header__text font-body-caption-regular">ACTIONS</th>
+                <th class="table-header__text tableRankingPosition font-body-caption-regular">#</th>
+                <th class="table-header__text font-body-caption-regular">PLAYER</th>
+                <th class="table-header__text font-body-caption-regular">TOTAL SCORE</th>
+                <th class="table-header__text font-body-caption-regular">WINS</th>
+                <th class="table-header__text font-body-caption-regular">LOSSES</th>
+                <th class="table-header__text font-body-caption-regular">WIN RATE</th>
+                <th class="table-header__text font-body-caption-regular">LOSS RATE</th>
+                <th class="table-header__text font-body-caption-regular">ACTIONS</th>
                     
 
 

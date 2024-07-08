@@ -19,8 +19,8 @@
     max-width: 90%;
     max-height: 90%;
     overflow: auto;
-    width: 626px; /* Adjust width as needed */
-    height: 292px; /* Adjust height as needed */
+    width: 626px;
+    height: 292px;
     padding: 32px;
     flex-direction: column;
     justify-content: space-between;
