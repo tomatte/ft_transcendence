@@ -393,13 +393,13 @@ gap: 16px;
 align-self: stretch;
 }
 
-.page-content__container__content{
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-gap: 16px;
-align-self: stretch;
-width: relative;
+.page-content__container__content {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+	flex: 1 0 0;
+	align-self: stretch;
 }
 
 .page-content__container__content__line-metrics {

@@ -1,1 +1,4 @@
-/*  */
+.page-content__container__content--statistics {
+  justify-content: flex-start;
+  gap: 16px;
+}
