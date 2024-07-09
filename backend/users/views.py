@@ -184,7 +184,7 @@ class ManipulateUser:
 					dict['max_consecutives'] = consecutives if consecutives > dict['max_consecutives'] else dict['max_consecutives']
 					consecutives = 0
 			dict['all_matchs'] = all_matchs.count()
-			dict['average_points'] = mean(points)
+			dict['average_points'] = mean(points) if points else 0
 			return dict
 
 		except MatchPlayer.DoesNotExist as e:
