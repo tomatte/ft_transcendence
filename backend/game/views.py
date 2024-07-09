@@ -3,11 +3,13 @@ from asgiref.sync import async_to_sync
 import json
 from typing import Dict, TypedDict
 import uuid
-from backend.utils import redis_client, MyAsyncWebsocketConsumer
+from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState
 from .validations import TournamentValidation
 from .tasks import emit_group_event_task
 from .my_types import *
 import random
+
+user_id = "9977b54d-dd2a-4284-b1af-af58b8c6feb9" 
 
     
 MatchDict = Dict[str, MatchData]
@@ -231,6 +233,10 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
         
+        self.user_state = UserState(user_id)
+
+        print(f"USER_STATE: {self.user_state.get()}")
+
         await self.channel_layer.group_add("notification", self.channel_name)
         
         self.player_id = str(uuid.uuid4())
@@ -238,7 +244,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
 
         payload = {
             'status': 'connected',
-            'player_id': self.player_id
+            'player_id': self.player_id,
+            'notifications': self.user_state.notification.get(),
         }
         await self.send_json(payload)
 
@@ -268,15 +275,19 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
     async def tournament_invitation(self, event):
         print("tournament_invitation()")
+
         # TODO: user data needs to come somewhere
         payload = {
             "type": "tournament",
             "img": "https://kanto.legiaodosherois.com.br/w250-h250-gnw-cfill-q95-gcc/wp-content/uploads/2021/07/legiao_Ry1hNJoxOzpY.jpg.webp",
             "name": "Avatar",
-            'date': "05/07",
-            'time': "08:46",
-            "tournament_id": event["tournament_id"],
+            "id": event["tournament_id"],
+            "sender_id": "duianhdiouas",
+            "status": "active"
         }
+        self.user_state.notification.set(payload)
+        
+        print(f"NOTIFICATION_STATE: {self.user_state.notification.get()}")
         await self.send_json(payload)
         
     async def invite_to_tournament(self, data):
