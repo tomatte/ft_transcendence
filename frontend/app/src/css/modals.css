@@ -224,3 +224,80 @@
 .modal__header__title__close {
     color: var(--Lunar-Dust-500);
 }
+
+.Button_Sizes{
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.button__button--tertiary-Sizes{
+    
+    display: flex;
+    padding: 10px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    color: var(--Solar-Flare-50);
+    background-color: var(--Solar-Flare-600);
+    align-self: stretch;
+        
+}
+ 
+
+/*  --------------- ADD Frinds --------- */
+
+.modal__header-add_friend{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    /* padding: 32px; */
+    gap: 24px;
+}
+
+
+.modal__table-add_friend {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+ 
+}
+
+ 
+
+.modal--add-friend .modal__table .table-header {
+    width: 100%;
+}
+
+.modal--add-friend  {
+    display: flex;
+    width: 948px;
+    height: 720px;
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    transform: translate(-50%, -50%) scale(1);
+
+}
+
+
+.modal__table__header-add_friend {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+ .modal--remove-friend{
+    display: flex;
+ 
+ }
