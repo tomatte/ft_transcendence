@@ -1,10 +1,10 @@
-async function fetch_api_ranking() {
+async function fetchApiRanking() {
     let response = await fetch('http://127.0.0.1:8000/api/users/get/ranking', { method: 'GET', credentials: 'include' })
     if (response.status !== 200) throw new Error('Error status is not 200' + response.method); else return await response.json()
 }
 
 const Ranking = async () => {
-    let raking_data = await fetch_api_ranking()
+    let raking_data = await fetchApiRanking()
     let table_lines = raking_data.reduce((acc, item) => {return acc + `
         <tr class="table-row">
           <td class="table-row__data-rank font-body-large">#1</td>
