@@ -80,6 +80,11 @@ html, body
     flex-direction: column;
 }
 
+.playground-container--player-bracket {
+    flex-direction: row;
+}
+
+
 .playground-container--modal-confirmation-delete {
     flex-direction: row;
 }
