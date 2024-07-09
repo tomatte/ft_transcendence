@@ -234,6 +234,15 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         await self.accept()
         
         self.user_state = UserState(user_id)
+        
+        # temp notification example
+        self.user_state.notification.set({
+            "type": "tournament",
+            "id": "daiousyhdiasu",
+            "sender_id": "duianhdiouas",
+            "status": "active"
+        })
+        print(self.user_state.notification.get())
 
         await self.channel_layer.group_add("notification", self.channel_name)
         

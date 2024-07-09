@@ -2,6 +2,7 @@ import redis
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from environs import Env
+from datetime import datetime
 
 env = Env()
 env.read_env()
@@ -36,9 +37,30 @@ redis_client.config_set('save', '')
 redis_client.config_set('appendonly', 'no')
 
 
-class NotificationStateManager:
-    def __init__(self) -> None:
-        pass
+class NotificationState:
+    redis = redis_client
+    
+    @classmethod
+    def init_notification_state(cls, id):
+        data = cls.redis.get_json(id)
+        if not "notifications" in data:
+            data["notifications"] = []
+            cls.redis.set_json(id, data)
+            
+    def __init__(self, id) -> None:
+        self.id = id
+        NotificationState.init_notification_state(id)
+            
+    def get(self):
+        data = NotificationState.redis.get_json(self.id)
+        return data["notifications"]
+    
+    def set(self, value: dict):
+        data = NotificationState.redis.get_json(self.id)
+        value["time"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data["notifications"].append(value)
+        NotificationState.redis.set_json(self.id, data)
+    
 
 class UserState:
     redis = redis_client
@@ -58,6 +80,7 @@ class UserState:
     def __init__(self, id) -> None:
         self.id = id
         UserState.init_user_state(id)
+        self.notification = NotificationState(id)
     
     def get(self):
         return UserState.redis.get_json(self.id)
