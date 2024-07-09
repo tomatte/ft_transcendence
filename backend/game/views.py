@@ -3,11 +3,13 @@ from asgiref.sync import async_to_sync
 import json
 from typing import Dict, TypedDict
 import uuid
-from backend.utils import redis_client, MyAsyncWebsocketConsumer
+from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState
 from .validations import TournamentValidation
 from .tasks import emit_group_event_task
 from .my_types import *
 import random
+
+user_id = "9977b54d-dd2a-4284-b1af-af58b8c6feb9" 
 
     
 MatchDict = Dict[str, MatchData]
@@ -231,6 +233,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
         
+        self.user_state = UserState(user_id)
+        print(self.user_state.get())
         await self.channel_layer.group_add("notification", self.channel_name)
         
         self.player_id = str(uuid.uuid4())

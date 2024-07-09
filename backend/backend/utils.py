@@ -34,3 +34,25 @@ redis_client = MyRedisClient(host=redis_host, port=redis_port, db = 1)
 redis_client.config_set('save', '')
 # Disable AOF (Append Only File)
 redis_client.config_set('appendonly', 'no')
+
+
+class UserState:
+    redis = redis_client
+    
+    @classmethod
+    def create_user_state(cls, id):
+        if not cls.redis.exists(id):
+            data = {
+                "status": "connected",
+                "notification": {},
+            }
+            cls.redis.set_json(id, data)
+    
+    def __init__(self, id) -> None:
+        self.id = id
+        UserState.create_user_state(id)
+    
+    def get(self):
+        return UserState.redis.get_json(self.id)
+        
+    
