@@ -4,7 +4,7 @@ from users.models import User, Friendship
 from tournament.views import get_tournament, create_Bracket
 from tournament.models import Match, MatchPlayer
 from statistics import mean
-
+from django.db.models import Prefetch
 
 ################################################################################
 # 							Auxiliaries
@@ -184,7 +184,7 @@ class ManipulateUser:
 					dict['max_consecutives'] = consecutives if consecutives > dict['max_consecutives'] else dict['max_consecutives']
 					consecutives = 0
 			dict['all_matchs'] = all_matchs.count()
-			dict['average_points'] = mean(points)
+			dict['average_points'] = mean(points) if points else 0
 			return dict
 
 		except MatchPlayer.DoesNotExist as e:
@@ -204,6 +204,28 @@ class ManipulateUser:
 
 		})
 		return data_match
+
+	def separate_players(self, query_obj):
+		player1 = query_obj[0]
+		if player1.user.nickname == self.me.nickname:
+			return player1, query_obj[1]
+		else:
+			return query_obj[1], player1
+
+	def historic(self):
+		prefetch = Prefetch('matchMatch', queryset=MatchPlayer.objects.all())
+		matches = Match.objects.prefetch_related(prefetch).order_by('create_at')
+		data = []
+		for _match in matches:
+			me, other = self.separate_players(_match.matchMatch.all())
+			data.append({
+				"is_tournament": _match.tournament,
+				"my_score": me.score,
+				"winner": me.winner,
+				"opponent_score": other.score,
+				"date": _match.create_at.strftime('%d/%m/%y'),
+			})
+		return data
 ################################################################################
 #							Routes
 ################################################################################
@@ -416,6 +438,7 @@ def ranking(request):
 		print(e)
 		return JsonResponse({"msg": str(e)}, status=400)
 
+
 def statistics(request):
 	try:
 		is_valid_method(request, 'GET')
@@ -423,5 +446,14 @@ def statistics(request):
 	except MethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Exception as e:
-		print("\n\n\n\n", str(e), "\n\n\n\n")
+		return JsonResponse({"msg": str(e)}, status=400)
+
+
+def historic(request):
+	try:
+		is_valid_method(request, 'GET')
+		return JsonResponse(ManipulateUser(username=request.user.username).historic(), safe=False)
+	except MethodNotAllowed as e:
+		return JsonResponse({"msg": str(e)}, status=405)
+	except Exception as e:
 		return JsonResponse({"msg": str(e)}, status=400)
