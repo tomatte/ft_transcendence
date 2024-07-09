@@ -46,7 +46,8 @@ export default function listenNotificationEvents(state) {
         console.log(data)
 
         if (data.status == "connected") {
-            // initialSetup(data)
+            // TODO: create a function to merge the notifications from redis with notifications from database
+            state.notifications = data.notifications
             return 
         }
 

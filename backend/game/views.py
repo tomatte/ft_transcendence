@@ -234,15 +234,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         await self.accept()
         
         self.user_state = UserState(user_id)
-        
-        # temp notification example
-        self.user_state.notification.set({
-            "type": "tournament",
-            "id": "daiousyhdiasu",
-            "sender_id": "duianhdiouas",
-            "status": "active"
-        })
-        print(self.user_state.notification.get())
+
+        print(f"USER_STATE: {self.user_state.get()}")
 
         await self.channel_layer.group_add("notification", self.channel_name)
         
@@ -251,7 +244,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
 
         payload = {
             'status': 'connected',
-            'player_id': self.player_id
+            'player_id': self.player_id,
+            'notifications': self.user_state.notification.get(),
         }
         await self.send_json(payload)
 
@@ -281,15 +275,19 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
     async def tournament_invitation(self, event):
         print("tournament_invitation()")
+
         # TODO: user data needs to come somewhere
         payload = {
             "type": "tournament",
             "img": "https://kanto.legiaodosherois.com.br/w250-h250-gnw-cfill-q95-gcc/wp-content/uploads/2021/07/legiao_Ry1hNJoxOzpY.jpg.webp",
             "name": "Avatar",
-            'date': "05/07",
-            'time': "08:46",
-            "tournament_id": event["tournament_id"],
+            "id": event["tournament_id"],
+            "sender_id": "duianhdiouas",
+            "status": "active"
         }
+        self.user_state.notification.set(payload)
+        
+        print(f"NOTIFICATION_STATE: {self.user_state.notification.get()}")
         await self.send_json(payload)
         
     async def invite_to_tournament(self, data):
