@@ -80,9 +80,14 @@ html, body
     flex-direction: column;
 }
 
-.playground-container--modal-leave-tournament {
+.playground-container--modal-confirmation-delete {
     flex-direction: row;
 }
+
+.playground-container--modal-invite-to-tournament {
+    flex-direction: row;
+}
+
 
 
 

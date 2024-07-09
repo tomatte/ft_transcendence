@@ -14,7 +14,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">TOURNAMENT</div>
                 <div class="game-mode-banner__info__button">
-                    <button onclick="openModal()" class="button button--tertiary">
+                    <button onclick="openModal('modalConfirmationDelete')" class="button button--tertiary">
                         <span class="material-icons-round button__icon-left">add</span>
                         <span class="button__text font-body-regular-bold">Create</span>
                     </button>
@@ -29,7 +29,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">1V1 MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button class="button button--secondary">
+                    <button onclick="openModal('modalConfirmationDelete2')" class="button button--secondary">
                         <span class="material-icons-round button__icon-left">shuffle</span>
                         <span class="button__text font-body-regular-bold">Play randomly</span>
                     </button>
@@ -57,13 +57,13 @@ const Home = (state) => {
 
 
 
-        <div class="modal modal--leave-tournament" id="modalLeaveTournament">
+        <div class="modal modal--confirmation-delete" id="modalConfirmationDelete">
             <div class="modal__header">
                 <div class="modal__header__title">
                     <div class="modal__header__title__text">
                         <h4>Leave tournament</h4>
                     </div>
-                    <button onclick="closeModal()" class="button">
+                    <button onclick="closeModal('modalConfirmationDelete')" class="button">
                         <span class="material-icons-round modal__header__title__close icon--regular">close</span>
                     </button>
                 </div>

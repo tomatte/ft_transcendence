@@ -108,6 +108,6 @@
 
 /* ------------------- LEAVE TOURNAMENT ------------------ */
 
-.modal--leave-tournament .modal__actions button {
+.modal--confirmation-delete .modal__actions button {
     flex: 1 0 0;
 }
