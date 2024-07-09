@@ -36,23 +36,35 @@ redis_client.config_set('save', '')
 redis_client.config_set('appendonly', 'no')
 
 
+class NotificationStateManager:
+    def __init__(self) -> None:
+        pass
+
 class UserState:
     redis = redis_client
     
     @classmethod
-    def create_user_state(cls, id):
+    def init_user_state(cls, id):
         if not cls.redis.exists(id):
             data = {
                 "status": "connected",
-                "notification": {},
             }
+            cls.redis.set_json(id, data)
+        else:
+            data = cls.redis.get_json(id)
+            data["status"] = "connected"
             cls.redis.set_json(id, data)
     
     def __init__(self, id) -> None:
         self.id = id
-        UserState.create_user_state(id)
+        UserState.init_user_state(id)
     
     def get(self):
         return UserState.redis.get_json(self.id)
+    
+    def set(self, key, value):
+        data = UserState.redis.get_json(self.id)
+        data[key] = value
+        UserState.redis.set_json(self.id, data)
         
     

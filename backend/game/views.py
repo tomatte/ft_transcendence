@@ -234,7 +234,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         await self.accept()
         
         self.user_state = UserState(user_id)
-        print(self.user_state.get())
+
         await self.channel_layer.group_add("notification", self.channel_name)
         
         self.player_id = str(uuid.uuid4())
