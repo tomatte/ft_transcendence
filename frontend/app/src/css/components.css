@@ -914,18 +914,19 @@ ul {
 /* ------------------- TABLE ROW ------------------ */
 
 .table-row {
+
     display: flex;
-    width: 1080px;
-    height: 80px;
+    height: 76px;
     padding: 16px;
-    gap: 16px;
-    justify-content: space-between;
+    width: 100%;
     align-items: center;
+    gap: 16px;
     align-self: stretch;
     border-radius: 8px;
     background: var(--Lunar-Dust-950);
     color: var(--Lunar-Dust-500);
     transition: all 200ms ease-in;
+
 }
 
 .table-row:hover {

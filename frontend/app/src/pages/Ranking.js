@@ -50,19 +50,14 @@ const Ranking = async () => {
     	<table>
 			<thead>
 				<tr class="table-header">
-                <th class="table-header__text tableRankingPosition font-body-caption-regular">#</th>
-                <th class="table-header__text font-body-caption-regular">PLAYER</th>
-                <th class="table-header__text font-body-caption-regular">TOTAL SCORE</th>
-                <th class="table-header__text font-body-caption-regular">WINS</th>
-                <th class="table-header__text font-body-caption-regular">LOSSES</th>
-                <th class="table-header__text font-body-caption-regular">WIN RATE</th>
-                <th class="table-header__text font-body-caption-regular">LOSS RATE</th>
-                <th class="table-header__text font-body-caption-regular">ACTIONS</th>
-                    
-
-
-
-
+					<th class="table-header__text tableRankingPosition font-body-caption-regular">#</th>
+					<th class="table-header__text font-body-caption-regular">PLAYER</th>
+					<th class="table-header__text font-body-caption-regular">TOTAL SCORE</th>
+					<th class="table-header__text font-body-caption-regular">WINS</th>
+					<th class="table-header__text font-body-caption-regular">LOSSES</th>
+					<th class="table-header__text font-body-caption-regular">WIN RATE</th>
+					<th class="table-header__text font-body-caption-regular">LOSS RATE</th>
+					<th class="table-header__text font-body-caption-regular">ACTIONS</th>
 				</tr>
             </thead>
 			<tbody>
