@@ -73,8 +73,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     ## mys
-    'backend.CustomMiddleware.CustomMiddleware',
+    # 'backend.CustomMiddleware.CustomMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS=['backend.backends.MyBackend']
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True

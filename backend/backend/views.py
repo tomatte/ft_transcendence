@@ -1,6 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, authenticate
 from users.models import User
 from django.contrib.auth import get_user_model
 
@@ -31,19 +31,17 @@ def get_intra_data(access_token):
 	if response.status_code != 200:
 		raise Exception('Error getting user data')
 
-	return ({
-		'username': response.json()['login'],
-	})
+	return (response.json())
 
 
 def autenticate(request):
 	if request.method != 'GET':
 		return JsonResponse({'message': 'Invalid request'})
-
 	try:
 		access_token = get_access_token(request.GET.get('code'))
+		user = authenticate(request, token=access_token)
 		data_user = get_intra_data(access_token)
-		user, created = User.objects.get_or_create(username=data_user['username'], defaults=data_user)
+		# user, created = User.objects.get_or_create(username=data_user['login'], defaults=data_user)
 		response = redirect('http://localhost:4009/')
 		auth_login(request, user)
 		return response

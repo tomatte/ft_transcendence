@@ -15,10 +15,11 @@ from channels.security.websocket import AllowedHostsOriginValidator
 
 application = ProtocolTypeRouter({
 	"http": django_asgi_app,
-	"websocket":
+	"websocket": AllowedHostsOriginValidator(
 		AuthMiddlewareStack(
 			URLRouter([
 				*(game.urls.urlpatterns)
 			])
 		)
+	)
 })
