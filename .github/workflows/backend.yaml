@@ -1,0 +1,12 @@
+name: run-users-tests
+
+on: [push, pull_request]
+
+
+jobs:
+  continue-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requiments.txt && cd backend
+      - run: python manage.py test users
