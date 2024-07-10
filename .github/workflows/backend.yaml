@@ -2,11 +2,15 @@ name: run-users-tests
 
 on: [push, pull_request]
 
-
 jobs:
   continue-integration:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: cd backend && pip install -r requiments.txt
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - run: cd backend
+      - run: pip install -r requirements.txt
       - run: python manage.py test users
