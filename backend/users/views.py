@@ -45,8 +45,8 @@ class ManipulateUser:
 		return list(all_players).index(self.me) + 1
 
 	def friends(self):
-		user1 = Friendship.objects.filter(from_user=self.me, status='accepted')
-		user2 = Friendship.objects.filter(to_user=self.me, status='accepted')
+		user1 = Friendship.objects.filter(from_user=self.me, status='Accepted')
+		user2 = Friendship.objects.filter(to_user=self.me, status='Accepted')
 		return user1.union(user2)
 
 	def combats_with_player(self, player):
@@ -77,8 +77,16 @@ class ManipulateUser:
 		}
 
 	def add_friend(self, friend_username):
-		friend = User.objects.get(id=friend_username)
+		friend = User.objects.get(username=friend_username)
+		if (friend == self.me):
+			raise Exception("you can't add it youself ")
 		Friendship.objects.create(from_user=self.me, to_user=friend, status='pending')
+
+	def response_friend(self, friend_username, status):
+		friend = User.objects.get(username=friend_username)
+		friendship = Friendship.objects.get(from_user=friend, to_user=self.me)
+		friendship.status = status
+		friendship.save()
 
 	def seding_friends(self):
 		response = Friendship.objects.filter(from_user=self.me, status='pending').values(
@@ -95,12 +103,6 @@ class ManipulateUser:
 			'from_user__username',
 		)
 		return list(response)
-
-	def response_friend(self, friend_username, status):
-		friend = User.objects.get(username=friend_username)
-		friendship = Friendship.objects.get(from_user_id=friend, to_user=self.me)
-		friendship.status = status
-		friendship.save()
 
 	def player_statistics_by_you(self, friend: object) -> dict:
 		if not friend:
@@ -226,10 +228,10 @@ class ManipulateUser:
 				"date": _match.create_at.strftime('%d/%m/%y'),
 			})
 		return data
+
 ################################################################################
 #							Routes
 ################################################################################
-
 
 ##TESTADA
 def get_user(request):
@@ -243,14 +245,14 @@ def get_user(request):
 	"""
 
 	try:
-		is_valid_method(request, 'GET')
-		return ManipulateUser(username=request.POST['username']).profile()
+		is_valid_method(request, 'POST')
+		return JsonResponse(ManipulateUser(username=request.POST['username']).profile())
 	except MethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 	except User.DoesNotExist:
 		return JsonResponse({'message': 'User not found!'}, status=404)
 	except KeyError:
-		return JsonResponse({'message': 'User not found!'}, status=404)
+		return JsonResponse({'msg': 'Username not sending'}, status=400)
 
 
 ##TESTADA
@@ -281,7 +283,14 @@ def all_users(request):
 		return:
 			json (JSON): informações com as informações de todos os usuarios.
 	"""
-	return JsonResponse(list(User.objects.all().values('id', 'nickname', 'avatar')), safe=False)
+	try:
+		is_valid_method(request, "GET")
+		users = User.objects.all().values('username', 'nickname', 'avatar')
+		if users.exists():
+			return JsonResponse(list(users), status=200, safe=False)
+		return JsonResponse({[]}, status=200)
+	except MethodNotAllowed as e:
+		return JsonResponse({'message': str(e)}, status=405)
 
 
 ##TESTADA
@@ -296,15 +305,63 @@ def add_friend(request):
 	"""
 	try:
 		is_valid_method(request, 'POST')
-		ManipulateUser(username=request.user.username).add_friend(request.POST.get['username'])
-		return HttpResponse({'msg': 'Friend request sent!'}, status=200)
-
-	except User.DoesNotExist:
-		return JsonResponse({'msg': 'User not found!'}, status=404)
+		ManipulateUser(username=request.user.username).add_friend(request.POST['username'])
+		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
 	except MethodNotAllowed as e:
 		return JsonResponse({'msg': str(e)}, status=405)
+	except User.DoesNotExist:
+		return JsonResponse({'msg': 'User not found!'}, status=404)
+	except KeyError:
+		return JsonResponse({'msg': 'Username not sending'}, status=400)
 	except Exception as e:
 		return JsonResponse({'msg': str(e)}, status=400)
+
+##TESTADA
+def response_friend(request):
+	"""Função para Responder um Pedido de amizade.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			http (HTTP): status da requisição.
+	"""
+	try:
+		is_valid_method(request, 'POST')
+		ManipulateUser(username=request.user.username).response_friend(request.POST['username'], request.POST['status'])
+		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
+	except MethodNotAllowed as e:
+		return JsonResponse({'msg': str(e)}, status=405)
+	except User.DoesNotExist:
+		return JsonResponse({'msg': 'User not found!'}, status=404)
+	except KeyError:
+		return JsonResponse({'msg': 'Username not sending'}, status=400)
+	except Exception as e:
+		return JsonResponse({'msg': str(e)}, status=400)
+
+
+##TESTADA
+def get_list_friends(request):
+	"""Função para retornar os pedidos de amizade recebidos.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			json (JSON): informações com as informações dos pedidos de amizade recebidos.
+	"""
+
+	try:
+		is_valid_method(request, 'GET')
+		return JsonResponse(ManipulateUser(username=request.user.username).get_friends_list(), safe=False)
+	except MethodNotAllowed as e:
+		return JsonResponse({'message': str(e)}, status=405)
+	except Friendship.DoesNotExist:
+		return JsonResponse({'message': 'You do not have friends'}, status=404)
+	except KeyError:
+		return JsonResponse({'message': 'User not found!'}, status=404)
+	except Exception as e:
+		return JsonResponse({'message': str(e)}, status=404)
 
 
 ##TESTADA
@@ -338,30 +395,6 @@ def friend_request_received(request):
 	except Friendship.DoesNotExist:
 		return JsonResponse({'message': 'no friend requests sent'}, status=404)
 
-
-
-##TESTADA
-def get_list_friends(request):
-	"""Função para retornar os pedidos de amizade recebidos.
-
-		args:
-			request (OBJ): Requisição do usuario.
-
-		return:
-			json (JSON): informações com as informações dos pedidos de amizade recebidos.
-	"""
-
-	try:
-		is_valid_method(request, 'GET')
-		return JsonResponse(ManipulateUser(username=request.user.username).get_friends_list(), safe=False)
-	except MethodNotAllowed as e:
-		return JsonResponse({'message': str(e)}, status=405)
-	except Friendship.DoesNotExist:
-		return JsonResponse({'message': 'You do not have friends'}, status=404)
-	except KeyError:
-		return JsonResponse({'message': 'User not found!'}, status=404)
-	except Exception as e:
-		return JsonResponse({'message': str(e)}, status=404)
 
 
 ##TESTADA
