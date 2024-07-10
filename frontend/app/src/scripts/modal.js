@@ -1,3 +1,4 @@
+
 function openModal(id) {
     const modal = document.getElementById(id);
     const overlay = document.getElementById('modalOverlay');
@@ -38,7 +39,7 @@ function closeModalOutside(event) {
         closeModal(modal.id);
     }
 }
-
+// --------------------------------
 
 // function openModal() {
 //     const modal = document.getElementById('modalConfirmationDelete');

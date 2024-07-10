@@ -301,3 +301,19 @@
     display: flex;
  
  }
+
+
+
+ /* ----------------------------- */
+
+ .hidden {
+    display: none;
+}
+
+.modal {
+    display: none; /* Certifique-se de que o modal está oculto por padrão */
+}
+
+#modalOverlay {
+    display: none; /* Certifique-se de que o overlay está oculto por padrão */
+}
