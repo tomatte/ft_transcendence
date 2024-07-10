@@ -41,7 +41,7 @@ jobs:
         run: |
           cd backend
           pip install -r requirements.txt
-          bash script.sh
+          bash startDB.sh
 
       - name: Run tests
         env:
