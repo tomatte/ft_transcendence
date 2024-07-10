@@ -3,14 +3,57 @@ on: [push, pull_request]
 jobs:
   continue-integration:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        container_name: ft_db
+        env:
+          POSTGRES_USER: trans
+          POSTGRES_PASSWORD: trans
+          POSTGRES_DB: trans
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd="pg_isready -U trans"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      redis:
+        image: redis:latest
+        container_name: ft_redis
+        ports:
+          - "6379:6379"
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
-      - run: |
+
+      - name: Install dependencies
+        run: |
           cd backend
           ls -la
           pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          POSTGRES_USER: trans
+          POSTGRES_PASSWORD: trans
+          POSTGRES_DB: trans
+          POSTGRES_HOST: db
+          POSTGRES_PORT: 5432
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+        run: |
+          cd backend
           python manage.py test users
