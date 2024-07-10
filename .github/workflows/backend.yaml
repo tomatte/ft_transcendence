@@ -12,5 +12,6 @@ jobs:
         with:
           python-version: '3.12'
       - run: cd backend
+      - run: ls -la
       - run: pip install -r requirements.txt
       - run: python manage.py test users
