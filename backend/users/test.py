@@ -136,96 +136,47 @@ class MyUserViewTest(TransactionTestCase):
 
 	def test_response_friend_route_erro(self):
 		##test invalid method
-		response = self.client.post(reverse('get_list_friends'))
+		response = self.client.get(reverse('response_friend'))
+		self.assertEqual(response.status_code, 405)
+		response = self.client.post(reverse('response_friend'), {'username': 'fake', 'status': 'Accepted'})
+		self.assertEqual(response.status_code, 404)
+		response = self.client.post(reverse('response_friend'))
+		self.assertEqual(response.status_code, 400)
+		response = self.client.post(reverse('response_friend'), {'invalid': 'test_user2', 'status': 'Accepted'})
+		self.assertEqual(response.status_code, 400)
+
+	##############################################
+	#		Route Name: update_nickname
+	##############################################
+	def test_update_nickname_route(self):
+		response = self.client.post(reverse('uptade_nickname'), {'nickname': 'junin'})
+		self.assertEqual(response.status_code, 200)
+
+	def test_update_nickname_error(self):
+		##  test invalid method
+		response = self.client.get(reverse('uptade_nickname'))
 		self.assertEqual(response.status_code, 405)
 
+		## test invalid parameter
+		response = self.client.post(reverse('uptade_nickname'), {'invalid': 'nickname'})
+		self.assertEqual(response.status_code, 400)
 
-	# def test_get_request_received_view(self):
-	# 	for username in ['user1', 'user3', 'user4']:
-	# 		self.client.login(username=username, password='12345')
-	# 		self.client.post(reverse('add_friend'), {'friend_id': 2})
 
-	# 	self.client.login(username='user2', password='12345')
-	# 	response = self.client.post(reverse(('get_receive_friends')))
-
+	# ##############################################
+	# #		Route Name: update_nickname
+	# ##############################################
+	# def test_update_avatar_route(self):
+	# 	response = self.client.post(reverse('uptade_avatar'), {'avatar': 'junin'})
 	# 	self.assertEqual(response.status_code, 200)
-	# 	response_names = [names['from_user__nickname'] for names in response.json()]
-	# 	self.assertEqual(len(response_names), 3)
-
-	# 	for name in ['user1', 'user3', 'user4']:
-	# 		self.assertIn(name, response_names)
-
-
-	# def test_get_request_send_view(self):
-	# 	self.client.login(username='user1', password='12345')
-	# 	self.client.post(reverse('add_friend'), {'friend_id': 2})
-	# 	self.client.post(reverse('add_friend'), {'friend_id': 3})
-
-	# 	response = self.client.get(reverse('get_pending_friends'))
-	# 	response_names = [user['to_user__nickname'] for user in response.json()]
-
-	# 	self.assertEqual(response.status_code, 200)
-	# 	self.assertEqual(len(response_names), 2)
-	# 	for name in ['user2', 'user3']:
-	# 		self.assertIn(name, response_names)
-
-
-	# def test_response_friend_request_view(self):
-	# 	self.client.login(username='user3', password='12345')
-	# 	self.client.post(reverse('add_friend'), {'friend_id': 1})
-
-	# 	self.client.login(username='user2', password='12345')
-	# 	self.client.post(reverse('add_friend'), {'friend_id': 1})
-
-	# 	self.client.login(username='user1', password='12345')
-	# 	response = self.client.post(reverse('response_friend'), {'friend_id': 3, 'status': 'accepted'})
-
-	# 	self.assertEqual(response.status_code, 200)
-
-
-	# def test_get_list_friends_view(self):
-	# 	self.client.login(username='user1', password='12345')
-
-	# 	#User1 adicionando 3 users
-	# 	for i in range(2, 5):
-	# 		self.client.post(reverse('add_friend'), {'friend_id': i})
-
-	# 	#User 2 and user 3 accepting
-	# 	for i in range(2, 4):
-	# 		self.client.login(username=f'user{i}',	password='12345')
-	# 		self.client.post(reverse('response_friend'), {'friend_id': 1, 'status': 'accepted'})
-
-	# 	#Criando partidas
-	# 	user1 = User.objects.get(id=1)
-	# 	user2 = User.objects.get(id=2)
-
-	# 	match1 = Match.objects.create()
-	# 	match2 = Match.objects.create()
-	# 	match3 = Match.objects.create()
-
-	# 	MatchPlayer.objects.create(match=match1, user=user1, score=5, winner=True)
-	# 	MatchPlayer.objects.create(match=match1, user=user2, score=3, winner=False)
-
-	# 	MatchPlayer.objects.create(match=match2, user=user1, score=6, winner=True)
-	# 	MatchPlayer.objects.create(match=match2, user=user2, score=2, winner=False)
-
-	# 	MatchPlayer.objects.create(match=match2, user=user1, score=3, winner=False)
-	# 	MatchPlayer.objects.create(match=match2, user=user2, score=5, winner=True)
-
-	# 	self.client.login(username='user1', password='12345')
-	# 	response = self.client.post(reverse('get_list_friends'), {'user_id': 1})
-
-	# 	response_names = [user['friend']['nickname'] for user in response.json()]
-
-	# 	for name in ['user2', 'user3']:
-	# 		self.assertIn(name, response_names)
-
-	# 	self.assertNotIn('user4', response_names)
-
 
 	# def test_update_avatar(self):
-	# 	self.client.login(username='user', password='12345')
-	# 	self.client.post(reverse('uptade_nickname'), {'avatar': 'avatar.jpg'})
+	# 	##  test invalid method
+	# 	response = self.client.get(reverse('uptade_avatar'))
+	# 	self.assertEqual(response.status_code, 405)
+
+	# 	## test invalid parameter
+	# 	response = self.client.post(reverse('uptade_avatar'), {'invalid': 'avatar'})
+	# 	self.assertEqual(response.status_code, 400)
 
 
 
