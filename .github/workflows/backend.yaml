@@ -8,5 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pip install -r requiments.txt && cd backend
+      - run: cd backend && pip install -r requiments.txt
       - run: python manage.py test users
