@@ -7,7 +7,6 @@ jobs:
     services:
       postgres:
         image: postgres:latest
-        container_name: ft_db
         env:
           POSTGRES_USER: trans
           POSTGRES_PASSWORD: trans
@@ -22,7 +21,6 @@ jobs:
 
       redis:
         image: redis:latest
-        container_name: ft_redis
         ports:
           - "6379:6379"
         options: >-
