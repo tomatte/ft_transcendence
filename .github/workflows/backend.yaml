@@ -47,7 +47,7 @@ jobs:
           POSTGRES_USER: trans
           POSTGRES_PASSWORD: trans
           POSTGRES_DB: trans
-          POSTGRES_HOST: db
+          POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
           REDIS_HOST: localhost
           REDIS_PORT: 6379
