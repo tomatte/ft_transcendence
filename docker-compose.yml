@@ -15,32 +15,32 @@ services:
       - ./frontend/app:/var/www
     networks:
       - trans
-    depends_on:
-      - backend
+    # depends_on:
+    #   - backend
 
-  backend:
-    build: ./backend
-    container_name: ft_backend
-    ports:
-      - "${BACKEND_PORT}:8000"
-    volumes:
-      - ./backend:/app
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_HOST: db
-      BACKEND_PORT: ${BACKEND_PORT}
-      BACKEND_HOST: backend
-      PYTHONUNBUFFERED: 1
-      REDIS_HOST: redis
-      REDIS_PORT: ${REDIS_PORT}
-    depends_on:
-      - db
-      - redis
-    networks:
-      - trans
+  # backend:
+  #   build: ./backend
+  #   container_name: ft_backend
+  #   ports:
+  #     - "${BACKEND_PORT}:8000"
+  #   volumes:
+  #     - ./backend:/app
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     POSTGRES_HOST: db
+  #     BACKEND_PORT: ${BACKEND_PORT}
+  #     BACKEND_HOST: backend
+  #     PYTHONUNBUFFERED: 1
+  #     REDIS_HOST: redis
+  #     REDIS_PORT: ${REDIS_PORT}
+  #   depends_on:
+  #     - db
+  #     - redis
+  #   networks:
+  #     - trans
 
   db:
     image: postgres:latest
@@ -66,16 +66,16 @@ services:
     networks:
       - trans
 
-  game_loop:
-    build: ./game_loop
-    container_name: ft_game_loop
-    environment:
-      - BACKEND_HOST=backend
-      - BACKEND_PORT=${BACKEND_PORT}
-    networks:
-      - trans
-    depends_on:
-      - backend
+  # game_loop:
+  #   build: ./game_loop
+  #   container_name: ft_game_loop
+  #   environment:
+  #     - BACKEND_HOST=backend
+  #     - BACKEND_PORT=${BACKEND_PORT}
+  #   networks:
+  #     - trans
+  #   depends_on:
+  #     - backend
 
 
 # docker stop $(docker ps -a -q)
