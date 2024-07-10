@@ -10,4 +10,4 @@ python manage.py migrate --fake sessions zero
 python manage.py showmigrations
 python manage.py migrate --fake-initial
 
-python manage.py runserver 0.0.0.0:$BACKEND_PORT
+# python manage.py runserver 0.0.0.0:$BACKEND_PORT
