@@ -40,9 +40,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd backend
-          bash script.sh
-          ls -la
           pip install -r requirements.txt
+          bash script.sh
 
       - name: Run tests
         env:
