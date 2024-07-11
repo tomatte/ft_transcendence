@@ -1,5 +1,5 @@
 
-let ws_notification = new WebSocket("ws://localhost:8000/notification/")
+let ws_notification = new WebSocket("wss://localhost:443/ws/notification/")
 
 let payload = {
     action: "",

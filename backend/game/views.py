@@ -233,6 +233,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
         
+        print(self.scope["user"])
         self.user_state = UserState(user_id)
 
         print(f"USER_STATE: {self.user_state.get()}")

@@ -108,7 +108,7 @@
 
 	<script>
 		function get_user_data() {
-			fetch('http://127.0.0.1:8000/api/users/get/my_user/', {method: 'GET', credentials: 'include'})
+			fetch('https://localhost:443/api/users/get/my_user/', {method: 'GET', credentials: 'include'})
 			.then(resp => resp.status === 401 ? window.location.href = '/test_login.html' : resp.json())
 			.then(data => {
 				document.getElementsByClassName('profile-info__container__text__name')[0].innerText = data.username;

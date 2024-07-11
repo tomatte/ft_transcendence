@@ -1,4 +1,4 @@
-let ws_tournament = new WebSocket("ws://localhost:8000/tournament/")
+let ws_tournament = new WebSocket("wss://localhost:443/ws/tournament/")
 
 function joinTournament(tournament_id) {
     payload.action = "join",

@@ -1,5 +1,5 @@
 async function fetch_api_ranking() {
-    let response = await fetch('http://127.0.0.1:8000/api/users/get/ranking', { method: 'GET', credentials: 'include' })
+    let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
     if (response.status !== 200) throw new Error('Error status is not 200' + response.method); else return await response.json()
 }
 
