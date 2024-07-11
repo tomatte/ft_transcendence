@@ -21,8 +21,6 @@ services:
   backend:
     build: ./backend
     container_name: ft_backend
-    ports:
-      - "${BACKEND_PORT}:8000"
     volumes:
       - ./backend:/app
     environment:
