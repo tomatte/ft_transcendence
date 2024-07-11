@@ -40,11 +40,11 @@ def autenticate(request):
 	try:
 		access_token = get_access_token(request.GET.get('code'))
 		user = authenticate(request, token=access_token)
-		data_user = get_intra_data(access_token)
-		# user, created = User.objects.get_or_create(username=data_user['login'], defaults=data_user)
-		response = redirect('http://localhost:4009/')
-		auth_login(request, user)
-		return response
+		if user:
+			auth_login(request, user)
+			return redirect('http://localhost:4009/')
+		else:
+			return JsonResponse({'message': "forbbiden"})
 	except Exception as e:
 		return JsonResponse({'message': str(e)})
 

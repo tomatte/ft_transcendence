@@ -14,14 +14,15 @@ class MyBackend(BaseBackend):
 
         return (response.json())
 
-    def authenticate(self, request, token=None):
-        data = MyBackend.get_intra_data(token)
-        user = None
+    def authenticate(self, request=None, token=None):
         try:
-            user = User.objects.get(nickname=data['login'])
+            data = MyBackend.get_intra_data(token)
         except:
-            user = self.create_user(data)
-        pass
+            return None
+        try:
+            return User.objects.get(username=data['login'])
+        except User.DoesNotExist:
+            return self.create_user(data)
     
     def get_user(self, user_id):
         try:
