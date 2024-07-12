@@ -317,3 +317,11 @@
 #modalOverlay {
     display: none; /* Certifique-se de que o overlay está oculto por padrão */
 }
+
+.table-row__actions-friendly{
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+}
