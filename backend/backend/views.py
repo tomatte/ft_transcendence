@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate
+from users.models import User
 import requests
 from environs import Env
 
@@ -55,3 +56,20 @@ def not_authorized(request):
 
 def login(request):
 	return render(request, 'login.html')
+
+def auth_fake(request): #TODO: remove in production
+	if request.method != 'GET':
+		return JsonResponse({'message': 'Invalid request'})
+	try:
+		fake_data = {
+			'login': 'user0',
+			'email': 'user0@mail.com',
+		}
+		user = User.objects.get(username=fake_data['login'])
+		if user:
+			auth_login(request, user)
+			return redirect(env('SITE_URL'))
+		else:
+			return JsonResponse({'message': "forbbiden"})
+	except Exception as e:
+		return JsonResponse({'message': str(e)})

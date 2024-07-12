@@ -14,11 +14,14 @@ class MyBackend(BaseBackend):
 
         return (response.json())
 
-    def authenticate(self, request=None, token=None):
+    def authenticate(self, request=None, token=None, fake_data=None):
         try:
             data = MyBackend.get_intra_data(token)
         except:
-            return None
+            if fake_data: #TODO: remove in production
+                data = fake_data
+            else:
+                return None
         try:
             return User.objects.get(username=data['login'])
         except User.DoesNotExist:
