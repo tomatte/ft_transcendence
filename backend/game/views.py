@@ -231,7 +231,12 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
-        await self.accept()
+        
+        if self.scope['user'].is_authenticated:
+            await self.accept()
+        else:
+            await self.close(None)
+            return
         
         print(self.scope["user"])
         self.user_state = UserState(user_id)

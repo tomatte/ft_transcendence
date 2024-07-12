@@ -17,6 +17,8 @@ services:
       - trans
     depends_on:
       - backend
+    environment:
+      - BACKEND_HOST=backend
 
   backend:
     build: ./backend
