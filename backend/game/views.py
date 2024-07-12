@@ -9,9 +9,6 @@ from .tasks import emit_group_event_task
 from .my_types import *
 import random
 
-user_id = "9977b54d-dd2a-4284-b1af-af58b8c6feb9" 
-
-    
 MatchDict = Dict[str, MatchData]
 
 class GameLoopConsumer(MyAsyncWebsocketConsumer):
@@ -46,7 +43,9 @@ class PlayerConsumer(MyAsyncWebsocketConsumer):
     new_match_id = str(uuid.uuid4())
     
     async def connect(self):
-        await self.accept()
+        is_authenticated = await self.authenticate()
+        if is_authenticated == False:
+            return 
         
         await self.channel_layer.group_add("match", self.channel_name)
         
@@ -134,7 +133,10 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.validation = TournamentValidation(self)
     
     async def connect(self):
-        await self.accept()
+        is_authenticated = await self.authenticate()
+        if is_authenticated == False:
+            return
+        
         payload = {
             'status': 'connected'
         }
@@ -231,15 +233,12 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
-        
-        if self.scope['user'].is_authenticated:
-            await self.accept()
-        else:
-            await self.close(None)
-            return
+        is_authenticated = await self.authenticate()
+        if is_authenticated == False:
+            return 
         
         print(self.scope["user"])
-        self.user_state = UserState(user_id)
+        self.user_state = UserState(self.scope['user'].username)
 
         print(f"USER_STATE: {self.user_state.get()}")
 

@@ -15,6 +15,14 @@ class MyAsyncWebsocketConsumer(AsyncWebsocketConsumer):
         
     async def send_json(self, data):
         await self.send(json.dumps(data))
+        
+    async def authenticate(self) -> True | False:
+        if self.scope['user'].is_authenticated:
+            await self.accept()
+            return True
+
+        await self.close()
+        return False
 
 class MyRedisClient(redis.StrictRedis):
     def __init__(self, *args, **kwargs):
