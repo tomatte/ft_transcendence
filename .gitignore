@@ -9,6 +9,7 @@ db.sqlite3
 *.pg_service.
 .env
 .env.save
+IGNORE_*
 
 # Virtualenv
 venv/

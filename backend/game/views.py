@@ -237,8 +237,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         if is_authenticated == False:
             return 
         
-        print(self.scope["user"])
-        self.user_state = UserState(self.scope['user'].username)
+        self.user_state = UserState(self.scope['user'])
+        self.user_state.online.player_connected()
 
         print(f"USER_STATE: {self.user_state.get()}")
 
@@ -275,6 +275,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         await self.send(text_data=event["text"])
 
     async def disconnect(self, close_code):
+        if hasattr(self, 'user_state'):
+            self.user_state.online.player_disconnected()
         await self.channel_layer.group_discard("chat", self.channel_name)
         return await super().disconnect(close_code)
         

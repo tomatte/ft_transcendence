@@ -49,53 +49,82 @@ class NotificationState:
     redis = redis_client
     
     @classmethod
-    def init_notification_state(cls, id):
-        data = cls.redis.get_json(id)
+    def init_notification_state(cls, username):
+        data = cls.redis.get_json(username)
         if not "notifications" in data:
             data["notifications"] = []
-            cls.redis.set_json(id, data)
+            cls.redis.set_json(username, data)
             
-    def __init__(self, id) -> None:
-        self.id = id
-        NotificationState.init_notification_state(id)
+    def __init__(self, user) -> None:
+        self.user = user
+        NotificationState.init_notification_state(user.username)
             
     def get(self):
-        data = NotificationState.redis.get_json(self.id)
+        data = NotificationState.redis.get_json(self.user.username)
         return data["notifications"]
     
     def set(self, value: dict):
-        data = NotificationState.redis.get_json(self.id)
+        data = NotificationState.redis.get_json(self.user.username)
         value["time"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         data["notifications"].append(value)
-        NotificationState.redis.set_json(self.id, data)
+        NotificationState.redis.set_json(self.user.username, data)
+        
+class OnlineState:
+    redis = redis_client
+    
+    def __init__(self, user) -> None:
+        self.user = user
+        
+    def player_connected(self):
+        if OnlineState.redis.exists('global_notification') == True:
+            data = OnlineState.redis.get_json('global_notification')
+        else:
+            data = { 'players_online': {}}
+        
+        data['players_online'][self.user.username] = {
+            'id': self.user.id,
+            'username': self.user.username,
+            'nickname': self.user.nickname,
+            'avatar': self.user.avatar.name,
+        }
+
+        OnlineState.redis.set_json('global_notification', data)
+    def player_disconnected(self):
+        data = OnlineState.redis.get_json('global_notification')
+        del data['players_online'][self.user.username]
+        OnlineState.redis.set_json('global_notification', data)
+        
+        
     
 
 class UserState:
     redis = redis_client
     
     @classmethod
-    def init_user_state(cls, id):
-        if not cls.redis.exists(id):
+    def init_user_state(cls, user):
+        if not cls.redis.exists(user.username):
             data = {
                 "status": "connected",
             }
-            cls.redis.set_json(id, data)
+            cls.redis.set_json(user.username, data)
         else:
-            data = cls.redis.get_json(id)
+            data = cls.redis.get_json(user.username)
             data["status"] = "connected"
-            cls.redis.set_json(id, data)
+            cls.redis.set_json(user.username, data)
     
-    def __init__(self, id) -> None:
-        self.id = id
-        UserState.init_user_state(id)
-        self.notification = NotificationState(id)
+    def __init__(self, user) -> None:
+        self.user = user
+        
+        UserState.init_user_state(self.user)
+        self.notification = NotificationState(self.user)
+        self.online = OnlineState(self.user)
     
     def get(self):
-        return UserState.redis.get_json(self.id)
+        return UserState.redis.get_json(self.user.username)
     
     def set(self, key, value):
-        data = UserState.redis.get_json(self.id)
+        data = UserState.redis.get_json(self.user.username)
         data[key] = value
-        UserState.redis.set_json(self.id, data)
+        UserState.redis.set_json(self.user.username, data)
         
     
