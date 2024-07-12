@@ -1,4 +1,4 @@
-all: setup up
+all: up
 
 #INTRO
 help:
@@ -9,7 +9,7 @@ setup:
 
 #MAIN ACTIONS
 up:
-	sudo docker compose up
+	sudo docker compose up --build
 
 down:
 	sudo docker compose down

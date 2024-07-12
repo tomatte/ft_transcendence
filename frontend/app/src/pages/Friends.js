@@ -37,8 +37,8 @@ const Friends = async() => {
             <div class="page-content__container__header__info">
                 <h4 class="page-content__container__header__info__title">Friends</h4>
             </div>
-            <button class="button button--success">
-                <span class="button__text font-body-regular-bold">Add Friend</span>
+            <button onclick="openModal('modalAddFriend')" class="button button--success">
+                 <span class="button__text font-body-regular-bold">Add Friend</span>
             </button>
         </div>
         <div class="page-content__container__header__search-bar">
@@ -102,6 +102,89 @@ const Friends = async() => {
 			</ul>
     	</nav>
     </div>
+
+
+
+     <div class="modal modal--add-friend" id="modalAddFriend">
+
+            <div class="modal__header-add_friend">
+
+                <div class="modal__header__title">
+                    <h4 class="modal__header__title__text">Add Friend</h4>
+                    <span onclick="closeModal('modalAddFriend')" class="material-icons-round modal__header__title__close icon--regular">close</span>
+                </div>
+                <div class="search-bar">
+                    <span class="material-icons-round search-bar__icon icon--regular">search</span>
+                    <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+                </div>
+
+             
+
+
+			<table class="modal__table__header-add_friend"> 
+ 
+                    <thead class="modal__table__header">
+                        <tr class="table-header">
+                            <th class="table-header__text font-body-caption-regular">Player</th>
+                            <th class="table-header__text font-body-caption-regular">Global ranking</th>
+                            <th class="table-header__text font-body-caption-regular">Actions</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody class="modal__table__body">
+                        <tr class="table-row">
+                            <td class="table-row__player">
+                                <img class="table-row__player__image" src="../../assets/images/players/estagiario.png" alt="player">
+                                <div class="table-row__player__text">
+                                    <span class="table-row__player__text__name font-body-medium-bold">Luigi Encanador</span>
+                                    <span class="table-row__player__text__nickname font-body-regular">Luador</span>
+                                </div>
+                            </td>
+                            <td class="table-row__data-default font-body-medium-bold">#132</td>
+                            <td class="table-row__actions">
+                                <button class="button button--success">
+                                    <span class="button__text font-body-regular-bold">Add friend</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="table-row__player">
+                                <img class="table-row__player__image" src="../../assets/images/players/wwag.png" alt="player">
+                                <div class="table-row__player__text">
+                                    <span class="table-row__player__text__name font-body-medium-bold">Corsinha Amarelo</span>
+                                    <span class="table-row__player__text__nickname font-body-regular">CAmarel</span>
+                                </div>
+                            </td>
+                            <td class="table-row__data-default font-body-medium-bold">#155</td>
+                            <td class="table-row__actions">
+                                <button class="button button--success">
+                                    <span class="button__text font-body-regular-bold">Add friend</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="table-row__player">
+                                <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
+                                <div class="table-row__player__text">
+                                    <span class="table-row__player__text__name font-body-medium-bold">Nega Drive</span>
+                                    <span class="table-row__player__text__nickname font-body-regular">NDriv</span>
+                                </div>
+                            </td>
+                            <td class="table-row__data-default font-body-medium-bold">#133</td>
+                            <td class="table-row__actions">
+                                <button class="button button--success">
+                                    <span class="button__text font-body-regular-bold">Add friend</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+			</table>
+
+        </div>
+        </div>
+
+ <div id="modalOverlay" class="hidden"></div>
 `;
 
     return pageContentContainer;

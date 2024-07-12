@@ -14,7 +14,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">TOURNAMENT</div>
                 <div class="game-mode-banner__info__button">
-                    <button onclick="openModal()" class="button button--tertiary">
+                    <button onclick="openModal('modalInviteToTournament')" class="button button--tertiary">
                         <span class="material-icons-round button__icon-left">add</span>
                         <span class="button__text font-body-regular-bold">Create</span>
                     </button>
@@ -44,7 +44,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">FRIENDLY MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button class="button button--primary">
+                    <button onclick="openModal('modalFriendlyMatch')" class="button button--primary">
                         <span class="material-icons-round button__icon-left">sports_esports</span>
                         <span class="button__text font-body-regular-bold">Play with a friend</span>
                     </button>
@@ -55,35 +55,198 @@ const Home = (state) => {
             </div>
         </div>
 
-
-
-        <div class="modal modal--leave-tournament" id="modalLeaveTournament">
-            <div class="modal__header">
-                <div class="modal__header__title">
-                    <div class="modal__header__title__text">
-                        <h4>Leave tournament</h4>
-                    </div>
-                    <button onclick="closeModal()" class="button">
-                        <span class="material-icons-round modal__header__title__close icon--regular">close</span>
-                    </button>
+ 
+        <div class="modal modal--invite-to-tournament" id="modalInviteToTournament">
+                    <div class="modal__header">
+                        <div class="modal__header__title">
+                            <h4 class="modal__header__title__text">Invite to tournament</h4>
+                            <button onclick="closeModal('modalInviteToTournament')" class="button">
+                                <span class="material-icons-round modal__header__title__close icon--regular">close</span>
+                            </button>
+                        </div>
+                <div class="search-bar">
+                    <span class="material-icons-round search-bar__icon icon--regular">search</span>
+                    <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
                 </div>
-                <span class="modal__header__description font-body-medium">
-                    Are you sure you want to leave this tournament? This action is irreversible and you will no longer be part of the tournament.
-                </span>
             </div>
-            <div class="modal__actions">
-                <button class="button button--secondary">
-                    <span class="button__text font-body-regular-bold">No, cancel</span>
-                </button>
-                <button class="button button--danger">
-                    <span class="button__text font-body-regular-bold">Yes, leave tournament</span>
-                </button>
+
+            <div class="modal__player-queue">
+                <div class="modal__player-queue__header">
+                    <span class="modal__player-queue__header__title font-body-medium-bold">Players</span>
+                    <div class="modal__player-queue__header__status">
+                        <span class="modal__player-queue__header__status__ready font-body-medium-bold">3/4 ready</span>
+                        <span class="material-icons-round modal__player-queue__header__status__icon icon--small">check_circle</span>
+                    </div>
+                </div>
+                <div class="modal__player-queue__list">
+                    <div class="player-bracket">
+                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
+                        <div class="player-bracket__info__text">
+                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
+                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
+                        </div>
+                    </div>
+                    <div class="player-bracket">
+                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
+                        <div class="player-bracket__info__text">
+                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
+                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
+                        </div>
+                    </div>
+                    <div class="player-bracket">
+                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
+                        <div class="player-bracket__info__text">
+                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
+                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
+                        </div>
+                    </div>
+                    <div class="player-bracket player-bracket--waiting">
+                        <span class="material-icons-round player-bracket__waiting-icon icon--small">schedule</span>
+                        <span class="player-bracket__waiting-text font-body-regular">Waiting for player...</span>
+                    </div>
+                </div>
             </div>
+
+            <table class="modal__table">
+                <thead class="modal__table__header">
+                    <tr class="table-header">
+                        <th class="table-header__text font-body-caption-regular">Player</th>
+                        <th class="table-header__text font-body-caption-regular">Global ranking</th>
+                        <th class="table-header__text font-body-caption-regular">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="modal__table__body">
+                    <tr class="table-row">
+                        <td class="table-row__player">
+                            <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
+                            <div class="table-row__player__text">
+                                <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
+                                <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
+                            </div>
+                        </td>
+                        <td class="table-row__data-default font-body-medium-bold">#1</td>
+                        <td class="table-row__actions">
+                            <button class="button button--secondary">
+                                <span class="button__text font-body-regular-bold">Invite to tournament</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="table-row">
+                        <td class="table-row__player">
+                            <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
+                            <div class="table-row__player__text">
+                                <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
+                                <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
+                            </div>
+                        </td>
+                        <td class="table-row__data-default font-body-medium-bold">#1</td>
+                        <td class="table-row__actions ">
+                            <button class="button button--secondary">
+                                <span class="button__text font-body-regular-bold">Invite to tournament</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="table-row">
+                        <td class="table-row__player">
+                            <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
+                            <div class="table-row__player__text">
+                                <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
+                                <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
+                            </div>
+                        </td>
+                        <td class="table-row__data-default font-body-medium-bold">#1</td>
+                        <td class="table-row__actions">
+                            <button class="button button--secondary">
+                                <span class="button__text font-body-regular-bold">Invite to tournament</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+ 
+ 
 
-        <div id="modalOverlay"></div>
 
+<div class="modal modal--invite-to-tournament" id="modalFriendlyMatch">
+                    <div class="modal__header">
+                        <div class="modal__header__title">
+                            <h4 class="modal__header__title__text">Friendly Match</h4>
+                            <button onclick="closeModal('modalFriendlyMatch')" class="button">
+                                <span class="material-icons-round modal__header__title__close icon--regular">close</span>
+                            </button>
+                        </div>
+
+                <div class="search-bar">
+                    <span class="material-icons-round search-bar__icon icon--regular">search</span>
+                    <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+                </div>
+
+           <table class="modal__table__header-add_friend"> 
+ 
+                    <thead class="modal__table__header">
+                        <tr class="table-header">
+                            <th class="table-header__text font-body-caption-regular">Player</th>
+                            <th class="table-header__text font-body-caption-regular">Global ranking</th>
+                            <th class="table-header__text font-body-caption-regular">Actions</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody class="modal__table__body">
+                        <tr class="table-row">
+                            <td class="table-row__player">
+                                <img class="table-row__player__image" src="../../assets/images/players/estagiario.png" alt="player">
+                                <div class="table-row__player__text">
+                                    <span class="table-row__player__text__name font-body-medium-bold">Luigi Encanador</span>
+                                    <span class="table-row__player__text__nickname font-body-regular">Luador</span>
+                                </div>
+                            </td>
+                            <td class="table-row__data-default font-body-medium-bold">#132</td>
+                            <td class="table-row__actions-friendly">
+                                <button class="button button--success">
+                                    <span class="button__text font-body-regular-bold"> Send invite</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="table-row__player">
+                                <img class="table-row__player__image" src="../../assets/images/players/wwag.png" alt="player">
+                                <div class="table-row__player__text">
+                                    <span class="table-row__player__text__name font-body-medium-bold">Corsinha Amarelo</span>
+                                    <span class="table-row__player__text__nickname font-body-regular">CAmarel</span>
+                                </div>
+                            </td>
+                            <td class="table-row__data-default font-body-medium-bold">#155</td>
+                            <td class="table-row__actions-friendly">
+                                <button class="button button--success">
+                                    <span class="button__text font-body-regular-bold"> Send invite</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="table-row__player">
+                                <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
+                                <div class="table-row__player__text">
+                                    <span class="table-row__player__text__name font-body-medium-bold">Nega Drive</span>
+                                    <span class="table-row__player__text__nickname font-body-regular">NDriv</span>
+                                </div>
+                            </td>
+                            <td class="table-row__data-default font-body-medium-bold">#133</td>
+                            <td class="table-row__actions-friendly">
+                                <button class="button button--success">
+                                    <span class="button__text font-body-regular-bold"> Send invite </span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+			</table>
+        </div>
+    </div>
     
+ <div id="modalOverlay" class="hidden"></div>
+
+
       `;
 
 	  return pageContentContainer;
