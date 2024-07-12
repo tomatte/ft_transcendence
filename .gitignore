@@ -8,6 +8,7 @@ db.sqlite3
 *.my_pgpass.conf
 *.pg_service.
 *.env
+*.env.save
 
 # Virtualenv
 venv/
