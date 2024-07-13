@@ -74,26 +74,65 @@ class OnlineState:
     
     def __init__(self, user) -> None:
         self.user = user
+        self.redis_key = f"online_{user.username}"
         
-    def player_connected(self):
-        if OnlineState.redis.exists('global_notification') == True:
-            data = OnlineState.redis.get_json('global_notification')
-        else:
-            data = { 'players_online': {}}
-        
-        data['players_online'][self.user.username] = {
+    def connected(self):
+        if OnlineState.redis.exists(self.redis_key):
+            self.multi_connection()  
+            return 
+
+        data = {
             'id': self.user.id,
             'username': self.user.username,
             'nickname': self.user.nickname,
             'avatar': self.user.avatar.name,
+            'connections': 1,
         }
-
-        OnlineState.redis.set_json('global_notification', data)
-    def player_disconnected(self):
-        data = OnlineState.redis.get_json('global_notification')
-        del data['players_online'][self.user.username]
-        OnlineState.redis.set_json('global_notification', data)
         
+        self.set_map(data)
+        
+    def disconnected(self):
+        connections = int(self.get_key('connections'))
+    
+        if connections == 1:
+            OnlineState.redis.delete(self.redis_key)
+            return
+        
+        connections -= 1
+        self.set_key('connections', connections)
+        
+    def multi_connection(self):
+        connections = self.get_key('connections')
+        connections = int(connections)
+        connections += 1
+        self.set_key('connections', connections)
+    
+    def set_key(self, key, value):
+        OnlineState.redis.hmset(
+            self.redis_key,
+            {key: value}
+        )
+        
+    def set_map(self, data: dict):
+        OnlineState.redis.hmset(
+            self.redis_key,
+            data
+        )
+        
+    def get_key(self, key):
+        value = OnlineState.redis.hmget(
+            self.redis_key,
+            key
+        )[0]
+        
+        if key == 'connections':
+            return int(value)
+        return value.decode()
+        
+        
+    def get_map(self, data: dict):
+        data = OnlineState.redis.hgetall(self.redis_key)
+        return dict(data)
         
     
 

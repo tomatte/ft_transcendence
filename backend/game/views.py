@@ -238,7 +238,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             return 
         
         self.user_state = UserState(self.scope['user'])
-        self.user_state.online.player_connected()
+        self.user_state.online.connected()
 
         print(f"USER_STATE: {self.user_state.get()}")
 
@@ -276,7 +276,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         if hasattr(self, 'user_state'):
-            self.user_state.online.player_disconnected()
+            self.user_state.online.disconnected()
         await self.channel_layer.group_discard("chat", self.channel_name)
         return await super().disconnect(close_code)
         
