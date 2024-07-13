@@ -34,6 +34,24 @@ class MyRedisClient(redis.StrictRedis):
     def set_json(self, key: str, value: dict):
         return self.set(key, json.dumps(value))
     
+    def get_map(self, name: str, key: str):
+        data = self.hmget(name, key)[0].decode()
+        return json.loads(data)
+    
+    def set_map(self, name: str, key: str, data: dict):
+        self.hmset(name, { key: json.dumps(data) })
+        
+    def get_map_all(self, name: str):
+        all_raw = self.hgetall(name)
+        
+        all = dict()
+        
+        for key, data_raw in all_raw.items():
+            key = key.decode()
+            data = json.loads(data_raw.decode())
+            all[key] = data
+        
+        return all
 
 redis_host = env("REDIS_HOST")
 redis_port = env("REDIS_PORT")
@@ -75,16 +93,7 @@ class OnlineState:
     
     @classmethod
     def get_all(cls):
-        players_raw = cls.redis.hgetall(cls.global_name)
-        
-        players = dict()
-        
-        for key, player_raw_data in players_raw.items():
-            key = key.decode()
-            data = json.loads(player_raw_data.decode())
-            players[key] = data
-        
-        return players
+        return cls.redis.get_map_all(cls.global_name)
     
     def __init__(self, user) -> None:
         self.user = user
@@ -121,20 +130,18 @@ class OnlineState:
         self.set(data)
     
     def get(self):
-        data = self.redis.hmget(
+        return self.redis.get_map(
             self.global_name,
             self.user.username
-        )[0].decode()
-        
-        return json.loads(data)
+        )
         
     def set(self, data: dict):
-        self.redis.hmset(
+        self.redis.set_map(
             self.global_name,
-            {
-                self.user.username: json.dumps(data)
-            }
+            self.user.username,
+            data
         )
+
 
 class UserState:
     redis = redis_client
