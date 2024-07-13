@@ -65,6 +65,11 @@ def auth_fake(request): #TODO: remove in production
 			'login': 'user0',
 			'email': 'user0@mail.com',
 		}
+  
+		if request.GET.get('user'):
+			fake_data['login'] = request.GET.get('user')
+			fake_data['email'] = f"{fake_data['login']}@mail.com"
+  
 		user = authenticate(fake_data=fake_data)
 		if user:
 			auth_login(request, user)
