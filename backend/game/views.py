@@ -3,7 +3,7 @@ from asgiref.sync import async_to_sync
 import json
 from typing import Dict, TypedDict
 import uuid
-from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState
+from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState, OnlineState
 from .validations import TournamentValidation
 from .tasks import emit_group_event_task
 from .my_types import *

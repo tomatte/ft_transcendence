@@ -73,6 +73,19 @@ class OnlineState:
     redis = redis_client
     global_name = "global_online_players"
     
+    @classmethod
+    def get_all(cls):
+        players_raw = cls.redis.hgetall(cls.global_name)
+        
+        players = dict()
+        
+        for key, player_raw_data in players_raw.items():
+            key = key.decode()
+            data = json.loads(player_raw_data.decode())
+            players[key] = data
+        
+        return players
+    
     def __init__(self, user) -> None:
         self.user = user
         

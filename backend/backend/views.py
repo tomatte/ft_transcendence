@@ -65,7 +65,7 @@ def auth_fake(request): #TODO: remove in production
 			'login': 'user0',
 			'email': 'user0@mail.com',
 		}
-		user = User.objects.get(username=fake_data['login'])
+		user = authenticate(fake_data=fake_data)
 		if user:
 			auth_login(request, user)
 			return redirect(env('SITE_URL'))
