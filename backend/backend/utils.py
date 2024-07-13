@@ -71,16 +71,16 @@ class NotificationState:
         
 class OnlineState:
     redis = redis_client
+    global_name = "global_online_players"
     
     def __init__(self, user) -> None:
         self.user = user
-        self.redis_key = f"online_{user.username}"
         
     def connected(self):
-        if OnlineState.redis.exists(self.redis_key):
-            self.multi_connection()  
+        if self.redis.hexists(self.global_name, self.user.username):
+            self.multi_connection()
             return 
-
+        
         data = {
             'id': self.user.id,
             'username': self.user.username,
@@ -89,52 +89,39 @@ class OnlineState:
             'connections': 1,
         }
         
-        self.set_map(data)
+        self.set(data)
         
     def disconnected(self):
-        connections = int(self.get_key('connections'))
+        data = self.get()
     
-        if connections == 1:
-            OnlineState.redis.delete(self.redis_key)
+        if data['connections'] == 1:
+            self.redis.hdel(self.global_name, self.user.username)
             return
+
         
-        connections -= 1
-        self.set_key('connections', connections)
+        data['connections'] -= 1
+        self.set(data)
         
     def multi_connection(self):
-        connections = self.get_key('connections')
-        connections = int(connections)
-        connections += 1
-        self.set_key('connections', connections)
+        data = self.get()
+        data['connections'] += 1
+        self.set(data)
     
-    def set_key(self, key, value):
-        OnlineState.redis.hmset(
-            self.redis_key,
-            {key: value}
+    def get(self):
+        data = self.redis.hmget(
+            self.global_name,
+            self.user.username
+        )[0].decode()
+        
+        return json.loads(data)
+        
+    def set(self, data: dict):
+        self.redis.hmset(
+            self.global_name,
+            {
+                self.user.username: json.dumps(data)
+            }
         )
-        
-    def set_map(self, data: dict):
-        OnlineState.redis.hmset(
-            self.redis_key,
-            data
-        )
-        
-    def get_key(self, key):
-        value = OnlineState.redis.hmget(
-            self.redis_key,
-            key
-        )[0]
-        
-        if key == 'connections':
-            return int(value)
-        return value.decode()
-        
-        
-    def get_map(self, data: dict):
-        data = OnlineState.redis.hgetall(self.redis_key)
-        return dict(data)
-        
-    
 
 class UserState:
     redis = redis_client
