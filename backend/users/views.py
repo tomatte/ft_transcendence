@@ -373,9 +373,13 @@ def friend_request_send(request):
 			json (JSON): informações com as informações dos pedidos de amizade enviados.
 	"""
 	try:
+		is_valid_method(request, "GET")
 		return JsonResponse(ManipulateUser(request.user.username).seding_friends(), safe=False)
-	except Friendship.DoesNotExist:
-		return JsonResponse({'message': 'no friend requests sent'}, status=404)
+	except MethodNotAllowed:
+		return JsonResponse({'message': 'Invalid Method!'}, status=405)
+	except Exception as e:
+		return JsonResponse({'message': str(e)}, status=500)
+
 
 
 def friend_request_received(request):
@@ -388,9 +392,13 @@ def friend_request_received(request):
 			json (JSON): informações com as informações dos pedidos de amizade recebidos.
 	"""
 	try:
+		is_valid_method(request, "GET")
 		return JsonResponse(ManipulateUser(request.user.username).receive_friends(), safe=False)
-	except Friendship.DoesNotExist:
-		return JsonResponse({'message': 'no friend requests sent'}, status=404)
+	except MethodNotAllowed:
+		return JsonResponse({'message': 'Invalid Method!'}, status=405)
+	except Exception as e:
+		return JsonResponse({'message': str(e)}, status=500)
+
 
 
 

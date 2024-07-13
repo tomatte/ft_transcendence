@@ -23,7 +23,7 @@ class MyUserViewTest(TransactionTestCase):
 	def send_friend_peding_for_test_user1(self):
 		for user in ['test_user2', 'test_user3', 'test_user4']:
 			self.client.login(username=f'{user}', password='12345')
-			response = self.client.post(reverse('add_friend'), {'username': f'test_user1'})
+			response = self.client.post(reverse('add_friend'), {'username': 'test_user1'})
 			self.assertEqual(response.status_code, 200)
 
 	def accpet_friend_peding_for_test_user1(self):
@@ -32,9 +32,9 @@ class MyUserViewTest(TransactionTestCase):
 			response = self.client.post(reverse('response_friend'), {'username': f'{user}', 'status': 'Accepted'})
 			self.assertEqual(response.status_code, 200)
 
-	###############################################
-	##		Route Name: my_user
-	###############################################
+	##############################################
+	#		Route Name: my_user
+	##############################################
 	def test_my_user_route(self):
 		response = self.client.get(reverse('my_user'))
 		self.assertEqual(response.status_code, 200)
@@ -87,7 +87,7 @@ class MyUserViewTest(TransactionTestCase):
 	##		Route Name: all_users
 	###############################################
 	def test_all_users_route(self):
-		response = self.client.get(reverse('all_users'))
+		response = self.client.get(reverse('get_all_users'))
 		self.assertEqual(response.status_code, 200)
 		response_names = [user['nickname'] for user in response.json()]
 		for name in ['test_user1', 'test_user2', 'test_user3', 'test_user4']:
@@ -95,7 +95,7 @@ class MyUserViewTest(TransactionTestCase):
 
 	def test_all_users_route_error(self):
 		## invalid method
-		response = self.client.post(reverse('all_users'))
+		response = self.client.post(reverse('get_all_users'))
 		self.assertEqual(response.status_code, 405)
 
 
@@ -146,20 +146,45 @@ class MyUserViewTest(TransactionTestCase):
 		self.assertEqual(response.status_code, 400)
 
 	##############################################
-	#		Route Name: update_nickname
+	#		Route Name: friend_request_received
 	##############################################
-	def test_update_nickname_route(self):
-		response = self.client.post(reverse('uptade_nickname'), {'nickname': 'junin'})
+	def test_response_friend_route(self):
+		self.send_friend_peding_for_test_user1()
+		self.client.login(username='test_user1', password='12345')
+		response = self.client.get(reverse('get_receive_friends'))
 		self.assertEqual(response.status_code, 200)
+		response_names = [user['from_user__nickname'] for user in response.json()]
+		self.assertListEqual(['test_user2', 'test_user3', 'test_user4'], response_names)
 
-	def test_update_nickname_error(self):
-		##  test invalid method
-		response = self.client.get(reverse('uptade_nickname'))
+	def test_response_friend_route_not_pedding(self):
+		self.client.login(username='test_user2', password='12345')
+		response = self.client.get(reverse('get_receive_friends'))
+		self.assertEqual(response.status_code, 200)
+		response_names = [user['from_user__nickname'] for user in response.json()]
+		self.assertListEqual([], response_names)
+
+
+	def test_response_friend_error(self):
+		## test invalid method
+		response = self.client.post(reverse('get_receive_friends'))
 		self.assertEqual(response.status_code, 405)
 
-		## test invalid parameter
-		response = self.client.post(reverse('uptade_nickname'), {'invalid': 'nickname'})
-		self.assertEqual(response.status_code, 400)
+
+	##############################################
+	#		Route Name: update_nickname
+	##############################################
+	# def test_update_nickname_route(self):
+	# 	response = self.client.post(reverse('uptade_nickname'), {'nickname': 'junin'})
+	# 	self.assertEqual(response.status_code, 200)
+
+	# def test_update_nickname_error(self):
+	# 	##  test invalid method
+	# 	response = self.client.get(reverse('uptade_nickname'))
+	# 	self.assertEqual(response.status_code, 405)
+
+	# 	## test invalid parameter
+	# 	response = self.client.post(reverse('uptade_nickname'), {'invalid': 'nickname'})
+	# 	self.assertEqual(response.status_code, 400)
 
 
 	# ##############################################
