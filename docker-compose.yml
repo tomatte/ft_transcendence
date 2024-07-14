@@ -17,12 +17,12 @@ services:
       - trans
     depends_on:
       - backend
+    environment:
+      - BACKEND_HOST=backend
 
   backend:
     build: ./backend
     container_name: ft_backend
-    ports:
-      - "${BACKEND_PORT}:8000"
     volumes:
       - ./backend:/app
     environment:
@@ -33,6 +33,9 @@ services:
       POSTGRES_HOST: db
       BACKEND_PORT: ${BACKEND_PORT}
       BACKEND_HOST: backend
+      SITE_URL: ${SITE_URL}
+      S42_CLIENT_SECRET: ${S42_CLIENT_SECRET}
+      S42_CLIENT_ID: ${S42_CLIENT_ID}
       PYTHONUNBUFFERED: 1
       REDIS_HOST: redis
       REDIS_PORT: ${REDIS_PORT}
@@ -66,16 +69,16 @@ services:
     networks:
       - trans
 
-  # game_loop:
-  #   build: ./game_loop
-  #   container_name: ft_game_loop
-  #   environment:
-  #     - BACKEND_HOST=backend
-  #     - BACKEND_PORT=${BACKEND_PORT}
-  #   networks:
-  #     - trans
-  #   depends_on:
-  #     - backend
+  game_loop:
+    build: ./game_loop
+    container_name: ft_game_loop
+    environment:
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=${BACKEND_PORT}
+    networks:
+      - trans
+    depends_on:
+      - backend
 
 
 # docker stop $(docker ps -a -q)

@@ -4,8 +4,9 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
 	"""User model with additional fields."""
-	nickname = models.CharField(max_length=25)
-	avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+	username = models.CharField(max_length=40, unique=True)
+	nickname = models.CharField(max_length=40, unique=True)
+	avatar = models.ImageField(upload_to='images/avatars/', null=True, blank=True, default='../assets/images/players/avatars/default.webp')
 	friends = models.ManyToManyField('self', through='Friendship', symmetrical=False)
 	winners = models.IntegerField(default=0)
 	losses = models.IntegerField(default=0)

@@ -1,5 +1,5 @@
 
-let ws_notification = new WebSocket("ws://localhost:8000/notification/")
+let ws_notification = new WebSocket("wss://localhost:443/ws/notification/")
 
 let payload = {
     action: "",
@@ -46,7 +46,8 @@ export default function listenNotificationEvents(state) {
         console.log(data)
 
         if (data.status == "connected") {
-            // initialSetup(data)
+            // TODO: create a function to merge the notifications from redis with notifications from database
+            state.notifications = data.notifications
             return 
         }
 

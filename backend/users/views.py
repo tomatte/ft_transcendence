@@ -32,8 +32,8 @@ def is_valid_method(request, method):
 
 
 def get_global_ranking(player):
-	rank = User.objects.all().order_by('winners')
-	return list(rank).index(player) + 1
+	users_by_winners = User.objects.all().order_by('-winners')
+	return list(users_by_winners).index(player) + 1
 
 
 class ManipulateUser:
@@ -90,9 +90,9 @@ class ManipulateUser:
 
 	def receive_friends(self):
 		response = Friendship.objects.filter(to_user=self.me, status='pending').values(
-			'to_user__id',
-			'to_user__nickname',
-			'to_user__username',
+			'from_user__id',
+			'from_user__nickname',
+			'from_user__username',
 		)
 		return list(response)
 
@@ -184,7 +184,7 @@ class ManipulateUser:
 					dict['max_consecutives'] = consecutives if consecutives > dict['max_consecutives'] else dict['max_consecutives']
 					consecutives = 0
 			dict['all_matchs'] = all_matchs.count()
-			dict['average_points'] = mean(points)
+			dict['average_points'] = mean(points) if points else 0
 			return dict
 
 		except MatchPlayer.DoesNotExist as e:
@@ -330,8 +330,8 @@ def get_list_friends(request):
 	"""
 
 	try:
-		is_valid_method(request, 'POST')
-		return JsonResponse(ManipulateUser(username=request.POST['username']).get_friends_list(), safe=False)
+		is_valid_method(request, 'GET')
+		return JsonResponse(ManipulateUser(username=request.user.username).get_friends_list(), safe=False)
 	except MethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 	except Friendship.DoesNotExist:

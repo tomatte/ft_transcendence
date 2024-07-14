@@ -1,13 +1,18 @@
 async function fetch_statistics() {
-	const response = await fetch('http://127.0.0.1:8000/api/users/get/statistics/', { method: 'GET', credentials: 'include'});
+	const response = await fetch('https://localhost:443/api/users/get/statistics/', { method: 'GET', credentials: 'include'});
 	if (response.status !== 200) throw new Error('Error status is '+ response.status); else return await response.json();
 }
 
+function get_winRate(winners, all_matchs) {
+	let win_rate = winners === 0 ? 0 : Math.round(winners / all_matchs * 100);
+	let win_losses = all_matchs === 0 ? 0 : 100 - win_rate;
+	return {win_rate, win_losses};
+}
 const Statistics = async(state) => {
 	const pageContentContainer = document.querySelector('.page-content__container');
 	try {
 		const statistics_data = await fetch_statistics();
-		let percent_winnes = Math.round(statistics_data.winners / statistics_data.all_matchs * 100);
+		const { win_rate, win_losses } = get_winRate(statistics_data.winners, statistics_data.all_matchs);
 		pageContentContainer.innerHTML = `
 			<div class="page-content__container__header">
 				<div class="page-content__container__header__info">
@@ -18,7 +23,7 @@ const Statistics = async(state) => {
 					<span class="button__text font-body-regular-bold">Refresh</span>
 				</button>
 			</div>
-			<div class="page-content__container__content">
+			<div class="page-content__container__content page-content__container__content--statistics">
 				<div class="page-content__container__content__card-metrics">
 					<div class="metric-card">
 						<span class="material-icons-round metric-card__icon icon--extra-large">sports_esports</span>
@@ -58,12 +63,12 @@ const Statistics = async(state) => {
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Total Win Rate</span>
 						<div class="metric-line__line"></div>
-						<span class="metric-line__data font-body-medium-bold">${percent_winnes}%</span>
+						<span class="metric-line__data font-body-medium-bold">${win_rate}%</span>
 					</div>
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Total Lost Rate</span>
 						<div class="metric-line__line"></div>
-						<span class="metric-line__data font-body-medium-bold">${100 - percent_winnes}%</span>
+						<span class="metric-line__data font-body-medium-bold">${win_losses}%</span>
 					</div>
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Average Points per Match</span>

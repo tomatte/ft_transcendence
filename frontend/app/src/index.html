@@ -11,15 +11,18 @@
     <link rel="stylesheet" href="css/typography.css">
     <link rel="stylesheet" href="css/components.css">
 	<link rel="stylesheet" href="css/modals.css">
+
 	<link rel="stylesheet" href="css/pages/friends.css">
-    <link rel="stylesheet" href="css/pages/statistics.css">
 	<link rel="stylesheet" href="css/pages/matches.css">
 	<link rel="stylesheet" href="css/pages/notification.css">
 	<link rel="stylesheet" href="css/pages/ranking.css">
+    <link rel="stylesheet" href="css/pages/statistics.css">
+
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <title>Otter Space</title>
+    
+	<title>Otter Space</title>
 
 	<script src ="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -108,7 +111,7 @@
 
 	<script>
 		function get_user_data() {
-			fetch('http://127.0.0.1:8000/api/users/get/my_user/', {method: 'GET', credentials: 'include'})
+			fetch('https://localhost:443/api/users/get/my_user/', {method: 'GET', credentials: 'include'})
 			.then(resp => resp.status === 401 ? window.location.href = '/test_login.html' : resp.json())
 			.then(data => {
 				document.getElementsByClassName('profile-info__container__text__name')[0].innerText = data.username;

@@ -6,9 +6,22 @@
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/backend/manage.py",
-            "args": ["runserver"],
+            "args": ["runserver", "0.0.0.0:8000"],
             "console": "integratedTerminal",
             "justMyCode": false
+        },
+        {
+            "name": "My Django Config",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/manage.py",
+            "args": ["runserver", "0.0.0.0:8000"],
+            "django": true,
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "~/.vscode/extensions/ms-python.debugpy-2024.8.0-linux-x64/bundled/libs/debugpy/adapter/../../debugpy/launcher"
+            },
+            "console": "integratedTerminal"
         }
     ]
 }

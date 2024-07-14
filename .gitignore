@@ -1,15 +1,16 @@
 __pycache__
 db.sqlite3
-.env
+ 
 .pg_service.conf
 *.pyc
 *.log
 *.pot
 *.my_pgpass.conf
 *.pg_service.
-*.env
+.env
+.env.save
+IGNORE_*
 
 # Virtualenv
 venv/
-.vscode
 launch.json

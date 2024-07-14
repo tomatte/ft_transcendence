@@ -1,4 +1,4 @@
-all: setup up
+all: up
 
 #INTRO
 help:
@@ -9,7 +9,7 @@ setup:
 
 #MAIN ACTIONS
 up:
-	sudo docker compose up
+	sudo docker compose up --build
 
 down:
 	sudo docker compose down
@@ -39,6 +39,11 @@ del_net:
 	sudo docker network prune --force
 
 purge: down fclean del del_vol del_net
+
+
+#INIT DEV CONTAINERS
+dev:
+	docker compose --file ./docker-compose-dev.yml up --build
 
 #PHONY
 .PHONY: all help setup up down re ls disk fclean del del_vol del_net purge
