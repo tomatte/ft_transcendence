@@ -237,16 +237,18 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         if is_authenticated == False:
             return 
         
+        await self.channel_layer.group_add("notification", self.channel_name)
+        
         self.user = self.scope['user']
         self.user_state = UserState(self.user, self.channel_name)
-        self.user_state.online.connected()
+        await self.user_state.online.connected()
         
-        await self.channel_layer.group_add("notification", self.channel_name)
 
         payload = {
             'status': 'connected',
             'player_id': self.user.username,
             'notifications': self.user_state.notification.get(),
+            'players_online': self.user_state.online.get_all()
         }
         await self.send_json(payload)
 
@@ -272,7 +274,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         if hasattr(self, 'user_state'):
-            self.user_state.online.disconnected()
+            await self.user_state.online.disconnected()
         await self.channel_layer.group_discard("chat", self.channel_name)
         return await super().disconnect(close_code)
         
@@ -315,3 +317,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             "status": "invitation_sent"
         }
         await self.send_json(payload)
+        
+    async def notification_online_players(self, event):
+        print("notification_online_players()")
+        await self.send_json(event)

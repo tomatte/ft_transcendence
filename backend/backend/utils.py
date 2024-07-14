@@ -1,5 +1,6 @@
 import redis
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.layers import get_channel_layer
 import json
 from environs import Env
 from datetime import datetime
@@ -136,6 +137,21 @@ class NotificationState:
 class OnlineState:
     redis = redis_client
     global_name = "global_online_players"
+    channel_layer = get_channel_layer()
+    
+    @classmethod
+    async def broadcast_online_players(cls):
+        players = cls.get_all()
+        
+        payload = {
+            "type": "notification.online_players",
+            "players": players
+        }
+        
+        await cls.channel_layer.group_send(
+            'notification',
+            payload
+        )
     
     @classmethod
     def get_all(cls):
@@ -148,7 +164,7 @@ class OnlineState:
     def __init__(self, user) -> None:
         self.user = user
         
-    def connected(self):
+    async def connected(self):
         if self.redis.hexists(self.global_name, self.user.username):
             self.multi_connection()
             return 
@@ -162,12 +178,14 @@ class OnlineState:
         }
         
         self.set(data)
+        await self.broadcast_online_players()
         
-    def disconnected(self):
+    async def disconnected(self):
         data = self.get()
     
         if data['connections'] == 1:
             self.redis.hdel(self.global_name, self.user.username)
+            await self.broadcast_online_players()  
             return
 
         
