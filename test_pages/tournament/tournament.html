@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tournament</title>
 </head>
-<body style="display: flex; justify-content: space-between;">
+<body>
+<div id="container" style="display: flex; justify-content: space-between;">
+
     <div id="col-1">
-                <div id="row-1" style="display: flex; justify-content: space-between; min-width: 400px;">
+        <div id="row-1" style="display: flex; justify-content: space-between; min-width: 400px;">
             <div><span>My id: </span><span id="my-id"></span></div>
         </div>
+
         <div id="create">
             <label id="label-create" for="btn-create">Tournament</label>
             <button id="btn-create" onclick="createTournament()">create tournament</button>
@@ -36,7 +39,6 @@
             </ul>
         </div>
 
-        </div>
     </div>
 
     <div id="col-2" style="min-width: 500px;">
@@ -51,6 +53,29 @@
     </div>
 
     <div class="page-game__container"></div>
+
+
+</div>
+
+<div id="container2" style="margin-top: 50px; max-width: 450px;">
+    <h1>Create Notification</h1>
+    
+    <div id="notification-input-group" style="min-width: 300px; max-width: 450px;">
+        <input id="username" type="text" placeholder="username..." style="width: 100%;">
+
+        <div id="key-values" style="display: flex; margin-top: 10px;">
+            <input id="key_1" type="text" placeholder="key" style="margin-right: 20px; width: 100%;">
+            <input id="value_1" type="text" placeholder="value" style="width: 100%;">
+        </div>
+
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+        <button onclick="oneMoreKeyValue()" style="margin-top: 20px;">One More</button>
+        <button id="send-notification" style="margin-top: 30px;">Send</button>
+    </div>
+
+</div>
 
     <!-- NOTIFICATION EVENT SCRIPT -->
     <script>
@@ -188,6 +213,22 @@
             document.querySelector("col-1").style.display = 'none'
             document.querySelector("col-2").style.display = 'none'
             Game()
+        }
+     </script>
+
+     <!-- CREATE NOTIFICATION -->
+     <script>
+        function oneMoreKeyValue() {
+            inputGroup = document.getElementById("notification-input-group")
+            keyValuesGroup = document.getElementById("key-values").cloneNode(true)
+            key = keyValuesGroup.children[0]
+            value = keyValuesGroup.children[1]
+            
+            keyValuesGroup.id = "key-values2"
+            key.id = "key_2"
+            value.id = "value_2"
+
+            inputGroup.appendChild(keyValuesGroup)
         }
      </script>
 </body>
