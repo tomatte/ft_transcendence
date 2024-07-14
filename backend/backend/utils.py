@@ -95,6 +95,10 @@ class OnlineState:
     def get_all(cls):
         return cls.redis.get_map_all(cls.global_name)
     
+    @classmethod
+    def get_user(cls, username):
+        return cls.redis.get_map(cls.global_name, username)
+    
     def __init__(self, user) -> None:
         self.user = user
         
