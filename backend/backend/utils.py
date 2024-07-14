@@ -41,11 +41,11 @@ class MyRedisClient(redis.StrictRedis):
     def set_map_str(self, name: str, key: str, value: str):
         self.hmset(name, { key: value })
     
-    def get_map(self, name: str, key: str):
+    def get_map(self, name: str, key: str) -> dict | list:
         data = self.hmget(name, key)[0].decode()
         return json.loads(data)
     
-    def set_map(self, name: str, key: str, data: dict):
+    def set_map(self, name: str, key: str, data: dict | list):
         self.hmset(name, { key: json.dumps(data) })
         
     def get_map_all(self, name: str):
@@ -81,7 +81,14 @@ class NotificationState:
         self.init_notification_state(user.username)
 
     def __del__(self):
-        self.redis.hdel(self.global_channel, self.user.username)
+        data: list = self.redis.get_map(self.global_channel, self.user.username)
+        data.remove(self.channel_name)
+        self.redis.set_map(
+            self.global_channel, 
+            self.user.username,
+            data
+        )
+        
             
     def get(self):
         data = NotificationState.redis.get_json(self.user.username)
@@ -100,10 +107,16 @@ class NotificationState:
             self.redis.set_json(username, data)
         
     def save_channel_name(self, channel_name):
-        self.redis.set_map_str(
+        data = []
+        if self.redis.hexists(self.global_channel, self.user.username):
+            data: list = self.redis.get_map(self.global_channel, self.user.username)
+        
+        data.append(channel_name)
+        
+        self.redis.set_map(
             self.global_channel,
             self.user.username,
-            channel_name
+            data
         )
         
 class OnlineState:
