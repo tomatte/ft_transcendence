@@ -41,7 +41,9 @@ class MyRedisClient(redis.StrictRedis):
     def set_map_str(self, name: str, key: str, value: str):
         self.hmset(name, { key: value })
     
-    def get_map(self, name: str, key: str) -> dict | list:
+    def get_map(self, name: str, key: str) -> dict | list | None:
+        if self.hexists(name, key) == False:
+            return None
         data = self.hmget(name, key)[0].decode()
         return json.loads(data)
     
@@ -98,42 +100,36 @@ redis_client.config_set('appendonly', 'no')
 
 class NotificationState:
     redis = redis_client
-    global_channel = "channels_notification"
+    channel_notification_key = "channels_notification"
    
     def __init__(self, user, channel_name) -> None:
         self.user = user
         self.channel_name = channel_name
         self.save_channel_name(channel_name)
-        self.init_notification_state(user.username)
 
     def __del__(self):
         self.redis.remove_list_item(
-            self.global_channel, 
-            self.user.username,
+            self.user.username, 
+            self.channel_notification_key,
             self.channel_name
         )
         
-            
     def get(self):
-        data = NotificationState.redis.get_json(self.user.username)
-        return data["notifications"]
+        data = self.redis.get_map(self.user.username, 'notifications')
+        return  data if data else []
     
-    def set(self, value: dict):
-        data = NotificationState.redis.get_json(self.user.username)
+    def add(self, value: dict):
         value["time"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data["notifications"].append(value)
-        NotificationState.redis.set_json(self.user.username, data)
-        
-    def init_notification_state(self, username):
-        data = self.redis.get_json(username)
-        if not "notifications" in data:
-            data["notifications"] = []
-            self.redis.set_json(username, data)
+        self.redis.append_list(
+            self.user.username,
+            'notifications',
+            value
+        )
         
     def save_channel_name(self, channel_name):
         self.redis.append_list(
-            self.global_channel,
             self.user.username,
+            self.channel_notification_key,
             channel_name
         )
         
@@ -200,31 +196,15 @@ class OnlineState:
 class UserState:
     redis = redis_client
     
-    @classmethod
-    def init_user_state(cls, user):
-        if not cls.redis.exists(user.username):
-            data = {
-                "status": "connected",
-            }
-            cls.redis.set_json(user.username, data)
-        else:
-            data = cls.redis.get_json(user.username)
-            data["status"] = "connected"
-            cls.redis.set_json(user.username, data)
-    
     def __init__(self, user, channel_name) -> None:
         self.user = user
-        
-        UserState.init_user_state(self.user)
-        self.notification = NotificationState(self.user, channel_name)
-        self.online = OnlineState(self.user)
+        self.redis.set_map_str(user.username, 'status', 'initiated')
+        self.notification = NotificationState(user, channel_name)
+        self.online = OnlineState(user)
     
-    def get(self):
-        return UserState.redis.get_json(self.user.username)
+    def get(self, key):
+        return self.redis.get_map(self.user.username, key)
     
     def set(self, key, value):
-        data = UserState.redis.get_json(self.user.username)
-        data[key] = value
-        UserState.redis.set_json(self.user.username, data)
-        
+        self.redis.set_map(self.user.username, key, value)
     

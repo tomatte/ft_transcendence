@@ -243,9 +243,6 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
         await self.channel_layer.group_add("notification", self.channel_name)
 
-        print(f"USER_STATE: {self.user_state.get()}")
-
-
         payload = {
             'status': 'connected',
             'player_id': self.user.username,
@@ -291,7 +288,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             "sender_id": "duianhdiouas",
             "status": "active"
         }
-        self.user_state.notification.set(payload)
+        
+        self.user_state.notification.add(payload)
         
         print(f"NOTIFICATION_STATE: {self.user_state.notification.get()}")
         await self.send_json(payload)
