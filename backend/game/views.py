@@ -243,12 +243,11 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         self.user_state = UserState(self.user, self.channel_name)
         await self.user_state.online.connected()
         
-
         payload = {
             'status': 'connected',
             'player_id': self.user.username,
             'notifications': self.user_state.notification.get(),
-            'players_online': self.user_state.online.get_all()
+            'online_players': self.user_state.online.get_all()
         }
         await self.send_json(payload)
 
@@ -320,4 +319,5 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
     async def notification_online_players(self, event):
         print("notification_online_players()")
+        event["type"] = "online_players"
         await self.send_json(event)

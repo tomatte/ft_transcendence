@@ -48,15 +48,26 @@ export default function listenNotificationEvents(state) {
         if (data.status == "connected") {
             // TODO: create a function to merge the notifications from redis with notifications from database
             state.notifications = data.notifications
+            state.online_players = data.online_players
             return 
         }
 
-        if (data.hasOwnProperty('type')) {
+        if (data.hasOwnProperty('type') == false) {
+            return 
+        }
+
+        if (data.type == "notifications") {
             state['notifications'].push(data)
             console.log({state})
             if (state.currentPage == 'Notifications') {
                 state.renderPage(state.currentPage)
             }
+            return
+        }
+
+        if (data.type == "online_players") {
+            state.online_players = data.players
+            console.log({state})
             return
         }
     };
