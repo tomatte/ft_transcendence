@@ -237,19 +237,18 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         if is_authenticated == False:
             return 
         
-        self.user_state = UserState(self.scope['user'])
+        self.user = self.scope['user']
+        self.user_state = UserState(self.user, self.channel_name)
         self.user_state.online.connected()
+        
+        await self.channel_layer.group_add("notification", self.channel_name)
 
         print(f"USER_STATE: {self.user_state.get()}")
 
-        await self.channel_layer.group_add("notification", self.channel_name)
-        
-        self.player_id = str(uuid.uuid4())
-        redis_client.set(self.player_id, self.channel_name)
 
         payload = {
             'status': 'connected',
-            'player_id': self.player_id,
+            'player_id': self.user.username,
             'notifications': self.user_state.notification.get(),
         }
         await self.send_json(payload)
