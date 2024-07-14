@@ -59,6 +59,32 @@ class MyRedisClient(redis.StrictRedis):
             all[key] = data
         
         return all
+    
+    def append_list(self, name: str, key: str, value):
+        data = []
+        if self.hexists(name, key):
+            data: list = self.get_map(name, key)
+        
+        data.append(value)
+        
+        self.set_map(
+            name,
+            key,
+            data
+        )
+        
+    def remove_list_item(self, name: str, key: str, value):
+        if self.hexists(name, key) == False:
+            return
+
+        data: list = self.get_map(name, key)
+        data.remove(value)
+        
+        self.set_map(
+            name, 
+            key,
+            data
+        )
 
 redis_host = env("REDIS_HOST")
 redis_port = env("REDIS_PORT")
@@ -81,12 +107,10 @@ class NotificationState:
         self.init_notification_state(user.username)
 
     def __del__(self):
-        data: list = self.redis.get_map(self.global_channel, self.user.username)
-        data.remove(self.channel_name)
-        self.redis.set_map(
+        self.redis.remove_list_item(
             self.global_channel, 
             self.user.username,
-            data
+            self.channel_name
         )
         
             
@@ -107,16 +131,10 @@ class NotificationState:
             self.redis.set_json(username, data)
         
     def save_channel_name(self, channel_name):
-        data = []
-        if self.redis.hexists(self.global_channel, self.user.username):
-            data: list = self.redis.get_map(self.global_channel, self.user.username)
-        
-        data.append(channel_name)
-        
-        self.redis.set_map(
+        self.redis.append_list(
             self.global_channel,
             self.user.username,
-            data
+            channel_name
         )
         
 class OnlineState:
