@@ -16,7 +16,6 @@ class GameLoopConsumer(MyAsyncWebsocketConsumer):
         await self.accept()
         redis_client.set("game_loop", self.channel_name)
 
-    
     async def receive(self, text_data):
         redis_client.set("matches", text_data)
 
@@ -237,11 +236,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         if is_authenticated == False:
             return 
         
-        await self.channel_layer.group_add("notification", self.channel_name)
-        
         self.user = self.scope['user']
         self.user_state = UserState(self.user, self.channel_name)
-        await self.user_state.online.connected()
         
         payload = {
             'status': 'connected',
@@ -249,6 +245,11 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             'notifications': self.user_state.notification.get(),
             'online_players': self.user_state.online.get_all()
         }
+        
+        await self.user_state.online.connected()
+        
+        await self.channel_layer.group_add("notification", self.channel_name)
+
         await self.send_json(payload)
 
     async def receive(self, text_data):
@@ -319,5 +320,9 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
     async def notification_online_players(self, event):
         print("notification_online_players()")
-        event["type"] = "online_players"
-        await self.send_json(event)
+        event["status"] = "online_players"
+        payload = {
+            "status": "online_players",
+            "online_players": event["players"]
+        }
+        await self.send_json(payload)

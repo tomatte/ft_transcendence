@@ -2,10 +2,10 @@ function createRow(player) {
     return /* html */ `
         <tr class="table-row">
             <td class="table-row__player">
-                <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
+                <img class="table-row__player__image" src="${player.avatar}" alt="player">
                 <div class="table-row__player__text">
-                    <span class="table-row__player__text__name font-body-medium-bold">player.username</span>
-                    <span class="table-row__player__text__nickname font-body-regular">player.nickname</span>
+                    <span class="table-row__player__text__name font-body-medium-bold">${player.username}</span>
+                    <span class="table-row__player__text__nickname font-body-regular">${player.nickname}</span>
                 </div>
             </td>
             <td class="table-row__data-default font-body-medium-bold">#1</td>
@@ -19,15 +19,11 @@ function createRow(player) {
 }
 
 function createRows(players) {
-    if (!Array.isArray(players) || players.length === 0) {
+    if (players && players.length === 0) {
         return "";
     }
 
     let rows = ""
-    players.forEach((player) => {
-        rows += createRow(player)
-    })
-
     for (let key in players) {
         rows += createRow(players[key])
     }
@@ -36,6 +32,7 @@ function createRows(players) {
 
 const Home = (state) => {
     console.log({state})
+    const rows_tournament_online_players = createRows(state.online_players)
 	const pageContentContainer = document.querySelector('.page-content__container');
   
         pageContentContainer.innerHTML = /*html*/ `
@@ -152,7 +149,7 @@ const Home = (state) => {
                     </tr>
                 </thead>
                 <tbody class="modal__table__body">
-                    ${createRows(state.online_players)}
+                    ${rows_tournament_online_players}
                 </tbody>
             </table>
         </div>
