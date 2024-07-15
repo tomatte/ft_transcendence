@@ -31,5 +31,6 @@ const mockNotifications = [
 
 const mockState = {
     'notifications': mockNotifications,
+    'online_players': [],
 }
 export default mockState

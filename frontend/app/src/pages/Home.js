@@ -1,8 +1,44 @@
+function createRow(player) {
+    return /* html */ `
+        <tr class="table-row">
+            <td class="table-row__player">
+                <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
+                <div class="table-row__player__text">
+                    <span class="table-row__player__text__name font-body-medium-bold">player.username</span>
+                    <span class="table-row__player__text__nickname font-body-regular">player.nickname</span>
+                </div>
+            </td>
+            <td class="table-row__data-default font-body-medium-bold">#1</td>
+            <td class="table-row__actions">
+                <button class="button button--secondary">
+                    <span class="button__text font-body-regular-bold">Invite to tournament</span>
+                </button>
+            </td>
+        </tr>
+    `
+}
+
+function createRows(players) {
+    if (!Array.isArray(players) || players.length === 0) {
+        return "";
+    }
+
+    let rows = ""
+    players.forEach((player) => {
+        rows += createRow(player)
+    })
+
+    for (let key in players) {
+        rows += createRow(players[key])
+    }
+    return rows
+}
+
 const Home = (state) => {
     console.log({state})
 	const pageContentContainer = document.querySelector('.page-content__container');
   
-        pageContentContainer.innerHTML = `
+        pageContentContainer.innerHTML = /*html*/ `
         <div class="page-content__container__header">
             <div class="page-content__container__header__info">
                 <h4 class="page-content__container__header__info__title">Home</h4>
@@ -116,51 +152,7 @@ const Home = (state) => {
                     </tr>
                 </thead>
                 <tbody class="modal__table__body">
-                    <tr class="table-row">
-                        <td class="table-row__player">
-                            <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
-                            <div class="table-row__player__text">
-                                <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-                                <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
-                            </div>
-                        </td>
-                        <td class="table-row__data-default font-body-medium-bold">#1</td>
-                        <td class="table-row__actions">
-                            <button class="button button--secondary">
-                                <span class="button__text font-body-regular-bold">Invite to tournament</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="table-row">
-                        <td class="table-row__player">
-                            <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
-                            <div class="table-row__player__text">
-                                <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-                                <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
-                            </div>
-                        </td>
-                        <td class="table-row__data-default font-body-medium-bold">#1</td>
-                        <td class="table-row__actions ">
-                            <button class="button button--secondary">
-                                <span class="button__text font-body-regular-bold">Invite to tournament</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="table-row">
-                        <td class="table-row__player">
-                            <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
-                            <div class="table-row__player__text">
-                                <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-                                <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
-                            </div>
-                        </td>
-                        <td class="table-row__data-default font-body-medium-bold">#1</td>
-                        <td class="table-row__actions">
-                            <button class="button button--secondary">
-                                <span class="button__text font-body-regular-bold">Invite to tournament</span>
-                            </button>
-                        </td>
-                    </tr>
+                    ${createRows(state.online_players)}
                 </tbody>
             </table>
         </div>
