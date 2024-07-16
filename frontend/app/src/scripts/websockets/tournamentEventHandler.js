@@ -20,17 +20,14 @@ class TournamentEventHandler {
     }
 }
 
-function createTournament() {
-    const payload = {
-        action: "create"
-    }
-
-    ws_tournament.send(JSON.stringify(payload))
-}
-
 function enterTournament(data, state) {
     //updatePlayersQueueTournament(data.tournament.players)
     //state.tournament = data.tournament
+    console.log("enterTournament()")
 }
 
 const tournamentEventHandler = new TournamentEventHandler(state)
+
+tournamentEventHandler.register('enter_tournament', enterTournament)
+
+export default tournamentEventHandler

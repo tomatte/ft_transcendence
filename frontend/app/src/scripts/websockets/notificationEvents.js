@@ -42,7 +42,7 @@ function invitationReceived(data) {
     ul.appendChild(li)
 }
 
-export default function listenNotificationEvents(state) {
+export default function listenNotificationEvents() {
     ws_notification.onmessage = (event) => {
         let data = JSON.parse(event.data)
         console.log(data)

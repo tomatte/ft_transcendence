@@ -1,5 +1,6 @@
 import state from "../state/state.js"
 import { websocketTournament } from "../websockets/tournamentEvents.js";
+import listenTournamentEvents from "../websockets/tournamentEvents.js";
 
 function openModal(id) {
     const modal = document.getElementById(id);
@@ -32,6 +33,7 @@ class ModalCreateTournament {
     }
 
     open() {
+        listenTournamentEvents()
         openModal('modalInviteToTournament')
         this.updateState()
         this.sendCreateTournamentRequest()
