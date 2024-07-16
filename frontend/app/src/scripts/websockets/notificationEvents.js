@@ -1,5 +1,5 @@
 
-import eventHandler from "./eventHandler.js"
+import notificationEventHandler from "./notificationEventHandler.js"
 
 let ws_notification = new WebSocket("wss://localhost:443/ws/notification/")
 
@@ -47,6 +47,6 @@ export default function listenNotificationEvents(state) {
         let data = JSON.parse(event.data)
         console.log(data)
 
-        eventHandler.execute(data)
+        notificationEventHandler.execute(data)
     };
 }

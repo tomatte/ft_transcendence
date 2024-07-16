@@ -23,7 +23,7 @@ function updateOnlinePlayers(data, state) {
     console.log("updateOnlinePlayers()")
 }
 
-class EventHandler {
+class NotificationEventHandler {
     constructor (state) {
         this.state = state
         this.events = {}
@@ -43,10 +43,10 @@ class EventHandler {
     }
 }
 
-const eventHandler = new EventHandler(state)
+const notificationEventHandler = new NotificationEventHandler(state)
 
-eventHandler.register("new_connection", newConnection)
-eventHandler.register("new_notification", newNotification)
-eventHandler.register("update_online_players", updateOnlinePlayers)
+notificationEventHandler.register("new_connection", newConnection)
+notificationEventHandler.register("new_notification", newNotification)
+notificationEventHandler.register("update_online_players", updateOnlinePlayers)
 
-export default eventHandler
+export default notificationEventHandler

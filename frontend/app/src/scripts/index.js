@@ -34,14 +34,14 @@ const renderPage = () => {
 
 state.renderPage = renderPage
 
-const init = () => {
-  window.addEventListener('hashchange', renderPage); // Listen for hash changes
+const listenHashChanges = () => {
+  window.addEventListener('hashchange', renderPage);
 };
 
 window.addEventListener('load', () => {
   initState()
   listenNotificationEvents(state)
-  renderPage(); // Initial rendering based on current hash
-  init(); // Initialize hashchange listener
+  renderPage();
+  listenHashChanges();
   insertProfileInfoData(state.user)
 });
