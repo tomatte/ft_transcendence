@@ -27,7 +27,9 @@ class ModalCreateTournament {
 
     listen() {
         const btn = document.getElementById('button-create-tournament')
-        btn.addEventListener('click', this.open)
+        if (btn) {
+            btn.addEventListener('click', this.open)
+        }
     }
 }
 
