@@ -35,18 +35,8 @@ function updatePlayers(data) {
 export default function listenTournamentEvents() {
     ws_tournament.onmessage = (event) => {
         let data = JSON.parse(event.data)
-            console.log(data)
+        console.log(data)
+            
 
-        if (data.status == "enter_tournament") {
-            payload.tournament_id = data.tournament_id
-            document.getElementById("tournament_id").innerText = data.tournament_id
-            addPlayerToList(data)
-            return 
-        }
-
-        if (data.status == "update_players") {
-            updatePlayers(data)
-            return
-        }
     };
 }

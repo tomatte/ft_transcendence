@@ -3,6 +3,7 @@ import listenNotificationEvents from './websockets/notificationEvents.js'
 import state from './state/state.js';
 import { initState } from './state/state.js';
 import { insertProfileInfoData } from './sidebar.js';
+import { modalCreateTournament } from './element-creators/modalHandler.js';
 
 
 
@@ -27,6 +28,9 @@ const renderPage = () => {
     if (menuItem) {
         menuItem.parentElement.classList.add('menu-item--active');
     }
+
+    modalCreateTournament.listen()
+
 } else {
     container.innerHTML = '<p>Página não encontrada</p>'; // Render a not found message
 }

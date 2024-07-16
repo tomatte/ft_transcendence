@@ -4,6 +4,7 @@ import json
 from typing import Dict, TypedDict
 import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState, OnlineState
+from .tournament_state import TournamentState
 from .validations import TournamentValidation
 from .tasks import emit_group_event_task
 from .my_types import *
@@ -136,6 +137,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         if is_authenticated == False:
             return
         
+        self.user = self.scope['user']
+        self.tournament_state = TournamentState(self.user)
+        
         payload = {
             'status': 'connected'
         }
@@ -175,14 +179,15 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     async def create_tournament(self, data):
         self.tournament_id = str(uuid.uuid4())
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
-        self.player_id = data["player_id"]
+        self.player_id = self.user.username
         
         tournament_data = {
-            "players": [self.player_id]
+            "players": [self.user.username]
         }
         redis_client.set_json(self.tournament_id, tournament_data)
         
         payload = {
+            "name": "enter_tournament",
             "status": "enter_tournament",
             "tournament_id": self.tournament_id,
         }
@@ -195,11 +200,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             #TODO: send error message to client
             return 
 
-        self.player_id = data["player_id"]
+        self.player_id = self.user.username
         self.tournament_id = data["tournament_id"]
         
         tournament_data: TournamentData = redis_client.get_json(self.tournament_id)
-        tournament_data["players"].append(self.player_id)
+        tournament_data["players"].append(self.user.username)
         if len(tournament_data["players"]) == 4:
             random.shuffle(tournament_data["players"])
         redis_client.set_json(self.tournament_id, tournament_data)
