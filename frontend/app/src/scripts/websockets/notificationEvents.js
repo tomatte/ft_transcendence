@@ -1,4 +1,6 @@
 
+import { updateOnlinePlayersTournament } from "../../element-creators/updateElements.js"
+
 let ws_notification = new WebSocket("wss://localhost:443/ws/notification/")
 
 let payload = {
@@ -68,10 +70,7 @@ export default function listenNotificationEvents(state) {
 
         if (data.status == "online_players") {
             state.online_players = data.online_players
-            console.log({state})
-            if (state.currentPage == 'Home') {
-                state.renderPage()
-            }
+            updateOnlinePlayersTournament(state.online_players)
             return
         }
     };
