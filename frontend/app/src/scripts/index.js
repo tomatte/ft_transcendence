@@ -2,6 +2,7 @@ import routes from './router.js';
 import listenNotificationEvents from './websockets/notificationEvents.js'
 import state from './state/state.js';
 import { initState } from './state/state.js';
+import { insertProfileInfoData } from './sidebar.js';
 
 
 
@@ -42,4 +43,5 @@ window.addEventListener('load', () => {
   listenNotificationEvents(state)
   renderPage(); // Initial rendering based on current hash
   init(); // Initialize hashchange listener
+  insertProfileInfoData(state.user)
 });
