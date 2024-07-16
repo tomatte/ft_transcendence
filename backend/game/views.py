@@ -240,6 +240,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         self.user_state = UserState(self.user, self.channel_name)
         
         payload = {
+            'name': "new_connection",
             'status': 'connected',
             'player_id': self.user.username,
             'notifications': self.user_state.notification.get(),
@@ -261,7 +262,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             await self.invite_to_tournament(data)
             return
 
-        await self.channel_layer.group_send(
+        await self.channel_layer.group_send( #TODO: remove later? 
             "notification",
             {
                 "type": "notification.message",
@@ -284,6 +285,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         # TODO: user data needs to come somewhere
         payload = {
             "type": "tournament",
+            "name": "new_tournament_invitation",
             "img": "https://kanto.legiaodosherois.com.br/w250-h250-gnw-cfill-q95-gcc/wp-content/uploads/2021/07/legiao_Ry1hNJoxOzpY.jpg.webp",
             "name": "Avatar",
             "id": event["tournament_id"],
@@ -322,6 +324,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         print("notification_online_players()")
         event["status"] = "online_players"
         payload = {
+            "name": "update_online_players",
             "status": "online_players",
             "online_players": event["players"]
         }

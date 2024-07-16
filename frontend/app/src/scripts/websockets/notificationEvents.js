@@ -1,5 +1,5 @@
 
-import { updateOnlinePlayersTournament } from "../../element-creators/updateElements.js"
+import eventHandler from "./eventHandler.js"
 
 let ws_notification = new WebSocket("wss://localhost:443/ws/notification/")
 
@@ -47,31 +47,6 @@ export default function listenNotificationEvents(state) {
         let data = JSON.parse(event.data)
         console.log(data)
 
-        if (data.status == "connected") {
-            // TODO: create a function to merge the notifications from redis with notifications from database
-            state.notifications = data.notifications
-            state.online_players = data.online_players
-            state.renderPage()
-            return 
-        }
-
-        if (data.hasOwnProperty('status') == false) {
-            return 
-        }
-
-        if (data.status == "notifications") {
-            state['notifications'].push(data)
-            console.log({state})
-            if (state.currentPage == 'Notifications') {
-                state.renderPage()
-            }
-            return
-        }
-
-        if (data.status == "online_players") {
-            state.online_players = data.online_players
-            updateOnlinePlayersTournament(state.online_players)
-            return
-        }
+        eventHandler.execute(data)
     };
 }

@@ -1,4 +1,4 @@
-import createOnlinePlayers from "../element-creators/createOnlinePlayersTournament.js"
+import createOnlinePlayers from "../scripts/element-creators/createOnlinePlayersTournament.js";
 
 const Home = (state) => {
     console.log({state})
