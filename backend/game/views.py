@@ -3,15 +3,13 @@ from asgiref.sync import async_to_sync
 import json
 from typing import Dict, TypedDict
 import uuid
-from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState
+from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState, OnlineState
+from .tournament_state import TournamentState
 from .validations import TournamentValidation
 from .tasks import emit_group_event_task
 from .my_types import *
 import random
 
-user_id = "9977b54d-dd2a-4284-b1af-af58b8c6feb9" 
-
-    
 MatchDict = Dict[str, MatchData]
 
 class GameLoopConsumer(MyAsyncWebsocketConsumer):
@@ -19,7 +17,6 @@ class GameLoopConsumer(MyAsyncWebsocketConsumer):
         await self.accept()
         redis_client.set("game_loop", self.channel_name)
 
-    
     async def receive(self, text_data):
         redis_client.set("matches", text_data)
 
@@ -46,7 +43,9 @@ class PlayerConsumer(MyAsyncWebsocketConsumer):
     new_match_id = str(uuid.uuid4())
     
     async def connect(self):
-        await self.accept()
+        is_authenticated = await self.authenticate()
+        if is_authenticated == False:
+            return 
         
         await self.channel_layer.group_add("match", self.channel_name)
         
@@ -134,7 +133,13 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.validation = TournamentValidation(self)
     
     async def connect(self):
-        await self.accept()
+        is_authenticated = await self.authenticate()
+        if is_authenticated == False:
+            return
+        
+        self.user = self.scope['user']
+        self.tournament_state = TournamentState(self.user)
+        
         payload = {
             'status': 'connected'
         }
@@ -174,14 +179,15 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     async def create_tournament(self, data):
         self.tournament_id = str(uuid.uuid4())
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
-        self.player_id = data["player_id"]
+        self.player_id = self.user.username
         
         tournament_data = {
-            "players": [self.player_id]
+            "players": [self.user.username]
         }
         redis_client.set_json(self.tournament_id, tournament_data)
         
         payload = {
+            "name": "enter_tournament",
             "status": "enter_tournament",
             "tournament_id": self.tournament_id,
         }
@@ -194,11 +200,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             #TODO: send error message to client
             return 
 
-        self.player_id = data["player_id"]
+        self.player_id = self.user.username
         self.tournament_id = data["tournament_id"]
         
         tournament_data: TournamentData = redis_client.get_json(self.tournament_id)
-        tournament_data["players"].append(self.player_id)
+        tournament_data["players"].append(self.user.username)
         if len(tournament_data["players"]) == 4:
             random.shuffle(tournament_data["players"])
         redis_client.set_json(self.tournament_id, tournament_data)
@@ -231,22 +237,25 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
-        await self.accept()
+        is_authenticated = await self.authenticate()
+        if is_authenticated == False:
+            return 
         
-        self.user_state = UserState(user_id)
-
-        print(f"USER_STATE: {self.user_state.get()}")
-
-        await self.channel_layer.group_add("notification", self.channel_name)
+        self.user = self.scope['user']
+        self.user_state = UserState(self.user, self.channel_name)
         
-        self.player_id = str(uuid.uuid4())
-        redis_client.set(self.player_id, self.channel_name)
-
         payload = {
+            'name': "new_connection",
             'status': 'connected',
-            'player_id': self.player_id,
+            'player_id': self.user.username,
             'notifications': self.user_state.notification.get(),
+            'online_players': self.user_state.online.get_all()
         }
+        
+        await self.user_state.online.connected()
+        
+        await self.channel_layer.group_add("notification", self.channel_name)
+
         await self.send_json(payload)
 
     async def receive(self, text_data):
@@ -258,7 +267,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             await self.invite_to_tournament(data)
             return
 
-        await self.channel_layer.group_send(
+        await self.channel_layer.group_send( #TODO: remove later? 
             "notification",
             {
                 "type": "notification.message",
@@ -270,6 +279,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         await self.send(text_data=event["text"])
 
     async def disconnect(self, close_code):
+        if hasattr(self, 'user_state'):
+            await self.user_state.online.disconnected()
         await self.channel_layer.group_discard("chat", self.channel_name)
         return await super().disconnect(close_code)
         
@@ -279,13 +290,15 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         # TODO: user data needs to come somewhere
         payload = {
             "type": "tournament",
+            "name": "new_tournament_invitation",
             "img": "https://kanto.legiaodosherois.com.br/w250-h250-gnw-cfill-q95-gcc/wp-content/uploads/2021/07/legiao_Ry1hNJoxOzpY.jpg.webp",
             "name": "Avatar",
             "id": event["tournament_id"],
             "sender_id": "duianhdiouas",
             "status": "active"
         }
-        self.user_state.notification.set(payload)
+        
+        self.user_state.notification.add(payload)
         
         print(f"NOTIFICATION_STATE: {self.user_state.notification.get()}")
         await self.send_json(payload)
@@ -309,5 +322,15 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
         payload = {
             "status": "invitation_sent"
+        }
+        await self.send_json(payload)
+        
+    async def notification_online_players(self, event):
+        print("notification_online_players()")
+        event["status"] = "online_players"
+        payload = {
+            "name": "update_online_players",
+            "status": "online_players",
+            "online_players": event["players"]
         }
         await self.send_json(payload)

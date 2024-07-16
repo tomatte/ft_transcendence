@@ -7,9 +7,10 @@ db.sqlite3
 *.pot
 *.my_pgpass.conf
 *.pg_service.
- 
+.env
+.env.save
+IGNORE_*
 
 # Virtualenv
 venv/
-.vscode
 launch.json

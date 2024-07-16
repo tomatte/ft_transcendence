@@ -40,5 +40,10 @@ del_net:
 
 purge: down fclean del del_vol del_net
 
+
+#INIT DEV CONTAINERS
+dev:
+	docker compose --file ./docker-compose-dev.yml up --build
+
 #PHONY
 .PHONY: all help setup up down re ls disk fclean del del_vol del_net purge

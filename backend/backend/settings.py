@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-)q&xoyupdeg7%l2(n)f0^_#6kk)=x5#lmlobfxz*x=46=upmdz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0']
 
 
 # Application definition
@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'game'
 ]
+
+APPEND_SLASH = True
 
 ASGI_APPLICATION = 'backend.asgi.application'
 
@@ -73,8 +75,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     ## mys
-    'backend.CustomMiddleware.CustomMiddleware',
+    # 'backend.CustomMiddleware.CustomMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS=['backend.backends.MyBackend']
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True

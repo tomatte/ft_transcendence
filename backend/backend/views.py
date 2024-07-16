@@ -1,19 +1,20 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, authenticate
 from users.models import User
-from django.contrib.auth import get_user_model
-
 import requests
+from environs import Env
 
+env = Env()
+env.read_env()
 
 def get_access_token(code):
 	data = {
 		'grant_type': 'authorization_code',
-		'client_id': 'u-s4t2ud-9fc0845267bce949c5cf5e83db67b91730ba9fab5ffd6c62f001ec8802ec6f83',
-		'client_secret': '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',
+		'client_id': env('S42_CLIENT_ID'),
+		'client_secret': env('S42_CLIENT_SECRET'),
 		'code': code,
-		'redirect_uri': 'http://127.0.0.1:8000/api/autenticate'
+		'redirect_uri': f"{env('SITE_URL')}/api/auth/"
 	}
 
 	response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
@@ -31,22 +32,26 @@ def get_intra_data(access_token):
 	if response.status_code != 200:
 		raise Exception('Error getting user data')
 
-	return ({
-		'username': response.json()['login'],
-	})
+	return (response.json())
 
+def set_cookies(response, user):
+	response.set_cookie('username', user.username)
+	response.set_cookie('nickname', user.nickname)
+	response.set_cookie('avatar', user.avatar)
 
-def autenticate(request):
+def auth(request):
 	if request.method != 'GET':
 		return JsonResponse({'message': 'Invalid request'})
-
 	try:
 		access_token = get_access_token(request.GET.get('code'))
-		data_user = get_intra_data(access_token)
-		user, created = User.objects.get_or_create(username=data_user['username'], defaults=data_user)
-		response = redirect('http://localhost:4009/')
-		auth_login(request, user)
-		return response
+		user = authenticate(request, token=access_token)
+		if user:
+			auth_login(request, user)
+			response = redirect(env('SITE_URL'))
+			set_cookies(response, user)
+			return response
+		else:
+			return JsonResponse({'message': "forbbiden"})
 	except Exception as e:
 		return JsonResponse({'message': str(e)})
 
@@ -57,3 +62,28 @@ def not_authorized(request):
 
 def login(request):
 	return render(request, 'login.html')
+
+def auth_fake(request): #TODO: remove in production
+	if request.method != 'GET':
+		return JsonResponse({'message': 'Invalid request'})
+	try:
+		fake_data = {
+			'login': 'user0',
+			'email': 'user0@mail.com',
+		}
+  
+		if request.GET.get('user'):
+			fake_data['login'] = request.GET.get('user')
+			fake_data['email'] = f"{fake_data['login']}@mail.com"
+  
+		user = authenticate(fake_data=fake_data)
+		if user:
+			auth_login(request, user)
+			response = redirect(env('SITE_URL'))
+			set_cookies(response, user)
+			return response
+     	# return 
+		else:
+			return JsonResponse({'message': "forbbiden"})
+	except Exception as e:
+		return JsonResponse({'message': str(e)})

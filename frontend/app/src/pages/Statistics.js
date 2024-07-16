@@ -1,5 +1,5 @@
 async function fetch_statistics() {
-	const response = await fetch('http://127.0.0.1:8000/api/users/get/statistics/', { method: 'GET', credentials: 'include'});
+	const response = await fetch('https://localhost:443/api/users/get/statistics/', { method: 'GET', credentials: 'include'});
 	if (response.status !== 200) throw new Error('Error status is '+ response.status); else return await response.json();
 }
 

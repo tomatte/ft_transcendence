@@ -1,8 +1,11 @@
 import routes from './router.js';
-import mockState from './websockets/mockState.js';
 import listenNotificationEvents from './websockets/notificationEvents.js'
+import state from './state/state.js';
+import { initState } from './state/state.js';
+import { insertProfileInfoData } from './sidebar.js';
+import { modalCreateTournament } from './element-creators/modalHandler.js';
 
-const state = mockState //TODO: temp mockState
+
 
 const container = document.querySelector('.page-content__container');
 const sidebarMenuItems = document.querySelectorAll('.sidebar__menu-container .menu-item');
@@ -25,6 +28,9 @@ const renderPage = () => {
     if (menuItem) {
         menuItem.parentElement.classList.add('menu-item--active');
     }
+
+    modalCreateTournament.listen()
+
 } else {
     container.innerHTML = '<p>Página não encontrada</p>'; // Render a not found message
 }
@@ -32,12 +38,14 @@ const renderPage = () => {
 
 state.renderPage = renderPage
 
-const init = () => {
-  window.addEventListener('hashchange', renderPage); // Listen for hash changes
+const listenHashChanges = () => {
+  window.addEventListener('hashchange', renderPage);
 };
 
 window.addEventListener('load', () => {
+  initState()
   listenNotificationEvents(state)
-  renderPage(); // Initial rendering based on current hash
-  init(); // Initialize hashchange listener
+  renderPage();
+  listenHashChanges();
+  insertProfileInfoData(state.user)
 });

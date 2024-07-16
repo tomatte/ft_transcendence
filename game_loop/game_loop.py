@@ -21,7 +21,7 @@ class PlayerMoveDataType(TypedDict):
     action: str
 
 class Socket:
-    uri = f"ws://{env("BACKEND_HOST")}:{env("BACKEND_PORT")}/game_loop/"
+    uri = f"ws://{env("BACKEND_HOST")}:{env("BACKEND_PORT")}/ws/game_loop/"
     ws: websockets.WebSocketClientProtocol = None
     
     @classmethod

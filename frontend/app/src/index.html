@@ -93,10 +93,10 @@
 			</div>
 			<div class="profile-info">
 				<div class="profile-info__container">
-					<img class="profile-info__container__image" src="../assets/images/players/caos.png" alt="user profile picture">
+					<img id="profile-info-img" class="profile-info__container__image" alt="user profile picture">
 					<div class="profile-info__container__text">
-						<span class="profile-info__container__text__name font-body-medium-bold"></span>
-						<span class="profile-info__container__text__nickname font-body-regular"></span>
+						<span id="profile-info-name" class="profile-info__container__text__name font-body-medium-bold"></span>
+						<span id="profile-info-nickname" class="profile-info__container__text__nickname font-body-regular"></span>
 					</div>
 				</div>
 			</div>
@@ -108,22 +108,6 @@
 	</div>
 
 	<div class="page-game__container"></div>
-
-	<script>
-		function get_user_data() {
-			fetch('http://127.0.0.1:8000/api/users/get/my_user/', {method: 'GET', credentials: 'include'})
-			.then(resp => resp.status === 401 ? window.location.href = '/test_login.html' : resp.json())
-			.then(data => {
-				document.getElementsByClassName('profile-info__container__text__name')[0].innerText = data.username;
-				document.getElementsByClassName('profile-info__container__text__nickname')[0].innerText = data.nickname;
-				document.getElementsByClassName('profile-info__container__image')[0].src = data.avatar;
-			}).catch(err => {
-				console.log(err.message);
-			});
-		}
-		window.onload = get_user_data;
-
-	</script>
 
 </body>
 </html>

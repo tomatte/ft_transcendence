@@ -1,5 +1,7 @@
 
-let ws_notification = new WebSocket("ws://localhost:8000/notification/")
+import notificationEventHandler from "./notificationEventHandler.js"
+
+let ws_notification = new WebSocket("wss://localhost:443/ws/notification/")
 
 let payload = {
     action: "",
@@ -40,24 +42,11 @@ function invitationReceived(data) {
     ul.appendChild(li)
 }
 
-export default function listenNotificationEvents(state) {
+export default function listenNotificationEvents() {
     ws_notification.onmessage = (event) => {
         let data = JSON.parse(event.data)
         console.log(data)
 
-        if (data.status == "connected") {
-            // TODO: create a function to merge the notifications from redis with notifications from database
-            state.notifications = data.notifications
-            return 
-        }
-
-        if (data.hasOwnProperty('type')) {
-            state['notifications'].push(data)
-            console.log({state})
-            if (state.currentPage == 'Notifications') {
-                state.renderPage(state.currentPage)
-            }
-            return
-        }
+        notificationEventHandler.execute(data)
     };
 }

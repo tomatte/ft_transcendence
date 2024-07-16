@@ -200,10 +200,7 @@ let currentPage = 1;
 const itemsPerPage = 4;
 
 async function fetch_friends() {
-    const response = await fetch('http://127.0.0.1:8000/api/users/get/get-list-friends', {
-        method: 'GET',
-        credentials: 'include'
-    });
+    const response = await fetch('https://localhost:443/api/users/get/get-list-friends', {method: 'GET', credentials: 'include'});
     if (response.status != 200) throw new Error('Failed to fetch friends');
     return await response.json();
 }
