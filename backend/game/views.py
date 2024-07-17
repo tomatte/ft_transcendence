@@ -138,6 +138,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             return
         
         self.user = self.scope['user']
+        self.player_id = self.user.username
         self.tournament_state = TournamentState(self.user)
         
         payload = {
@@ -177,20 +178,16 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         return await super().disconnect(close_code)
         
     async def create_tournament(self, data):
-        self.tournament_id = str(uuid.uuid4())
+        self.tournament_id = self.tournament_state.create()
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
-        self.player_id = self.user.username
         
-        tournament_data = {
-            "players": [self.user.username]
-        }
-        redis_client.set_json(self.tournament_id, tournament_data)
+        self.tournament_state.create() #create()
         
         payload = {
             "name": "enter_tournament",
-            "status": "enter_tournament",
             "tournament_id": self.tournament_id,
         }
+        
         await self.send_json(payload)
         
     async def join_tournament(self, data):
@@ -202,6 +199,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
 
         self.player_id = self.user.username
         self.tournament_id = data["tournament_id"]
+        
+        self.tournament_state.join() #join()
         
         tournament_data: TournamentData = redis_client.get_json(self.tournament_id)
         tournament_data["players"].append(self.user.username)
