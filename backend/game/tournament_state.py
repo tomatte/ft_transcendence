@@ -17,8 +17,8 @@ class ExitTournament:
         data = redis.get_map(global_tournament_name, self.parent.tournament_id)
         if data != None:
             await self.actions[data['phase']](data)
-        else:
-            await self.exit_user_state()
+        
+        await self.exit_user_state()
             
     async def exit_creating(self, data):
         await self.exit_tournament_state(data)
@@ -42,7 +42,11 @@ class ExitTournament:
         pass
     
     async def exit_user_state(self):
-        pass
+        exists = redis.hexists(self.parent.user.username, 'tournament_id')
+        if exists == False:
+            return
+        
+        redis.hdel(self.parent.user.username, 'tournament_id')
     
 
 class TournamentState:
