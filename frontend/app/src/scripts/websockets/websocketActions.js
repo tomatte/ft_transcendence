@@ -1,0 +1,10 @@
+import websocketNotification from "./websocketNotification.js"
+import state from "../state/state.js"
+
+export function inviteToTournament(username) {
+    console.log(`invite ${username} to tournament`)
+    websocketNotification.send({
+        action: 'invite_to_tournament',
+        owner: state.user.username
+    })
+}

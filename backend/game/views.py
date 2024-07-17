@@ -253,7 +253,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         data = json.loads(text_data)
         
         if data["action"] == "invite_to_tournament":
-            await self.invite_to_tournament(data)
+            print("invite_to_tournament()")
+            # await self.invite_to_tournament(data)
             return
 
         await self.channel_layer.group_send( #TODO: remove later? 

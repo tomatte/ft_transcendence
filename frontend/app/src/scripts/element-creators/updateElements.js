@@ -1,10 +1,7 @@
 import createOnlinePlayersTournamentRows from "./createOnlinePlayersTournament.js"
 import createPlayerQueueTournament from "./createPlayerQueueTournament.js"
 import injectElement from "./injectElement.js"
-
-function inviteToTournament(username) {
-    console.log(`invite ${username} to tournament`)
-}
+import { inviteToTournament } from "../websockets/websocketActions.js"
 
 export function updateOnlinePlayersTournament(players) {
     const html = createOnlinePlayersTournamentRows(players)
