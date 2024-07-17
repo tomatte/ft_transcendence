@@ -243,18 +243,19 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
         await self.user_state.online.connected()
         
+        await self.channel_layer.group_add(self.user.username, self.channel_name)
         await self.channel_layer.group_add("notification", self.channel_name)
 
         await self.send_json(payload)
 
     async def receive(self, text_data):
+        print(f"{self.user.username} received a notification:")
         print(text_data)
         
         data = json.loads(text_data)
         
         if data["action"] == "invite_to_tournament":
-            print("invite_to_tournament()")
-            # await self.invite_to_tournament(data)
+            await self.invite_to_tournament(data)
             return
 
         await self.channel_layer.group_send( #TODO: remove later? 
@@ -275,17 +276,18 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         return await super().disconnect(close_code)
         
     async def tournament_invitation(self, event):
-        print("tournament_invitation()")
+        print(f"{self.user.username} received a tournament invitation")
 
-        # TODO: user data needs to come somewhere
+        
+        owner = OnlineState.get_user(event['owner'])
+        
         payload = {
-            "type": "tournament",
-            "name": "new_tournament_invitation",
-            "img": "https://kanto.legiaodosherois.com.br/w250-h250-gnw-cfill-q95-gcc/wp-content/uploads/2021/07/legiao_Ry1hNJoxOzpY.jpg.webp",
-            "name": "Avatar",
-            "id": event["tournament_id"],
-            "sender_id": "duianhdiouas",
-            "status": "active"
+            "name": "tournament_invitation",
+            "owner": {
+                "username": owner['username'],
+                "nickname": owner['nickname'],
+                "avatar": owner['avatar'],
+            }
         }
         
         self.user_state.notification.add(payload)
@@ -295,25 +297,20 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
     async def invite_to_tournament(self, data):
         print("invite_to_tournament()")
-        if "friend_id" not in data:
-            return
-        if "tournament_id" not in data:
+        if "friend" not in data:
             return
         
-        channel_name = redis_client.get(data["friend_id"]).decode('utf-8')
-        
-        payload = {
+        notification_event = {
             "type": "tournament.invitation",
-            "status": "tournament_invitation",
-            "tournament_id": data["tournament_id"]
+            "owner": self.user.username
         }
         
-        await self.channel_layer.send(channel_name, payload)
+        await self.user_state.notification.notify(
+            data["friend"],
+            notification_event
+        )
         
-        payload = {
-            "status": "invitation_sent"
-        }
-        await self.send_json(payload)
+        await self.send_json({ 'name': 'sent_invitation' })
         
     async def notification_online_players(self, event):
         print("notification_online_players()")

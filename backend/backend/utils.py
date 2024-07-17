@@ -102,6 +102,7 @@ redis_client.config_set('appendonly', 'no')
 class NotificationState:
     redis = redis_client
     channel_notification_key = "channels_notification"
+    channel_layer = get_channel_layer()
    
     def __init__(self, user, channel_name) -> None:
         self.user = user
@@ -133,6 +134,13 @@ class NotificationState:
             self.channel_notification_key,
             channel_name
         )
+    
+    async def notify(self, username, event):
+        await self.channel_layer.group_send(
+            username,
+            event
+        )
+        
         
 class OnlineState:
     redis = redis_client
