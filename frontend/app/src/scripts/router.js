@@ -3,19 +3,19 @@ import Matches from "../pages/Matches.js";
 import Friends from "../pages/Friends.js";
 import Ranking from "../pages/Ranking.js";
 import Statistics from "../pages/Statistics.js";
-import Settings from "../pages/Settings.js";
 import Notifications from "../pages/Notifications.js";
+import Settings from "../pages/Settings.js";
 import Game from "../pages/Game.js";
 import Tournament from "../pages/Tournament.js";
 
 const routes = {
   'Home': Home,
   'Matches': Matches,
-  'Settings': Settings,
   'Friends': Friends,
   'Ranking': Ranking,
   'Statistics': Statistics,
   'Notifications': Notifications,
+  'Settings': Settings,
   'Game': Game,
   'Tournament': Tournament,
 };
