@@ -48,11 +48,11 @@
 //         	<table>
 // 	    		<thead>
 // 	    			<tr class="table-header">
-// 	    				<th class="table-header__text font-body-caption-regular">Player</th>
-// 	    				<th class="table-header__text font-body-caption-regular">Global ranking</th>
-// 	    				<th class="table-header__text font-body-caption-regular">Losses against you</th>
-// 	    				<th class="table-header__text font-body-caption-regular">Wins against you</th>
-// 	    				<th class="table-header__text font-body-caption-regular">Actions</th>
+// 	    				<th class="table-header__text font-body-caption-bold">Player</th>
+// 	    				<th class="table-header__text font-body-caption-bold">Global ranking</th>
+// 	    				<th class="table-header__text font-body-caption-bold">Losses against you</th>
+// 	    				<th class="table-header__text font-body-caption-bold">Wins against you</th>
+// 	    				<th class="table-header__text font-body-caption-bold">Actions</th>
 // 	    			</tr>
 //                 </thead>
 // 	    		<tbody>
@@ -122,9 +122,9 @@
  
 //                     <thead class="modal__table__header">
 //                         <tr class="table-header">
-//                             <th class="table-header__text font-body-caption-regular">Player</th>
-//                             <th class="table-header__text font-body-caption-regular">Global ranking</th>
-//                             <th class="table-header__text font-body-caption-regular">Actions</th>
+//                             <th class="table-header__text font-body-caption-bold">Player</th>
+//                             <th class="table-header__text font-body-caption-bold">Global ranking</th>
+//                             <th class="table-header__text font-body-caption-bold">Actions</th>
 //                         </tr>
 //                     </thead>
 
@@ -294,11 +294,11 @@ const renderFriends = (friends) => {
             <table>
                 <thead>
                     <tr class="table-header">
-                        <th class="table-header__text font-body-caption-regular">Player</th>
-                        <th class="table-header__text font-body-caption-regular">Global ranking</th>
-                        <th class="table-header__text font-body-caption-regular">Losses against you</th>
-                        <th class="table-header__text font-body-caption-regular">Wins against you</th>
-                        <th class="table-header__text font-body-caption-regular table-actions-align-right">Actions</th>
+                        <th class="table-header__text font-body-caption-bold">Player</th>
+                        <th class="table-header__text font-body-caption-bold">Global ranking</th>
+                        <th class="table-header__text font-body-caption-bold">Losses against you</th>
+                        <th class="table-header__text font-body-caption-bold">Wins against you</th>
+                        <th class="table-header__text font-body-caption-bold table-actions-align-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -326,9 +326,9 @@ const renderFriends = (friends) => {
                 <table class="modal__table__header-add_friend">
                     <thead class="modal__table__header">
                         <tr class="table-header">
-                            <th class="table-header__text font-body-caption-regular">Player</th>
-                            <th class="table-header__text font-body-caption-regular">Global ranking</th>
-                            <th class="table-header__text font-body-caption-regular table-row__actions">Actions</th>
+                            <th class="table-header__text font-body-caption-bold">Player</th>
+                            <th class="table-header__text font-body-caption-bold">Global ranking</th>
+                            <th class="table-header__text font-body-caption-bold table-row__actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="modal__table__body">
