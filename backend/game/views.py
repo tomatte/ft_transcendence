@@ -141,10 +141,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.player_id = self.user.username
         self.tournament_state = TournamentState(self.user)
         
-        payload = {
-            'status': 'connected'
-        }
-        await self.send_json(payload)
+        await self.send_json({ 'name': 'connected' })
 
     async def receive(self, text_data):
         print(text_data)

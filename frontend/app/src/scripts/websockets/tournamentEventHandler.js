@@ -1,4 +1,5 @@
 import state from "../state/state.js"
+import websocketTournament from "./tournamentEvents.js"
 
 class TournamentEventHandler {
     constructor (state) {
@@ -23,11 +24,20 @@ class TournamentEventHandler {
 function enterTournament(data, state) {
     //updatePlayersQueueTournament(data.tournament.players)
     //state.tournament = data.tournament
-    console.log("enterTournament()")
+    console.log("EVENT enterTournament()")
+}
+
+function connectedTournament(data, state) {
+    console.log("EVENT connectedTournament")
+
+    websocketTournament.send({
+        action: state.tournament.action
+    })
 }
 
 const tournamentEventHandler = new TournamentEventHandler(state)
 
 tournamentEventHandler.register('enter_tournament', enterTournament)
+tournamentEventHandler.register('connected', connectedTournament)
 
 export default tournamentEventHandler
