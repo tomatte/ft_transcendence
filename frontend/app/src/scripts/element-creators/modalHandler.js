@@ -1,5 +1,5 @@
 import state from "../state/state.js"
-import websocketTournament from "../websockets/tournamentEvents.js";
+import websocketTournament from "../websockets/websocketTournament.js";
 
 function openModal(id) {
     const modal = document.getElementById(id);

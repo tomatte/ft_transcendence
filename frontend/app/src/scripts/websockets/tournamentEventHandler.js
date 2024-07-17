@@ -1,5 +1,5 @@
 import state from "../state/state.js"
-import websocketTournament from "./tournamentEvents.js"
+import websocketTournament from "./websocketTournament.js"
 
 class TournamentEventHandler {
     constructor (state) {
