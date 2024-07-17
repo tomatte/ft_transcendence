@@ -113,9 +113,9 @@ const Home = (state) => {
             <table class="modal__table">
                 <thead class="modal__table__header">
                     <tr class="table-header">
-                        <th class="table-header__text font-body-caption-regular">Player</th>
-                        <th class="table-header__text font-body-caption-regular">Global ranking</th>
-                        <th class="table-header__text font-body-caption-regular">Actions</th>
+                        <th class="table-header__text font-body-caption-bold">Player</th>
+                        <th class="table-header__text font-body-caption-bold">Global ranking</th>
+                        <th class="table-header__text font-body-caption-bold">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="tournament_online_players" class="modal__table__body">
@@ -145,9 +145,9 @@ const Home = (state) => {
  
                     <thead class="modal__table__header">
                         <tr class="table-header">
-                            <th class="table-header__text font-body-caption-regular">Player</th>
-                            <th class="table-header__text font-body-caption-regular">Global ranking</th>
-                            <th class="table-header__text font-body-caption-regular">Actions</th>
+                            <th class="table-header__text font-body-caption-bold">Player</th>
+                            <th class="table-header__text font-body-caption-bold">Global ranking</th>
+                            <th class="table-header__text font-body-caption-bold">Actions</th>
                         </tr>
                     </thead>
 

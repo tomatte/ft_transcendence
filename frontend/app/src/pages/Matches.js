@@ -19,11 +19,11 @@
 //     	<table>
 // 			<thead>
 // 				<tr class="table-header">
-// 					<th class="table-header__text font-body-caption-regular">Player</th>
-// 					<th class="table-header__text font-body-caption-regular">Game type</th>
-// 					<th class="table-header__text font-body-caption-regular">Score</th>
-// 					<th class="table-header__text font-body-caption-regular">Status</th>
-// 					<th class="table-header__text font-body-caption-regular">Date</th>
+// 					<th class="table-header__text font-body-caption-bold">Player</th>
+// 					<th class="table-header__text font-body-caption-bold">Game type</th>
+// 					<th class="table-header__text font-body-caption-bold">Score</th>
+// 					<th class="table-header__text font-body-caption-bold">Status</th>
+// 					<th class="table-header__text font-body-caption-bold">Date</th>
 // 				</tr>
 //             </thead>
 // 			<tbody>
@@ -225,11 +225,11 @@ const Matches = (state) => {
                 <table>
                     <thead>
                         <tr class="table-header">
-                            <th class="table-header__text font-body-caption-regular">Player</th>
-                            <th class="table-header__text font-body-caption-regular">Game type</th>
-                            <th class="table-header__text font-body-caption-regular">Score</th>
-                            <th class="table-header__text font-body-caption-regular">Status</th>
-                            <th class="table-header__text font-body-caption-regular">Date</th>
+                            <th class="table-header__text font-body-caption-bold">Player</th>
+                            <th class="table-header__text font-body-caption-bold">Game type</th>
+                            <th class="table-header__text font-body-caption-bold">Score</th>
+                            <th class="table-header__text font-body-caption-bold">Status</th>
+                            <th class="table-header__text font-body-caption-bold">Date</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -47,14 +47,14 @@
 //     	<table>
 // 			<thead>
 // 				<tr class="table-header">
-// 					<th class="table-header__text tableRankingPosition font-body-caption-regular">#</th>
-// 					<th class="table-header__text font-body-caption-regular">PLAYER</th>
-// 					<th class="table-header__text font-body-caption-regular">TOTAL SCORE</th>
-// 					<th class="table-header__text font-body-caption-regular">WINS</th>
-// 					<th class="table-header__text font-body-caption-regular">LOSSES</th>
-// 					<th class="table-header__text font-body-caption-regular">WIN RATE</th>
-// 					<th class="table-header__text font-body-caption-regular">LOSS RATE</th>
-// 					<th class="table-header__text font-body-caption-regular">ACTIONS</th>
+// 					<th class="table-header__text tableRankingPosition font-body-caption-bold">#</th>
+// 					<th class="table-header__text font-body-caption-bold">PLAYER</th>
+// 					<th class="table-header__text font-body-caption-bold">TOTAL SCORE</th>
+// 					<th class="table-header__text font-body-caption-bold">WINS</th>
+// 					<th class="table-header__text font-body-caption-bold">LOSSES</th>
+// 					<th class="table-header__text font-body-caption-bold">WIN RATE</th>
+// 					<th class="table-header__text font-body-caption-bold">LOSS RATE</th>
+// 					<th class="table-header__text font-body-caption-bold">ACTIONS</th>
 // 				</tr>
 //             </thead>
 // 			<tbody>
@@ -234,14 +234,14 @@ const Ranking = async () => {
             <table>
                 <thead>
                     <tr class="table-header">
-                        <th class="table-header__text tableRankingPosition font-body-caption-regular">#</th>
-                        <th class="table-header__text font-body-caption-regular">PLAYER</th>
-                        <th class="table-header__text font-body-caption-regular">TOTAL SCORE</th>
-                        <th class="table-header__text font-body-caption-regular">WINS</th>
-                        <th class="table-header__text font-body-caption-regular">LOSSES</th>
-                        <th class="table-header__text font-body-caption-regular">WIN RATE</th>
-                        <th class="table-header__text font-body-caption-regular">LOSS RATE</th>
-                        <th class="table-header__text font-body-caption-regular table-actions-align-right">ACTIONS</th>
+                        <th class="table-header__text tableRankingPosition font-body-caption-bold">#</th>
+                        <th class="table-header__text font-body-caption-bold">PLAYER</th>
+                        <th class="table-header__text font-body-caption-bold">TOTAL SCORE</th>
+                        <th class="table-header__text font-body-caption-bold">WINS</th>
+                        <th class="table-header__text font-body-caption-bold">LOSSES</th>
+                        <th class="table-header__text font-body-caption-bold">WIN RATE</th>
+                        <th class="table-header__text font-body-caption-bold">LOSS RATE</th>
+                        <th class="table-header__text font-body-caption-bold table-actions-align-right">ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody></tbody>

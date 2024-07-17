@@ -12,23 +12,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <title>table</title>
+    <title>input</title>
 </head>
 <body>
-    <div class="playground-container playground-container--table-header">
+    <div class="playground-container playground-container--input">
 
-		<table>
+        <div class="input">
+            <span class="input__title">Name</span>
+            <input type="text" class="input__box font-body-regular" placeholder="Input your name...">
+            <span class="input__helper-text font-body-caption-regular">It must contain only letters and numbers</span>
+        </div>
 
-			<thead>
-				<tr class="table-header">
-					<th class="table-header__text font-body-caption-bold">Player</th>
-					<th class="table-header__text font-body-caption-bold">Global ranking</th>
-					<th class="table-header__text font-body-caption-bold">Losses against you</th>
-					<th class="table-header__text font-body-caption-bold">Wins against you</th>
-					<th class="table-header__text font-body-caption-bold table-row__actions">Actions</th>
-				</tr>
-			</thead>
-		</table>
+        <div class="input input--error">
+            <span class="input__title">Name</span>
+            <input type="text" class="input__box font-body-regular" placeholder="Input your name...">
+            <span class="input__helper-text font-body-caption-regular">It must contain only letters and numbers</span>
+        </div>
 
     </div>
 </body>

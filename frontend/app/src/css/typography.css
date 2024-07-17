@@ -115,6 +115,15 @@ h6 {
     line-height: var(--regular-line-height);
 }
 
+.font-body-caption-bold {
+    font-family: var(--font-primary);
+    font-size: var(--caption-regular-font-size);
+    line-height: var(--caption-regular-line-height);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+
 .font-body-caption-regular {
     font-family: var(--font-primary);
     font-size: var(--caption-regular-font-size);
