@@ -1,6 +1,26 @@
 import state from "../state/state.js"
 import { updateOnlinePlayersTournament } from "../element-creators/updateElements.js"
 
+class NotificationEventHandler {
+    constructor (state) {
+        this.state = state
+        this.events = {}
+    }
+
+    register(name, callback) {
+        this.events[name] = callback
+    }
+
+    execute(eventData) {
+        if (this.events.hasOwnProperty(eventData.name) == false) {
+            console.error(`invalid event: ${eventData.name}`)
+           return
+        }
+
+        this.events[eventData.name](eventData, this.state)
+    }
+}
+
 function newConnection(data, state) {
     // TODO: create a function to merge the notifications from redis with notifications from database
     state.notifications = data.notifications
@@ -23,24 +43,9 @@ function updateOnlinePlayers(data, state) {
     console.log("updateOnlinePlayers()")
 }
 
-class NotificationEventHandler {
-    constructor (state) {
-        this.state = state
-        this.events = {}
-    }
-
-    register(name, callback) {
-        this.events[name] = callback
-    }
-
-    execute(eventData) {
-        if (this.events.hasOwnProperty(eventData.name) == false) {
-            console.error(`invalid event: ${eventData.name}`)
-           return
-        }
-
-        this.events[eventData.name](eventData, this.state)
-    }
+function tournamentInvitation(data, state) {
+    console.log("tournamentInvitation()")
+    console.log(data)
 }
 
 const notificationEventHandler = new NotificationEventHandler(state)
@@ -48,5 +53,6 @@ const notificationEventHandler = new NotificationEventHandler(state)
 notificationEventHandler.register("new_connection", newConnection)
 notificationEventHandler.register("new_notification", newNotification)
 notificationEventHandler.register("update_online_players", updateOnlinePlayers)
+notificationEventHandler.register('tournament_invitation', tournamentInvitation)
 
 export default notificationEventHandler

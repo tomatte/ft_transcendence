@@ -77,7 +77,7 @@ class TournamentState:
         
         return self.tournament_id
     
-    def join(self, tournament_id):
+    def join(self, owner):
         print(f"{self.user.username} JOINED a Tournament")
         pass
     

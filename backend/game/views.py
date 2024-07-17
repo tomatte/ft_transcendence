@@ -282,7 +282,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         owner = OnlineState.get_user(event['owner'])
         
         payload = {
-            "name": "tournament_invitation",
+            "name": "new_notification",
+            "type": "tournament",
             "owner": {
                 "username": owner['username'],
                 "nickname": owner['nickname'],

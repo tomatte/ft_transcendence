@@ -3,6 +3,7 @@ const tournamentRequestInfo = {
     refuse_message: "Decline invitation",
     icon: "emoji_events",
     buttonStyle: "button--tertiary",
+    message: 'has invited you to a tournament'
 }
 const friendRequestInfo = {
     accept_message: "Accept request",
@@ -16,6 +17,7 @@ const matchRequestInfo = {
     refuse_message: "Decline match",
     icon: "sports_esports",
     buttonStyle: "button--primary",
+    message: 'has challenged you to a friendly match',
 }
 
 const infoTypes = {
@@ -31,7 +33,7 @@ function createRow(profile_img, sender_name, date, time, type) {
             <td class="table-row__message">
                 <img class="table-row__message__image" src="${profile_img}" alt="player">
                 <div class="table-row__message__text">
-                    <span class="table-row__message__text__content font-body-medium">${sender_name} has challenged you to a friendly match</span>
+                    <span class="table-row__message__text__content font-body-medium">${sender_name} ${info.message}</span>
                     <span class="table-row__message__text__timestamp font-body-regular">${date} - ${time}</span>
                 </div>
             </td>
@@ -49,15 +51,15 @@ function createRow(profile_img, sender_name, date, time, type) {
     `
 }
 
-function createRows(data) {
+function createRows(notifications) {
     let rows = ""
-    data.forEach((info) => {
+    notifications.forEach((data) => {
         rows += createRow(
-            info.img,
-            info.name,
-            info.date,
-            info.time,
-            info.type
+            data.owner.avatar,
+            data.owner.username,
+            '17/07/2024',
+            '17:24',
+            'tournament'
         )
     })
     return rows
