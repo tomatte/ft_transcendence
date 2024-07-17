@@ -22,9 +22,6 @@
 //           <td class="table-row__data-default font-body-medium-bold">${item.percent_losses}</td>
 //           <td class="table-row__actions">
 //               <button class="game-row-option">
-//                   <span class="material-icons-round game-row-option__icon">sports_esports</span>
-//               </button>
-//               <button class="game-row-option">
 //                   <span class="material-icons-round game-row-option__icon">person_remove</span>
 //               </button>
 //           </td>
@@ -145,10 +142,7 @@ const renderTable = (data, page) => {
                 <td class="table-row__data-default font-body-medium-bold">${item.percent_winner}%</td>
                 <td class="table-row__data-default font-body-medium-bold">${item.percent_losses}</td>
                 <td class="table-row__actions">
-                    <button class="game-row-option">
-                        <span class="material-icons-round game-row-option__icon">sports_esports</span>
-                    </button>
-                    <button class="game-row-option">
+                    <button onclick="openModal('modalRemoveFriend')" class="game-row-option">
                         <span class="material-icons-round game-row-option__icon">person_remove</span>
                     </button>
                 </td>
@@ -247,7 +241,7 @@ const Ranking = async () => {
                         <th class="table-header__text font-body-caption-regular">LOSSES</th>
                         <th class="table-header__text font-body-caption-regular">WIN RATE</th>
                         <th class="table-header__text font-body-caption-regular">LOSS RATE</th>
-                        <th class="table-header__text font-body-caption-regular">ACTIONS</th>
+                        <th class="table-header__text font-body-caption-regular table-actions-align-right">ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -256,6 +250,30 @@ const Ranking = async () => {
                 <ul class="pagination__list"></ul>
             </nav>
         </div>
+    
+        <div class="modal modal--remove-friend" id="modalRemoveFriend">
+			<div class="modal__header">
+				<div class="modal__header__title">
+					<div class="modal__header__title__text">
+						<h4>Remove friend</h4>
+					</div>
+					<span onclick="closeModal('modalRemoveFriend')" class="material-icons-round modal__header__title__close icon--regular">close</span>
+				</div>
+				<span class="modal__header__description font-body-medium">
+					Are you sure you want to remove this player as a friend? You can always send another request to the player, whenever you want.
+				</span>
+			</div>
+			<div class="modal__actions">
+				<button onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
+					<span class="button__text font-body-regular-bold">No, cancel</span>
+				</button>
+				<button class="button button--danger">
+					<span class="button__text font-body-regular-bold">Yes, remove friend</span>
+				</button>
+			</div>
+		</div>
+
+    <div id="modalOverlay" class="hidden"></div>
     `;
 
     renderTable(globalData, currentPage);

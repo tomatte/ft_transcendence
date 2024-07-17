@@ -22,9 +22,6 @@
 //                     <td class="table-row__data-default font-body-medium-bold">${friend.winners_against_you}</td>
 //                     <td class="table-row__actions">
 //                         <button class="game-row-option">
-//                             <span class="material-icons-round game-row-option__icon">sports_esports</span>
-//                         </button>
-//                         <button class="game-row-option">
 //                             <span class="material-icons-round game-row-option__icon">person_remove</span>
 //                         </button>
 //                     </td>
@@ -270,9 +267,6 @@ const renderFriends = (friends) => {
                 <td class="table-row__data-default font-body-medium-bold">${friend.winners_against_you}</td>
                 <td class="table-row__actions">
                     <button class="game-row-option">
-                        <span class="material-icons-round game-row-option__icon">sports_esports</span>
-                    </button>
-                    <button class="game-row-option">
                         <span class="material-icons-round game-row-option__icon">person_remove</span>
                     </button>
                 </td>
@@ -281,7 +275,7 @@ const renderFriends = (friends) => {
     }, '');
 
     const pageContentContainer = document.querySelector('.page-content__container');
-    pageContentContainer.innerHTML = `
+    pageContentContainer.innerHTML = ` 
         <div class="page-content__container__header">
             <div class="page-content__container__header__info">
                 <h4 class="page-content__container__header__info__title">Friends</h4>
@@ -304,7 +298,7 @@ const renderFriends = (friends) => {
                         <th class="table-header__text font-body-caption-regular">Global ranking</th>
                         <th class="table-header__text font-body-caption-regular">Losses against you</th>
                         <th class="table-header__text font-body-caption-regular">Wins against you</th>
-                        <th class="table-header__text font-body-caption-regular">Actions</th>
+                        <th class="table-header__text font-body-caption-regular table-actions-align-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -334,7 +328,7 @@ const renderFriends = (friends) => {
                         <tr class="table-header">
                             <th class="table-header__text font-body-caption-regular">Player</th>
                             <th class="table-header__text font-body-caption-regular">Global ranking</th>
-                            <th class="table-header__text font-body-caption-regular">Actions</th>
+                            <th class="table-header__text font-body-caption-regular table-row__actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="modal__table__body">
