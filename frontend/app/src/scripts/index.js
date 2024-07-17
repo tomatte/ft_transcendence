@@ -3,7 +3,7 @@ import websocketNotification from './websockets/websocketNotification.js'
 import state from './state/state.js';
 import { initState } from './state/state.js';
 import { insertProfileInfoData } from './sidebar.js';
-import { modalCreateTournament } from './element-creators/modalHandler.js';
+import modalCreateTournament from './modals/modalCreateTournament.js';
 
 
 
