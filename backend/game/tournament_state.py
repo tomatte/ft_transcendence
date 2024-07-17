@@ -69,6 +69,8 @@ class TournamentState:
             payload
         )
         
+        self._store_on_user_state()
+        
         return self.tournament_id
     
     def join(self, tournament_id):
@@ -78,5 +80,15 @@ class TournamentState:
     async def exit(self):
         exit = ExitTournament(self)
         await exit.exit()
+        
+    def _store_on_user_state(self):
+        if redis.hexists(self.user.username, 'tournament_id'):
+            return
+
+        redis.set_map_str(
+            self.user.username,
+            'tournament_id', 
+            self.tournament_id
+        )
 
     
