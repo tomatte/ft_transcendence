@@ -7,5 +7,9 @@ export function updateOnlinePlayersTournament(players) {
 }
 
 export function updatePlayersQueueTournament(players) {
-
+    const html = createOnlinePlayersTournament(players)
+    injectElement(html, "tournament-player-queue")
+    
+    const statusHtml = `${players.length}/4 ready`
+    injectElement(statusHtml, "tournament-status-ready")
 }

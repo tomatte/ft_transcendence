@@ -2,7 +2,6 @@ import createOnlinePlayers from "../scripts/element-creators/createOnlinePlayers
 
 const Home = (state) => {
     console.log({state})
-    const rows_tournament_online_players = createOnlinePlayers(state.online_players)
 	const pageContentContainer = document.querySelector('.page-content__container');
   
         pageContentContainer.innerHTML = /*html*/ `
@@ -77,36 +76,12 @@ const Home = (state) => {
                 <div class="modal__player-queue__header">
                     <span class="modal__player-queue__header__title font-body-medium-bold">Players</span>
                     <div class="modal__player-queue__header__status">
-                        <span class="modal__player-queue__header__status__ready font-body-medium-bold">3/4 ready</span>
+                        <span id="tournament-status-ready" class="modal__player-queue__header__status__ready font-body-medium-bold"> </span>
                         <span class="material-icons-round modal__player-queue__header__status__icon icon--small">check_circle</span>
                     </div>
                 </div>
-                <div class="modal__player-queue__list">
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
-                    <div class="player-bracket player-bracket--waiting">
-                        <span class="material-icons-round player-bracket__waiting-icon icon--small">schedule</span>
-                        <span class="player-bracket__waiting-text font-body-regular">Waiting for player...</span>
-                    </div>
+                <div id="tournament-player-queue" class="modal__player-queue__list">
+
                 </div>
             </div>
 
@@ -119,7 +94,7 @@ const Home = (state) => {
                     </tr>
                 </thead>
                 <tbody id="tournament_online_players" class="modal__table__body">
-                    ${rows_tournament_online_players}
+                    
                 </tbody>
             </table>
         </div>
