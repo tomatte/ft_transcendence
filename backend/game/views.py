@@ -162,16 +162,13 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     
         self.channel_layer.group_discard(self.tournament_id, self.channel_name)
 
-                
-        await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.update.players"})
+        await self.tournament_state.exit()
         
         return await super().disconnect(close_code)
         
     async def create_tournament(self, data):
         self.tournament_id = self.tournament_state.create()
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
-        
-        self.tournament_state.create() #create()
         
         payload = {
             "name": "enter_tournament",
@@ -215,6 +212,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def tournament_start(self, event):
         await self.send_json({"status": "start_tournament"})
+        
+    async def tournament_cancel(self, event):
+        print("EVENT tournament_cancel()")
         
     def get_tournament_data(self) -> TournamentData:
         return redis_client.get_json(self.tournament_id)
