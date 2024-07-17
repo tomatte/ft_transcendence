@@ -1,5 +1,3 @@
-import createOnlinePlayers from "../scripts/element-creators/createOnlinePlayersTournament.js";
-
 const Home = (state) => {
     console.log({state})
 	const pageContentContainer = document.querySelector('.page-content__container');

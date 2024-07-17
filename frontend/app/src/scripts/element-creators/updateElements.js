@@ -1,13 +1,26 @@
-import createOnlinePlayersTournament from "./createOnlinePlayersTournament.js"
+import createOnlinePlayersTournamentRows from "./createOnlinePlayersTournament.js"
+import createPlayerQueueTournament from "./createPlayerQueueTournament.js"
 import injectElement from "./injectElement.js"
 
+function inviteToTournament(username) {
+    console.log(`invite ${username} to tournament`)
+}
+
 export function updateOnlinePlayersTournament(players) {
-    const html = createOnlinePlayersTournament(players)
+    const html = createOnlinePlayersTournamentRows(players)
     injectElement(html, "tournament_online_players")
+    
+    for (let key in players) {
+        const player = players[key]
+        const btn = document.getElementById(`button-tournament-invite-${player.username}`)
+        if (btn) {
+            btn.addEventListener('click', () => inviteToTournament(player.username))
+        }
+    }
 }
 
 export function updatePlayersQueueTournament(players) {
-    const html = createOnlinePlayersTournament(players)
+    const html = createPlayerQueueTournament(players)
     injectElement(html, "tournament-player-queue")
     
     const statusHtml = `${players.length}/4 ready`

@@ -21,12 +21,12 @@ export default function createPlayerQueueTournament(players) {
         rows += createPlayerBracket(players[key])
     }
 
-    if (players.length < 4) {
+    for (let i = 4 - players.length; i > 0; i--) {
         rows += `
-        <div class="player-bracket player-bracket--waiting">
-            <span class="material-icons-round player-bracket__waiting-icon icon--small">schedule</span>
-            <span class="player-bracket__waiting-text font-body-regular">Waiting for player...</span>
-        </div>`
+            <div class="player-bracket player-bracket--waiting">
+                <span class="material-icons-round player-bracket__waiting-icon icon--small">schedule</span>
+                <span class="player-bracket__waiting-text font-body-regular">Waiting for player...</span>
+            </div>`
     }
 
     return rows

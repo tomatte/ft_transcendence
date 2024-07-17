@@ -10,7 +10,7 @@ function createRow(player) {
             </td>
             <td class="table-row__data-default font-body-medium-bold">#1</td>
             <td class="table-row__actions">
-                <button class="button button--secondary">
+                <button id="button-tournament-invite-${player.username}" class="button button--secondary">
                     <span class="button__text font-body-regular-bold">Invite to tournament</span>
                 </button>
             </td>
@@ -18,14 +18,16 @@ function createRow(player) {
     `
 }
 
-export default function createRows(players) {
-    if (players && players.length === 0) {
+export default function createOnlinePlayersTournamentRows(players) {
+    if (players && players.length == 0) {
         return "";
     }
 
     let rows = ""
+
     for (let key in players) {
-        rows += createRow(players[key])
+        const row = createRow(players[key])
+        rows += row
     }
     return rows
 }
