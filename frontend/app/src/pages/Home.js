@@ -63,7 +63,7 @@ const Home = (state) => {
                     <div class="modal__header">
                         <div class="modal__header__title">
                             <h4 class="modal__header__title__text">Invite to tournament</h4>
-                            <button onclick="closeModal('modalInviteToTournament')" class="button">
+                            <button id="button-close-create-tournament" class="button">
                                 <span class="material-icons-round modal__header__title__close icon--regular">close</span>
                             </button>
                         </div>

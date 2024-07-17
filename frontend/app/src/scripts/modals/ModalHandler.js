@@ -2,7 +2,6 @@ export default class ModalHandler {
     constructor() {
         this.open = this.open.bind(this)
         this.close = this.close.bind(this)
-        this.closeOutside = this.closeOutside.bind(this)
     }
 
     open(id) {
@@ -12,9 +11,6 @@ export default class ModalHandler {
         overlay.style.display = 'flex';
         modal.style.display = 'flex';
         modal.classList.add('modal--open');
-    
-        // Close modal when clicking on the overlay
-        overlay.addEventListener('click', this.closeOutside);
     }
 
     close(id) {
@@ -30,18 +26,5 @@ export default class ModalHandler {
             modal.style.display = 'none';
             modal.classList.remove('modal--close'); // Reset classes for next open
         }, 200); // Adjust to match animation duration
-    
-        // Remove event listener to prevent accidental closures
-        overlay.removeEventListener('click', this.closeOutside);
-    }
-
-    closeOutside(event) {
-        const overlay = document.getElementById('modalOverlay');
-        const modal = document.querySelector('.modal.modal--open');
-        
-        // Check if the clicked element is the modal itself
-        if (event.target === overlay) {
-            this.close(modal.id);
-        }
     }
 }

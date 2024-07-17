@@ -162,14 +162,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     
         self.channel_layer.group_discard(self.tournament_id, self.channel_name)
 
-        tournament_data = self.get_tournament_data()
-        for index, player_id in enumerate(tournament_data["players"]):
-            if player_id == self.player_id:
-                tournament_data["players"].pop(index)
-                break
                 
-        redis_client.set_json(self.tournament_id, tournament_data)
-        
         await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.update.players"})
         
         return await super().disconnect(close_code)
