@@ -8,6 +8,8 @@ const Settings = () => {
 
     pageContentContainer.innerHTML = `
  
+            <div class="page-content__container">
+
             <div class="page-content__container__header">
                 <div class="page-content__container__header__info">
                     <h4 class="page-content__container__header__info__title">Settings</h4>
@@ -30,27 +32,21 @@ const Settings = () => {
                     <div class="page-content__container__content__setting__control-name">
                         <div class="profile-picture">
                             <img class="profile-picture__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                            <div class="profile-picture__edit">
+ 
                                 <button class="button button--outline">
                                     <span class="button__text font-body-regular-bold">Update photo</span>
                                 </button>
-                                <button class="button button--outline">
-                                   <span class="button__text font-body-regular-bold">Reset to default</span>
-                                </button>
-                            </div>
+ 
                         </div>
                         <div class="input-name">
                             <div class="input">
-                                <span class="input__title font-body-medium">Name</span>
-                                <div class="input__box">
-                                    <span class="input__box__placeholder font-body-regular">Input your name...</span>
-                                </div>
-                                <span class="button__text font-body-regular-bold">should be unique and contain only letters</span>
+                                <span class="input__title">Name</span>
+                                <input type="text" class="input__box font-body-regular" placeholder="Input your name...">
+                                <span class="input__helper-text font-body-caption-regular">It must contain only letters and numbers</span>
                             </div>
                         </div>
-                    </div>
 
-                </div>
+                    </div>
 
                 <div class="divider"></div>
 
@@ -122,6 +118,8 @@ const Settings = () => {
                 </div>
 
             </div>
+
+        </div>
 
   
     `;

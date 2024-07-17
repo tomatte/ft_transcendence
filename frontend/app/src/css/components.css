@@ -1085,14 +1085,10 @@ ul {
 
 .input {
     display: flex;
-    padding: 12px 16px;
     align-items: center;
-    gap: 8px;
     align-self: stretch;
     justify-content: center;
     flex-direction: column;
-
-    border-radius: 4px;
 }
 
 .input__title {

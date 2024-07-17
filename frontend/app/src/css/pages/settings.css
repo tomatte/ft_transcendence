@@ -98,7 +98,16 @@ text-overflow: ellipsis;
     align-items: center;
     gap: 8px;
     border-radius: 4px;
-background: var(--Lunar-Dust-1000, #0E0E10);
+    background: var(--Lunar-Dust-1000);
+}
+
+.keypad .keypad__control {
+    color: var(--Lunar-Dust-600);
+    font-family: "Red Hat Display";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 160%; /* 32px */
 }
 
 .sound-toggle{
@@ -156,5 +165,14 @@ background: var(--Lunar-Dust-1000, #0E0E10);
 }
 
 .profile-picture .button{
-flex: 1 0 0;
+    flex: 1 0 0;
+}
+
+
+.settings_content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    align-self: stretch;
 }
