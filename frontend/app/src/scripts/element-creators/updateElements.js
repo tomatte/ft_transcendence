@@ -39,8 +39,8 @@ export function showTournamentPage() {
 };
 
 export function updateTournamentBrackets(players) {
-    const {rowsLeft, rowsRight} = createBracketsSemi(players)
+    const {leftBrackets, rightBrackets} = createBracketsSemi(players)
 
-    document.getElementById("tournament-bracket-semi-left").innerHTML = rowsLeft
-    document.getElementById("tournament-bracket-semi-right").innerHTML = rowsRight
+    document.getElementById("tournament-bracket-semi-left").innerHTML = leftBrackets
+    document.getElementById("tournament-bracket-semi-right").innerHTML = rightBrackets
 }

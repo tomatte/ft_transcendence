@@ -1,6 +1,7 @@
 import state from "../state/state.js"
 import websocketTournament from "./websocketTournament.js"
 import { showTournamentPage } from "../element-creators/updateElements.js"
+import { updatePlayersQueueTournament, updateTournamentBrackets } from "../element-creators/updateElements.js"
 
 class TournamentEventHandler {
     constructor (state) {
@@ -47,12 +48,17 @@ function creatingTournament(data, state) {
 
     console.log("creatingTournament()")
     state.tournament.id = data.tournament_id
+    state.tournament.is_owner = true
     console.log({state})
 }
 
 function updatePlayers(data, state) {
-    console.log("updatePlayers()")
-    console.log({data})
+    state.tournament.players = data.players
+    if (state.tournament.hasOwnProperty("is_owner")) {
+        updatePlayersQueueTournament(data.players)
+    } else {
+        updateTournamentBrackets(data.players)
+    }
 }
 
 const tournamentEventHandler = new TournamentEventHandler(state)
