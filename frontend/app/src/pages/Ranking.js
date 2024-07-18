@@ -1,17 +1,19 @@
+import renderPagination from './Create-pagination-tables.js';
+
 var ranking_data = {
 	"ranking": [],
 	"currentPage": 1,
 	"itemsPerPage": 4
 }
 
-async function fetch_api_ranking() {
+async function fetchApiRanking() {
 	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
 	if (response.status !== 200) throw new Error('Error status is not 200' + response.method); else return await response.json()
 }
 
 
 const Ranking = async () => {
-	ranking_data['ranking'] = await fetch_api_ranking();
+	ranking_data['ranking'] = await fetchApiRanking();
 	document.querySelector('.page-content__container').innerHTML = loadingBasePage();
 	renderTable();
 };
@@ -27,25 +29,6 @@ const renderTable = () => {
 	renderPagination(ranking_data['ranking'].length, ranking_data['currentPage']);
 };
 
-
-const renderPagination = (totalItems, currentPage) => {
-	const totalPages = Math.ceil(totalItems / ranking_data['itemsPerPage']);
-	let paginationHtml = generatePreviosAndLastButton(currentPage);
-	paginationHtml += handleListPagination(totalPages, currentPage);
-	paginationHtml += generateNextAndLastButton(totalPages, currentPage);
-	document.querySelector('.pagination__list').innerHTML = paginationHtml;
-
-	document.querySelectorAll('.pagination__control a, .pagination__item-number a').forEach(link => {
-		link.addEventListener('click', (event) => {
-			event.preventDefault();
-			const page = parseInt(event.target.getAttribute('data-page'), 10);
-			if (!isNaN(page)) {
-				currentPage = page;
-				renderTable(globalData, currentPage);
-			}
-		});
-	});
-};
 
 
 const createTableLines = (ranking_list, start) => {
