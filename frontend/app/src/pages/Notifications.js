@@ -26,23 +26,43 @@ const infoTypes = {
     'match': matchRequestInfo,
 }
 
-function createRow(profile_img, sender_name, date, time, type) {
+function listenButtonClick(parent, btnId) {
+    parent.addEventListener('click', function(event) {
+        let targetElement = event.target;
+        while (targetElement != null && targetElement !== this) {
+            if (targetElement.id === btnId) {
+                console.log(`${btnId} clicked`);
+                break;
+            }
+            targetElement = targetElement.parentNode;
+        }
+    });
+}
+
+function createRow(profile_img, sender_username, date, time, type) {
     const info = infoTypes[type]
+    const pageContentContainer = document.querySelector('.page-content__container');
+
+    const btnRefuseId = `button-request-refuse-${type}-${sender_username}`
+    const btnAcceptId = `button-request-accept-${type}-${sender_username}`
+
+    listenButtonClick(pageContentContainer, btnAcceptId)
+    listenButtonClick(pageContentContainer, btnRefuseId)
     
     return `<tr class="table-row">
             <td class="table-row__message">
                 <img class="table-row__message__image" src="${profile_img}" alt="player">
                 <div class="table-row__message__text">
-                    <span class="table-row__message__text__content font-body-medium">${sender_name} ${info.message}</span>
+                    <span class="table-row__message__text__content font-body-medium">${sender_username} ${info.message}</span>
                     <span class="table-row__message__text__timestamp font-body-regular">${date} - ${time}</span>
                 </div>
             </td>
             <td class="table-row__actions">
-                <button class="button ${info.buttonStyle}">
+                <button id="${btnAcceptId}" class="button ${info.buttonStyle}">
                     <span class="material-icons-round button__icon-left">${info.icon}</span>
                     <span class="button__text font-body-regular-bold">${info.accept_message}</span>
                 </button>
-                <button class="button button--outline">
+                <button id="${btnRefuseId}" class="button button--outline">
                     <span class="material-icons-round button__icon-left">close</span>
                     <span class="button__text font-body-regular-bold">${info.refuse_message}</span>
                 </button>
@@ -52,6 +72,7 @@ function createRow(profile_img, sender_name, date, time, type) {
 }
 
 function createRows(notifications) {
+
     let rows = ""
     notifications.forEach((data) => {
         rows += createRow(
