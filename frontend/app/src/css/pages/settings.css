@@ -25,7 +25,7 @@
     line-clamp: 6;
     align-self: stretch;
     overflow: hidden;
-    color: var(--Lunar-Dust-500, #737584);
+    color: var(--Lunar-Dust-500);
     text-overflow: ellipsis;
 }
 
@@ -70,21 +70,22 @@
     background: var(--Lunar-Dust-900);
 }
 
-.controls{
+.controls {
     display: flex;
     align-items: center;
     gap: 16px;
     flex: 1 0 0;
-    
-
 }
 
 .controls__type{
     overflow: hidden;
-color: var(--Lunar-Dust-300);
-
-text-overflow: ellipsis;
- 
+    color: var(--Lunar-Dust-300);
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    flex: 1 0 0;
 }
 
 .controls__actions{
@@ -93,7 +94,7 @@ text-overflow: ellipsis;
     gap: 8px;
 }
 
-.keypad{
+.keypad {
     display: flex;
     width: 48px;
     height: 48px;
@@ -108,11 +109,9 @@ text-overflow: ellipsis;
 
 .keypad .keypad__control {
     color: var(--Lunar-Dust-600);
-    font-family: "Red Hat Display";
-    font-size: 20px;
-    font-style: normal;
+
+    margin: 0;
     font-weight: 700;
-    line-height: 160%; /* 32px */
 }
 
 .sound-toggle{
@@ -129,7 +128,6 @@ text-overflow: ellipsis;
     align-self: stretch;
 }
 
-
 .input{
     display: flex;
     flex-direction: column;
@@ -137,6 +135,7 @@ text-overflow: ellipsis;
     gap: 8px;
     flex: 1 0 0;
 }
+
 .input__title{
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -144,7 +143,7 @@ text-overflow: ellipsis;
     line-clamp: 6;
     align-self: stretch;
     overflow: hidden;
-    color: var(--Lunar-Dust-300, #B8B9C1);
+    color: var(--Lunar-Dust-300);
     text-overflow: ellipsis;
 }
 
@@ -157,7 +156,7 @@ text-overflow: ellipsis;
 }
 
 .input__helper-text{
-    color: var(--Lunar-Dust-600, #5D5E6C);
+    color: var(--Lunar-Dust-600);
     align-self: stretch;
 }
 
@@ -190,9 +189,7 @@ text-overflow: ellipsis;
     flex: 1 0 0;
     overflow: hidden;
     color: var(--Lunar-Dust-300, #B8B9C1);
- 
     gap: 16px;
- 
 }
 
  

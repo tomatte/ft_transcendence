@@ -7,7 +7,6 @@ const Settings = () => {
     }
 
     pageContentContainer.innerHTML = `
- 
             <div class="page-content__container__header">
                 <div class="page-content__container__header__info">
                     <h4 class="page-content__container__header__info__title">Settings</h4>
@@ -56,7 +55,7 @@ const Settings = () => {
                             <span class="controls__type font-body-medium">Move up</span>
                             <div class="controls__actions">
                                 <div class="keypad">
-                                    <span class="keypad_control">W</span>
+                                    <span class="keypad__control">W</span>
                                 </div>
                                 <div class="keypad">
                                     <span class="material-icons-round icon-large">arrow_upward</span>
@@ -69,7 +68,7 @@ const Settings = () => {
 
                             <div class="controls__actions">
                                 <div class="keypad">
-                                    <span class="keypad_control">S</span>
+                                    <span class="keypad__control">S</span>
                                 </div>
                                 <div class="keypad">
                                     <span class="material-icons-round icon-large">arrow_downward</span>
@@ -91,9 +90,9 @@ const Settings = () => {
 
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Music</span>
-                            <div class="toggle Active Enabled">
-                                <input type="checkbox" id="toggle-music" class="toggle-checkbox" checked>
-                                <label for="toggle-music" class="toggle-label">
+                            <div id="toggle1" class="toggle Active Enabled">
+                                <input type="checkbox" id="toggle-checkbox" class="toggle-checkbox" checked>
+                                <label for="toggle-checkbox" class="toggle-label">
                                     <span class="toggle-inner"></span>
                                     <span class="toggle-switch"></span>
                                 </label>
@@ -103,22 +102,19 @@ const Settings = () => {
 
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Sound effects</span>
-                            <div class="toggle Active Enabled">
-                                <input type="checkbox" id="toggle-sound-effects" class="toggle-checkbox" checked>
-                                <label for="toggle-sound-effects" class="toggle-label">
+                            <div id="toggle2" class="toggle Active Enabled">
+                                <input type="checkbox" id="toggle-checkbox" class="toggle-checkbox" checked>
+                                <label for="toggle-checkbox" class="toggle-label">
                                     <span class="toggle-inner"></span>
                                     <span class="toggle-switch"></span>
                                 </label>
                             </div>
-
                         </div>
 
                     </div>
 
                 </div>
             </div>
-
-  
     `;
 
     return pageContentContainer;
