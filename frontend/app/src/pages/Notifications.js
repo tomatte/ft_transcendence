@@ -1,3 +1,5 @@
+import { joinTournament } from "../scripts/websockets/websocketActions.js"
+
 const tournamentRequestInfo = {
     accept_message: "Join Tournament",
     refuse_message: "Decline invitation",
@@ -26,12 +28,13 @@ const infoTypes = {
     'match': matchRequestInfo,
 }
 
-function listenButtonClick(parent, btnId) {
+function listenButtonClick(parent, btnId, callback) {
     parent.addEventListener('click', function(event) {
         let targetElement = event.target;
         while (targetElement != null && targetElement !== this) {
             if (targetElement.id === btnId) {
                 console.log(`${btnId} clicked`);
+                callback()
                 break;
             }
             targetElement = targetElement.parentNode;
@@ -39,22 +42,31 @@ function listenButtonClick(parent, btnId) {
     });
 }
 
-function createRow(profile_img, sender_username, date, time, type) {
-    const info = infoTypes[type]
+function createRow(data) {
+    const info = infoTypes[data.type]
     const pageContentContainer = document.querySelector('.page-content__container');
 
-    const btnRefuseId = `button-request-refuse-${type}-${sender_username}`
-    const btnAcceptId = `button-request-accept-${type}-${sender_username}`
+    const btnRefuseId = `button-request-refuse-${data.type}-${data.owner.username}`
+    const btnAcceptId = `button-request-accept-${data.type}-${data.owner.username}`
 
-    listenButtonClick(pageContentContainer, btnAcceptId)
-    listenButtonClick(pageContentContainer, btnRefuseId)
+    listenButtonClick(
+        pageContentContainer,
+        btnAcceptId,
+        () => joinTournament(data)
+    )
+
+    listenButtonClick(
+        pageContentContainer,
+        btnRefuseId,
+        () => console.log(`refuse ${data.owner.username}'s tournament`)
+    )
     
     return `<tr class="table-row">
             <td class="table-row__message">
-                <img class="table-row__message__image" src="${profile_img}" alt="player">
+                <img class="table-row__message__image" src="${data.owner.avatar}" alt="player">
                 <div class="table-row__message__text">
-                    <span class="table-row__message__text__content font-body-medium">${sender_username} ${info.message}</span>
-                    <span class="table-row__message__text__timestamp font-body-regular">${date} - ${time}</span>
+                    <span class="table-row__message__text__content font-body-medium">${data.owner.username} ${info.message}</span>
+                    <span class="table-row__message__text__timestamp font-body-regular">07/07 - 10:00</span>
                 </div>
             </td>
             <td class="table-row__actions">
@@ -75,13 +87,7 @@ function createRows(notifications) {
 
     let rows = ""
     notifications.forEach((data) => {
-        rows += createRow(
-            data.owner.avatar,
-            data.owner.username,
-            '17/07/2024',
-            '17:24',
-            'tournament'
-        )
+        rows += createRow(data)
     })
     return rows
 }

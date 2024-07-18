@@ -22,8 +22,10 @@ class TournamentEventHandler {
 }
 
 function enterTournament(data, state) {
-    //updatePlayersQueueTournament(data.tournament.players)
-    //state.tournament = data.tournament
+    if (data.hasOwnProperty('tournament_id') == false)
+            return
+    
+    state.tournament.id = data.tournament_id
     console.log("EVENT enterTournament()")
 }
 

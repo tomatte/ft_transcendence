@@ -288,7 +288,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
                 "username": owner['username'],
                 "nickname": owner['nickname'],
                 "avatar": owner['avatar'],
-            }
+            },
+            "tournament_id": event['tournament_id'] 
         }
         
         self.user_state.notification.add(payload)
@@ -300,10 +301,13 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         print("invite_to_tournament()")
         if "friend" not in data:
             return
+        if "tournament_id" not in data:
+            return
         
         notification_event = {
             "type": "tournament.invitation",
-            "owner": self.user.username
+            "owner": self.user.username,
+            "tournament_id": data['tournament_id']
         }
         
         await self.user_state.notification.notify(
