@@ -1143,6 +1143,7 @@ ul {
     position: relative;
     width: 48px;
     transition: background 0.3s, border-radius 0.3s;
+
 }
 
 .toggle-switch {
