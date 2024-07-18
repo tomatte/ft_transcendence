@@ -179,31 +179,28 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
-        if not self.validation.join_tournament.can_join(data):
-            print("player forbidden to join tournament")
-            #TODO: send error message to client
-            return 
+        # if not self.validation.join_tournament.can_join(data):
+        #     print("player forbidden to join tournament")
+        #     #TODO: send error message to client
+        #     return 
 
-        self.player_id = self.user.username
-        self.tournament_id = data["tournament_id"]
+        self.tournament_id = data["tournament"]["id"]
         
-        self.tournament_state.join() #join()
+        self.tournament_state.join(data["tournament"]["id"])
         
-        tournament_data: TournamentData = redis_client.get_json(self.tournament_id)
-        tournament_data["players"].append(self.user.username)
-        if len(tournament_data["players"]) == 4:
-            random.shuffle(tournament_data["players"])
-        redis_client.set_json(self.tournament_id, tournament_data)
+        # if len(tournament_data["players"]) == 4:
+        #     random.shuffle(tournament_data["players"])
+        # redis_client.set_json(self.tournament_id, tournament_data)
         
-        await self.channel_layer.group_add(self.tournament_id, self.channel_name)
+        # await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
-        payload = {"status": "joined tournament succesfuly"}
-        await self.send_json(payload)
-            
-        await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.update.players"})
+        # payload = {"status": "joined tournament succesfuly"}
+        # await self.send_json(payload)
         
-        if len(tournament_data["players"]) == 4:
-            self.create_start_tournament_task()
+        # await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.update.players"})
+        
+        # if len(tournament_data["players"]) == 4:
+        #     self.create_start_tournament_task()
             
     async def tournament_update_players(self, event):
         payload = redis_client.get_json(self.tournament_id)

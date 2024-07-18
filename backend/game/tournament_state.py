@@ -77,9 +77,14 @@ class TournamentState:
         
         return self.tournament_id
     
-    def join(self, owner):
-        print(f"{self.user.username} JOINED a Tournament")
-        pass
+    def join(self, id):
+        data = redis.get_map(global_tournament_name, id)
+        if data == None:
+            print("tournament not found")
+            return
+        
+        data["players"].append(self.user.username)
+        redis.set_map(global_tournament_name, id, data)
     
     async def exit(self):
         exit = ExitTournament(self)

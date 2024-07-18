@@ -1,4 +1,5 @@
 import websocketNotification from "./websocketNotification.js"
+import websocketTournament from "./websocketTournament.js"
 import state from "../state/state.js"
 
 export function inviteToTournament(username) {
@@ -11,6 +12,11 @@ export function inviteToTournament(username) {
 }
 
 export function joinTournament(data) {
-    console.log(`joining ${data.owner.username}'s tournament`)
-    console.log({data})
+    console.log("joinTournament()")
+    state.tournament = {
+        action: 'join',
+        id: data.tournament_id
+    }
+
+    websocketTournament.listen()
 }

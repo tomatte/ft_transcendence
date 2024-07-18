@@ -33,7 +33,8 @@ function connectedTournament(data, state) {
     console.log("EVENT connectedTournament")
 
     websocketTournament.send({
-        action: state.tournament.action
+        action: state.tournament.action,
+        tournament: state.tournament
     })
 }
 

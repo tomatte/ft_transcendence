@@ -14,10 +14,10 @@ class _JoinTournamentValiadation:
         if not isinstance(data, dict):
             raise TypeError("data must be dict")
         
-        if not "tournament_id" in data:
-            raise  ClientPayloadError("no tournament_id found")
-        if not "player_id" in data:
-            raise  ClientPayloadError("no player_id found")
+        if not "tournament" in data:
+            raise  ClientPayloadError("no tournament data found")
+        if not "id" in data["tournament"]:
+            raise  ClientPayloadError("no tournament id found")
         
     def can_join(self, data):
         try:
