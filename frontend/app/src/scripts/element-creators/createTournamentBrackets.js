@@ -20,7 +20,7 @@ const emptyPlayer = {
     "nickname": "?"
 }
 
-export default function createTournamentBrackets(players) {
+export function createBracketsSemi(players) {
     if (players && players.length == 0) {
         return "";
     }
@@ -48,4 +48,8 @@ export default function createTournamentBrackets(players) {
     }
 
     return {leftBrackets, rightBrackets}
+}
+
+export function createBracketsFinal(players) {
+    
 }

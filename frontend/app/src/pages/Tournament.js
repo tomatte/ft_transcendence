@@ -1,8 +1,8 @@
-import createTournamentBrackets from "../scripts/element-creators/createTournamentBrackets.js";
+import { createBracketsSemi } from "../scripts/element-creators/createTournamentBrackets.js";
 import state from "../scripts/state/state.js";
 
 const Tournament = () => {
-    const {leftBrackets, rightBrackets} = createTournamentBrackets(state.tournament.players)
+    const {leftBrackets, rightBrackets} = createBracketsSemi(state.tournament.players)
 
     const tournamentHTML = /* html */ `
     <div class="Brackets">  
