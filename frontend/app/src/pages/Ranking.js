@@ -28,6 +28,26 @@ const renderTable = () => {
 };
 
 
+const renderPagination = (totalItems, currentPage) => {
+	const totalPages = Math.ceil(totalItems / ranking_data['itemsPerPage']);
+	let paginationHtml = generatePreviosAndLastButton(currentPage);
+	paginationHtml += handleListPagination(totalPages, currentPage);
+	paginationHtml += generateNextAndLastButton(totalPages, currentPage);
+	document.querySelector('.pagination__list').innerHTML = paginationHtml;
+
+	document.querySelectorAll('.pagination__control a, .pagination__item-number a').forEach(link => {
+		link.addEventListener('click', (event) => {
+			event.preventDefault();
+			const page = parseInt(event.target.getAttribute('data-page'), 10);
+			if (!isNaN(page)) {
+				currentPage = page;
+				renderTable(globalData, currentPage);
+			}
+		});
+	});
+};
+
+
 const createTableLines = (ranking_list, start) => {
 	return ranking_list.reduce((acc, item, index) => {
 		return acc + `
@@ -170,24 +190,5 @@ const generateNextAndLastButton = (totalPages, currentPage) => {
 		</li>`
 }
 
-
-const renderPagination = (totalItems, currentPage) => {
-	const totalPages = Math.ceil(totalItems / ranking_data['itemsPerPage']);
-	let paginationHtml = generatePreviosAndLastButton(currentPage);
-	paginationHtml += handleListPagination(totalPages, currentPage);
-	paginationHtml += generateNextAndLastButton(totalPages, currentPage);
-	document.querySelector('.pagination__list').innerHTML = paginationHtml;
-
-	document.querySelectorAll('.pagination__control a, .pagination__item-number a').forEach(link => {
-		link.addEventListener('click', (event) => {
-			event.preventDefault();
-			const page = parseInt(event.target.getAttribute('data-page'), 10);
-			if (!isNaN(page)) {
-				currentPage = page;
-				renderTable(globalData, currentPage);
-			}
-		});
-	});
-};
 
 export default Ranking;
