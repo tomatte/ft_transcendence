@@ -1,6 +1,10 @@
+import createTournamentBrackets from "../scripts/element-creators/createTournamentBrackets.js";
+import state from "../scripts/state/state.js";
 
 const Tournament = () => {
-    const tournamentHTML = `
+    const {leftBrackets, rightBrackets} = createTournamentBrackets(state.tournament.players)
+
+    const tournamentHTML = /* html */ `
     <div class="Brackets">  
         <div class="Frame-10140">  
             <button class="button button--secondary">
@@ -18,26 +22,8 @@ const Tournament = () => {
 
         <div class="Frame-10139"> 
 
-            <div class="Frame-10141">
-                    <div class="tournament-bracket">
-                        <div class="player-bracket">
-                            <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                            <div class="player-bracket__info__text">
-                                <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                                <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tournament-bracket">
-                        <div class="player-bracket">
-                            <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                            <div class="player-bracket__info__text">
-                                <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                                <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                            </div>
-                        </div>
-                    </div>
+            <div id="tournament-bracket-semi-left" class="Frame-10141">
+                ${leftBrackets}
             </div>
 
             <div class="Frame-10144">
@@ -71,24 +57,7 @@ const Tournament = () => {
             </div>
 
              <div class="Frame-10146">
-                <div class="tournament-bracket">
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tournament-bracket">
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
+                    ${rightBrackets}
                 </div>
         </div>
             

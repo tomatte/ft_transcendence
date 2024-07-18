@@ -3,6 +3,7 @@ import createPlayerQueueTournament from "./createPlayerQueueTournament.js"
 import injectElement from "./injectElement.js"
 import { inviteToTournament } from "../websockets/websocketActions.js"
 import Tournament from "../../pages/Tournament.js"
+import createTournamentBrackets from "./createTournamentBrackets.js"
 
 export function updateOnlinePlayersTournament(players) {
     const html = createOnlinePlayersTournamentRows(players)
@@ -36,3 +37,10 @@ export function showTournamentPage() {
    
     gameContainer.innerHTML = Tournament()
 };
+
+export function updateTournamentBrackets(players) {
+    const {rowsLeft, rowsRight} = createTournamentBrackets(players)
+
+    document.getElementById("tournament-bracket-semi-left").innerHTML = rowsLeft
+    document.getElementById("tournament-bracket-semi-right").innerHTML = rowsRight
+}
