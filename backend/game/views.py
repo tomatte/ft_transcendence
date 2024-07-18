@@ -171,7 +171,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
         payload = {
-            "name": "enter_tournament",
+            "name": "creating_tournament",
             "tournament_id": self.tournament_id,
         }
         
@@ -186,26 +186,37 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
 
         self.tournament_id = data["tournament"]["id"]
         
-        self.tournament_state.join(data["tournament"]["id"])
+        self.tournament_state.join(self.tournament_id)
+        
         
         # if len(tournament_data["players"]) == 4:
         #     random.shuffle(tournament_data["players"])
         # redis_client.set_json(self.tournament_id, tournament_data)
         
-        # await self.channel_layer.group_add(self.tournament_id, self.channel_name)
+        players = self.tournament_state.get_players(self.tournament_id)
         
-        # payload = {"status": "joined tournament succesfuly"}
-        # await self.send_json(payload)
+        await self.send_json({
+            "name": "enter_tournament",
+            "tournament_id": self.tournament_id,
+            "players": players
+        })
         
-        # await self.channel_layer.group_send(self.tournament_id, {"type": "tournament.update.players"})
+        await self.channel_layer.group_send(self.tournament_id, {
+            "type": "tournament.update_players",
+            "players": players
+        })
+        
+        await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
         # if len(tournament_data["players"]) == 4:
         #     self.create_start_tournament_task()
             
     async def tournament_update_players(self, event):
-        payload = redis_client.get_json(self.tournament_id)
-        payload["status"] = "update_players"
-        await self.send_json(payload)
+        await self.send_json({
+            "name": "update_players",
+            "players": event["players"],
+            "tournament_id": self.tournament_id
+        })        
         
     async def tournament_start(self, event):
         await self.send_json({"status": "start_tournament"})

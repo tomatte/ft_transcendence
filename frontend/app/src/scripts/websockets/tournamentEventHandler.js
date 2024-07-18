@@ -38,9 +38,25 @@ function connectedTournament(data, state) {
     })
 }
 
+function creatingTournament(data, state) {
+    if (data.hasOwnProperty('tournament_id') == false)
+        return
+
+    console.log("creatingTournament()")
+    state.tournament.id = data.tournament_id
+    console.log({state})
+}
+
+function updatePlayers(data, state) {
+    console.log("updatePlayers()")
+    console.log({data})
+}
+
 const tournamentEventHandler = new TournamentEventHandler(state)
 
 tournamentEventHandler.register('enter_tournament', enterTournament)
 tournamentEventHandler.register('connected', connectedTournament)
+tournamentEventHandler.register('update_players', updatePlayers)
+tournamentEventHandler.register('creating_tournament', creatingTournament)
 
 export default tournamentEventHandler

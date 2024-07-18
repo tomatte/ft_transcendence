@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 from enum import Enum
 from channels.layers import get_channel_layer
+from backend.utils import OnlineState
 
 global_tournament_name = 'global_tournament'
 
@@ -73,11 +74,12 @@ class TournamentState:
             payload
         )
         
-        self._store_on_user_state()
+        self.store_on_user_state(self.tournament_id)
         
         return self.tournament_id
     
     def join(self, id):
+        self.tournament_id = id
         data = redis.get_map(global_tournament_name, id)
         if data == None:
             print("tournament not found")
@@ -85,19 +87,30 @@ class TournamentState:
         
         data["players"].append(self.user.username)
         redis.set_map(global_tournament_name, id, data)
+        self.store_on_user_state(id)
     
     async def exit(self):
         exit = ExitTournament(self)
         await exit.exit()
         
-    def _store_on_user_state(self):
+    def get_players(self, id):
+        data = redis.get_map(global_tournament_name, id)
+        
+        players = []
+        for username in data["players"]:
+            player = OnlineState.get_user(username)
+            players.append(player)
+            
+        return players
+        
+    def store_on_user_state(self, tournament_id):
         if redis.hexists(self.user.username, 'tournament_id'):
             return
 
         redis.set_map_str(
             self.user.username,
             'tournament_id', 
-            self.tournament_id
+            tournament_id
         )
 
     
