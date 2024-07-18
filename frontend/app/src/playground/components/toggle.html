@@ -9,33 +9,34 @@
     <link rel="stylesheet" href="../../css/colors.css">
     <link rel="stylesheet" href="../../css/typography.css">
     <link rel="stylesheet" href="../playground.css">
+
+    <link rel="stylesheet" href="../../scripts/toggle.js">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <title>Toggle</title>
     <style>
         .toggle {
-            display: inline-flex;
-            height: 24px;
-            padding: 0px 3px;
-            align-items: center;
-            flex-shrink: 0;
-            border-radius: 8px;
-            position: relative;
-            width: 48px;
-            transition: background 0.3s, border-radius 0.3s;
+        display: inline-flex;
+        height: 24px;
+        padding: 0px 3px;
+        align-items: center;
+        flex-shrink: 0;
+        border-radius: 8px;
+        position: relative;
+        width: 48px;
+        transition: background 0.3s, border-radius 0.3s;
+    }
 
-        }
-
-        .toggle-switch {
-            width: 18px;
-            height: 18px;
-            background: #fff;
-            border-radius: 50%;
-            position: absolute;
-            left: 3px;
-            transition: left 0.3s;
-        }
+    .toggle-switch {
+        width: 18px;
+        height: 18px;
+        background: #fff;
+        border-radius: 6px;
+        position: absolute;
+        left: 3px;
+        right: 3px;
+}
 
         .toggle-checkbox {
             display: none;
@@ -76,9 +77,12 @@
         }
 
         /* Estados de hover */
-        .toggle:hover {
-            border-radius: 8px;
+        .toggle.Active.Enabled:hover {
             background: var(--Neptune-Blue-900, #233485);
+        }
+
+        .toggle.Default.Enabled:hover {
+            background: var(--Lunar-Dust-800, #41414B);
         }
     </style>
 </head>
@@ -94,36 +98,52 @@
     </div>
 
     <script>
-        const toggle = document.getElementById('toggle');
-        const checkbox = document.getElementById('toggle-checkbox');
-
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                toggle.className = 'toggle Active Enabled';
-                console.log('Toggle is Active and Enabled');
-            } else {
-                toggle.className = 'toggle Default Enabled';
-                console.log('Toggle is Default and Enabled');
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggles = document.querySelectorAll('.toggle');
+        
+            toggles.forEach((toggle, index) => {
+                const checkbox = toggle.querySelector('.toggle-checkbox');
+                const label = toggle.querySelector('.toggle-label');
+        
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        toggle.classList.remove('Default', 'Disabled');
+                        toggle.classList.add('Active', 'Enabled');
+                        console.log('Toggle is Active and Enabled');
+                    } else {
+                        toggle.classList.remove('Active', 'Disabled');
+                        toggle.classList.add('Default', 'Enabled');
+                        console.log('Toggle is Default and Enabled');
+                    }
+                });
+        
+                // Initial state based on checkbox state
+                if (checkbox.checked) {
+                    toggle.classList.add('Active', 'Enabled');
+                } else {
+                    toggle.classList.add('Default', 'Enabled');
+                }
+        
+                // Handling disabled state
+                if (checkbox.disabled) {
+                    if (checkbox.checked) {
+                        toggle.classList.add('Active', 'Disabled');
+                        console.log('Toggle is Active and Disabled');
+                    } else {
+                        toggle.classList.add('Default', 'Disabled');
+                        console.log('Toggle is Default and Disabled');
+                    }
+                }
+        
+                // Prevent label click when checkbox is disabled
+                label.addEventListener('click', function(event) {
+                    if (checkbox.disabled) {
+                        event.preventDefault();
+                    }
+                });
+            });
         });
-
-        // Função para simular desabilitar o toggle
-        function disableToggle() {
-            checkbox.disabled = true;
-            toggle.className = checkbox.checked ? 'toggle Active Disabled' : 'toggle Default Disabled';
-            console.log('Toggle is Disabled');
-        }
-
-        // Função para simular habilitar o toggle
-        function enableToggle() {
-            checkbox.disabled = false;
-            toggle.className = checkbox.checked ? 'toggle Active Enabled' : 'toggle Default Enabled';
-            console.log('Toggle is Enabled');
-        }
-
-        // Testando a função disableToggle e enableToggle após 3 segundos
-        setTimeout(disableToggle, 3000);
-        setTimeout(enableToggle, 6000);
-    </script>
+        </script>
+        
 </body>
 </html>

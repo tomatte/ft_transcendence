@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="../css/pages/index.css">
     <link rel="stylesheet" href="../css/pages/settings.css">
     <link rel="stylesheet" href="../css/pages/tournament.css">
+    <link rel="stylesheet" href="../../src/scripts/toggle.js">
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
@@ -71,7 +74,7 @@
                             <span class="controls__type font-body-medium">Move up</span>
                             <div class="controls__actions">
                                 <div class="keypad">
-                                    <span class="keypad_control">W</span>
+                                    <span class="keypad__control">W</span>
                                 </div>
                                 <div class="keypad">
                                     <span class="material-icons-round icon-large">arrow_upward</span>
@@ -84,7 +87,7 @@
 
                             <div class="controls__actions">
                                 <div class="keypad">
-                                    <span class="keypad_control">S</span>
+                                    <span class="keypad__control">S</span>
                                 </div>
                                 <div class="keypad">
                                     <span class="material-icons-round icon-large">arrow_downward</span>
@@ -103,26 +106,33 @@
                         <span class="page-content__container__content__setting__info__description font-body-medium">Toggle music and sound. Unlike space, here you can actually hear the action!</span>
                     </div>
                     <div class="page-content__container__content__setting__control">
+
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Music</span>
-                            <div class="sound__actions">
-                                <div class="sound__actions__toggle">
-                                    <input type="checkbox" id="music" name="music" value="music">
-                                    <label for="music"></label>
-                                </div>
+                            <div class="toggle Active Enabled">
+                                <input type="checkbox" id="toggle-music" class="toggle-checkbox" checked>
+                                <label for="toggle-music" class="toggle-label">
+                                    <span class="toggle-inner"></span>
+                                    <span class="toggle-switch"></span>
+                                </label>
                             </div>
+
                         </div>
 
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Sound effects</span>
-                            <div class="sound__actions">
-                                <div class="sound__actions__toggle">
-                                    <input type="checkbox" id="sound-effects" name="sound-effects" value="sound-effects">
-                                    <label for="sound-effects"></label>
-                                </div>
+                            <div class="toggle Active Enabled">
+                                <input type="checkbox" id="toggle-sound-effects" class="toggle-checkbox" checked>
+                                <label for="toggle-sound-effects" class="toggle-label">
+                                    <span class="toggle-inner"></span>
+                                    <span class="toggle-switch"></span>
+                                </label>
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>

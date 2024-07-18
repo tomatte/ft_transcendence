@@ -24,7 +24,7 @@
 
 .page-content__container__empty-state__info__title{
     color: var(--Comet-Cloud-300, #BEC7E3);
-text-align: center;
+    text-align: center;
  
 }
 
@@ -41,5 +41,39 @@ text-align: center;
  
 }
 
+.colour-button-empty{
+    display: flex;
+    width: 220px;
+    height: 42px;
+    padding: 10px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    background: var(--Cosmic-Forest-600, #059653);
+}
 
+.size-button{
+    display: flex;
+    width: 220px;
+    padding: 10px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    background: var(--Lunar-Dust-700, #4C4D58);
+}
 
+.typography-button{
+    overflow: hidden;
+    color: var(--Lunar-Dust-500, #737584);
+    text-align: center;
+    text-overflow: ellipsis;
+    
+    /* Body/Medium */
+    font-family: Play;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 22.4px */
+}

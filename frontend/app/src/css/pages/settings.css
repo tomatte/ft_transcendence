@@ -35,6 +35,7 @@
     align-items: center;
     gap: 48px;
     flex: 1 0 0;
+    align-self: stretch;
 }
 
 .profile-picture{
@@ -74,11 +75,14 @@
     align-items: center;
     gap: 16px;
     flex: 1 0 0;
+    
+
 }
 
 .controls__type{
     overflow: hidden;
 color: var(--Lunar-Dust-300);
+
 text-overflow: ellipsis;
  
 }
@@ -99,6 +103,7 @@ text-overflow: ellipsis;
     gap: 8px;
     border-radius: 4px;
     background: var(--Lunar-Dust-1000);
+    color: var(--Lunar-Dust-600);
 }
 
 .keypad .keypad__control {
@@ -176,3 +181,24 @@ text-overflow: ellipsis;
     gap: 24px;
     align-self: stretch;
 }
+
+.sound__type{
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    flex: 1 0 0;
+    overflow: hidden;
+    color: var(--Lunar-Dust-300, #B8B9C1);
+ 
+    gap: 16px;
+ 
+}
+
+.sound-toggle-define{
+    display: flex;
+height: 24px;
+padding: 0px 3px;
+align-items: center;
+}
+ 

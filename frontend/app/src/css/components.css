@@ -1126,3 +1126,78 @@ ul {
 .input--error .input__helper-text {
     color: var(--Red-Dwarf-700);
 }
+
+
+
+/* ------------------- TOGGLE ------------------ */
+
+
+.toggle {
+    display: flex;
+ 
+    height: 24px;
+    padding: 0px 3px;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 8px;
+    position: relative;
+    width: 48px;
+    transition: background 0.3s, border-radius 0.3s;
+}
+
+.toggle-switch {
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 6px;
+    position: absolute;
+    left: 3px;
+    right: 3px;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.toggle-checkbox:checked + .toggle-label .toggle-switch {
+    left: calc(100% - 21px);
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+}
+
+.toggle-inner {
+    display: none;
+}
+
+/* Estados do toggle */
+.toggle.Active.Enabled {
+    background: var(--Neptune-Blue-600-base, #315BE3);
+}
+
+.toggle.Active.Disabled {
+    background: var(--Neptune-Blue-900, #233485);
+}
+
+.toggle.Default.Enabled {
+    background: var(--Lunar-Dust-600, #5D5E6C);
+}
+
+.toggle.Default.Disabled {
+    background: var(--Lunar-Dust-800, #41414B);
+}
+
+/* Estados de hover */
+.toggle.Active.Enabled:hover {
+    background: var(--Neptune-Blue-900, #233485);
+}
+
+.toggle.Default.Enabled:hover {
+    background: var(--Lunar-Dust-800, #41414B);
+}
