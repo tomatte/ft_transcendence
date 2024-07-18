@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/pages/empty.css">
      <link rel="stylesheet" href="../css/pages/login.css">
+     <link rel="stylesheet" href="../css/layout.css">
+     <link rel="stylesheet" href="../css/pages/index.css">
+ 
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
@@ -18,23 +22,28 @@
 </head>
 <body>
 
- <div class="page-content__container__empty-state"> 
+    <div class="page-content">
 
-    <img src="../assets/images/empty/mail-dynamic-clay.png alt="Mail Dynamic Clay" class="empty-state-image">
+        <div class="page-content__container">
 
-    <div class="page-content__container__empty-state__info">
-        <h6 class="page-content__container__empty-state__info__title">No Friends Yet</h6>
-        <span class="page-content__container__empty-state__info__description">Add friends to see their posts here.</span>
+            <div class="page-content__container__empty-state"> 
+            
+                <img src="../assets/images/empty/mail-dynamic-clay.png" alt="Mail Dynamic Clay" class="empty-state-image">
+
+                <div class="page-content__container__empty-state__info">
+                    <h6 class="page-content__container__empty-state__info__title">No Friends Yet</h6>
+                    <span class="page-content__container__empty-state__info__description">Whoops! Your friend list is currently in 'otter space'. Time to call some buddies by tapping the button below.</span>
+                </div>
+
+                <div class="button">
+                    <button class="button button--success">
+                    <span class="button__text font-body-regular-bold">Add Friend</span>
+                    </button>
+                </div>
+            </div>
+ 
+        </div>
+
     </div>
-
-    <div class="button">
-        <button class="button button--success">
-        <span class="button__text font-body-regular-bold">Add Friend</span>
-        </button>
-    </div>
-
- </div>
-
-
 </body>
 </html>

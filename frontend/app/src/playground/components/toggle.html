@@ -23,7 +23,8 @@
             border-radius: 8px;
             position: relative;
             width: 48px;
-            transition: background 0.3s;
+            transition: background 0.3s, border-radius 0.3s;
+
         }
 
         .toggle-switch {
@@ -72,6 +73,12 @@
 
         .toggle.Default.Disabled {
             background: var(--Lunar-Dust-800, #41414B);
+        }
+
+        /* Estados de hover */
+        .toggle:hover {
+            border-radius: 8px;
+            background: var(--Neptune-Blue-900, #233485);
         }
     </style>
 </head>
