@@ -2,6 +2,7 @@ import createOnlinePlayersTournamentRows from "./createOnlinePlayersTournament.j
 import createPlayerQueueTournament from "./createPlayerQueueTournament.js"
 import injectElement from "./injectElement.js"
 import { inviteToTournament } from "../websockets/websocketActions.js"
+import Tournament from "../../pages/Tournament.js"
 
 export function updateOnlinePlayersTournament(players) {
     const html = createOnlinePlayersTournamentRows(players)
@@ -23,3 +24,15 @@ export function updatePlayersQueueTournament(players) {
     const statusHtml = `${players.length}/4 ready`
     injectElement(statusHtml, "tournament-status-ready")
 }
+
+function hideContents() {
+    document.querySelector(".sidebar").style.display = 'none'
+    document.querySelector(".page-content").style.display = 'none'
+}
+
+export function showTournamentPage() {
+    hideContents()
+   const gameContainer = document.querySelector('.page-tournament__container'); 
+   
+    gameContainer.innerHTML = Tournament()
+};
