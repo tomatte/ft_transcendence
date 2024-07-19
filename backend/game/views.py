@@ -186,13 +186,13 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.tournament_id = data["tournament"]["id"]
         
         self.tournament_state.join(self.tournament_id)
-        
-        
-        # if len(tournament_data["players"]) == 4:
-        #     random.shuffle(tournament_data["players"])
-        # redis_client.set_json(self.tournament_id, tournament_data)
-        
+    
         players = self.tournament_state.get_players(self.tournament_id)
+        if len(players) == 4:
+            self.tournament_state.shuffle_players(self.tournament_id)
+            players = self.tournament_state.get_players(self.tournament_id)
+            
+        
         
         await self.send_json({
             "name": "enter_tournament",

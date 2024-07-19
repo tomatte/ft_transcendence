@@ -4,6 +4,7 @@ from datetime import datetime
 from enum import Enum
 from channels.layers import get_channel_layer
 from backend.utils import OnlineState
+import random
 
 global_tournament_name = 'global_tournament'
 
@@ -61,6 +62,13 @@ class TournamentState:
             players.append(player)
             
         return players
+    
+    @classmethod
+    def shuffle_players(cls, tournament_id):
+        data = redis.get_map(global_tournament_name, tournament_id)
+        random.shuffle(data["players"])
+        redis.set_map(global_tournament_name, tournament_id, data)
+        return data["players"]
     
     def __init__(self, user) -> None:
         self.user = user
