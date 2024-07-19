@@ -25,9 +25,14 @@ export default function createOnlinePlayersTournamentRows(players) {
 
     let rows = ""
 
-    for (let key in players) {
-        const row = createRow(players[key])
+    if (Array.isArray(players) == false) {
+        players = Object.values(players)
+    }
+        
+    for (const player of players) {
+        const row = createRow(player)
         rows += row
     }
+
     return rows
 }

@@ -1,12 +1,18 @@
 import createOnlinePlayersTournamentRows from "./createOnlinePlayersTournament.js"
 import createPlayerQueueTournament from "./createPlayerQueueTournament.js"
-import injectElement from "./injectElement.js"
 import { inviteToTournament } from "../websockets/websocketActions.js"
 import Tournament from "../../pages/Tournament.js"
 import { createBracketsSemi } from "./createTournamentBrackets.js"
+import { injectElement, hideContents, diffOnlineAndQueue } from "./utils.js"
+import state from "../state/state.js"
 
 export function updateOnlinePlayersTournament(players) {
-    const html = createOnlinePlayersTournamentRows(players)
+    if (!state.hasOwnProperty("tournament") || !state.tournament.hasOwnProperty("players")) {
+        return 
+    }
+
+    const newOnline = diffOnlineAndQueue(players, state.tournament.players)
+    const html = createOnlinePlayersTournamentRows(newOnline)
     injectElement(html, "tournament_online_players")
     
     for (let key in players) {
@@ -24,11 +30,6 @@ export function updatePlayersQueueTournament(players) {
     
     const statusHtml = `${players.length}/4 ready`
     injectElement(statusHtml, "tournament-status-ready")
-}
-
-function hideContents() {
-    document.querySelector(".sidebar").style.display = 'none'
-    document.querySelector(".page-content").style.display = 'none'
 }
 
 export function showTournamentPage() {

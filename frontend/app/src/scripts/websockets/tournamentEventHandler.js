@@ -1,6 +1,6 @@
 import state from "../state/state.js"
 import websocketTournament from "./websocketTournament.js"
-import { showTournamentPage } from "../element-creators/updateElements.js"
+import { showTournamentPage, updateOnlinePlayersTournament } from "../element-creators/updateElements.js"
 import { updatePlayersQueueTournament, updateTournamentBrackets } from "../element-creators/updateElements.js"
 
 class TournamentEventHandler {
@@ -56,6 +56,7 @@ function updatePlayers(data, state) {
     state.tournament.players = data.players
     if (state.tournament.hasOwnProperty("is_owner")) {
         updatePlayersQueueTournament(data.players)
+        updateOnlinePlayersTournament(state.online_players)
     } else {
         updateTournamentBrackets(data.players)
     }
