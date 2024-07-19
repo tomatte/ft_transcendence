@@ -132,85 +132,89 @@
 
 
 
- 
-
-let currentPage = 1;
-const itemsPerPage = 4;
-
 const Matches = (state) => {
+    console.log({ state });
+    
     const pageContentContainer = document.querySelector('.page-content__container');
+    const itemsPerPage = 4; // itens por pag
 
-    const renderPagination = (totalMatches) => {
-        const totalPages = Math.ceil(totalMatches / itemsPerPage);
-        const paginationList = pageContentContainer.querySelector('.pagination__list');
-        paginationList.innerHTML = '';
+    // Dados - tem que substituir pelos dados corretos
+    const items = [
+        { player: 'Caos Lourenc', gameType: 'Friendly Match', score: '2 X 1', status: 'Defeat', date: '30/06/2024' },
+        { player: 'Caos Lourenc', gameType: 'Friendly Match', score: '2 X 1', status: 'Defeat', date: '30/06/2024' },
+        { player: 'Caos Lourenc', gameType: 'Friendly Match', score: '2 X 1', status: 'Victory', date: '30/06/2024' },
+        
+    ];
 
-        paginationList.innerHTML += `
-            <li class="pagination__control ${currentPage === 1 ? 'pagination__control--disabled' : ''}">
-                <a href="#" data-page="1">First</a>
-            </li>
-            <li class="pagination__control ${currentPage === 1 ? 'pagination__control--disabled' : ''}">
-                <a href="#" data-page="${currentPage - 1}">Previous</a>
-            </li>
-        `;
+    const totalPages = Math.ceil(items.length / itemsPerPage);
 
-        for (let i = 1; i <= totalPages; i++) {
-            paginationList.innerHTML += `
-                <li class="pagination__item-number ${currentPage === i ? 'pagination__item-number--active' : ''}">
-                    <a href="#" data-page="${i}">${i}</a>
-                </li>
-            `;
-        }
+    const renderTable = (pageNumber) => {
+        const start = (pageNumber - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const currentItems = items.slice(start, end);
 
-        paginationList.innerHTML += `
-            <li class="pagination__control ${currentPage === totalPages ? 'pagination__control--disabled' : ''}">
-                <a href="#" data-page="${currentPage + 1}">Next</a>
-            </li>
-            <li class="pagination__control ${currentPage === totalPages ? 'pagination__control--disabled' : ''}">
-                <a href="#" data-page="${totalPages}">Last</a>
-            </li>
-        `;
-
-        paginationList.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const page = parseInt(link.getAttribute('data-page'));
-                if (page > 0 && page <= totalPages) {
-                    currentPage = page;
-                    renderMatches(state);
-                }
-            });
-        });
+        return currentItems.map(item => `
+            <tr class="table-row">
+                <td class="table-row__player">
+                    <img class="table-row__player__image" src="../assets/images/players/caos.png" alt="player">
+                    <div class="table-row__player__text">
+                        <span class="table-row__player__text__name font-body-medium-bold">${item.player}</span>
+                        <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
+                    </div>
+                </td>
+                <td class="table-row__data-default font-body-medium-bold">${item.gameType}</td>
+                <td class="table-row__data-default font-body-medium-bold">${item.score}</td>
+                <td class="table-row__tag">
+                    <span class="tag ${item.status === 'Defeat' ? 'tag--defeat' : 'tag--victory'}">
+                        <span class="tag__text font-body-regular-bold">${item.status}</span>
+                    </span>
+                </td>
+                <td class="table-row__data-default font-body-medium-bold">${item.date}</td>
+            </tr>
+        `).join('');
     };
 
-    const renderMatches = (state) => {
-        const matches = state.matches || []; // Assuming matches are passed in state
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const matchesToDisplay = matches.slice(start, end);
+    const renderPagination = (pageNumber) => {
+        const paginationItems = Array.from({ length: totalPages }, (_, i) => i + 1).map(num => `
+            <li class="pagination__item-number ${num === pageNumber ? 'pagination__item-number--active' : ''}">
+                <a href="#" data-page="${num}">${num}</a>
+            </li>
+        `).join('');
 
-        const tb_info = matchesToDisplay.reduce((acc, match) => {
-            return acc + `
-                <tr class="table-row">
-                    <td class="table-row__player">
-                        <img class="table-row__player__image" src="${match.playerImage}" alt="player">
-                        <div class="table-row__player__text">
-                            <span class="table-row__player__text__name font-body-medium-bold">${match.playerName}</span>
-                            <span class="table-row__player__text__nickname font-body-regular">${match.playerNickname}</span>
-                        </div>
-                    </td>
-                    <td class="table-row__data-default font-body-medium-bold">${match.gameType}</td>
-                    <td class="table-row__data-default font-body-medium-bold">${match.score}</td>
-                    <td class="table-row__tag">
-                        <span class="tag ${match.status === 'Victory' ? 'tag--victory' : 'tag--defeat'}">
-                            <span class="tag__text font-body-regular-bold">${match.status}</span>
-                        </span>
-                    </td>
-                    <td class="table-row__data-default font-body-medium-bold">${match.date}</td>
-                </tr>
-            `;
-        }, '');
+        return `
+            <nav class="pagination font-body-regular-bold">
+                <ul class="pagination__list">
+                    <li class="pagination__control ${pageNumber === 1 ? 'pagination__control--disabled' : ''}">
+                        <a href="#" data-page="1">
+                            <span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_left</span>
+                            <span class="pagination__control__text">First</span>
+                        </a>
+                    </li>
+                    <li class="pagination__control ${pageNumber === 1 ? 'pagination__control--disabled' : ''}">
+                        <a href="#" data-page="${pageNumber - 1}">
+                            <span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_left</span>
+                            <span class="pagination__control__text">Previous</span>
+                        </a>
+                    </li>
+                    ${paginationItems}
+                    <li class="pagination__control ${pageNumber === totalPages ? 'pagination__control--disabled' : ''}">
+                        <a href="#" data-page="${pageNumber + 1}">
+                            <span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_right</span>
+                            <span class="pagination__control__text">Next</span>
+                        </a>
+                    </li>
+                    <li class="pagination__control ${pageNumber === totalPages ? 'pagination__control--disabled' : ''}">
+                        <a href="#" data-page="${totalPages}">
+                            <span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_right</span>
+                            <span class="pagination__control__text">Last</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        `;
+    };
 
+    const renderPage = (pageNumber) => {
         pageContentContainer.innerHTML = `
             <div class="page-content__container__header">
                 <div class="page-content__container__header__info">
@@ -221,6 +225,7 @@ const Matches = (state) => {
                     <span class="button__text font-body-regular-bold">Refresh</span>
                 </button>
             </div>
+
             <div class="page-content__container__content page-content__container__content--matches">
                 <table>
                     <thead>
@@ -233,22 +238,26 @@ const Matches = (state) => {
                         </tr>
                     </thead>
                     <tbody>
-                        ${tb_info}
+                        ${renderTable(pageNumber)}
                     </tbody>
                 </table>
-                <nav class="pagination font-body-regular-bold">
-                    <ul class="pagination__list">
-                        <!-- Pagination will be injected here -->
-                        <li class="pagination__item-number pagination__item-number--active"><a href="#">1</a></li>
-                    </ul>
-                </nav>
+
+                ${renderPagination(pageNumber)}
             </div>
         `;
 
-        renderPagination(matches.length);
+        document.querySelectorAll('.pagination__control a, .pagination__item-number a').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const newPage = parseInt(button.getAttribute('data-page'), 10);
+                if (newPage >= 1 && newPage <= totalPages && newPage !== pageNumber) {
+                    renderPage(newPage);
+                }
+            });
+        });
     };
 
-    renderMatches(state);
+    renderPage(1);
 
     return pageContentContainer;
 };

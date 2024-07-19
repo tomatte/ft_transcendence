@@ -7,7 +7,7 @@ const Settings = () => {
     }
 
     pageContentContainer.innerHTML = `
-            <div class="page-content__container__header">
+                       <div class="page-content__container__header">
                 <div class="page-content__container__header__info">
                     <h4 class="page-content__container__header__info__title">Settings</h4>
                 </div>
@@ -90,9 +90,9 @@ const Settings = () => {
 
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Music</span>
-                            <div id="toggle1" class="toggle Active Enabled">
-                                <input type="checkbox" id="toggle-checkbox" class="toggle-checkbox" checked>
-                                <label for="toggle-checkbox" class="toggle-label">
+                            <div class="toggle Active Enabled">
+                                <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-1" checked>
+                                <label for="toggle-checkbox-1" class="toggle-label">
                                     <span class="toggle-inner"></span>
                                     <span class="toggle-switch"></span>
                                 </label>
@@ -102,9 +102,9 @@ const Settings = () => {
 
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Sound effects</span>
-                            <div id="toggle2" class="toggle Active Enabled">
-                                <input type="checkbox" id="toggle-checkbox" class="toggle-checkbox" checked>
-                                <label for="toggle-checkbox" class="toggle-label">
+                            <div class="toggle Active Enabled">
+                                <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-2" checked>
+                                <label for="toggle-checkbox-2" class="toggle-label">
                                     <span class="toggle-inner"></span>
                                     <span class="toggle-switch"></span>
                                 </label>
@@ -115,7 +115,29 @@ const Settings = () => {
 
                 </div>
             </div>
+ 
     `;
+    document.querySelectorAll('.toggle').forEach(toggle => {
+        const checkbox = toggle.querySelector('.toggle-checkbox');
+
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                toggle.classList.remove('Default');
+                toggle.classList.add('Active');
+            } else {
+                toggle.classList.remove('Active');
+                toggle.classList.add('Default');
+            }
+        });
+
+        // Estado inicial com base no estado do checkbox
+        if (checkbox.checked) {
+            toggle.classList.add('Active');
+        } else {
+            toggle.classList.add('Default');
+        }
+    });
+
 
     return pageContentContainer;
 };

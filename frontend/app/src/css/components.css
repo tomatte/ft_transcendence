@@ -1135,11 +1135,11 @@ ul {
 .toggle {
     display: flex;
     height: 24px;
-    padding: 0px 3px;
+    /* padding: 0px 3px; */
     align-items: center;
     flex-shrink: 0;
     border-radius: 8px;
-    position: relative;
+    /* position: relative; */
     width: 48px;
     cursor: pointer;
     box-sizing: border-box;
@@ -1153,7 +1153,7 @@ ul {
     position: absolute;
     left: 3px;
     right: 3px;
-    transition: left 0.3 ease;
+    /* transition: left 0.3 ease; */
 }
 
 .toggle-checkbox {
@@ -1186,3 +1186,4 @@ ul {
 .toggle.Default.Enabled {
     background: var(--Lunar-Dust-600, #5D5E6C);
 }
+ 

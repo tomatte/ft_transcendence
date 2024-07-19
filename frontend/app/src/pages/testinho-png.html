@@ -1,0 +1,77 @@
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Invasão das Lhamas</title>
+            <style>
+                #content {
+                    width: 80%;
+                    margin: auto;
+                    padding: 20px;
+                    text-align: center;
+                    background-color: #f9f9f9;
+                    border: 2px solid #ccc;
+                    border-radius: 10px;
+                }
+                h1 {
+                    color: #4CAF50;
+                }
+                p {
+                    font-size: 1.2em;
+                    color: #333;
+                }
+                img {
+                    width: 300px;
+                    height: auto;
+                    margin-top: 20px;
+                }
+                #downloadBtn {
+                    display: block;
+                    margin: 20px auto;
+                    padding: 10px 20px;
+                    font-size: 1.2em;
+                    color: white;
+                    background-color: #4CAF50;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+                #downloadBtn:hover {
+                    background-color: #45a049;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="content">
+                <h1>Invasão das Lhamas!</h1>
+                <p>Prepare-se! As lhamas estão chegando e elas estão trazendo muito caos e diversão!</p>
+                <p>Quem poderia imaginar que essas fofinhas de quatro patas poderiam ser tão travessas?</p>
+                <img id="llamaImage" src="https://live.staticflickr.com/2006/2078169355_7b6a166f02_z.jpg" alt="Lhamas invadindo">
+                <p>Aqui está uma foto rara de uma lhama líder da invasão, capturada no ato!</p>
+            </div>
+            <button id="downloadBtn">Baixar como PNG</button>
+        
+            <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+            <script>
+                document.getElementById('downloadBtn').addEventListener('click', function () {
+                    var llamaImage = document.getElementById('llamaImage');
+                    if (llamaImage.complete) {
+                        captureAndDownload();
+                    } else {
+                        llamaImage.onload = captureAndDownload;
+                    }
+                });
+        
+                function captureAndDownload() {
+                    html2canvas(document.getElementById('content')).then(function (canvas) {
+                        let link = document.createElement('a');
+                        link.href = canvas.toDataURL('image/png');
+                        link.download = 'invasao_das_lhamas.png';
+                        link.click();
+                    });
+                }
+            </script>
+        </body>
+        </html>
+            
