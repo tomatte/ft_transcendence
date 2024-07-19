@@ -1,7 +1,7 @@
 import state from "../state/state.js"
 import websocketTournament from "../websockets/websocketTournament.js";
 import ModalHandler from "./ModalHandler.js";
-import { updatePlayersQueueTournament } from "../element-creators/updateElements.js";
+import { updateOnlinePlayersTournament, updatePlayersQueueTournament } from "../element-creators/updateElements.js";
 
 class ModalCreateTournament {
     constructor(modalhandler, modalId, openBtnId, closeBtnId) {
@@ -24,6 +24,7 @@ class ModalCreateTournament {
         this.updateState()
         websocketTournament.listen()
         updatePlayersQueueTournament(state.tournament.players)
+        updateOnlinePlayersTournament(state.online_players)
         this.modal.open(this.modalId)
     }
 
