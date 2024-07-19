@@ -33,7 +33,7 @@ function playBallKickSound(ball) {
     kickSound.play()
 }
 
-let ws = new WebSocket("wss://localhost:443/ws/player/")
+let ws = new WebSocket("wss://localhost:443/ws/match/")
 let payload = {
     key: "",
     player_id: 0,

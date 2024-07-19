@@ -73,7 +73,7 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
-    let ws = new WebSocket("wss://localhost:443/ws/player/")
+    let ws = new WebSocket("wss://localhost:443/ws/match/")
     let payload = {
         key: "",
         player_id: getRandomId(1, 3999999999),

@@ -4,6 +4,7 @@ import state from './state/state.js';
 import { initState } from './state/state.js';
 import { insertProfileInfoData } from './sidebar.js';
 import modalCreateTournament from './modals/modalCreateTournament.js';
+import { listenTestKeys } from './element-creators/utils.js';
 
 
 
@@ -48,4 +49,5 @@ window.addEventListener('load', () => {
   renderPage();
   listenHashChanges();
   insertProfileInfoData(state.user)
+  listenTestKeys() // TODO: remove in production
 });

@@ -41,10 +41,10 @@ services:
     networks:
       - trans
 
-  # game_loop:
-  #   build: ./game_loop
-  #   container_name: ft_game_loop
-  #   environment:
-  #     - BACKEND_HOST=localhost
-  #     - BACKEND_PORT=${BACKEND_PORT}
-  #   network_mode: host
+  game_loop:
+    build: ./game_loop
+    container_name: ft_game_loop
+    environment:
+      - BACKEND_HOST=localhost
+      - BACKEND_PORT=${BACKEND_PORT}
+    network_mode: host

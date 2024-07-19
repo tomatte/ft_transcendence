@@ -38,7 +38,7 @@ class GameLoopConsumer(MyAsyncWebsocketConsumer):
     
 
 # Create your views here.
-class PlayerConsumer(MyAsyncWebsocketConsumer):
+class MatchConsumer(MyAsyncWebsocketConsumer):
     num_players = 0
     new_match_id = str(uuid.uuid4())
     
@@ -49,13 +49,13 @@ class PlayerConsumer(MyAsyncWebsocketConsumer):
         
         await self.channel_layer.group_add("match", self.channel_name)
         
-        PlayerConsumer.num_players += 1
-        if PlayerConsumer.num_players % 2 != 0:
-            PlayerConsumer.new_match_id = str(uuid.uuid4())
+        MatchConsumer.num_players += 1
+        if MatchConsumer.num_players % 2 != 0:
+            MatchConsumer.new_match_id = str(uuid.uuid4())
 
         payload = {
             "action": "connect",
-            "match_id": PlayerConsumer.new_match_id,
+            "match_id": MatchConsumer.new_match_id,
             "player_id": str(uuid.uuid4()), #this is temporary, the player_id should come somewhere else like from an http route or from the client
 		}
         
@@ -192,7 +192,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             self.tournament_state.shuffle_players(self.tournament_id)
             players = self.tournament_state.get_players(self.tournament_id)
             
-        
+        async def start_tournament(self):
+            pass
         
         await self.send_json({
             "name": "enter_tournament",
