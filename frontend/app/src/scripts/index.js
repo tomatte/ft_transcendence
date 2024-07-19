@@ -6,7 +6,6 @@ import { insertProfileInfoData } from './sidebar.js';
 import { modalCreateTournament } from './element-creators/modalHandler.js';
 
 
-
 const container = document.querySelector('.page-content__container');
 const sidebarMenuItems = document.querySelectorAll('.sidebar__menu-container .menu-item');
 
@@ -22,7 +21,7 @@ const renderPage = () => {
   if (routes[page]) {
     container.innerHTML = ''; // Clear previous content
     routes[page](state); // Render the selected page component
-    
+
     // Find the corresponding menu item and add 'menu-item--active' class
     const menuItem = document.querySelector(`.sidebar__menu-container .menu-item a[href="/#${page}"]`);
     if (menuItem) {
@@ -48,4 +47,13 @@ window.addEventListener('load', () => {
   renderPage();
   listenHashChanges();
   insertProfileInfoData(state.user)
+  getMyUser()
 });
+
+
+async function getMyUser() {
+	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
+	if (response.status !== 200) {
+    window.location.href = '/test_login.html'
+  }
+}

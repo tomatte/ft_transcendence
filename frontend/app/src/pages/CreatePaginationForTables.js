@@ -1,5 +1,10 @@
-const renderPagination = (totalItems, currentPage) => {
-	const totalPages = Math.ceil(totalItems / ranking_data['itemsPerPage']);
+import renderTableLines from './RenderTableLines.js';
+
+const CreatePaginationForTables = (currentPageData) => {
+	const { rank_list, currentPage, itemsPerPage } = currentPageData;
+	const totalItems = rank_list.length;
+
+	const totalPages = Math.ceil(totalItems / itemsPerPage);
 	let paginationHtml = generatePreviosAndLastButton(currentPage);
 	paginationHtml += handleListPagination(totalPages, currentPage);
 	paginationHtml += generateNextAndLastButton(totalPages, currentPage);
@@ -10,8 +15,8 @@ const renderPagination = (totalItems, currentPage) => {
 			event.preventDefault();
 			const page = parseInt(event.target.getAttribute('data-page'), 10);
 			if (!isNaN(page)) {
-				currentPage = page;
-				renderTable(globalData, currentPage);
+				currentPageData['currentPage'] = page;
+				renderTableLines(currentPageData);
 			}
 		});
 	});
@@ -68,4 +73,4 @@ const generateNextAndLastButton = (totalPages, currentPage) => {
 		</li>`
 }
 
-export default renderPagination;
+export default CreatePaginationForTables;
