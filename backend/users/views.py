@@ -45,8 +45,8 @@ class ManipulateUser:
 		return list(all_players).index(self.me) + 1
 
 	def friends(self):
-		user1 = Friendship.objects.filter(from_user=self.me, status='Accepted')
-		user2 = Friendship.objects.filter(to_user=self.me, status='Accepted')
+		user1 = Friendship.objects.filter(from_user=self.me, status='accepted')
+		user2 = Friendship.objects.filter(to_user=self.me, status='accepted')
 		return user1.union(user2)
 
 	def combats_with_player(self, player):
