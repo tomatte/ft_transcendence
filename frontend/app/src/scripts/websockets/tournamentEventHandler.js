@@ -1,7 +1,12 @@
 import state from "../state/state.js"
 import websocketTournament from "./websocketTournament.js"
 import { showTournamentPage, updateOnlinePlayersTournament } from "../element-creators/updateElements.js"
-import { updatePlayersQueueTournament, updateTournamentBrackets } from "../element-creators/updateElements.js"
+import { 
+    updatePlayersQueueTournament, 
+    updateTournamentBrackets,
+    addStartTournamentClickEvent,
+} from "../element-creators/updateElements.js"
+import {  } from "../element-creators/updateElements.js"
 
 class TournamentEventHandler {
     constructor (state) {
@@ -59,6 +64,7 @@ function updatePlayers(data, state) {
     if (data.players.length == 4) {
         showTournamentPage()
         updateTournamentBrackets(data.players)
+        addStartTournamentClickEvent()
     }
     else if (state.tournament.hasOwnProperty("is_owner")) {
         updatePlayersQueueTournament(data.players)

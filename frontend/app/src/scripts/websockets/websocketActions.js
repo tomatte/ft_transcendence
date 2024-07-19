@@ -20,3 +20,10 @@ export function joinTournament(data) {
 
     websocketTournament.listen()
 }
+
+export function startTournament() {
+    console.log("startTournament()")
+    websocketTournament.send({
+        action: 'start'
+    })
+}

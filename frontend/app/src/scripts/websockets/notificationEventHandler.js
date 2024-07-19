@@ -41,7 +41,9 @@ function newNotification(data, state) {
 
 function updateOnlinePlayers(data, state) {
     state.online_players = data.online_players
-    updateOnlinePlayersTournament(state.online_players)
+    if (state.hasOwnProperty("tournament") && state.tournament.is_owner) {
+        updateOnlinePlayersTournament(state.online_players)
+    }
     console.log("updateOnlinePlayers()")
 }
 

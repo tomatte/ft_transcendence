@@ -1,6 +1,6 @@
 import createOnlinePlayersTournamentRows from "./createOnlinePlayersTournament.js"
 import createPlayerQueueTournament from "./createPlayerQueueTournament.js"
-import { inviteToTournament } from "../websockets/websocketActions.js"
+import { inviteToTournament, startTournament } from "../websockets/websocketActions.js"
 import Tournament from "../../pages/Tournament.js"
 import { createBracketsSemi } from "./createTournamentBrackets.js"
 import { injectElement, hideContents, diffOnlineAndQueue } from "./utils.js"
@@ -44,4 +44,14 @@ export function updateTournamentBrackets(players) {
 
     document.getElementById("tournament-bracket-semi-left").innerHTML = leftBrackets
     document.getElementById("tournament-bracket-semi-right").innerHTML = rightBrackets
+}
+
+export function addStartTournamentClickEvent() {
+    const btn = document.getElementById("button-start-tournament")
+    if (btn) {
+        btn.addEventListener('click', () => {
+            console.log("start tournament")
+            startTournament()
+        })
+    }
 }

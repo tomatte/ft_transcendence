@@ -14,7 +14,7 @@ const Tournament = () => {
                  
             </button>
 
-            <button class="button button--tertiary">
+            <button id="button-start-tournament" class="button button--tertiary">
                 <span class="material-icons-round button__icon-left">emoji_events</span>
                 <span class="button__text font-body-regular-bold"> Start the tournament</span>
                  
@@ -41,7 +41,7 @@ const Tournament = () => {
                 ${finalBracketRight}
             </div>
 
-             <div class="Frame-10146">
+             <div id="tournament-bracket-semi-right" class="Frame-10146">
                     ${rightBrackets}
                 </div>
         </div>

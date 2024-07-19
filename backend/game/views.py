@@ -155,6 +155,10 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         if data["action"] == "join":
             await self.join_tournament(data)
             return
+        
+        if data["action"] == "start":
+            await self.start_tournament()
+            return
 
     async def disconnect(self, close_code):
         if not hasattr(self, "tournament_id"):
@@ -191,9 +195,6 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         if len(players) == 4:
             self.tournament_state.shuffle_players(self.tournament_id)
             players = self.tournament_state.get_players(self.tournament_id)
-            
-        async def start_tournament(self):
-            pass
         
         await self.send_json({
             "name": "enter_tournament",
@@ -210,6 +211,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         # if len(tournament_data["players"]) == 4:
         #     self.create_start_tournament_task()
+            
+    async def start_tournament(self):
+        print("start_tournament()")
             
     async def tournament_update_players(self, event):
         await self.send_json({
