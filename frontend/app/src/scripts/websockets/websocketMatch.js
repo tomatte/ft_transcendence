@@ -1,20 +1,20 @@
-import gameEventHandler from "./gameEventHandler.js";
+import matchEventHandler from "./matchEventHandler.js";
 
-class WebsocketGame {
+class WebsocketMatch {
     constructor() {
         this.listen = this.listen.bind(this)
         this.send = this.send.bind(this)
     }
 
     listen() {
-        console.log("listening to game_loop...")
-        this.client = new WebSocket("wss://localhost:443/ws/game_loop/")
+        console.log("listening to match...")
+        this.client = new WebSocket("wss://localhost:443/ws/match/")
 
         this.client.onmessage = (event) => {
             let data = JSON.parse(event.data)
             console.log(data)
                 
-            gameEventHandler.execute(data)
+            matchEventHandler.execute(data)
         };
     }
 
@@ -23,6 +23,6 @@ class WebsocketGame {
     }
 }
 
-const websocketGame = new WebsocketGame()
+const websocketMatch = new WebsocketMatch()
 
-export default  websocketGame
+export default  websocketMatch

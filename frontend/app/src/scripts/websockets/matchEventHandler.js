@@ -1,6 +1,6 @@
 import state from "../state/state.js"
 
-class GameEventHandler {
+class MatchEventHandler {
     constructor (state) {
         this.state = state
         this.events = {}
@@ -24,6 +24,6 @@ class GameEventHandler {
 
 
 
-const gameEventHandler = new GameEventHandler(state)
+const matchEventHandler = new MatchEventHandler(state)
 
-export default gameEventHandler
+export default matchEventHandler

@@ -1,4 +1,4 @@
-import websocketGame from "../websockets/websocketGame.js"
+import websocketMatch from "../websockets/websocketMatch.js"
 
 export function hideContents() {
     document.querySelector(".sidebar").style.display = 'none'
@@ -27,5 +27,5 @@ export function listenForKeyPress(targetKey, callback) {
 }
 
 export function listenTestKeys() {
-    listenForKeyPress("1", () => websocketGame.listen())
+    listenForKeyPress("1", () => websocketMatch.listen())
 }
