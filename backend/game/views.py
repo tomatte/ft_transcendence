@@ -179,10 +179,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
-        # if not self.validation.join_tournament.can_join(data):
-        #     print("player forbidden to join tournament")
-        #     #TODO: send error message to client
-        #     return 
+        if not self.validation.join_tournament.can_join(data):
+            #TODO: send error message to client
+            return 
 
         self.tournament_id = data["tournament"]["id"]
         

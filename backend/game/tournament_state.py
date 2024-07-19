@@ -51,11 +51,21 @@ class ExitTournament:
     
 
 class TournamentState:
+    @classmethod
+    def get_players(self, id):
+        data = redis.get_map(global_tournament_name, id)
+        
+        players = []
+        for username in data["players"]:
+            player = OnlineState.get_user(username)
+            players.append(player)
+            
+        return players
+    
     def __init__(self, user) -> None:
         self.user = user
         self.channel_layer = get_channel_layer()
         self.is_owner = False
-        pass
     
     def create(self):
         self.tournament_id = str(uuid.uuid4())
@@ -93,20 +103,7 @@ class TournamentState:
         exit = ExitTournament(self)
         await exit.exit()
         
-    def get_players(self, id):
-        data = redis.get_map(global_tournament_name, id)
-        
-        players = []
-        for username in data["players"]:
-            player = OnlineState.get_user(username)
-            players.append(player)
-            
-        return players
-        
     def store_on_user_state(self, tournament_id):
-        if redis.hexists(self.user.username, 'tournament_id'):
-            return
-
         redis.set_map_str(
             self.user.username,
             'tournament_id', 
