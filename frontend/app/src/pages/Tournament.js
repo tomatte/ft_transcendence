@@ -1,8 +1,9 @@
-import { createBracketsSemi } from "../scripts/element-creators/createTournamentBrackets.js";
+import { createBracketsSemi, createBracketsFinal } from "../scripts/element-creators/createTournamentBrackets.js";
 import state from "../scripts/state/state.js";
 
 const Tournament = () => {
     const {leftBrackets, rightBrackets} = createBracketsSemi(state.tournament.players)
+    const {finalBracketLeft, finalBracketRight} = createBracketsFinal()
 
     const tournamentHTML = /* html */ `
     <div class="Brackets">  
@@ -27,15 +28,7 @@ const Tournament = () => {
             </div>
 
             <div class="Frame-10144">
-                 <div class="tournament-bracket">
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
-                </div>
+                ${finalBracketLeft}
             </div>
 
 
@@ -45,15 +38,7 @@ const Tournament = () => {
 
 
             <div class="Frame-10145">
-                <div class="tournament-bracket">
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
-                 </div>
+                ${finalBracketRight}
             </div>
 
              <div class="Frame-10146">

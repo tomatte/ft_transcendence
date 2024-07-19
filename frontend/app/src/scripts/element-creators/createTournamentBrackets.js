@@ -14,11 +14,13 @@ function createBracket(player) {
         `
 }
 
-const emptyPlayer = {
-    "avatar": "",
-    "username": "???",
-    "nickname": "?"
-}
+const emptyState = `
+    <div class="tournament-bracket">
+        <div class="player-bracket player-bracket--waiting">
+            <span class="material-icons-round player-bracket__waiting-icon icon--small">schedule</span>
+            <span class="player-bracket__waiting-text font-body-regular">Waiting for player...</span>
+        </div>
+    </div>`
 
 export function createBracketsSemi(players) {
     if (players && players.length == 0) {
@@ -41,9 +43,9 @@ export function createBracketsSemi(players) {
     for (let len = players.length; len < 4; len++) {
 
         if (len < 2) {
-            leftBrackets += createBracket(emptyPlayer)
+            leftBrackets += emptyState
         } else {
-            rightBrackets += createBracket(emptyPlayer)
+            rightBrackets += emptyState
         }
     }
 
@@ -51,5 +53,8 @@ export function createBracketsSemi(players) {
 }
 
 export function createBracketsFinal(players) {
-    
+    const finalBracketLeft = emptyState
+    const finalBracketRight = emptyState
+
+    return {finalBracketLeft, finalBracketRight}
 }
