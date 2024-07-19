@@ -1,34 +1,4 @@
-import renderPagination from './Create-pagination-tables.js';
-
-var ranking_data = {
-	"ranking": [],
-	"currentPage": 1,
-	"itemsPerPage": 4
-}
-
-async function fetchApiRanking() {
-	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
-	if (response.status !== 200) throw new Error('Error status is not 200' + response.method); else return await response.json()
-}
-
-
-const Ranking = async () => {
-	ranking_data['ranking'] = await fetchApiRanking();
-	document.querySelector('.page-content__container').innerHTML = loadingBasePage();
-	renderTable();
-};
-
-
-const renderTable = () => {
-	const start = (ranking_data['currentPage'] - 1) * ranking_data['itemsPerPage'];
-	const end = start + ranking_data['itemsPerPage'];
-	const currentPageData = ranking_data['ranking'].slice(start, end);
-	let tableLines = createTableLines(currentPageData, start);
-	const tableBody = document.querySelector('.page-content__container__content--ranking tbody');
-	tableBody.innerHTML = tableLines;
-	renderPagination(ranking_data['ranking'].length, ranking_data['currentPage']);
-};
-
+import renderTableLines from './RenderTableLines.js';
 
 
 const createTableLines = (ranking_list, start) => {
@@ -57,6 +27,26 @@ const createTableLines = (ranking_list, start) => {
 		`;
 	}, '');
 }
+
+
+var rankingData = {
+	"rank_list": [],
+	"currentPage": 1,
+	"itemsPerPage": 4,
+	"createLines": createTableLines
+}
+
+async function fetchApiRanking() {
+	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
+	if (response.status !== 200) throw new Error('Error status is not 200' + response.method); else return await response.json()
+}
+
+
+const Ranking = async () => {
+	rankingData['rank_list'] = await fetchApiRanking();
+	document.querySelector('.page-content__container').innerHTML = loadingBasePage();
+	renderTableLines(rankingData);
+};
 
 
 const loadingBasePage = () => {
@@ -120,58 +110,6 @@ const loadingBasePage = () => {
 	<div id="modalOverlay" class="hidden"></div>
 	`;
 };
-
-
-//Create LI for pagination
-const handleListPagination = (totalPages, currentPage) => {
-	let pagination = '';
-
-	for (let index = 1; index <= totalPages; index++) {
-		pagination += `
-			<li class="pagination__item-number ${currentPage === index ? 'pagination__item-number--active' : ''}">
-				<a href="#" data-page="${index}">${index}</a>
-			</li>
-		`
-	}
-	return pagination;
-}
-
-
-const generatePreviosAndLastButton = (currentPage) => {
-	const isDisabledClass = currentPage === 1 ? 'pagination__control--disabled' : '';
-
-	return `
-		<li class="pagination__control ${isDisabledClass}}">
-			<a href="#" data-page="1">
-				<span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_left</span>
-				<span class="pagination__control__text">First</span>
-			</a>
-		</li>
-		<li class="pagination__control ${isDisabledClass}}">
-			<a href="#" data-page="${currentPage - 1}">
-				<span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_arrow_left</span>
-				<span class="pagination__control__text">Previous</span>
-			</a>
-		</li>`
-}
-
-
-const generateNextAndLastButton = (totalPages, currentPage) => {
-	const isDisabledClass = currentPage === totalPages ? 'pagination__control--disabled' : '';
-	return `
-		<li class="pagination__control ${isDisabledClass}">
-			<a href="#" data-page="${currentPage + 1}">
-				<span class="material-icons-round pagination__control__icon-right icon--medium">keyboard_arrow_right</span>
-				<span class="pagination__control__text">Next</span>
-			</a>
-		</li>
-		<li class="pagination__control ${isDisabledClass}">
-			<a href="#" data-page="${totalPages}">
-				<span class="material-icons-round pagination__control__icon-right icon--medium">keyboard_double_arrow_right</span>
-				<span class="pagination__control__text">Last</span>
-			</a>
-		</li>`
-}
 
 
 export default Ranking;
