@@ -5,6 +5,8 @@ class NotificationEventHandler {
     constructor (state) {
         this.state = state
         this.events = {}
+        this.register = this.register.bind(this)
+        this.execute = this.execute.bind(this)
     }
 
     register(name, callback) {
