@@ -68,7 +68,7 @@ ul {
 .button--primary:hover
 {
     color: var(--Neptune-Blue-100);
-    background: var(--Neptune-Blue-500);
+    background: var(--Neptune-Blue-700);
 }
 
 .button--secondary
@@ -86,13 +86,15 @@ ul {
 .button--outline
 {
     color: var(--Comet-Cloud-400);
+    border: 1px solid var(--Lunar-Dust-900);
     background-color: transparent;
 }
 
 .button--outline:hover
 {
     color: var(--Comet-Cloud-300);
-    background-color: transparent;
+    border: 1px solid var(--Lunar-Dust-900);
+    background: rgba(57, 57, 65, 0.25);
 }
 
 .button--tertiary
@@ -533,6 +535,7 @@ ul {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     align-self: stretch;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -543,6 +546,7 @@ ul {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     align-self: stretch;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -561,16 +565,22 @@ ul {
 /* ------------------- SEARCH BAR ------------------- */
 
 .search-bar {
-    display: inline-flex;
+    display: flex;
     padding: 12px 16px;
     align-items: center;
+    align-self: stretch;
     gap: 8px;
     border-radius: 4px;
     background: var(--Lunar-Dust-1000);
     color: var(--Lunar-Dust-600);
+    width: 100%;
 }
 
 .search-bar__input {
+    display: flex;
+    flex: 1 0 0;
+    align-items: center;
+    align-self: stretch;
     border: none;
     outline: none;
     background: none;
@@ -898,6 +908,7 @@ ul {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     flex: 1 0 0;
     overflow: hidden;
     color: var(--Lunar-Dust-500);
@@ -908,18 +919,19 @@ ul {
 /* ------------------- TABLE ROW ------------------ */
 
 .table-row {
+
     display: flex;
-    width: 1080px;
-    height: 80px;
+    height: 76px;
     padding: 16px;
-    gap: 16px;
-    justify-content: space-between;
+    width: 100%;
     align-items: center;
+    gap: 16px;
     align-self: stretch;
     border-radius: 8px;
     background: var(--Lunar-Dust-950);
     color: var(--Lunar-Dust-500);
     transition: all 200ms ease-in;
+
 }
 
 .table-row:hover {
@@ -956,6 +968,7 @@ ul {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     align-self: stretch;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -1008,4 +1021,184 @@ ul {
     flex-direction: column;
     align-items: flex-start;
     flex: 1 0 0;
+}
+
+
+/* ------------------- PLAYER BRACKET ------------------ */
+
+.player-bracket {
+    display: flex;
+    height: 60px;
+    padding: 12px;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+    border-radius: 8px;
+    background: var(--Lunar-Dust-1000);
+}
+
+.player-bracket__info__image {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.player-bracket__info__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+}
+
+.player-bracket__info__text__name .player-bracket__info__text__nickname .player-bracket__waiting-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    align-self: stretch;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-bracket__info__text__name {
+    color: var(--Comet-Cloud-300);
+}
+
+.player-bracket__info__text__nickname {
+    color: var(--Lunar-Dust-500);
+}
+
+.player-bracket__waiting-icon {
+    color: var(--Lunar-Dust-500);
+}
+
+.player-bracket__waiting-text {
+    color: var(--Lunar-Dust-500);
+}
+
+
+/* ------------------- INPUT ------------------ */
+
+.input {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.input__title {
+    align-self: stretch;
+
+    overflow: hidden;
+    color: var(--Lunar-Dust-300);
+    text-overflow: ellipsis;
+}
+
+.input__box {
+    display: flex;
+    padding: 12px 16px;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 4px;
+    background: var(--Lunar-Dust-1000);
+    color: var(--Lunar-Dust-600);
+
+    border: none;
+    outline: none;
+}
+
+.input__box::selection {
+    color: var(--Comet-Cloud-100);
+    background-color: var(--Comet-Cloud-900);
+}
+
+.input__helper-text {
+    align-self: stretch;
+    color: var(--Lunar-Dust-600);
+}
+
+.input--error .input__helper-text {
+    color: var(--Red-Dwarf-700);
+}
+
+
+
+/* ------------------- TOGGLE ------------------ */
+
+
+.toggle {
+    display: flex;
+ 
+    height: 24px;
+    padding: 0px 3px;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 8px;
+    position: relative;
+    width: 48px;
+    transition: background 0.3s, border-radius 0.3s;
+
+}
+
+.toggle-switch {
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 6px;
+    position: absolute;
+    left: 3px;
+    right: 3px;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.toggle-checkbox:checked + .toggle-label .toggle-switch {
+    left: calc(100% - 21px);
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+}
+
+.toggle-inner {
+    display: none;
+}
+
+/* Estados do toggle */
+.toggle.Active.Enabled {
+    background: var(--Neptune-Blue-600-base, #315BE3);
+}
+
+.toggle.Active.Disabled {
+    background: var(--Neptune-Blue-900, #233485);
+}
+
+.toggle.Default.Enabled {
+    background: var(--Lunar-Dust-600, #5D5E6C);
+}
+
+.toggle.Default.Disabled {
+    background: var(--Lunar-Dust-800, #41414B);
+}
+
+/* Estados de hover */
+.toggle.Active.Enabled:hover {
+    background: var(--Neptune-Blue-900, #233485);
+}
+
+.toggle.Default.Enabled:hover {
+    background: var(--Lunar-Dust-800, #41414B);
 }

@@ -15,32 +15,35 @@ services:
       - ./frontend/app:/var/www
     networks:
       - trans
-    # depends_on:
-    #   - backend
+    depends_on:
+      - backend
+    environment:
+      - BACKEND_HOST=backend
 
-  # backend:
-  #   build: ./backend
-  #   container_name: ft_backend
-  #   ports:
-  #     - "${BACKEND_PORT}:8000"
-  #   volumes:
-  #     - ./backend:/app
-  #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_DB: ${POSTGRES_DB}
-  #     POSTGRES_PORT: ${POSTGRES_PORT}
-  #     POSTGRES_HOST: db
-  #     BACKEND_PORT: ${BACKEND_PORT}
-  #     BACKEND_HOST: backend
-  #     PYTHONUNBUFFERED: 1
-  #     REDIS_HOST: redis
-  #     REDIS_PORT: ${REDIS_PORT}
-  #   depends_on:
-  #     - db
-  #     - redis
-  #   networks:
-  #     - trans
+  backend:
+    build: ./backend
+    container_name: ft_backend
+    volumes:
+      - ./backend:/app
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: db
+      BACKEND_PORT: ${BACKEND_PORT}
+      BACKEND_HOST: backend
+      SITE_URL: ${SITE_URL}
+      S42_CLIENT_SECRET: ${S42_CLIENT_SECRET}
+      S42_CLIENT_ID: ${S42_CLIENT_ID}
+      PYTHONUNBUFFERED: 1
+      REDIS_HOST: redis
+      REDIS_PORT: ${REDIS_PORT}
+    depends_on:
+      - db
+      - redis
+    networks:
+      - trans
 
   db:
     image: postgres:latest

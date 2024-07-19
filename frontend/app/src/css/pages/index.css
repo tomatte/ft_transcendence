@@ -356,3 +356,64 @@ body
 	border-left: 1px solid var(--Lunar-Dust-900);
 	background: var(--Lunar-Dust-950);
 }
+
+/* -------------------- SEARCH BAR --------------------- */
+
+.page-content__container__header__search-bar {
+	align-self: stretch;
+}
+
+
+
+
+.page-content__container__header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+align-self: stretch;
+width: 100%;
+}
+
+.page-content__container__header__info {
+display: flex;
+align-items: center;
+gap: 12px;
+flex: 1 0 0;
+}
+
+.page-content__container__header__info__title {
+color: var(--Lunar-Dust-50);
+
+}
+
+.page-content__container__content__card-metrics {
+display: flex;
+align-items: flex-start;
+gap: 16px;
+align-self: stretch;
+}
+
+.page-content__container__content {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+	flex: 1 0 0;
+	align-self: stretch;
+}
+
+.page-content__container__content__line-metrics {
+	display: flex;
+	padding: 16px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 16px;
+	align-self: stretch;
+	border-radius: 8px;
+	background: var(--Comet-Cloud-1000);
+}
+
+
+.table-actions-align-right {
+    text-align: right;
+}

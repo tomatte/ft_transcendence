@@ -45,8 +45,8 @@ class ManipulateUser:
 		return list(all_players).index(self.me) + 1
 
 	def friends(self):
-		user1 = Friendship.objects.filter(from_user=self.me, status='Accepted')
-		user2 = Friendship.objects.filter(to_user=self.me, status='Accepted')
+		user1 = Friendship.objects.filter(from_user=self.me, status='accepted')
+		user2 = Friendship.objects.filter(to_user=self.me, status='accepted')
 		return user1.union(user2)
 
 	def combats_with_player(self, player):
@@ -373,9 +373,13 @@ def friend_request_send(request):
 			json (JSON): informações com as informações dos pedidos de amizade enviados.
 	"""
 	try:
+		is_valid_method(request, "GET")
 		return JsonResponse(ManipulateUser(request.user.username).seding_friends(), safe=False)
-	except Friendship.DoesNotExist:
-		return JsonResponse({'message': 'no friend requests sent'}, status=404)
+	except MethodNotAllowed:
+		return JsonResponse({'message': 'Invalid Method!'}, status=405)
+	except Exception as e:
+		return JsonResponse({'message': str(e)}, status=500)
+
 
 
 def friend_request_received(request):
@@ -388,9 +392,13 @@ def friend_request_received(request):
 			json (JSON): informações com as informações dos pedidos de amizade recebidos.
 	"""
 	try:
+		is_valid_method(request, "GET")
 		return JsonResponse(ManipulateUser(request.user.username).receive_friends(), safe=False)
-	except Friendship.DoesNotExist:
-		return JsonResponse({'message': 'no friend requests sent'}, status=404)
+	except MethodNotAllowed:
+		return JsonResponse({'message': 'Invalid Method!'}, status=405)
+	except Exception as e:
+		return JsonResponse({'message': str(e)}, status=500)
+
 
 
 
@@ -488,3 +496,7 @@ def historic(request):
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Exception as e:
 		return JsonResponse({"msg": str(e)}, status=400)
+	except Match.DoesNotExist as e:
+		return JsonResponse({"msg": {}}, status=200)
+	except MatchPlayer.DoesNotExist as e:
+		return JsonResponse({"msg": {}}, status=200)

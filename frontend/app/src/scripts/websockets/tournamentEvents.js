@@ -1,18 +1,13 @@
-let ws_tournament = new WebSocket("ws://localhost:8000/tournament/")
+import tournamentEventHandler from "./tournamentEventHandler.js"
+
+export let websocketTournament = new WebSocket("wss://localhost:443/ws/tournament/")
 
 function joinTournament(tournament_id) {
     payload.action = "join",
     payload.tournament_id = tournament_id
-    ws_tournament.send(JSON.stringify(payload))
+    websocketTournament.send(JSON.stringify(payload))
 }
 
-function createTournament() {
-    document.getElementById("create").style.visibility = 'hidden'
-    document.getElementById("creating").style.visibility = 'visible'
-    
-    payload.action = "create"
-    ws_tournament.send(JSON.stringify(payload))
-}
 
 function addPlayerToList(data) {
     const list = document.getElementById("players")
@@ -33,20 +28,10 @@ function updatePlayers(data) {
 }
 
 export default function listenTournamentEvents() {
-    ws_tournament.onmessage = (event) => {
+    websocketTournament.onmessage = (event) => {
         let data = JSON.parse(event.data)
-            console.log(data)
-
-        if (data.status == "enter_tournament") {
-            payload.tournament_id = data.tournament_id
-            document.getElementById("tournament_id").innerText = data.tournament_id
-            addPlayerToList(data)
-            return 
-        }
-
-        if (data.status == "update_players") {
-            updatePlayers(data)
-            return
-        }
+        console.log(data)
+            
+        tournamentEventHandler.execute(data)
     };
 }

@@ -80,8 +80,26 @@ html, body
     flex-direction: column;
 }
 
-.playground-container--modal-leave-tournament {
+.playground-container--player-bracket {
     flex-direction: row;
+}
+
+
+.playground-container--modal-confirmation-delete {
+    flex-direction: row;
+}
+
+.playground-container--modal-invite-to-tournament {
+    flex-direction: row;
+}
+
+.playground-container--modal-unsaved-changes {
+    flex-direction: column;
+}
+
+.playground-container--input {
+    flex-direction: column;
+    background: var(--Lunar-Dust-950);
 }
 
 
@@ -105,3 +123,6 @@ html, body
     gap: 8px;
 }
 
+.playground-container--modal-confirmation-remove-friend{
+    flex-direction: row;
+}

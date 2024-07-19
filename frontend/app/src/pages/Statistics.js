@@ -23,7 +23,7 @@ const Statistics = async(state) => {
 					<span class="button__text font-body-regular-bold">Refresh</span>
 				</button>
 			</div>
-			<div class="page-content__container__content">
+			<div class="page-content__container__content page-content__container__content--statistics">
 				<div class="page-content__container__content__card-metrics">
 					<div class="metric-card">
 						<span class="material-icons-round metric-card__icon icon--extra-large">sports_esports</span>

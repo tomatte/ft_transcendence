@@ -54,7 +54,7 @@
         <div class="login-form-container">
             <form id="login-form2">
                 <h2>Login</h2>
-                <a  href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-9fc0845267bce949c5cf5e83db67b91730ba9fab5ffd6c62f001ec8802ec6f83&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Fapi%2Fautenticate&response_type=code"
+                <a  href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a&redirect_uri=https%3A%2F%2Flocalhost%2Fapi%2Fauth%2F&response_type=code"
                     class="btn btn-primary" id="login-42-button"
                 >
                     Login with 42
@@ -101,48 +101,6 @@
             const authUrl = `https://api.intra.42.fr/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${state}`;
             window.location.href = authUrl;
         });
-
-        async function handleLogin() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            const state = urlParams.get('state');
-
-            if (code && state) {
-                try {
-                    const response = await fetch('https://api.intra.42.fr/oauth/token', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            grant_type: 'authorization_code',
-                            client_id: 'YOUR_CLIENT_ID',
-                            client_secret: 'YOUR_CLIENT_SECRET',
-                            code: code,
-                            redirect_uri: 'YOUR_REDIRECT_URI'
-                        }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    const data = await response.json();
-
-                    if (data.access_token) {
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('jwtToken', data.access_token);
-
-                        window.location.href = "/#profile";
-                    } else {
-                        document.getElementById("login-status").textContent = 'Login failed';
-                        document.getElementById("login-status").style.color = "red";
-                    }
-                } catch (error) {
-                    console.error("Error logging in:", error);
-                    document.getElementById("login-status").textContent = 'Error logging in';
-                    document.getElementById("login-status").style.color = "red";
-                }
-            }
-        }
-
-        handleLogin();
     </script>
 </body>
 </html>

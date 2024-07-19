@@ -1,107 +1,99 @@
-.login {
-  display: flex;
-  /* width: var(--Desktop-width, 1366px);
-  height: var(--Desktop-height, 768px); */
-  align-items: center;
-  gap: 8px;
-  background: var(--Gradient-Blue-Background, linear-gradient(108deg, #293664 0%, #000 10.5%));
+html, body
+{
+    margin: 0;
+    padding: 0;
+  	height: 100%;
+	width: 100%;
+}
+
+body
+{
+	background: var(--gradient-blue-background);
+	overflow: hidden;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 8px;
+	display: inline-flex;
 }
 
 .login-container {
-  display: flex;
-padding: 40px 32px;
-flex-direction: column;
-justify-content: center;
-align-items: flex-start;
-gap: 32px;
-flex: 1 0 0;
-align-self: stretch;
-}
-
-.login__hero-image {
-  display: flex;
-  width: 800px;
-  padding: 24px;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  align-self: stretch;
-}
-
-
-
-
-.login-container__credits-text{
-  color: var(--Lunar-Dust-500, #737584);
-
-  /* Body/Regular */
-  font-family: Play;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%; /* 19.6px */
+	display: flex;
+	padding: 40px 32px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 32px;
+	flex: 1 0 0;
+	align-self: stretch;
 }
 
 .login-container__content{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 48px;
-  flex: 1 0 0;
-  align-self: stretch;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 48px;
+	flex: 1 0 0;
+	align-self: stretch;
 }
 
-.login-container__content__button{
-  display: flex;
-padding: 10px 12px;
-justify-content: center;
-align-items: center;
-gap: 8px;
-align-self: stretch;
+.login-container__content__info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 16px;
+	align-self: stretch;
 }
 
-.login-container__content__info__title{
-  align-self: stretch;
-  color: var(--Comet-Cloud-100, #E9EDF6);
-/* Heading/H1 */
-font-family: "Red Hat Display";
-font-size: 48px;
-font-style: normal;
-font-weight: 700;
-line-height: 120%; /* 57.6px */
+.login-container__content__info__title {
+	align-self: stretch;
+	text-align: center;
+	color: var(--Comet-Cloud-100, #E9EDF6);
+  
 }
-
-
+  
 .login-container__content__info__subtitle{
-  align-self: stretch;
-  color: var(--Comet-Cloud-500, #8C92C8);
+	align-self: stretch;
+	text-align: center;
+	color: var(--Comet-Cloud-500);
+}
 
-/* Body/Medium */
-font-family: Play;
-font-size: 16px;
-font-style: normal;
-font-weight: 400;
-line-height: 140%; /* 22.4px */
+.login-container__content__button {
+	align-self: stretch;
+}
+
+.login-container__credits-text{
+  color: var(--Lunar-Dust-500);
+}
+
+
+.login__hero-image {
+	display: flex;
+	width: 800px;
+	padding: 24px;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+	align-self: stretch;
 }
 
 .login__hero-image {
   display: flex;
-  width: 800px;
+  width: 60%;
   padding: 24px;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
   align-self: stretch;
 }
-.login__hero-image__carousel{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1 0 0;
-  align-self: stretch;
 
-  
+.login__hero-image__carousel{
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex: 1 0 0;
+	align-self: stretch;
 }
  
 .login__hero-image__carousel img {

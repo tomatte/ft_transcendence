@@ -1,8 +1,10 @@
 import routes from './router.js';
-import mockState from './websockets/mockState.js';
 import listenNotificationEvents from './websockets/notificationEvents.js'
+import state from './state/state.js';
+import { initState } from './state/state.js';
+import { insertProfileInfoData } from './sidebar.js';
+import { modalCreateTournament } from './element-creators/modalHandler.js';
 
-const state = mockState //TODO: temp mockState
 
 const container = document.querySelector('.page-content__container');
 const sidebarMenuItems = document.querySelectorAll('.sidebar__menu-container .menu-item');
@@ -19,12 +21,15 @@ const renderPage = () => {
   if (routes[page]) {
     container.innerHTML = ''; // Clear previous content
     routes[page](state); // Render the selected page component
-    
+
     // Find the corresponding menu item and add 'menu-item--active' class
     const menuItem = document.querySelector(`.sidebar__menu-container .menu-item a[href="/#${page}"]`);
     if (menuItem) {
         menuItem.parentElement.classList.add('menu-item--active');
     }
+
+    modalCreateTournament.listen()
+
 } else {
     container.innerHTML = '<p>Página não encontrada</p>'; // Render a not found message
 }
@@ -32,12 +37,23 @@ const renderPage = () => {
 
 state.renderPage = renderPage
 
-const init = () => {
-  window.addEventListener('hashchange', renderPage); // Listen for hash changes
+const listenHashChanges = () => {
+  window.addEventListener('hashchange', renderPage);
 };
 
 window.addEventListener('load', () => {
-  renderPage(); // Initial rendering based on current hash
-  init(); // Initialize hashchange listener
+  initState()
   listenNotificationEvents(state)
+  renderPage();
+  listenHashChanges();
+  insertProfileInfoData(state.user)
+  getMyUser()
 });
+
+
+async function getMyUser() {
+	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
+	if (response.status !== 200) {
+    window.location.href = '/test_login.html'
+  }
+}

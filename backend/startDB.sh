@@ -11,3 +11,5 @@ python manage.py showmigrations
 python manage.py migrate --fake-initial
 
 # python manage.py runserver 0.0.0.0:$BACKEND_PORT
+
+daphne -b 0.0.0.0 -p 8000 backend.asgi:application

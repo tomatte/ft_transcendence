@@ -11,3 +11,8 @@
   align-items: center;
   align-self: stretch;
 }
+
+.page-content__container__content--ranking .tableRankingPosition {
+  flex: none;
+  width: 48px;
+}

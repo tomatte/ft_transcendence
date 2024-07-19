@@ -1,6 +1,25 @@
+html, body
+{
+    margin: 0;
+    padding: 0;
+  	height: 100%;
+	width: 100%;
+}
+
+body
+{
+	border-radius: 16px;
+ 
+	overflow: hidden;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 8px;
+ 
+}
+
 .Brackets{
-    display: flex;
-width: var(--Desktop-width, 1366px);
+display: flex;
+/* width: var(--Desktop-width, 1366px); */
 height: var(--Desktop-height, 768px);
 padding: 32px;
 flex-direction: column;
