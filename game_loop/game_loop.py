@@ -44,7 +44,7 @@ class Socket:
                 try:
                     await cls.ws.send(json.dumps(Game.payload))
                 except:
-                    cls.connect_to_server()
+                    await cls.connect_to_server()
             await asyncio.sleep(Game.fps_time)
             
     @classmethod
@@ -58,9 +58,10 @@ class Socket:
                 data.clear()
                 msg = ""
             except ConnectionClosed:
-                cls.connect_to_server()
+                await cls.connect_to_server()
             except Exception as e:
                 print(f"An error occurred: {e}")
+                await asyncio.sleep(1)
 
 class Game:
     balls: dict[int, Ball] = dict()
