@@ -1032,7 +1032,8 @@ ul {
     padding: 12px;
     align-items: center;
     gap: 8px;
-    min-width: 200px;
+    align-self: stretch;
+    flex: 1 0 0;
     border-radius: 8px;
     background: var(--Lunar-Dust-1000);
 }
@@ -1053,7 +1054,8 @@ ul {
     flex: 1 0 0;
 }
 
-.player-bracket__info__text__name .player-bracket__info__text__nickname .player-bracket__waiting-text {
+
+.player-bracket__info__text__name, .player-bracket__info__text__nickname, .player-bracket__waiting-text {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;

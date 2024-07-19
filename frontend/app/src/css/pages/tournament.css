@@ -36,10 +36,10 @@ body {
 
 .bracket__content {
     display: flex;
-    padding: 16px 12% 0px 12%;
+    padding: 16px 0px 0px 0px;
     align-items: center;
 
-    gap: 32px;
+    gap: 16px;
     flex: 1 0 0;
     align-self: stretch;
 }
@@ -53,6 +53,7 @@ body {
     flex: 1 0 0;
     align-self: stretch;
 }
+
 
 .bracket__content__semifinal .tournament-bracket, .bracket__content__final .tournament-bracket {
     align-self: stretch;
@@ -132,15 +133,6 @@ body {
 .game-result__content__info__brackets__score__data {
     color: var(--Lunar-Dust-0);
     font-weight: 700;
-}
-
-.game-result__content__info__brackets .player-bracket {
-    display: flex;
-    height: 60px;
-    padding: 12px;
-    align-items: center;
-    gap: 8px;
-    min-width: 200px;
 }
 
 .game-result__footer {
