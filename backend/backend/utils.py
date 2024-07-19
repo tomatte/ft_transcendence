@@ -76,6 +76,19 @@ class MyRedisClient(redis.StrictRedis):
             data
         )
         
+    def append_list_start(self, name: str, key: str, value):
+        data = []
+        if self.hexists(name, key):
+            data: list = self.get_map(name, key)
+        
+        data.insert(0, value)
+        
+        self.set_map(
+            name,
+            key,
+            data
+        )
+        
     def remove_list_item(self, name: str, key: str, value):
         if self.hexists(name, key) == False:
             return
@@ -122,7 +135,7 @@ class NotificationState:
     
     def add(self, value: dict):
         value["time"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        self.redis.append_list(
+        self.redis.append_list_start(
             self.user.username,
             'notifications',
             value

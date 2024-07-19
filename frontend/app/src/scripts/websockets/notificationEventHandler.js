@@ -30,7 +30,7 @@ function newConnection(data, state) {
 }
 
 function newNotification(data, state) {
-    state['notifications'].push(data)
+    state['notifications'].unshift(data)
     console.log({state})
     if (state.currentPage == 'Notifications') { //TODO: change this to inject the html
         state.renderPage()
