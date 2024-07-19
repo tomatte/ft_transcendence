@@ -1,4 +1,4 @@
-import CreatePaginationForTables from './CreatePaginationForTables.js';
+import AddPaginationTables from '../js/AddPaginationTables.js';
 
 const renderTableLines = (currentPageData) => {
 	const start = (currentPageData['currentPage'] - 1) * currentPageData['itemsPerPage'];
@@ -10,7 +10,7 @@ const renderTableLines = (currentPageData) => {
 	let tableLines = createTableLines(rakingCurrentPagination, start);
 	const tableBody = document.querySelector('.page-content__container__content tbody');
 	tableBody.innerHTML = tableLines;
-	CreatePaginationForTables(currentPageData);
+	AddPaginationTables(currentPageData);
 };
 
 export default renderTableLines

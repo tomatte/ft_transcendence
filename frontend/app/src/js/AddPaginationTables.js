@@ -1,29 +1,19 @@
-import renderTableLines from './RenderTableLines.js';
+import renderTableLines from '../pages/RenderTableLines.js';
 
-const CreatePaginationForTables = (currentPageData) => {
+const AddPaginationTables = (currentPageData) => {
 	const { rank_list, currentPage, itemsPerPage } = currentPageData;
 	const totalItems = rank_list.length;
 
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
 	let paginationHtml = generatePreviosAndLastButton(currentPage);
-	paginationHtml += handleListPagination(totalPages, currentPage);
+	paginationHtml += generateNumbersPagination(totalPages, currentPage);
 	paginationHtml += generateNextAndLastButton(totalPages, currentPage);
-	document.querySelector('.pagination__list').innerHTML = paginationHtml;
-
-	document.querySelectorAll('.pagination__control a, .pagination__item-number a').forEach(link => {
-		link.addEventListener('click', (event) => {
-			event.preventDefault();
-			const page = parseInt(event.target.getAttribute('data-page'), 10);
-			if (!isNaN(page)) {
-				currentPageData['currentPage'] = page;
-				renderTableLines(currentPageData);
-			}
-		});
-	});
+	addPaginationOnTable(paginationHtml);
+	addPaginationEventListeners(currentPageData);
 };
 
 
-const handleListPagination = (totalPages, currentPage) => {
+const generateNumbersPagination = (totalPages, currentPage) => {
 	let pagination = '';
 
 	for (let index = 1; index <= totalPages; index++) {
@@ -73,4 +63,22 @@ const generateNextAndLastButton = (totalPages, currentPage) => {
 		</li>`
 }
 
-export default CreatePaginationForTables;
+
+const addPaginationOnTable = (paginationHtml) => {
+	document.querySelector('.pagination__list').innerHTML = paginationHtml;
+}
+
+
+const addPaginationEventListeners = (currentPageData) => {
+	document.querySelectorAll('.pagination__control a, .pagination__item-number a').forEach(link => {
+		link.addEventListener('click', (event) => {
+			event.preventDefault();
+			const page = parseInt(event.target.getAttribute('data-page'), 10);
+			if (!isNaN(page)) {
+				currentPageData['currentPage'] = page;
+				renderTableLines(currentPageData);
+			}
+		});
+	});
+}
+export default AddPaginationTables;

@@ -496,3 +496,7 @@ def historic(request):
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Exception as e:
 		return JsonResponse({"msg": str(e)}, status=400)
+	except Match.DoesNotExist as e:
+		return JsonResponse({"msg": {}}, status=200)
+	except MatchPlayer.DoesNotExist as e:
+		return JsonResponse({"msg": {}}, status=200)
