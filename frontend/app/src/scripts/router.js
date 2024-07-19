@@ -2,7 +2,7 @@ import Home from "../pages/Home.js";
 import Matches from "../js/Matches.js";
 import Ranking from "../js/Ranking.js";
 import Friends from "../pages/Friends.js";
-import Statistics from "../pages/Statistics.js";
+import Statistics from "../js/Statistics.js";
 import Notifications from "../pages/Notifications.js";
 import Settings from "../pages/Settings.js";
 import Game from "../pages/Game.js";
