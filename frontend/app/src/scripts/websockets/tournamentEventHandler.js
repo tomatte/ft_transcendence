@@ -56,7 +56,11 @@ function creatingTournament(data, state) {
 
 function updatePlayers(data, state) {
     state.tournament.players = data.players
-    if (state.tournament.hasOwnProperty("is_owner")) {
+    if (data.players.length == 4) {
+        showTournamentPage()
+        updateTournamentBrackets(data.players)
+    }
+    else if (state.tournament.hasOwnProperty("is_owner")) {
         updatePlayersQueueTournament(data.players)
         updateOnlinePlayersTournament(state.online_players)
     } else {
