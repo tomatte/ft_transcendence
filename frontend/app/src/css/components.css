@@ -1032,6 +1032,7 @@ ul {
     padding: 12px;
     align-items: center;
     gap: 8px;
+    align-self: stretch;
     flex: 1 0 0;
     border-radius: 8px;
     background: var(--Lunar-Dust-1000);
@@ -1053,7 +1054,8 @@ ul {
     flex: 1 0 0;
 }
 
-.player-bracket__info__text__name .player-bracket__info__text__nickname .player-bracket__waiting-text {
+
+.player-bracket__info__text__name, .player-bracket__info__text__nickname, .player-bracket__waiting-text {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
@@ -1134,16 +1136,15 @@ ul {
 
 .toggle {
     display: flex;
- 
     height: 24px;
-    padding: 0px 3px;
+    /* padding: 0px 3px; */
     align-items: center;
     flex-shrink: 0;
     border-radius: 8px;
-    position: relative;
+    /* position: relative; */
     width: 48px;
-    transition: background 0.3s, border-radius 0.3s;
-
+    cursor: pointer;
+    box-sizing: border-box;
 }
 
 .toggle-switch {
@@ -1154,6 +1155,7 @@ ul {
     position: absolute;
     left: 3px;
     right: 3px;
+    /* transition: left 0.3 ease; */
 }
 
 .toggle-checkbox {
@@ -1169,6 +1171,7 @@ ul {
     align-items: center;
     justify-content: center;
     width: 100%;
+    height: 100%;
     cursor: pointer;
     position: relative;
 }
@@ -1182,23 +1185,7 @@ ul {
     background: var(--Neptune-Blue-600-base, #315BE3);
 }
 
-.toggle.Active.Disabled {
-    background: var(--Neptune-Blue-900, #233485);
-}
-
 .toggle.Default.Enabled {
     background: var(--Lunar-Dust-600, #5D5E6C);
 }
-
-.toggle.Default.Disabled {
-    background: var(--Lunar-Dust-800, #41414B);
-}
-
-/* Estados de hover */
-.toggle.Active.Enabled:hover {
-    background: var(--Neptune-Blue-900, #233485);
-}
-
-.toggle.Default.Enabled:hover {
-    background: var(--Lunar-Dust-800, #41414B);
-}
+ 

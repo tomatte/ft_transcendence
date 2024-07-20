@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invasão das Lhamas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        #content {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        p {
+            font-size: 1.2em;
+            color: #333;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #downloadBtn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #downloadBtn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>Invasão das Lhamas!</h1>
+        <p>Prepare-se! As lhamas estão chegando e elas estão trazendo muito caos e diversão!</p>
+        <p>Quem poderia imaginar que essas fofinhas de quatro patas poderiam ser tão travessas?</p>
+        <img id="llamaImage" src="../assets/images/banners/medal.png" alt="Lhamas invadindo">
+        <p>Aqui está uma foto rara de uma lhama líder da invasão, capturada no ato!</p>
+    </div>
+    <button id="downloadBtn">Baixar como PNG</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function () {
+            var content = document.getElementById('content');
+
+            // Adjust CSS for proper rendering during capture
+            content.style.backgroundColor = 'white'; // Set background to white temporarily
+
+            html2canvas(content, {
+                scrollX: 0,
+                scrollY: 0,
+                windowWidth: document.documentElement.offsetWidth,
+                windowHeight: document.documentElement.offsetHeight
+            }).then(function (canvas) {
+                // Reset styles after capture
+                content.style.backgroundColor = '#f9f9f9'; 
+
+                // Create download link
+                let link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'invasao_das_lhamas.png';
+                link.click();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -13,9 +13,7 @@
     <link rel="stylesheet" href="../css/pages/index.css">
     <link rel="stylesheet" href="../css/pages/settings.css">
     <link rel="stylesheet" href="../css/pages/tournament.css">
-    <link rel="stylesheet" href="../../src/scripts/toggle.js">
-
-
+ 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
@@ -109,9 +107,9 @@
 
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Music</span>
-                            <div class="toggle Active Enabled   ">
-                                <input type="checkbox" id="toggle-music" class="toggle-checkbox" checked>
-                                <label for="toggle-music" class="toggle-label">
+                            <div class="toggle Active Enabled">
+                                <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-1" checked>
+                                <label for="toggle-checkbox-1" class="toggle-label">
                                     <span class="toggle-inner"></span>
                                     <span class="toggle-switch"></span>
                                 </label>
@@ -122,13 +120,12 @@
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Sound effects</span>
                             <div class="toggle Active Enabled">
-                                <input type="checkbox" id="toggle-sound-effects" class="toggle-checkbox" checked>
-                                <label for="toggle-sound-effects" class="toggle-label">
+                                <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-2" checked>
+                                <label for="toggle-checkbox-2" class="toggle-label">
                                     <span class="toggle-inner"></span>
                                     <span class="toggle-switch"></span>
                                 </label>
                             </div>
-
                         </div>
 
                     </div>
@@ -137,5 +134,6 @@
             </div>
         </div>
     </div>
+    <script src="../scripts/toggle.js" defer></script>
 </body>
 </html>

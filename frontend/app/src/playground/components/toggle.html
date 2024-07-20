@@ -9,141 +9,56 @@
     <link rel="stylesheet" href="../../css/colors.css">
     <link rel="stylesheet" href="../../css/typography.css">
     <link rel="stylesheet" href="../playground.css">
-
-    <link rel="stylesheet" href="../../scripts/toggle.js">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <title>Toggle</title>
-    <style>
-        .toggle {
-        display: inline-flex;
-        height: 24px;
-        padding: 0px 3px;
-        align-items: center;
-        flex-shrink: 0;
-        border-radius: 8px;
-        position: relative;
-        width: 48px;
-        transition: background 0.3s, border-radius 0.3s;
-    }
-
-    .toggle-switch {
-        width: 18px;
-        height: 18px;
-        background: #fff;
-        border-radius: 6px;
-        position: absolute;
-        left: 3px;
-        right: 3px;
-}
-
-        .toggle-checkbox {
-            display: none;
-        }
-
-        .toggle-checkbox:checked + .toggle-label .toggle-switch {
-            left: calc(100% - 21px);
-        }
-
-        .toggle-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .toggle-inner {
-            display: none;
-        }
-
-        /* Estados do toggle */
-        .toggle.Active.Enabled {
-            background: var(--Neptune-Blue-600-base, #315BE3);
-        }
-
-        .toggle.Active.Disabled {
-            background: var(--Neptune-Blue-900, #233485);
-        }
-
-        .toggle.Default.Enabled {
-            background: var(--Lunar-Dust-600, #5D5E6C);
-        }
-
-        .toggle.Default.Disabled {
-            background: var(--Lunar-Dust-800, #41414B);
-        }
-
-        /* Estados de hover */
-        .toggle.Active.Enabled:hover {
-            background: var(--Neptune-Blue-900, #233485);
-        }
-
-        .toggle.Default.Enabled:hover {
-            background: var(--Lunar-Dust-800, #41414B);
-        }
-    </style>
 </head>
 <body>
     <div class="playground-container playground-container--toggle">
-        <div id="toggle" class="toggle Active Enabled">
-            <input type="checkbox" id="toggle-checkbox" class="toggle-checkbox" checked>
-            <label for="toggle-checkbox" class="toggle-label">
+        <div class="toggle Active Enabled">
+            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-1" checked>
+            <label for="toggle-checkbox-1" class="toggle-label">
                 <span class="toggle-inner"></span>
                 <span class="toggle-switch"></span>
             </label>
         </div>
+
+        <div class="toggle Active Enabled">
+            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-2" checked>
+            <label for="toggle-checkbox-2" class="toggle-label">
+                <span class="toggle-inner"></span>
+                <span class="toggle-switch"></span>
+            </label>
+        </div>
+        
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const toggles = document.querySelectorAll('.toggle');
         
-            toggles.forEach((toggle, index) => {
+            toggles.forEach(toggle => {
                 const checkbox = toggle.querySelector('.toggle-checkbox');
-                const label = toggle.querySelector('.toggle-label');
         
                 checkbox.addEventListener('change', function() {
                     if (this.checked) {
-                        toggle.classList.remove('Default', 'Disabled');
-                        toggle.classList.add('Active', 'Enabled');
-                        console.log('Toggle is Active and Enabled');
+                        toggle.classList.remove('Default');
+                        toggle.classList.add('Active');
                     } else {
-                        toggle.classList.remove('Active', 'Disabled');
-                        toggle.classList.add('Default', 'Enabled');
-                        console.log('Toggle is Default and Enabled');
+                        toggle.classList.remove('Active');
+                        toggle.classList.add('Default');
                     }
                 });
         
                 // Initial state based on checkbox state
                 if (checkbox.checked) {
-                    toggle.classList.add('Active', 'Enabled');
+                    toggle.classList.add('Active');
                 } else {
-                    toggle.classList.add('Default', 'Enabled');
+                    toggle.classList.add('Default');
                 }
-        
-                // Handling disabled state
-                if (checkbox.disabled) {
-                    if (checkbox.checked) {
-                        toggle.classList.add('Active', 'Disabled');
-                        console.log('Toggle is Active and Disabled');
-                    } else {
-                        toggle.classList.add('Default', 'Disabled');
-                        console.log('Toggle is Default and Disabled');
-                    }
-                }
-        
-                // Prevent label click when checkbox is disabled
-                label.addEventListener('click', function(event) {
-                    if (checkbox.disabled) {
-                        event.preventDefault();
-                    }
-                });
             });
         });
-        </script>
-        
+    </script>
 </body>
 </html>
