@@ -215,8 +215,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             
     async def start_tournament(self):
         print("start_tournament()")
-        MatchState.create("semi_final")
-        
+        match_id = MatchState.create("semi_final")
+        MatchState.add_players(match_id, "player1", "player2")
+        MatchState.start(match_id)
             
     async def tournament_update_players(self, event):
         await self.send_json({

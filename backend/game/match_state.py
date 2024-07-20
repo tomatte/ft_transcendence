@@ -13,25 +13,37 @@ class MatchState:
             'player_left': "",
             'player_right': "",
             'type': type,
-            'created_at': datetime.now().isoformat()
+            'created_at': datetime.now().isoformat(),
+            "match_data": {}
         })
         
+        return  id
     
     @classmethod
     def add_player(cls, match_id, username):
-        pass
+        match = cls.get(match_id)
+        if match['player_left'] == "":
+            match['player_left'] = username
+        else:
+            match['player_right'] = username
+        redis.set_map(cls.global_name, match_id, match)
+        
+    @classmethod
+    def add_players(cls, match_id, left, right):
+        match = cls.get(match_id)
+        match['player_left'] = left
+        match['player_right'] = right
+        redis.set_map(cls.global_name, match_id, match)
     
     @classmethod
     def start(cls, match_id):
-        pass
+        match = cls.get(match_id)
+        match['phase'] = 'running'
+        redis.set_map(cls.global_name, match_id, match)
     
     @classmethod
-    def get_data(cls, match_id):
-        pass
-    
-    @classmethod
-    def store_in_users(cls, match_id, username):
-        pass
+    def get(cls, match_id):
+        return redis.get_map(cls.global_name, match_id)
     
     def __init__(self) -> None:
         pass
