@@ -13,10 +13,12 @@
 	<link rel="stylesheet" href="css/modals.css">
 
 	<link rel="stylesheet" href="css/pages/friends.css">
+	<link rel="stylesheet" href="css/pages/settings.css">
 	<link rel="stylesheet" href="css/pages/matches.css">
 	<link rel="stylesheet" href="css/pages/notification.css">
 	<link rel="stylesheet" href="css/pages/ranking.css">
     <link rel="stylesheet" href="css/pages/statistics.css">
+	<link rel="stylesheet" href="../css/pages/tournament.css">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +33,6 @@
 	<script src="scripts/modal.js"></script>
 </head>
 <body>
-
 	<aside class="sidebar">
 		<header class="sidebar__logo-container">
 			<img class="sidebar__logo-container__logo" id="combinationMark" src="../assets/logo/combination-mark_white.svg" alt="logo combination-mark">
@@ -69,7 +70,7 @@
 							<span class="menu-item__text font-body-regular-bold">Ranking</span>
 						</a>
 					</li>
-					<li class="menu-item">
+					<li class="menu-item menu-item--active">
 						<a href="/#Statistics">
 							<span class="material-icons-round menu-item__icon icon--regular">bar_chart</span>
 							<span class="menu-item__text font-body-regular-bold">Statistics</span>
@@ -79,6 +80,12 @@
 						<a href="/#Notifications">
 							<span class="material-icons-round menu-item__icon icon--regular">notifications</span>
 							<span class="menu-item__text font-body-regular-bold">Notifications</span>
+						</a>
+					</li>
+					<li class="menu-item">
+						<a href="/#Settings">
+							<span class="material-icons-round menu-item__icon icon--regular">settings</span>
+							<span class="menu-item__text font-body-regular-bold">Settings</span>
 						</a>
 					</li>
 				</ul>
@@ -93,10 +100,10 @@
 			</div>
 			<div class="profile-info">
 				<div class="profile-info__container">
-					<img class="profile-info__container__image" src="../assets/images/players/caos.png" alt="user profile picture">
+					<img id="profile-info-img" class="profile-info__container__image" alt="user profile picture">
 					<div class="profile-info__container__text">
-						<span class="profile-info__container__text__name font-body-medium-bold"></span>
-						<span class="profile-info__container__text__nickname font-body-regular"></span>
+						<span id="profile-info-name" class="profile-info__container__text__name font-body-medium-bold"></span>
+						<span id="profile-info-nickname" class="profile-info__container__text__nickname font-body-regular"></span>
 					</div>
 				</div>
 			</div>
@@ -108,22 +115,7 @@
 	</div>
 
 	<div class="page-game__container"></div>
-
-	<script>
-		function get_user_data() {
-			fetch('https://localhost:443/api/users/get/my_user/', {method: 'GET', credentials: 'include'})
-			.then(resp => resp.status === 401 ? window.location.href = '/test_login.html' : resp.json())
-			.then(data => {
-				document.getElementsByClassName('profile-info__container__text__name')[0].innerText = data.username;
-				document.getElementsByClassName('profile-info__container__text__nickname')[0].innerText = data.nickname;
-				document.getElementsByClassName('profile-info__container__image')[0].src = data.avatar;
-			}).catch(err => {
-				console.log(err.message);
-			});
-		}
-		window.onload = get_user_data;
-
-	</script>
+	<div class="page-tournament__container"></div>
 
 </body>
 </html>

@@ -45,5 +45,10 @@ purge: down fclean del del_vol del_net
 dev:
 	docker compose --file ./docker-compose-dev.yml up --build
 
+run:
+	docker compose --file ./docker-compose-dev.yml down redis
+	docker compose --file ./docker-compose-dev.yml up redis -d
+	python3 ./backend/manage.py runserver 0.0.0.0:8000
+
 #PHONY
 .PHONY: all help setup up down re ls disk fclean del del_vol del_net purge

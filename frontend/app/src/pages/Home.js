@@ -2,7 +2,7 @@ const Home = (state) => {
     console.log({state})
 	const pageContentContainer = document.querySelector('.page-content__container');
   
-        pageContentContainer.innerHTML = `
+        pageContentContainer.innerHTML = /*html*/ `
         <div class="page-content__container__header">
             <div class="page-content__container__header__info">
                 <h4 class="page-content__container__header__info__title">Home</h4>
@@ -14,7 +14,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">TOURNAMENT</div>
                 <div class="game-mode-banner__info__button">
-                    <button onclick="openModal('modalInviteToTournament')" class="button button--tertiary">
+                    <button id="button-create-tournament" onclick="" class="button button--tertiary">
                         <span class="material-icons-round button__icon-left">add</span>
                         <span class="button__text font-body-regular-bold">Create</span>
                     </button>
@@ -60,7 +60,7 @@ const Home = (state) => {
                     <div class="modal__header">
                         <div class="modal__header__title">
                             <h4 class="modal__header__title__text">Invite to tournament</h4>
-                            <button onclick="closeModal('modalInviteToTournament')" class="button">
+                            <button id="button-close-create-tournament" class="button">
                                 <span class="material-icons-round modal__header__title__close icon--regular">close</span>
                             </button>
                         </div>
@@ -74,93 +74,25 @@ const Home = (state) => {
                 <div class="modal__player-queue__header">
                     <span class="modal__player-queue__header__title font-body-medium-bold">Players</span>
                     <div class="modal__player-queue__header__status">
-                        <span class="modal__player-queue__header__status__ready font-body-medium-bold">3/4 ready</span>
+                        <span id="tournament-status-ready" class="modal__player-queue__header__status__ready font-body-medium-bold"> </span>
                         <span class="material-icons-round modal__player-queue__header__status__icon icon--small">check_circle</span>
                     </div>
                 </div>
-                <div class="modal__player-queue__list">
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
-                    <div class="player-bracket">
-                        <img class="player-bracket__info__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
-                        <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">Tomatte</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">dbrandao</span>
-                        </div>
-                    </div>
-                    <div class="player-bracket player-bracket--waiting">
-                        <span class="material-icons-round player-bracket__waiting-icon icon--small">schedule</span>
-                        <span class="player-bracket__waiting-text font-body-regular">Waiting for player...</span>
-                    </div>
+                <div id="tournament-player-queue" class="modal__player-queue__list">
+
                 </div>
             </div>
 
             <table class="modal__table">
                 <thead class="modal__table__header">
                     <tr class="table-header">
-                        <th class="table-header__text font-body-caption-regular">Player</th>
-                        <th class="table-header__text font-body-caption-regular">Global ranking</th>
-                        <th class="table-header__text font-body-caption-regular">Actions</th>
+                        <th class="table-header__text font-body-caption-bold">Player</th>
+                        <th class="table-header__text font-body-caption-bold">Global ranking</th>
+                        <th class="table-header__text font-body-caption-bold">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="modal__table__body">
-                    <tr class="table-row">
-                        <td class="table-row__player">
-                            <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
-                            <div class="table-row__player__text">
-                                <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-                                <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
-                            </div>
-                        </td>
-                        <td class="table-row__data-default font-body-medium-bold">#1</td>
-                        <td class="table-row__actions">
-                            <button class="button button--secondary">
-                                <span class="button__text font-body-regular-bold">Invite to tournament</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="table-row">
-                        <td class="table-row__player">
-                            <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
-                            <div class="table-row__player__text">
-                                <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-                                <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
-                            </div>
-                        </td>
-                        <td class="table-row__data-default font-body-medium-bold">#1</td>
-                        <td class="table-row__actions ">
-                            <button class="button button--secondary">
-                                <span class="button__text font-body-regular-bold">Invite to tournament</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="table-row">
-                        <td class="table-row__player">
-                            <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
-                            <div class="table-row__player__text">
-                                <span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-                                <span class="table-row__player__text__nickname font-body-regular">clourenc</span>
-                            </div>
-                        </td>
-                        <td class="table-row__data-default font-body-medium-bold">#1</td>
-                        <td class="table-row__actions">
-                            <button class="button button--secondary">
-                                <span class="button__text font-body-regular-bold">Invite to tournament</span>
-                            </button>
-                        </td>
-                    </tr>
+                <tbody id="tournament_online_players" class="modal__table__body">
+                    
                 </tbody>
             </table>
         </div>
@@ -186,9 +118,9 @@ const Home = (state) => {
  
                     <thead class="modal__table__header">
                         <tr class="table-header">
-                            <th class="table-header__text font-body-caption-regular">Player</th>
-                            <th class="table-header__text font-body-caption-regular">Global ranking</th>
-                            <th class="table-header__text font-body-caption-regular">Actions</th>
+                            <th class="table-header__text font-body-caption-bold">Player</th>
+                            <th class="table-header__text font-body-caption-bold">Global ranking</th>
+                            <th class="table-header__text font-body-caption-bold">Actions</th>
                         </tr>
                     </thead>
 

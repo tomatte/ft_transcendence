@@ -34,6 +34,10 @@ def get_intra_data(access_token):
 
 	return (response.json())
 
+def set_cookies(response, user):
+	response.set_cookie('username', user.username)
+	response.set_cookie('nickname', user.nickname)
+	response.set_cookie('avatar', user.avatar)
 
 def auth(request):
 	if request.method != 'GET':
@@ -43,7 +47,9 @@ def auth(request):
 		user = authenticate(request, token=access_token)
 		if user:
 			auth_login(request, user)
-			return redirect(env('SITE_URL'))
+			response = redirect(env('SITE_URL'))
+			set_cookies(response, user)
+			return response
 		else:
 			return JsonResponse({'message': "forbbiden"})
 	except Exception as e:
@@ -73,7 +79,10 @@ def auth_fake(request): #TODO: remove in production
 		user = authenticate(fake_data=fake_data)
 		if user:
 			auth_login(request, user)
-			return redirect(env('SITE_URL'))
+			response = redirect(env('SITE_URL'))
+			set_cookies(response, user)
+			return response
+     	# return 
 		else:
 			return JsonResponse({'message': "forbbiden"})
 	except Exception as e:

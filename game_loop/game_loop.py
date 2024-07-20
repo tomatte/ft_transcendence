@@ -1,4 +1,5 @@
 import asyncio
+from websockets.exceptions import ConnectionClosed
 import websockets
 import json
 from pong_entities import *
@@ -26,15 +27,13 @@ class Socket:
     
     @classmethod
     async def  connect_to_server(cls):
-        max = 20
-        while max > 0:
+        while True:
             try:
                 print("trying to connect to server")
                 cls.ws = await websockets.connect(cls.uri)
                 print("connected successfuly!!!")
                 return
             except:
-                max -= 1
                 await asyncio.sleep(2)
         raise ConnectionError("failed to connect with backend")
 
@@ -42,7 +41,10 @@ class Socket:
     async def send_info(cls):
         while True:
             if len(Game.payload) > 0:
-                await cls.ws.send(json.dumps(Game.payload))
+                try:
+                    await cls.ws.send(json.dumps(Game.payload))
+                except:
+                    await cls.connect_to_server()
             await asyncio.sleep(Game.fps_time)
             
     @classmethod
@@ -55,8 +57,11 @@ class Socket:
                 Actions.act(data)
                 data.clear()
                 msg = ""
+            except ConnectionClosed:
+                await cls.connect_to_server()
             except Exception as e:
                 print(f"An error occurred: {e}")
+                await asyncio.sleep(1)
 
 class Game:
     balls: dict[int, Ball] = dict()

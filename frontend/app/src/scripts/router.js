@@ -1,11 +1,12 @@
 import Home from "../pages/Home.js";
-import Matches from "../pages/Matches.js";
-import Friends from "../pages/Friends.js";
-import Ranking from "../pages/Ranking.js";
-import Statistics from "../pages/Statistics.js";
+import Matches from "../js/Matches.js";
+import Ranking from "../js/Ranking.js";
+import Friends from "../js/Friends.js";
+import Statistics from "../js/Statistics.js";
 import Notifications from "../pages/Notifications.js";
-import Game from "../pages/Game.js"
-import Tournament from "../pages/Tournament.js"
+import Settings from "../pages/Settings.js";
+import Game from "../pages/Game.js";
+import Tournament from "../pages/Tournament.js";
 
 const routes = {
   'Home': Home,
@@ -14,6 +15,7 @@ const routes = {
   'Ranking': Ranking,
   'Statistics': Statistics,
   'Notifications': Notifications,
+  'Settings': Settings,
   'Game': Game,
   'Tournament': Tournament,
 };

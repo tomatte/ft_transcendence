@@ -93,6 +93,14 @@ html, body
     flex-direction: row;
 }
 
+.playground-container--modal-unsaved-changes {
+    flex-direction: column;
+}
+
+.playground-container--input {
+    flex-direction: column;
+    background: var(--Lunar-Dust-950);
+}
 
 
 

@@ -1,5 +1,6 @@
-from backend.utils import redis_client
+from backend.utils import redis_client, OnlineState
 from .my_types import *
+from .tournament_state import TournamentState
 
 class ClientPayloadError(Exception):
     def __init__(self, *args: object) -> None:
@@ -14,24 +15,32 @@ class _JoinTournamentValiadation:
         if not isinstance(data, dict):
             raise TypeError("data must be dict")
         
-        if not "tournament_id" in data:
-            raise  ClientPayloadError("no tournament_id found")
-        if not "player_id" in data:
-            raise  ClientPayloadError("no player_id found")
+        if not "tournament" in data:
+            raise  ClientPayloadError("no tournament data found")
+        if not "id" in data["tournament"]:
+            raise  ClientPayloadError("no tournament id found")
         
     def can_join(self, data):
         try:
             if hasattr(self.parent, "tournament_id"):
+                print("join fail: hasattr tournament_id")
                 return False
-            tournament_id = data["tournament_id"]
-            tournament_data: TournamentData = redis_client.get_json(tournament_id)
-            if len(tournament_data["players"]) == 4:
+            if redis_client.hexists(self.parent.user.username, 'tournament_id'):
+                print("join fail: hexists tournament_id")
                 return False
-            for player_id in tournament_data["players"]:
-                if player_id == data["player_id"]:
+            
+            tournament_players = TournamentState.get_players(data["tournament"]["id"])
+            if len(tournament_players) == 4:
+                print("join fail: len tournament_players ==  4")
+                return False
+            for player in tournament_players:
+                if player["username"] == self.parent.user.username:
+                    print("join fail: user already in tournament")
                     return False
             return True
-        except:
+        except Exception as e:
+            print("join fail: exception")
+            print(e)
             return False
         
         

@@ -1,5 +1,6 @@
 import redis
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.layers import get_channel_layer
 import json
 from environs import Env
 from datetime import datetime
@@ -34,11 +35,20 @@ class MyRedisClient(redis.StrictRedis):
     def set_json(self, key: str, value: dict):
         return self.set(key, json.dumps(value))
     
-    def get_map(self, name: str, key: str):
+    def get_map_str(self, name: str, key: str):
+        value = self.hmget(name, key)[0].decode()
+        return value
+    
+    def set_map_str(self, name: str, key: str, value: str):
+        self.hmset(name, { key: value })
+    
+    def get_map(self, name: str, key: str) -> dict | list | None:
+        if self.hexists(name, key) == False:
+            return None
         data = self.hmget(name, key)[0].decode()
         return json.loads(data)
     
-    def set_map(self, name: str, key: str, data: dict):
+    def set_map(self, name: str, key: str, data: dict | list):
         self.hmset(name, { key: json.dumps(data) })
         
     def get_map_all(self, name: str):
@@ -52,6 +62,45 @@ class MyRedisClient(redis.StrictRedis):
             all[key] = data
         
         return all
+    
+    def append_list(self, name: str, key: str, value):
+        data = []
+        if self.hexists(name, key):
+            data: list = self.get_map(name, key)
+        
+        data.append(value)
+        
+        self.set_map(
+            name,
+            key,
+            data
+        )
+        
+    def append_list_start(self, name: str, key: str, value):
+        data = []
+        if self.hexists(name, key):
+            data: list = self.get_map(name, key)
+        
+        data.insert(0, value)
+        
+        self.set_map(
+            name,
+            key,
+            data
+        )
+        
+    def remove_list_item(self, name: str, key: str, value):
+        if self.hexists(name, key) == False:
+            return
+
+        data: list = self.get_map(name, key)
+        data.remove(value)
+        
+        self.set_map(
+            name, 
+            key,
+            data
+        )
 
 redis_host = env("REDIS_HOST")
 redis_port = env("REDIS_PORT")
@@ -65,31 +114,65 @@ redis_client.config_set('appendonly', 'no')
 
 class NotificationState:
     redis = redis_client
-    
-    @classmethod
-    def init_notification_state(cls, username):
-        data = cls.redis.get_json(username)
-        if not "notifications" in data:
-            data["notifications"] = []
-            cls.redis.set_json(username, data)
-            
-    def __init__(self, user) -> None:
+    channel_notification_key = "channels_notification"
+    channel_layer = get_channel_layer()
+   
+    def __init__(self, user, channel_name) -> None:
         self.user = user
-        NotificationState.init_notification_state(user.username)
-            
+        self.channel_name = channel_name
+        self.save_channel_name(channel_name)
+
+    def __del__(self):
+        self.redis.remove_list_item(
+            self.user.username, 
+            self.channel_notification_key,
+            self.channel_name
+        )
+        
     def get(self):
-        data = NotificationState.redis.get_json(self.user.username)
-        return data["notifications"]
+        data = self.redis.get_map(self.user.username, 'notifications')
+        return  data if data else []
     
-    def set(self, value: dict):
-        data = NotificationState.redis.get_json(self.user.username)
+    def add(self, value: dict):
         value["time"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data["notifications"].append(value)
-        NotificationState.redis.set_json(self.user.username, data)
+        self.redis.append_list_start(
+            self.user.username,
+            'notifications',
+            value
+        )
+        
+    def save_channel_name(self, channel_name):
+        self.redis.append_list(
+            self.user.username,
+            self.channel_notification_key,
+            channel_name
+        )
+    
+    async def notify(self, username, event):
+        await self.channel_layer.group_send(
+            username,
+            event
+        )
+        
         
 class OnlineState:
     redis = redis_client
     global_name = "global_online_players"
+    channel_layer = get_channel_layer()
+    
+    @classmethod
+    async def broadcast_online_players(cls):
+        players = cls.get_all()
+        
+        payload = {
+            "type": "notification.online_players",
+            "players": players
+        }
+        
+        await cls.channel_layer.group_send(
+            'notification',
+            payload
+        )
     
     @classmethod
     def get_all(cls):
@@ -99,10 +182,22 @@ class OnlineState:
     def get_user(cls, username):
         return cls.redis.get_map(cls.global_name, username)
     
+    @classmethod
+    def set_user_str(cls, username: str, key: str, value: str):
+        data = cls.get_user(username)
+        data[key] = value
+        cls.redis.set_map(
+            cls.global_name,
+            username,
+            data
+        )
+    
+    
+    
     def __init__(self, user) -> None:
         self.user = user
         
-    def connected(self):
+    async def connected(self):
         if self.redis.hexists(self.global_name, self.user.username):
             self.multi_connection()
             return 
@@ -116,12 +211,14 @@ class OnlineState:
         }
         
         self.set(data)
+        await self.broadcast_online_players()
         
-    def disconnected(self):
+    async def disconnected(self):
         data = self.get()
     
         if data['connections'] == 1:
             self.redis.hdel(self.global_name, self.user.username)
+            await self.broadcast_online_players()  
             return
 
         
@@ -150,31 +247,15 @@ class OnlineState:
 class UserState:
     redis = redis_client
     
-    @classmethod
-    def init_user_state(cls, user):
-        if not cls.redis.exists(user.username):
-            data = {
-                "status": "connected",
-            }
-            cls.redis.set_json(user.username, data)
-        else:
-            data = cls.redis.get_json(user.username)
-            data["status"] = "connected"
-            cls.redis.set_json(user.username, data)
-    
-    def __init__(self, user) -> None:
+    def __init__(self, user, channel_name) -> None:
         self.user = user
-        
-        UserState.init_user_state(self.user)
-        self.notification = NotificationState(self.user)
-        self.online = OnlineState(self.user)
+        self.redis.set_map_str(user.username, 'status', 'initiated')
+        self.notification = NotificationState(user, channel_name)
+        self.online = OnlineState(user)
     
-    def get(self):
-        return UserState.redis.get_json(self.user.username)
+    def get(self, key):
+        return self.redis.get_map(self.user.username, key)
     
     def set(self, key, value):
-        data = UserState.redis.get_json(self.user.username)
-        data[key] = value
-        UserState.redis.set_json(self.user.username, data)
-        
+        self.redis.set_map(self.user.username, key, value)
     
