@@ -403,12 +403,17 @@ align-self: stretch;
 }
 
 .page-content__container__content__line-metrics {
-display: flex;
-padding: 16px;
-flex-direction: column;
-align-items: flex-start;
-gap: 16px;
-align-self: stretch;
-border-radius: 8px;
-background: var(--Comet-Cloud-1000);
+	display: flex;
+	padding: 16px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 16px;
+	align-self: stretch;
+	border-radius: 8px;
+	background: var(--Comet-Cloud-1000);
+}
+
+
+.table-actions-align-right {
+    text-align: right;
 }

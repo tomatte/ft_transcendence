@@ -1,4 +1,5 @@
-import renderTableLines from './RenderTableLines.js';
+import AddTableLines from './AddTableLines.js';
+import AddPaginationTables from './AddPaginationTables.js';
 
 
 const createTableLines = (ranking_list, start) => {
@@ -36,6 +37,7 @@ var rankingData = {
 	"createLines": createTableLines
 }
 
+
 async function fetchApiRanking() {
 	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
 	if (response.status !== 200) throw new Error('Error status is not 200' + response.method); else return await response.json()
@@ -44,13 +46,14 @@ async function fetchApiRanking() {
 
 const Ranking = async () => {
 	rankingData['rank_list'] = await fetchApiRanking();
-	document.querySelector('.page-content__container').innerHTML = loadingBasePage();
-	renderTableLines(rankingData);
+	loadingPage();
+	AddTableLines(rankingData);
+	AddPaginationTables(rankingData);
 };
 
 
-const loadingBasePage = () => {
-	return `
+const loadingPage = () => {
+	document.querySelector('.page-content__container').innerHTML = `
 		<div class="page-content__container__header">
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Ranking</h4>

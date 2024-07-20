@@ -1,4 +1,7 @@
-import renderTableLines from './RenderTableLines.js';
+import AddTableLines from './AddTableLines.js';
+import AddPaginationTables from './AddPaginationTables.js';
+
+import getCookie from '../js/ultis.js';
 
 
 function get_status_match(is_winner) {
@@ -12,16 +15,16 @@ function get_status_match(is_winner) {
 	`;
 }
 
-
 const createTableLines = (matchesList) => {
-	console.log(matchesList)
+	let username = getCookie('username');
+	let nickname = getCookie('nickname');
 	return matchesList.reduce((acc, item) => {return acc + `
 		<tr class="table-row">
 			<td class="table-row__player">
 				<img class="table-row__player__image" src="../assets/images/players/caos.png" alt="player">
 				<div class="table-row__player__text">
-					<span class="table-row__player__text__name font-body-medium-bold">Caos Lourenc</span>
-					<span class="table-row__player__text__nickname font-body-regular">clourenc</span>
+					<span class="table-row__player__text__name font-body-medium-bold">${nickname}</span>
+					<span class="table-row__player__text__nickname font-body-regular">${username}</span>
 				</div>
 			</td>
 			<td class="table-row__data-default font-body-medium-bold">Friendly Match</td>
@@ -31,7 +34,6 @@ const createTableLines = (matchesList) => {
 			</td>
 			<td class="table-row__data-default font-body-medium-bold">30/06/2024</td>
 		</tr>`
-
 	}, '')
 }
 
@@ -40,7 +42,7 @@ var rankingData = {
 	"rank_list": [],
 	"currentPage": 1,
 	"itemsPerPage": 4,
-	"createLines": createTableLines
+	"createLines": createTableLines,
 }
 
 async function fetchMatches() {
@@ -51,14 +53,14 @@ async function fetchMatches() {
 
 const Matches = async() => {
 	rankingData['rank_list'] = await fetchMatches();
-	const pageContentContainer = document.querySelector('.page-content__container');
-	pageContentContainer.innerHTML = loadingBasePage();
-	renderTableLines(rankingData);
+	loadingPage();
+	AddTableLines(rankingData);
+	AddPaginationTables(rankingData);
 };
 
 
-const loadingBasePage = () => {
-	return `
+const loadingPage = () => {
+	document.querySelector('.page-content__container').innerHTML =  `
 		<div class="page-content__container__header">
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Matches</h4>
