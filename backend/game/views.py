@@ -41,11 +41,12 @@ class GameLoopConsumer(MyAsyncWebsocketConsumer):
 # Create your views here.
 class MatchConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
-        is_authenticated = await self.authenticate()
-        if is_authenticated == False:
-            return 
+        if await self.authenticate() == False:
+            return
         
-        match_id = OnlineState.get_value(self.user.username, "match_id")
+        self.user = self.scope['user']
+        
+        match_id = redis_client.get_map_str(self.user.username, "match_id")
         if match_id == None:
             return await self.close()
         
