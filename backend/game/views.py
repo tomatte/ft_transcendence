@@ -226,16 +226,20 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         MatchState.add_players(match_id_2, players[2], players[3])
         MatchState.start(match_id_1)
         MatchState.start(match_id_2)
+        
+        await self.channel_layer.group_send(self.tournament_id, {
+            "type": "match.start"
+        })
             
     async def tournament_update_players(self, event):
         await self.send_json({
             "name": "update_players",
             "players": event["players"],
             "tournament_id": self.tournament_id
-        })        
+        })
         
-    async def tournament_start(self, event):
-        await self.send_json({"status": "start_tournament"})
+    async def match_start(self, event):
+        await self.send_json({"name": "start_match"})
         
     async def tournament_cancel(self, event):
         print("EVENT tournament_cancel()")
