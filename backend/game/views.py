@@ -40,27 +40,12 @@ class GameLoopConsumer(MyAsyncWebsocketConsumer):
 
 # Create your views here.
 class MatchConsumer(MyAsyncWebsocketConsumer):
-    num_players = 0
-    new_match_id = str(uuid.uuid4())
-    
     async def connect(self):
         is_authenticated = await self.authenticate()
         if is_authenticated == False:
             return 
         
         await self.channel_layer.group_add("match", self.channel_name)
-        
-        MatchConsumer.num_players += 1
-        if MatchConsumer.num_players % 2 != 0:
-            MatchConsumer.new_match_id = str(uuid.uuid4())
-
-        payload = {
-            "action": "connect",
-            "match_id": MatchConsumer.new_match_id,
-            "player_id": str(uuid.uuid4()), #this is temporary, the player_id should come somewhere else like from an http route or from the client
-		}
-        
-        await self.send_json(payload)
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -70,63 +55,16 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             await self.player_move_action(data)
             return
         
-        if data["action"] == "ready":
-            await self.player_ready_action(data)
-            return
-
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("match", self.channel_name)
         return await super().disconnect(close_code)
-    
 
-    async def player_ready_action(self, data):
-        self.player_id = data["player_id"]
-        self.match_id = data["match_id"]
-        
-        match_data = dict()
-        if redis_client.exists(self.match_id):
-            match_data = redis_client.get_json(self.match_id)
-        
-        print(f"match_data: {match_data}")
-        match_data[data["player_id"]] = self.channel_name
-        redis_client.set_json(self.match_id, match_data)
-        
-        payload = {
-            "type": "player.connect",
-            "action": "player_connect",
-            "player_id": data["player_id"],
-            "match_id": data["match_id"],
-            "max_scores": 5 #TODO: this could come from database or .env
-        }
-        
-        game_loop_channel = redis_client.get("game_loop").decode()
-        
-        await self.channel_layer.send(game_loop_channel, payload)
-        
     async def player_move_action(self, data: PlayerMoveDataType):
         game_loop_channel = redis_client.get("game_loop").decode()
         
         data["type"] = "player.move"
         await self.channel_layer.send(game_loop_channel, data)
         
-    async def match_coordinates(self, event):
-        matches_data = redis_client.get_json("matches")
-        match = matches_data[self.match_id]
-
-        payload = {
-            "ball": match["ball"],
-            "action": "coordinates"
-        }
-        for player_id, player in match["players"].items():
-            payload[f"player_{player['pos']}"] = {
-                "x": player["x"],
-                "y": player["y"],
-                "points": player["points"]
-            }
-
-        await self.send_json(payload)
-        # print(f"p_id: {self.player_id} match: {match}")
-         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):

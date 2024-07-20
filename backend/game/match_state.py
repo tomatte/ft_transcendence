@@ -41,7 +41,7 @@ class MatchState:
     @classmethod
     def start(cls, match_id):
         match = cls.get(match_id)
-        match['phase'] = 'running'
+        match['phase'] = 'start'
         redis.set_map(cls.global_name, match_id, match)
     
     @classmethod
