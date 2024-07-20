@@ -230,6 +230,11 @@ class OnlineState:
             self.user.username,
             data
         )
+        
+    def set_str(self, key: str, value: str):
+        data = self.get()
+        data[key] = value
+        self.set(data)
 
 
 class UserState:
