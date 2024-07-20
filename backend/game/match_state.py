@@ -1,4 +1,4 @@
-from backend.utils import redis_client as redis
+from backend.utils import redis_client as redis, OnlineState
 import uuid
 from datetime import datetime
 from channels.layers import get_channel_layer
@@ -27,13 +27,16 @@ class MatchState:
         else:
             match['player_right'] = username
         redis.set_map(cls.global_name, match_id, match)
+        OnlineState.set_user_str(username, "match_id", match_id)
         
     @classmethod
-    def add_players(cls, match_id, left, right):
+    def add_players(cls, match_id, user_left, user_right):
         match = cls.get(match_id)
-        match['player_left'] = left
-        match['player_right'] = right
+        match['player_left'] = user_left
+        match['player_right'] = user_right
         redis.set_map(cls.global_name, match_id, match)
+        OnlineState.set_user_str(user_left, "match_id", match_id)
+        OnlineState.set_user_str(user_right, "match_id", match_id)
     
     @classmethod
     def start(cls, match_id):

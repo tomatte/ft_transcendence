@@ -182,6 +182,18 @@ class OnlineState:
     def get_user(cls, username):
         return cls.redis.get_map(cls.global_name, username)
     
+    @classmethod
+    def set_user_str(cls, username: str, key: str, value: str):
+        data = cls.get_user(username)
+        data[key] = value
+        cls.redis.set_map(
+            cls.global_name,
+            username,
+            data
+        )
+    
+    
+    
     def __init__(self, user) -> None:
         self.user = user
         
@@ -230,11 +242,6 @@ class OnlineState:
             self.user.username,
             data
         )
-        
-    def set_str(self, key: str, value: str):
-        data = self.get()
-        data[key] = value
-        self.set(data)
 
 
 class UserState:
