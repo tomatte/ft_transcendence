@@ -9,6 +9,7 @@ from .validations import TournamentValidation
 from .tasks import emit_group_event_task
 from .my_types import *
 import random
+from .match_state import MatchState
 
 MatchDict = Dict[str, MatchData]
 
@@ -214,6 +215,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             
     async def start_tournament(self):
         print("start_tournament()")
+        MatchState.create("semi_final")
+        
             
     async def tournament_update_players(self, event):
         await self.send_json({
