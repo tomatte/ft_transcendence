@@ -5,6 +5,7 @@ import Tournament from "../../pages/Tournament.js"
 import { createBracketsSemi } from "./createTournamentBrackets.js"
 import { injectElement, hideContents, diffOnlineAndQueue } from "./utils.js"
 import state from "../state/state.js"
+import Game from "../../pages/Game.js"
 
 export function updateOnlinePlayersTournament(players) {
     if (!state.hasOwnProperty("tournament") || !state.tournament.hasOwnProperty("players")) {
@@ -54,4 +55,10 @@ export function addStartTournamentClickEvent() {
             startTournament()
         })
     }
+}
+
+export function showGamePage() {
+    hideContents()
+    document.querySelector('.page-tournament__container').remove()
+    Game()
 }

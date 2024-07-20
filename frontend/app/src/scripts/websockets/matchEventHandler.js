@@ -22,8 +22,6 @@ class MatchEventHandler {
     }
 }
 
-
-
 const matchEventHandler = new MatchEventHandler(state)
 
 export default matchEventHandler

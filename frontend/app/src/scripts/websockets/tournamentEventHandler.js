@@ -5,8 +5,9 @@ import {
     updatePlayersQueueTournament, 
     updateTournamentBrackets,
     addStartTournamentClickEvent,
+    showGamePage
 } from "../element-creators/updateElements.js"
-import {  } from "../element-creators/updateElements.js"
+import websocketMatch from "./websocketMatch.js"
 
 class TournamentEventHandler {
     constructor (state) {
@@ -74,11 +75,16 @@ function updatePlayers(data, state) {
     }
 }
 
-const tournamentEventHandler = new TournamentEventHandler(state)
+const startMatch = (state) => {
+    websocketMatch.listen()
+    showGamePage()
+}
 
+const tournamentEventHandler = new TournamentEventHandler(state)
 tournamentEventHandler.register('enter_tournament', enterTournament)
 tournamentEventHandler.register('connected', connectedTournament)
 tournamentEventHandler.register('update_players', updatePlayers)
 tournamentEventHandler.register('creating_tournament', creatingTournament)
+tournamentEventHandler.register('start_match', startMatch)
 
 export default tournamentEventHandler
