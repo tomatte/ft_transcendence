@@ -344,3 +344,199 @@
     align-items: center;
     gap: 12px;
 }
+
+
+ /* --------------SHARE YOUR RANKING--------------- */
+
+
+ .modal--share-ranking-one {
+    display: flex;
+    width: 948px;
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    border-radius: 16px;
+    border: 1px solid #2C2F3E;
+    background: linear-gradient(64deg, #000 0%, #000 38.5%, #E68B02 100%);
+
+}
+
+.share-ranking__header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+
+.logo-ottter-sharing{
+    display: flex;
+    align-items: center;
+    gap: 10.5px;
+}
+
+.icon-sharing{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.share-ranking__content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.share-ranking__content__info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.share-ranking__content__illustration{
+    width: 520px;
+    height: 520px;
+    display: flex;
+    padding: 9px 40.021px 6.488px 0px;
+}
+
+.share-ranking__content__info__player{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.share-ranking__content__info__action{
+    display: flex;
+    padding-bottom: 16px;
+    align-items: center;
+    gap: 12px;
+    align-self: stretch;
+}
+
+.share-ranking__content__info__player__text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+}
+
+.share-ranking__content__info__player__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+}
+
+.share-ranking__content__info__player__text__place{
+    align-self: stretch;
+    background: linear-gradient(90deg, #E2A60C 0%, #D4470B 85%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+     font-weight: 700;
+}
+
+.share-ranking__content__info__player__text__description{
+    /* align-self: stretch; */
+    color: #737993;
+    font-weight: 700;
+}
+
+.share-ranking__content__info__player__container__image{
+    display: flex;
+    width: 56px;
+    height: 56px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12.444px;
+}
+
+.info-share-ranking{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    flex: 1 0 0;
+}
+
+.name_player_share-info{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    align-self: stretch;
+    overflow: hidden;
+    color: #D3D9F4;
+    text-overflow: ellipsis;
+    font-family: Play;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; /* 24px */
+}
+
+.nick_player_share-info{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    align-self: stretch;
+    overflow: hidden;
+    color: #737993;
+    text-overflow: ellipsis;
+    font-family: Play;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; /* 20px */
+}
+
+
+.modal--share-ranking-two{
+    display: flex;
+    width: 948px;
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    border-radius: 16px;
+    border: 1px solid #2C2F3E;
+    background: linear-gradient(64deg, #000 0%, #000 38.5%, rgba(73, 73, 85, 0.65) 100%);
+}
+
+.share-ranking__content__info__player__text__place-two{
+    align-self: stretch;
+    background: linear-gradient(90deg, #A7A7BF 0%, #606084 85%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+     font-weight: 700;
+}
+
+.modal--share-ranking-three{
+    display: flex;
+    width: 948px;
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    border-radius: 16px;
+    border: 1px solid #2C2F3E;
+    background: linear-gradient(64deg, #000 0%, #000 38.5%, #4377EE 100%);
+}
