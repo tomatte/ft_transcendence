@@ -46,12 +46,13 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         
         self.user = self.scope['user']
         
-        match_id = redis_client.get_map_str(self.user.username, "match_id")
-        if match_id == None:
+        self.match_id = redis_client.get_map_str(self.user.username, "match_id")
+        if self.match_id == None:
             return await self.close()
         
-        await self.channel_layer.group_add(match_id, self.channel_name)
+        await self.channel_layer.group_add(self.match_id, self.channel_name)
         await self.channel_layer.group_add("match", self.channel_name)
+        MatchState.ready(self.match_id, self.user.username)
 
     async def receive(self, text_data):
         data = json.loads(text_data)

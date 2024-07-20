@@ -90,7 +90,12 @@ class MatchState:
     
     @classmethod
     def ready(cls, match_id, username):
-        pass
+        match: MatchData = cls.get(match_id)
+        if match['player_left']['username'] == username:
+            match['player_left']['ready'] = True
+        else:
+            match['player_right']['ready'] = True
+        redis.set_map(cls.global_name, match_id, match)
     
     def __init__(self) -> None:
         pass
