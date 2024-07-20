@@ -183,6 +183,11 @@ class OnlineState:
         return cls.redis.get_map(cls.global_name, username)
     
     @classmethod
+    def get_value(cls, username, key):
+        data = cls.get_user(username)
+        return data[key] if key in data else None
+    
+    @classmethod
     def set_user_str(cls, username: str, key: str, value: str):
         data = cls.get_user(username)
         data[key] = value

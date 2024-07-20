@@ -45,6 +45,11 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         if is_authenticated == False:
             return 
         
+        match_id = OnlineState.get_value(self.user.username, "match_id")
+        if match_id == None:
+            return await self.close()
+        
+        await self.channel_layer.group_add(match_id, self.channel_name)
         await self.channel_layer.group_add("match", self.channel_name)
 
     async def receive(self, text_data):
