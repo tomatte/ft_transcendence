@@ -64,6 +64,11 @@ class TournamentState:
         return players
     
     @classmethod
+    def get_players_usernames(self, id):
+        data = redis.get_map(global_tournament_name, id)
+        return data["players"]
+    
+    @classmethod
     def shuffle_players(cls, tournament_id):
         data = redis.get_map(global_tournament_name, tournament_id)
         random.shuffle(data["players"])
@@ -117,5 +122,10 @@ class TournamentState:
             'tournament_id', 
             tournament_id
         )
+        
+    def add_semi_final_matches(self, match_id_1, match_id_2):
+        data = redis.get_map(global_tournament_name, self.tournament_id)
+        data["semi_finals"] = (match_id_1, match_id_2)
+        redis.set_map(global_tournament_name, self.tournament_id, data)
 
     
