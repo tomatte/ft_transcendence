@@ -166,6 +166,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.tournament_state.add_semi_final_matches(match_id_1, match_id_2)
         
         players = self.tournament_state.get_players_usernames(self.tournament_id)
+        self.tournament_state.set_value("status", "started")
         
         MatchState.add_players(match_id_1, players[0], players[1])
         MatchState.add_players(match_id_2, players[2], players[3])
