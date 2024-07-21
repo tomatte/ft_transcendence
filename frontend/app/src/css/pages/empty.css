@@ -8,10 +8,10 @@
     align-self: stretch;
 }
 
-.empty-state-image{
+.empty-state-image {
     width: 160px;
     height: 160px;
-    }
+}
 
 .page-content__container__empty-state__info{
     display: flex;

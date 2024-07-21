@@ -1033,7 +1033,7 @@ ul {
     align-items: center;
     gap: 8px;
     align-self: stretch;
-    flex: 1 0 0;
+    width: 100%;
     border-radius: 8px;
     background: var(--Lunar-Dust-1000);
 }
@@ -1055,7 +1055,7 @@ ul {
 }
 
 
-.player-bracket__info__text__name, .player-bracket__info__text__nickname, .player-bracket__waiting-text {
+.player-bracket__info__text__name, .player-bracket__info__text__nickname {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
@@ -1080,6 +1080,15 @@ ul {
 
 .player-bracket__waiting-text {
     color: var(--Lunar-Dust-500);
+    flex: 1 0 0;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
