@@ -45,9 +45,9 @@ class MatchState:
         return redis.set_map("global_matches", match_id, match)
     
     @classmethod
-    def set_phase_running(cls, match_id):
+    def set_phase(cls, match_id, phase):
         match = cls.get(match_id)
-        match["phase"] = "running"
+        match["phase"] = phase
         cls.set(match_id, match)
         
     @classmethod
