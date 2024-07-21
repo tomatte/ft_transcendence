@@ -6,6 +6,7 @@ from pong_entities import *
 from typing import TypedDict
 from environs import Env
 from my_redis import redis_client as redis
+from match_state import MatchState
 
 env = Env()
 env.read_env()
@@ -29,7 +30,9 @@ class Socket:
     
     @classmethod
     async def  connect_to_server(cls):
+        print(MatchState.get_all())
         while True:
+            
             try:
                 print("trying to connect to server")
                 cls.ws = await websockets.connect(cls.uri)
