@@ -38,6 +38,7 @@ export function showTournamentPage() {
    const gameContainer = document.querySelector('.page-tournament__container'); 
    
     gameContainer.innerHTML = Tournament()
+    gameContainer.style.display = "block"
 };
 
 export function updateTournamentBrackets(players) {

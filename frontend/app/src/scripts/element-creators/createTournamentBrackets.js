@@ -11,7 +11,7 @@ function createBracket(player) {
                 </div>
             </div>
         </div>
-        `
+    `
 }
 
 const emptyState = `
