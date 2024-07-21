@@ -44,10 +44,11 @@ class Socket:
 
     @classmethod
     async def send_info(cls):
+        tick = json.dumps({"action": "tick"})
         while True:
-            if len(Game.payload) > 0:
+            if len(Game.balls) > 0:
                 try:
-                    await cls.ws.send(json.dumps(Game.payload))
+                    await cls.ws.send(tick)
                 except:
                     await cls.connect_to_server()
             await asyncio.sleep(Game.fps_time)

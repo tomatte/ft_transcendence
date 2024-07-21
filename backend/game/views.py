@@ -19,11 +19,9 @@ class GameLoopConsumer(MyAsyncWebsocketConsumer):
         redis_client.set("game_loop", self.channel_name)
 
     async def receive(self, text_data):
-        redis_client.set("matches", text_data)
 
         await self.channel_layer.group_send("match", {
-            "type": "match.coordinates",
-            "text": "new"
+            "type": "match.tick"
         })
 
     async def disconnect(self, code):
@@ -71,6 +69,10 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         
         data["type"] = "player.move"
         await self.channel_layer.send(game_loop_channel, data)
+        
+    async def match_tick(self, event):
+        match = MatchState.get(self.match_id)
+        print(f"x: {match['ball']['x']} y: {match['ball']['y']}")
         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
