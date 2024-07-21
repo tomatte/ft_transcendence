@@ -27,3 +27,11 @@ class MatchState:
                 continue
             ready[match_id] = match
         return ready
+    
+    @classmethod
+    def convert_to_array(cls, matches):
+        result = []
+        for match_id, match in matches.items():
+            match["id"] = match_id
+            result.append(match)
+        return result
