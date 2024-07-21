@@ -49,3 +49,20 @@ class MatchState:
         match = cls.get(match_id)
         match["phase"] = "running"
         cls.set(match_id, match)
+        
+    @classmethod
+    def get_entities(cls, match_id):
+        match = cls.get(match_id)
+        return {
+            "player_left": match["player_left"],
+            "player_right": match["player_right"],
+            "ball": match["ball"]
+        }
+        
+    @classmethod
+    def set_entities(cls, match_id, entities):
+        match = cls.get(match_id)
+        match["player_left"] = entities["player_left"]
+        match["player_right"] = entities["player_right"]
+        match["ball"] = entities["ball"]
+        cls.set(match_id, match)
