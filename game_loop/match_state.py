@@ -3,8 +3,7 @@ from my_redis import redis_client as redis
 class MatchState:
     @classmethod
     def get_all(cls):
-        matches = redis.get_map_all("global_matches")
-        return cls.convert_to_array(matches)
+        return redis.get_map_all("global_matches")
     
     @classmethod
     def get_running(cls):

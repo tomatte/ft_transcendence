@@ -114,23 +114,15 @@ class Match:
     
     def __init__(self, data) -> None:
         self.started = False
-        self.id = data["match_id"]
-        self.max_scores = data["max_scores"]
+        self.id = data["id"]
+        self.max_scores = 5
         self.action = "coordinates"
         Match.matches[self.id] = self
+        self._add_ball()
+        self._add_player_left(data)
+        self._add_player_right(data)
         
-        self.player_right: Player | None = None
-        self.player_left = Player(
-            [0, TABLE_HEIGHT / 2],
-            PLAYER_SPEED,
-            PLAYER_WIDTH,
-            PLAYER_HEIGHT,
-            Entity.PLAYER_LEFT,
-            data["player_id"]
-        )
-        Match.players[self.player_left.id] = self.player_left
-        self.player_left.match_id = self.id
-        
+    def _add_ball(self):
         self.ball = Ball(
             [TABLE_WIDTH / 2, TABLE_HEIGHT / 2], 
             BALL_RADIOUS, 
@@ -138,24 +130,33 @@ class Match:
             BALL_START_DIRECTION,
             self.id
         )
-        
-        self.ball.players["left"] = self.player_left
         Match.balls[self.id] = self.ball
         
-        
-        
-    def add_player_right(self, data):
+    def _add_player_right(self, data):
         self.player_right = Player(
             [TABLE_WIDTH, TABLE_HEIGHT / 2],
             PLAYER_SPEED,
             PLAYER_WIDTH,
             PLAYER_HEIGHT,
             Entity.PLAYER_RIGHT,
-            data["player_id"]
+            data["player_right"]["username"]
         )
         Match.players[self.player_right.id] = self.player_right
         self.player_right.match_id = self.id
         self.ball.players["right"] = self.player_right
+        
+    def _add_player_left(self, data):
+        self.player_left = Player(
+            [0, TABLE_HEIGHT / 2],
+            PLAYER_SPEED,
+            PLAYER_WIDTH,
+            PLAYER_HEIGHT,
+            Entity.PLAYER_LEFT,
+            data["player_left"]["username"]
+        )
+        Match.players[self.player_left.id] = self.player_left
+        self.player_left.match_id = self.id
+        self.ball.players["left"] = self.player_left
     
     def start_match(self):
         Game.balls[self.id] = self.ball
@@ -226,6 +227,15 @@ class Actions:
         pass
     
     @classmethod
+    def start_matches(cls):
+        matches = MatchState.get_ready()
+        for data in matches:
+            match = Match(data)
+            MatchState.set_phase(data["id"], "running")
+            match.start_match()
+            
+    
+    @classmethod
     def act(cls, data):
         if data["action"] == "new_match":
             cls.new_match(data)
@@ -244,6 +254,7 @@ async def main():
     asyncio.create_task(Socket.send_info())
     asyncio.create_task(Socket.rcve_info())
     while True:
+        Actions.start_matches()
         Game.move_balls()
         Match.move_players()
         Match.verify_ended_matches()
