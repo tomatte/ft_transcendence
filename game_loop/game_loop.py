@@ -30,7 +30,6 @@ class Socket:
     
     @classmethod
     async def  connect_to_server(cls):
-        print(MatchState.get_all())
         while True:
             
             try:

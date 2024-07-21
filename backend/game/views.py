@@ -72,7 +72,14 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         
     async def match_tick(self, event):
         match = MatchState.get(self.match_id)
-        print(f"x: {match['ball']['x']} y: {match['ball']['y']}")
+        payload = {
+            "name": "coordinates",
+            "player_left": match["player_left"],
+            "player_right": match["player_right"],
+            "ball": match["ball"],
+        }
+        
+        await self.send_json(payload)
         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):

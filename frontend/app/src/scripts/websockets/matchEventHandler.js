@@ -1,4 +1,5 @@
 import state from "../state/state.js"
+import { updateCoordinates } from "../game.js"
 
 class MatchEventHandler {
     constructor (state) {
@@ -22,6 +23,11 @@ class MatchEventHandler {
     }
 }
 
+function coordinates(data, state) {
+    updateCoordinates(data)
+}
+
 const matchEventHandler = new MatchEventHandler(state)
+matchEventHandler.register("coordinates", coordinates)
 
 export default matchEventHandler
