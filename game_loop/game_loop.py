@@ -77,6 +77,28 @@ class Game:
     def move_balls(cls):
         for id, ball in cls.balls.items():
             ball.move(FPS)
+            
+    @classmethod
+    def save_changes(cls):
+        for id, match in Match.matches.items():
+            entities = MatchState.get_entities(match.id)
+            entities["ball"] = {
+                "x": match.ball.x,
+                "y": match.ball.y,
+                "bounced": match.ball.bounced
+            }
+            entities["player_left"] = {
+                "x": match.player_left.x,
+                "y": match.player_left.y,
+                "points": match.player_right.hits
+            }
+            entities["player_right"] = {
+                "x": match.player_right.x,
+                "y": match.player_right.y,
+                "points": match.player_left.hits
+            }
+            MatchState.set_entities(match.id, entities)
+    
     @classmethod
     def create_payload(cls):
         cls.payload.clear()
@@ -258,9 +280,9 @@ async def main():
         Game.move_balls()
         Match.move_players()
         Match.verify_ended_matches()
-        Game.create_payload()
         Match.destroy_matches()
-
+        Game.save_changes()
+        
         await asyncio.sleep(Game.fps_time)
         
 
