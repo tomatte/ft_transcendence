@@ -1,3 +1,5 @@
+import { playerMove } from "./websockets/websocketActions.js"
+
 function setPlayerLeft(y) {
     const player = document.getElementById("player_left")
     player.style.top = `${y}px`
@@ -59,29 +61,18 @@ export function updateCoordinates(data) {
     setScores(player_left_points, player_right_points)
 }
 
-
-let keyPressed = ""
-
-async function sendKey(key) {
-    if (keyPressed == key)
-        return
-    else
-        keyPressed = key
-    payload.key = key
-    payload.action = "player_move"
-    ws.send(JSON.stringify(payload))
-}
-
-document.addEventListener('keydown', async function(event) {
-    if (event.key === 'ArrowUp') {
-        sendKey('up');
-    } else if (event.key === 'ArrowDown') {
-        sendKey('down');
-    }
-});
-
-document.addEventListener('keyup', function(event) {
-    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-        sendKey("stop");
-    }
-});
+export function listenMoves() {
+    document.addEventListener('keydown', async function(event) {
+        if (event.key === 'ArrowUp') {
+            playerMove('up')
+        } else if (event.key === 'ArrowDown') {
+            playerMove('down');
+        }
+    });
+    
+    document.addEventListener('keyup', function(event) {
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            playerMove("stop");
+        }
+    });
+} 

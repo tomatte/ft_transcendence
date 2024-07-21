@@ -82,21 +82,15 @@ class Game:
     def save_changes(cls):
         for id, match in Match.matches.items():
             entities = MatchState.get_entities(match.id)
-            entities["ball"] = {
-                "x": match.ball.x,
-                "y": match.ball.y,
-                "bounced": match.ball.bounced
-            }
-            entities["player_left"] = {
-                "x": match.player_left.x,
-                "y": match.player_left.y,
-                "points": match.player_right.hits
-            }
-            entities["player_right"] = {
-                "x": match.player_right.x,
-                "y": match.player_right.y,
-                "points": match.player_left.hits
-            }
+            entities["ball"]["x"] = match.ball.x
+            entities["ball"]["y"] = match.ball.y
+            entities["ball"]["bounced"] = match.ball.bounced
+            entities["player_left"]["x"] = match.player_left.x
+            entities["player_left"]["y"] = match.player_left.y
+            entities["player_left"]["points"] = match.player_right.hits
+            entities["player_right"]["x"] = match.player_right.x
+            entities["player_right"]["y"] = match.player_right.y
+            entities["player_right"]["points"] = match.player_left.hits
             MatchState.set_entities(match.id, entities)
     
     @classmethod
@@ -200,11 +194,18 @@ class Match:
     
     @classmethod
     def move_players(cls):
-        for id, player in cls.players.items():
-            if player.movement == "up":
-                player.move_up()
-            elif player.movement == "down":
-                player.move_down()
+        for id, match in cls.matches.items():
+            match = MatchState.get_entities(match.id)
+            cls.move_player(match["player_left"])
+            cls.move_player(match["player_right"])
+                
+    @classmethod
+    def move_player(cls, player_data):
+        player = Match.players[player_data["username"]]
+        if player_data["move"] == "up":
+            player.move_up()
+        elif player_data["move"] == "down":
+            player.move_down()
                 
     @classmethod
     def verify_ended_matches(cls):

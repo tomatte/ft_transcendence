@@ -15,11 +15,7 @@ function addElements() {
     audioElement.id = 'ball-kick';
     audioElement.src = 'assets/audios/soccer-kick-6235.mp3';
     
-    const scriptElement = document.createElement('script');
-    scriptElement.src = 'scripts/game.js';
-    
     document.body.appendChild(audioElement);
-    document.body.appendChild(scriptElement);    
 }
 
 const Game = (state) => {

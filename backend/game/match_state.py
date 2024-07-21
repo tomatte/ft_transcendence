@@ -38,7 +38,8 @@ class MatchState:
                 'x': 0,
                 'y': 0,
                 'points': 0,
-                'result': '' 
+                'result': '',
+                "move": 'stop'
             },
             'player_right': {
                 'username': '',
@@ -46,11 +47,13 @@ class MatchState:
                 'x': 0,
                 'y': 0,
                 'points': 0,
-                'result': '' 
+                'result': '',
+                "move": 'stop'
             },
             "ball": {
                 'x': 0,
                 'y': 0,
+                'bounced': False
             },
             'match_type': match_type,
             'created_at': datetime.now().isoformat(),
@@ -96,6 +99,10 @@ class MatchState:
         else:
             match['player_right']['ready'] = True
         redis.set_map(cls.global_name, match_id, match)
+        
+    @classmethod
+    def set(cls, match_id, match):
+        return redis.set_map("global_matches", match_id, match)
     
     def __init__(self) -> None:
         pass

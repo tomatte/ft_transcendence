@@ -56,19 +56,21 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         data = json.loads(text_data)
         print(f"data: {data}")
         
-        if data["action"] == "player_move":
-            await self.player_move_action(data)
+        if data["action"] == "move":
+            await self.player_move(data)
             return
         
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("match", self.channel_name)
         return await super().disconnect(close_code)
 
-    async def player_move_action(self, data: PlayerMoveDataType):
-        game_loop_channel = redis_client.get("game_loop").decode()
-        
-        data["type"] = "player.move"
-        await self.channel_layer.send(game_loop_channel, data)
+    async def player_move(self, data: PlayerMoveDataType):
+        match = MatchState.get(self.match_id)
+        if self.user.username == match["player_left"]["username"]:
+            match["player_left"]["move"] = data["key"]
+        else:
+            match["player_right"]["move"] = data["key"]
+        MatchState.set(self.match_id, match)
         
     async def match_tick(self, event):
         match = MatchState.get(self.match_id)
