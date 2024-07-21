@@ -3,7 +3,8 @@ from my_redis import redis_client as redis
 class MatchState:
     @classmethod
     def get_all(cls):
-        return redis.get_map_all("global_matches")
+        matches = redis.get_map_all("global_matches")
+        return cls.convert_to_array(matches)
     
     @classmethod
     def get_running(cls):
@@ -12,7 +13,7 @@ class MatchState:
         for match_id, match in matches.items():
             if match["phase"] == "running":
                 running[match_id] = match
-        return running
+        return cls.convert_to_array(running)
     
     @classmethod
     def get_ready(cls):
@@ -26,7 +27,7 @@ class MatchState:
             if match["player_right"]["ready"] == False:
                 continue
             ready[match_id] = match
-        return ready
+        return cls.convert_to_array(ready)
     
     @classmethod
     def convert_to_array(cls, matches):
