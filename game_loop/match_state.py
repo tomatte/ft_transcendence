@@ -35,3 +35,17 @@ class MatchState:
             match["id"] = match_id
             result.append(match)
         return result
+    
+    @classmethod
+    def get(cls, match_id):
+        return redis.get_map("global_matches", match_id)
+    
+    @classmethod
+    def set(cls, match_id, match):
+        return redis.set_map("global_matches", match_id, match)
+    
+    @classmethod
+    def set_phase_running(cls, match_id):
+        match = cls.get(match_id)
+        match["phase"] = "running"
+        cls.set(match_id, match)
