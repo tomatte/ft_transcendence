@@ -5,6 +5,8 @@ import json
 from pong_entities import *
 from typing import TypedDict
 from environs import Env
+from my_redis import redis_client as redis
+
 env = Env()
 env.read_env()
 
