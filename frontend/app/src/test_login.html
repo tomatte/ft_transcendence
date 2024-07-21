@@ -3,104 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(to bottom right, hsl(198, 44%, 11%), #203a43, #2c5364);
-            color: rgba(247, 247, 248, 1);
-            margin: 0;
-            padding: 0;
-        }
+    <link rel="icon" type="image/png" href="assets/logo/logo_fav_icon.svg" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round" rel="stylesheet">
+    
 
-        .login-container {
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .login-form-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background-color: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
-        }
-        .carousel-container {
-            flex: 2;
-            position: relative;
-            overflow: hidden;
-        }
-        .carousel-inner {
-            width: 200%;
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-        .carousel-item {
-            flex: 1 0 50%;
-            min-width: 50%;
-            overflow: hidden;
-        }
-        .carousel-item img {
-            width: auto; /* Alterado para auto para manter a proporção original */
-            height: 130vh;
-            object-fit: cover;
-            object-position: right; /* Centraliza a imagem no item do carrossel */
-        }
-    </style>
+    <link rel="stylesheet" href="css/pages/login.css">
+
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/typography.css">
+    <link rel="stylesheet" href="css/components.css">
+  
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    
+	<title>Welcome to Otter Space</title>
+
+	<script src ="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
     <div class="login-container">
-        <div class="login-form-container">
-            <form id="login-form2">
-                <h2>Login</h2>
-                <a  href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a&redirect_uri=https%3A%2F%2Flocalhost%2Fapi%2Fauth%2F&response_type=code"
-                    class="btn btn-primary" id="login-42-button"
-                >
-                    Login with 42
-                </a>
-                <div id="login-status"></div>
+        <img class="login-container__logo" src="/assets/logo/combination-mark_white.svg" alt="logo logomark">
+        <div class="login-container__content">
+
+            <div class="login-container__content__info">
+                <h1 class="login-container__content__info__title">Welcome, traveler!</h1>
+                <span class="login-container__content__info__subtitle font-body-medium">Log-in with your 42 account to access the game</span>
+            </div>
+            
+            <form class="login-form-button">
+                <button class="button button--primary" id="login-42-button">
+                    <img class="login-container__logo" src="/assets/logo/logo_42_white.svg" alt="logo logomark 42">
+                    <span class="button__text font-body-regular-bold">Login with 42</span>
+                </button>
             </form>
         </div>
-        <div class="carousel-container">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="assets/player-estagiario.png" alt="Slide 1">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/player-tomatte.png" alt="Slide 2">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/player-caos.png" alt="Slide 3">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="assets/wwwag.png" alt="Slide 4">
-                    </div>
+        <span class="login-container__credits-text font-body-regular">A project made by: etomiyos, dbrandao and clourenc, with the support of clandestino</span>
+    </div>
+    <div class="login-carousel">
+        <div id="carouselExampleIndicators" class="carousel slide carousel-fade">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="/assets/images/Login/login-carousel-slide-1.png" alt="Slide 1">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="/assets/images/Login/login-carousel-slide-2.png" alt="Slide 2">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="/assets/images/Login/login-carousel-slide-3.png" alt="Slide 3">
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
+
         $('#carouselExampleIndicators').carousel({
-            interval: 2000,
+            interval: 6000,
             ride: 'carousel',
             pause: false
         });
 
-        document.getElementById("login-42-button").addEventListener("click", function() {
-            const clientId = 'YOUR_CLIENT_ID';
-            const redirectUri = 'YOUR_REDIRECT_URI';
+        document.getElementById("login-42-button").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const clientId = 'u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a';
+            const redirectUri = 'https://localhost/api/auth/';
             const scope = 'public';
             const state = 'YOUR_UNIQUE_STATE_STRING'; // This should be a unique value for each request to prevent CSRF attacks
 
-            const authUrl = `https://api.intra.42.fr/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${state}`;
+            const authUrl = `https://api.intra.42.fr/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=${state}`;
             window.location.href = authUrl;
         });
     </script>
-</body>
 </html>
