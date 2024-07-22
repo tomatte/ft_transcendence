@@ -29,12 +29,12 @@ class _JoinTournamentValiadation:
                 print("join fail: hexists tournament_id")
                 return False
             
-            tournament_players = TournamentState.get_players(data["tournament"]["id"])
+            tournament_players = TournamentState.get_players_usernames(data["tournament"]["id"])
             if len(tournament_players) == 4:
                 print("join fail: len tournament_players ==  4")
                 return False
             for player in tournament_players:
-                if player["username"] == self.parent.user.username:
+                if player == self.parent.user.username:
                     print("join fail: user already in tournament")
                     return False
             return True
