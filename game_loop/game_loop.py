@@ -3,9 +3,7 @@ from websockets.exceptions import ConnectionClosed
 import websockets
 import json
 from pong_entities import *
-from typing import TypedDict
 from environs import Env
-from my_redis import redis_client as redis
 from match_state import MatchState
 
 env = Env()
@@ -17,12 +15,6 @@ PLAYER_SPEED = 600
 BALL_RADIOUS = 10
 BALL_SPEED = 400
 BALL_START_DIRECTION = 30
-
-class PlayerMoveDataType(TypedDict):
-    key: str
-    player_id: str
-    match_id: str
-    action: str
 
 class Socket:
     uri = f"ws://{env("BACKEND_HOST")}:{env("BACKEND_PORT")}/ws/game_loop/"
@@ -71,7 +63,6 @@ class Socket:
 class Game:
     balls: dict[int, Ball] = dict()
     fps_time = 1 / FPS
-    payload = {}
 
     @classmethod
     def move_balls(cls):
@@ -92,35 +83,6 @@ class Game:
             entities["player_right"]["y"] = match.player_right.y
             entities["player_right"]["points"] = match.player_left.hits
             MatchState.set_entities(match.id, entities)
-    
-    @classmethod
-    def create_payload(cls):
-        cls.payload.clear()
-        for match_id, match in Match.matches.items():
-            if match.started == False:
-                continue
-            cls.payload[match_id] = {
-                "ball": {
-                    "x": match.ball.x,
-                    "y": match.ball.y,
-                    "bounced": match.ball.bounced
-                    },
-                "players": {
-                    match.player_left.id: {
-                        "x": match.player_left.x,
-                        "y": match.player_left.y,
-                        "pos": "left",
-                        "points": match.player_right.hits
-                    },
-                    match.player_right.id: {
-                        "x": match.player_right.x,
-                        "y": match.player_right.y,
-                        "pos": "right",
-                        "points": match.player_left.hits
-                    }
-                },
-                "action": match.action
-            }
             
         
 class Match:
@@ -225,27 +187,6 @@ class Match:
 
 class Actions:
     @classmethod
-    def new_match(cls, data):
-        print("new_match()")
-        match = Match(data)
-        print(f"ball: x:{match.ball.x} y:{match.ball.y}")
-        print(f"player_left: x:{match.player_left.x} y:{match.player_left.y}")
-    
-    @classmethod
-    def player_move(cls, data: PlayerMoveDataType):
-        player = Match.players[data["player_id"]]
-        player.movement = data["key"]
-        
-    @classmethod
-    def player_connect(cls, data):
-        match = Match.find_match(data["match_id"])
-        if not isinstance(match, Match):
-            cls.new_match(data)
-            return
-        match.add_player_right(data)
-        match.start_match()
-    
-    @classmethod
     def match_end(cls, data):
         pass
     
@@ -257,20 +198,6 @@ class Actions:
             MatchState.set_phase(data["id"], "running")
             match.start_match()
             
-    
-    @classmethod
-    def act(cls, data):
-        if data["action"] == "new_match":
-            cls.new_match(data)
-            return 
-        if data["action"] == "player_connect":
-            cls.player_connect(data)
-            return 
-        if data["action"] == "player_move":
-            cls.player_move(data)
-            return 
-
-
 async def main():
     await Socket.connect_to_server()
         
@@ -281,8 +208,8 @@ async def main():
         Game.move_balls()
         Match.move_players()
         Match.verify_ended_matches()
-        Match.destroy_matches()
         Game.save_changes()
+        Match.destroy_matches()
         
         await asyncio.sleep(Game.fps_time)
         
