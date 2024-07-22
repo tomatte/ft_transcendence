@@ -252,6 +252,10 @@ class OnlineState:
 class UserState:
     redis = redis_client
     
+    @classmethod
+    def  set_value(cls, username, key, value):
+        cls.redis.set_map_str(username, key, value)
+    
     def __init__(self, user, channel_name) -> None:
         self.user = user
         self.redis.set_map_str(user.username, 'status', 'initiated')

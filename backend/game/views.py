@@ -118,6 +118,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.player_id = self.user.username
         self.tournament_state = TournamentState(self.user)
         
+        UserState.set_value(self.user.username, "tournament_channel", self.channel_name)
+        
         await self.send_json({ 'name': 'connected' })
 
     async def receive(self, text_data):
@@ -140,6 +142,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         if not hasattr(self, "tournament_id"):
             return await super().disconnect(close_code)
+        if hasattr(self, "user"):
+            UserState.set_value(self.user.username, "tournament_channel", "")
     
         self.channel_layer.group_discard(self.tournament_id, self.channel_name)
 
