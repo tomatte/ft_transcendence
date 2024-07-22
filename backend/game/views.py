@@ -54,7 +54,8 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         self.user = self.scope['user']
         
         self.match_id = redis_client.get_map_str(self.user.username, "match_id")
-        if self.match_id == None:
+        if self.match_id == None or self.match_id == "":
+            print("match error: match_id not found")
             return await self.close()
         
         await self.channel_layer.group_add(self.match_id, self.channel_name)
@@ -111,6 +112,10 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.send(tournament_channel_name, {
             "type": event_type
         })
+        redis_client.set_map_str(self.user.username, "match_id", "")
+        await self.channel_layer.group_discard("match", self.channel_name)
+        await self.channel_layer.group_discard(self.match_id, self.channel_name)
+        await self.disconnect(1000)
         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
