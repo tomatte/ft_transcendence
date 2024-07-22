@@ -1197,4 +1197,9 @@ ul {
 .toggle.Default.Enabled {
     background: var(--Lunar-Dust-600, #5D5E6C);
 }
- 
+
+
+.text-align{
+    text-align: right;
+
+}
