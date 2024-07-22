@@ -85,7 +85,7 @@ const startMatch = (state) => {
 
 function semifinalEnd(data, state) {
     console.log({event: data})
-    showGameResult(data)
+    showGameResult(data, false)
 }
 
 const tournamentEventHandler = new TournamentEventHandler(state)

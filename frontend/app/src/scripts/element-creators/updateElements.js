@@ -61,12 +61,18 @@ export function addStartTournamentClickEvent() {
 
 export function showGamePage() {
     hideContents()
-    document.querySelector('.page-tournament__container').innerHTML = ""
+    document.querySelector('.page-tournament__container').style.display = "none"
     Game()
 }
 
-export function showGameResult(data) {
-    const html = createGameResult(data.player_left, data.player_right)
-    document.querySelector('.page-game__container').innerHTML = ""
-    document.querySelector('.page-tournament__container').innerHTML = html
+export function showGameResult(data, goBack = true) {
+    const html = createGameResult(data.player_left, data.player_right, goBack)
+
+    const gameContainer = document.querySelector('.page-game__container')
+    gameContainer.innerHTML = ""
+    gameContainer.style.display = "none"
+
+    const tournamentContainer = document.querySelector('.page-tournament__container')
+    tournamentContainer.innerHTML = html
+    tournamentContainer.style.display = "block"
 }

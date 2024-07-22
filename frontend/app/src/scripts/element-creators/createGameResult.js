@@ -1,4 +1,12 @@
-const createGameResult = (left, right) => {
+const goBackButton = /* html */ `
+            <button class="button button--secondary">
+
+                <span class="button__text font-body-regular-bold">Go back to Home</span>
+                <span class="material-icons-round button__icon-right">arrow_forward</span>
+            </button>
+`
+
+const createGameResult = (left, right, goBack = true) => {
 
     const winnerUsername = left.points > right.points ? left.username : right.username
 
@@ -34,11 +42,7 @@ const createGameResult = (left, right) => {
                     </div>
                 </div>
             </div>
-            <button class="button button--secondary">
-
-                <span class="button__text font-body-regular-bold">Go back to Home</span>
-                <span class="material-icons-round button__icon-right">arrow_forward</span>
-            </button>
+            ${goBack ? goBackButton : ""}
         </div>
 
         <div class="game-result__footer">
