@@ -88,7 +88,7 @@ const Home = (state) => {
                     <tr class="table-header">
                         <th class="table-header__text font-body-caption-bold">Player</th>
                         <th class="table-header__text font-body-caption-bold">Global ranking</th>
-                        <th class="table-header__text font-body-caption-bold">Actions</th>
+                        <th class="table-header__text text-align-action font-body-caption-bold text-align-action">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="tournament_online_players" class="modal__table__body">
@@ -120,7 +120,7 @@ const Home = (state) => {
                         <tr class="table-header">
                             <th class="table-header__text font-body-caption-bold">Player</th>
                             <th class="table-header__text font-body-caption-bold">Global ranking</th>
-                            <th class="table-header__text font-body-caption-bold">Actions</th>
+                            <th class="table-header__text font-body-caption-bold text-align-action">Actions</th>
                         </tr>
                     </thead>
 

@@ -107,7 +107,7 @@ html, body
 /*  */
 
 
-.seila {
+.container-example__metric-card {
    display: flex;
    align-items: flex-start;
    gap: 16px;

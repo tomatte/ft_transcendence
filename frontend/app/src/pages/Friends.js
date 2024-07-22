@@ -323,7 +323,7 @@ const Friends = async () => {
                         <th class="table-header__text font-body-caption-bold">Global ranking</th>
                         <th class="table-header__text font-body-caption-bold">Losses against you</th>
                         <th class="table-header__text font-body-caption-bold">Wins against you</th>
-                        <th class="table-header__text font-body-caption-bold">Actions</th>
+                        <th class="table-header__text font-body-caption-bold text-align-action">Actions</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
