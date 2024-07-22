@@ -38,3 +38,5 @@ function closeModalOutside(event) {
         closeModal(modal.id);
     }
 }
+
+
