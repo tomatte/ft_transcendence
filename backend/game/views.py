@@ -101,7 +101,16 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             
     async def end_match_tournament(self):
         print(f"{self.user.username}: end_match_tournament()")
-        pass
+        match = MatchState.get(self.match_id)
+        if match["match_type"] == "semi_final":
+            event_type = "tournament.semifinal_end"
+        else:
+            event_type = "tournament.final_end"
+        
+        tournament_channel_name = redis_client.get_map_str(self.user.username, "tournament_channel")
+        await self.channel_layer.send(tournament_channel_name, {
+            "type": event_type
+        })
         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
@@ -224,6 +233,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def tournament_cancel(self, event):
         print("EVENT tournament_cancel()")
+        
+    async def tournament_semifinal_end(self, event):
+        print(f"EVENT {self.user.username} tournament_semifinal_end()")
         
     def get_tournament_data(self) -> TournamentData:
         return redis_client.get_json(self.tournament_id)
