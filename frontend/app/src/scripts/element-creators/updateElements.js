@@ -6,6 +6,7 @@ import { createBracketsSemi } from "./createTournamentBrackets.js"
 import { injectElement, hideContents, diffOnlineAndQueue } from "./utils.js"
 import state from "../state/state.js"
 import Game from "../../pages/Game.js"
+import createGameResult from "./createGameResult.js"
 
 export function updateOnlinePlayersTournament(players) {
     if (!state.hasOwnProperty("tournament") || !state.tournament.hasOwnProperty("players")) {
@@ -60,6 +61,12 @@ export function addStartTournamentClickEvent() {
 
 export function showGamePage() {
     hideContents()
-    document.querySelector('.page-tournament__container').remove()
+    document.querySelector('.page-tournament__container').innerHTML = ""
     Game()
+}
+
+export function showGameResult(data) {
+    const html = createGameResult(data.player_left, data.player_right)
+    document.querySelector('.page-game__container').innerHTML = ""
+    document.querySelector('.page-tournament__container').innerHTML = html
 }
