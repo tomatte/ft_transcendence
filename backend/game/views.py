@@ -94,7 +94,14 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         
     async  def match_end(self, event):
         print(f"{self.user.username}: match_end()")
-        print(event)
+        match = MatchState.get(self.match_id)
+        if match["match_type"] != "normal":
+            await self.end_match_tournament()
+            return
+            
+    async def end_match_tournament(self):
+        print(f"{self.user.username}: end_match_tournament()")
+        pass
         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
