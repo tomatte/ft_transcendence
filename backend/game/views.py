@@ -6,7 +6,7 @@ import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState, OnlineState
 from .tournament_state import TournamentState
 from .validations import TournamentValidation
-from .tasks import emit_group_event_task
+from .tasks import emit_group_event_task, Task
 from .my_types import *
 import random
 from .match_state import MatchState
@@ -257,6 +257,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "player_left": player_left,
             "player_right": player_right
         })
+        
+        Task.send(self.channel_name, {"type": "tournament.bracket_final"}, 5)
+        
+    async def tournament_bracket_final(self, event):
+        print(f"EVENT {self.user.username} tournament_bracket_final()")
         
     def get_tournament_data(self) -> TournamentData:
         return redis_client.get_json(self.tournament_id)

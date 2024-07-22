@@ -50,5 +50,13 @@ run:
 	docker compose --file ./docker-compose-dev.yml up redis -d
 	python3 ./backend/manage.py runserver 0.0.0.0:8000
 
+celery:
+	celery --workdir ./backend -A backend worker -l INFO
+
+loop:
+	python3 ./game_loop/game_loop.py
+
+# celery --workdir ./backend -A backend worker -D
+
 #PHONY
 .PHONY: all help setup up down re ls disk fclean del del_vol del_net purge
