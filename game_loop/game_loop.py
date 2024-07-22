@@ -179,11 +179,17 @@ class Match:
                 match.action = "match_end"
                 
     @classmethod
-    def destroy_matches(cls):
+    async def end_matches(cls):
         for match in list(cls.matches.values()):
             if match.action != "match_end":
                 continue
+            MatchState.set_phase(match.id, "ended")
+            await Socket.ws.send(json.dumps({
+                "action": "match_end",
+                "match_id": match.id
+            }))
             match.destroy()
+            
 
 class Actions:
     @classmethod
@@ -209,7 +215,7 @@ async def main():
         Match.move_players()
         Match.verify_ended_matches()
         Game.save_changes()
-        Match.destroy_matches()
+        await Match.end_matches()
         
         await asyncio.sleep(Game.fps_time)
         

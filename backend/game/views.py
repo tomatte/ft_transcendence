@@ -19,21 +19,30 @@ class GameLoopConsumer(MyAsyncWebsocketConsumer):
         redis_client.set("game_loop", self.channel_name)
 
     async def receive(self, text_data):
+        data = json.loads(text_data)
 
-        await self.channel_layer.group_send("match", {
-            "type": "match.tick"
-        })
+        if data["action"] == "tick":
+            await self.match_tick()
+            return
+        
+        if data["action"] == "match_end":
+            await self.match_end(data)
+            return
+
 
     async def disconnect(self, code):
         redis_client.delete("game_loop")
         return await super().disconnect(code)
     
-    async def player_move(self, event):
-        print(event)
-        await self.send_json(event)
+    async def match_tick(self):
+        await self.channel_layer.group_send("match", {
+            "type": "match.tick"
+        })
         
-    async def player_connect(self, event):
-        await self.send_json(event)
+    async def match_end(self, data):
+        await self.channel_layer.group_send(data["match_id"], {
+            "type": "match.end"
+        })    
     
 
 # Create your views here.
@@ -82,6 +91,10 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         }
         
         await self.send_json(payload)
+        
+    async  def match_end(self, event):
+        print(f"{self.user.username}: match_end()")
+        print(event)
         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
