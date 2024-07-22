@@ -246,15 +246,16 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         print(f"EVENT {self.user.username} tournament_semifinal_end()")
         match = MatchState.get(event["match_id"])
         
-        winner = (
-            match["player_left"]["username"]
-            if match["player_left"]["points"] > match["player_right"]["points"]
-            else match["player_right"]["username"]
-        )
+        player_left = OnlineState.get_user(match["player_left"]["username"])
+        player_left["points"] = match["player_left"]["points"]
+        
+        player_right = OnlineState.get_user(match["player_right"]["username"])
+        player_right["points"] = match["player_right"]["points"]
         
         await self.send_json({
             "name": "semifinal_end",
-            "winner": winner
+            "player_left": player_left,
+            "player_right": player_right
         })
         
     def get_tournament_data(self) -> TournamentData:
