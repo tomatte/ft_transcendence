@@ -927,8 +927,7 @@ ul {
 .table-row {
 
     display: flex;
-    height: 76px;
-    padding: 16px;
+    padding: 8px;
     width: 100%;
     align-items: center;
     gap: 16px;
