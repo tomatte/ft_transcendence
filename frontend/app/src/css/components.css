@@ -121,6 +121,12 @@ ul {
     background-color: var(--Cosmic-Forest-700);
 }
 
+.button--success-confirmation
+{
+    color: var(--Cosmic-Forest-400);
+    background-color: var(--Cosmic-Forest-900);
+}
+
 .button--danger
 {
     color: var(--Red-Dwarf-50);
