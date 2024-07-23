@@ -72,8 +72,11 @@
 
 
 .tournament-result__image{
-    width: 510px;
-    height: 510px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+    align-self: stretch;
 }
 
 .tournament-result__info__buttons{
@@ -134,9 +137,11 @@
 
 
 .trophyImage{
-    width: 510px;
-    height: 510px;
-}
+    width: 32rem;
+    height: 32rem;
+    z-index: 100;
+
+ }
 
 .Game-result-body-secound{
     display: flex;
@@ -213,11 +218,12 @@
 
 .game-result__footer{
     display: flex;
-    padding-bottom: 32px;
+    padding-bottom: 64px;
     justify-content: center;
     align-items: center;
     gap: 8px;
     align-self: stretch;
+
 }
 
 .game-result__content__info__redirect{
@@ -328,4 +334,8 @@ background-clip: text;
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 
+}
+
+.stars1, .stars2{
+	z-index: 10;
 }
