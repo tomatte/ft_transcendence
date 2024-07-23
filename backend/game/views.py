@@ -56,10 +56,11 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         self.match_id = redis_client.get_map_str(self.user.username, "match_id")
         if self.match_id == None or self.match_id == "":
             print("match error: match_id not found")
-            return await self.close()
+            return await self.close(1000)
         
         await self.channel_layer.group_add(self.match_id, self.channel_name)
         await self.channel_layer.group_add("match", self.channel_name)
+        self.in_match_group = True
         MatchState.ready(self.match_id, self.user.username)
 
     async def receive(self, text_data):
@@ -71,8 +72,17 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             return
         
     async def disconnect(self, close_code):
+        return await self.cleanup_and_close()
+
+    async def cleanup_and_close(self):
+        self.in_match_group = False
         await self.channel_layer.group_discard("match", self.channel_name)
-        return await super().disconnect(close_code)
+        if self.match_id:
+            await self.channel_layer.group_discard(self.match_id, self.channel_name)
+        if redis_client.hexists(self.user.username, "match_id"):
+            redis_client.set_map_str(self.user.username, "match_id", "")
+        await self.close(1000)
+        
 
     async def player_move(self, data: PlayerMoveDataType):
         match = MatchState.get(self.match_id)
@@ -91,6 +101,8 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             "ball": match["ball"],
         }
         
+        if not self.in_match_group:
+            return
         await self.send_json(payload)
         
     async  def match_end(self, event):
@@ -118,7 +130,7 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             "match_id": self.match_id
         })
         
-        await self.disconnect(1000)
+        await self.cleanup_and_close()
         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
@@ -128,7 +140,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     
     async def connect(self):
         is_authenticated = await self.authenticate()
-        if is_authenticated == False:
+        if not is_authenticated:
+            await self.close(1000)
             return
         
         self.user = self.scope['user']
@@ -178,6 +191,12 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         }
         
         await self.send_json(payload)
+    
+    async def cleanup_and_close(self):
+        UserState.set_value(self.user.username, "tournament_channel", "")
+        self.channel_layer.group_discard(self.tournament_id, self.channel_name)
+        await self.tournament_state.exit()
+        await self.close(1000)
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
@@ -346,8 +365,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "player_right": player_right
         })
         
-        # Task.send(self.channel_name, {"type": "tournament.bracket_end"}, 5)
-    
+    async def exit_semifinal_looser(self):
+            redis_client.set_map_str(self.user.username, "tournament_id", "")
+            await self.cleanup_and_close()
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
