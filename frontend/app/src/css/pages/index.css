@@ -8,7 +8,7 @@ html, body
 
 body
 {
-	background: var(--gradient-blue-background);
+    background: var(--gradient-blue-background);
 	overflow: hidden;
 	justify-content: flex-start;
 	align-items: center;

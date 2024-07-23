@@ -74,7 +74,7 @@ const loadingPage = () => {
 						<th class="table-header__text font-body-caption-bold">Global ranking</th>
 						<th class="table-header__text font-body-caption-bold">Losses against you</th>
 						<th class="table-header__text font-body-caption-bold">Wins against you</th>
-						<th class="table-header__text font-body-caption-bold">Actions</th>
+						<th class="table-header__text font-body-caption-bold table-row__actions">Actions</th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -139,7 +139,7 @@ const loadingPage = () => {
 						<tr class="table-header">
 							<th class="table-header__text font-body-caption-bold">Player</th>
 							<th class="table-header__text font-body-caption-bold">Global ranking</th>
-							<th class="table-header__text font-body-caption-bold">Actions</th>
+							<th class="table-header__text font-body-caption-bold table-row__actions">Actions</th>
 						</tr>
 					</thead>
 

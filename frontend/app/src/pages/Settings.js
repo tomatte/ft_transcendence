@@ -96,7 +96,7 @@ const Settings = () => {
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Music</span>
                             <div class="toggle Active Enabled">
-                                <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-1" checked>
+                                <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-1" checked onclick"toggleBackgroundMusic()">
                                 <label for="toggle-checkbox-1" class="toggle-label">
                                     <span class="toggle-inner"></span>
                                     <span class="toggle-switch"></span>
@@ -108,7 +108,7 @@ const Settings = () => {
                         <div class="sound-toggle">
                             <span class="sound__type font-body-medium">Sound effects</span>
                             <div class="toggle Active Enabled">
-                                <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-2" checked>
+                                <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-2" checked onclick="toggleSound()">
                                 <label for="toggle-checkbox-2" class="toggle-label">
                                     <span class="toggle-inner"></span>
                                     <span class="toggle-switch"></span>
