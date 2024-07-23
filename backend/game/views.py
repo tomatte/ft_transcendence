@@ -330,6 +330,24 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     def get_tournament_data(self) -> TournamentData:
         return redis_client.get_json(self.tournament_id)
     
+    async def tournament_final_end(self, event):
+        print(f"EVENT {self.user.username} tournament_final_end()")
+        match = MatchState.get(event["match_id"])
+        
+        player_left = OnlineState.get_user(match["player_left"]["username"])
+        player_left["points"] = match["player_left"]["points"]
+        
+        player_right = OnlineState.get_user(match["player_right"]["username"])
+        player_right["points"] = match["player_right"]["points"]
+        
+        await self.send_json({
+            "name": "final_end",
+            "player_left": player_left,
+            "player_right": player_right
+        })
+        
+        # Task.send(self.channel_name, {"type": "tournament.bracket_end"}, 5)
+    
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
