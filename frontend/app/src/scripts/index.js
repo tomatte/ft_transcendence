@@ -56,6 +56,6 @@ window.addEventListener('load', () => {
 async function getMyUser() {
 	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
 	if (response.status !== 200) {
-    window.location.href = '/test_login.html'
+    window.location.href = '/login.html'
   }
 }
