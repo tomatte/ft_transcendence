@@ -272,14 +272,14 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         winner_left = MatchState.filter_winner(match1)
         winner_left = (
             players[0] 
-            if winner_left["username"] == match1["player_left"]["username"] 
+            if players[0]["username"] == match1["player_left"]["username"] 
             else players[1]
         )
         
         winner_right = MatchState.filter_winner(match2)
         winner_right = (
             players[2] 
-            if winner_right["username"] == match2["player_left"]["username"] 
+            if players[2]["username"] == match2["player_left"]["username"] 
             else players[3]
         )
         
