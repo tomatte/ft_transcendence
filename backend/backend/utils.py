@@ -58,7 +58,10 @@ class MyRedisClient(redis.StrictRedis):
         
         for key, data_raw in all_raw.items():
             key = key.decode()
-            data = json.loads(data_raw.decode())
+            try:
+                data = json.loads(data_raw.decode())
+            except json.decoder.JSONDecodeError:
+                data = data_raw.decode()
             all[key] = data
         
         return all
