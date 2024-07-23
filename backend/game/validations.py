@@ -25,7 +25,8 @@ class _JoinTournamentValiadation:
             if hasattr(self.parent, "tournament_id"):
                 print("join fail: hasattr tournament_id")
                 return False
-            if redis_client.hexists(self.parent.user.username, 'tournament_id'):
+            old_tournament_id = redis_client.get_map_str(self.parent.user.username, "tournament_id")
+            if old_tournament_id != None and old_tournament_id != "":
                 print("join fail: hexists tournament_id")
                 return False
             

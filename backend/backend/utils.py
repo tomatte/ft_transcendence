@@ -36,7 +36,9 @@ class MyRedisClient(redis.StrictRedis):
         return self.set(key, json.dumps(value))
     
     def get_map_str(self, name: str, key: str):
-        value = self.hmget(name, key)[0].decode()
+        value = self.hmget(name, key)[0]
+        if value != None:
+            value = value.decode()
         return value
     
     def set_map_str(self, name: str, key: str, value: str):

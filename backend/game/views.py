@@ -134,9 +134,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.validation = TournamentValidation(self)
     
     async def connect(self):
-        is_authenticated = await self.authenticate()
-        if not is_authenticated:
-            await self.close(1000)
+        if not await self.authenticate():
             return
         
         self.user = self.scope['user']
@@ -165,6 +163,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             return
 
     async def disconnect(self, close_code):
+        print(f"***{self.user.username} disconnected from tournament***")
         if not hasattr(self, "tournament_id") or not hasattr(self, "user"):
             return
         UserState.set_value(self.user.username, "tournament_channel", "")

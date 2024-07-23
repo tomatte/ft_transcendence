@@ -46,8 +46,8 @@ function createRow(data) {
     const info = infoTypes[data.type]
     const pageContentContainer = document.querySelector('.page-content__container');
 
-    const btnRefuseId = `button-request-refuse-${data.type}-${data.owner.username}`
-    const btnAcceptId = `button-request-accept-${data.type}-${data.owner.username}`
+    const btnRefuseId = `refuse-${data.tournament_id}`
+    const btnAcceptId = `accept-${data.tournament_id}`
 
     listenButtonClick(
         pageContentContainer,
