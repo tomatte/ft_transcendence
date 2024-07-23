@@ -293,15 +293,36 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "players": players,
             "final": final
         })
+        
+        self.start_final(winner_left["username"], winner_right["username"])
+        
+    def start_final(self, winner1, winner2):
+        sent = TournamentState.get_value(self.tournament_id, "final_bracket_event_sent")
+        sent += 1
+        self.tournament_state.set_value("final_bracket_event_sent", sent)
+        if sent != 4:
+            return
+        
+        event_payload = {
+            "type": "tournament.final_start",
+            "winner1": winner1,
+            "winner2": winner2
+        }
+        
+        Task.send(self.channel_name, event_payload, 5)
+        
+    async def tournament_final_start(self, event):
+        print(f"EVENT {self.user.username} tournament_final_start()")
+        me = self.user.username
+        if event["winner1"] != me and event["winner2"] != me:
+            return
+        
+        await self.send_json({"name": "start_match"})
 
         
     def get_tournament_data(self) -> TournamentData:
         return redis_client.get_json(self.tournament_id)
     
-    def create_start_tournament_task(self):
-        args = (self.tournament_id, {"type": "tournament.start"})
-        emit_group_event_task.apply_async(args=args, countdown=5)
-        
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):

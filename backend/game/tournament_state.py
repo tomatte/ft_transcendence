@@ -97,7 +97,8 @@ class TournamentState:
             'players': [self.user.username],
             'id': self.tournament_id,
             'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'status': 'creating'
+            'status': 'creating',
+            'final_bracket_event_sent': 0,
         }
         
         redis.set_map(
