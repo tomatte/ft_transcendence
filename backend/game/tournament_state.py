@@ -75,6 +75,15 @@ class TournamentState:
         redis.set_map(global_tournament_name, tournament_id, data)
         return data["players"]
     
+    @classmethod
+    def get_value(cls, id, key):
+        data = redis.get_map(global_tournament_name, id)
+        return data[key]
+    
+    @classmethod
+    def get(cls, id):
+        return redis.get_map(global_tournament_name, id)
+    
     def __init__(self, user) -> None:
         self.user = user
         self.channel_layer = get_channel_layer()
