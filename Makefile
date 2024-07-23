@@ -48,6 +48,10 @@ dev:
 run:
 	docker compose --file ./docker-compose-dev.yml down redis
 	docker compose --file ./docker-compose-dev.yml up redis -d
+	-pkill -f 'celery --workdir ./backend -A backend worker -D'
+	celery --workdir ./backend -A backend worker -D
+	-pkill -f 'python3 ./game_loop/game_loop.py'
+	python3 ./game_loop/game_loop.py &
 	python3 ./backend/manage.py runserver 0.0.0.0:8000
 
 celery:

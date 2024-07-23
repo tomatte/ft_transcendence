@@ -72,17 +72,11 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             return
         
     async def disconnect(self, close_code):
-        return await self.cleanup_and_close()
-
-    async def cleanup_and_close(self):
-        self.in_match_group = False
         await self.channel_layer.group_discard("match", self.channel_name)
         if self.match_id:
             await self.channel_layer.group_discard(self.match_id, self.channel_name)
         if redis_client.hexists(self.user.username, "match_id"):
             redis_client.set_map_str(self.user.username, "match_id", "")
-        await self.close(1000)
-        
 
     async def player_move(self, data: PlayerMoveDataType):
         match = MatchState.get(self.match_id)
@@ -130,7 +124,8 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             "match_id": self.match_id
         })
         
-        await self.cleanup_and_close()
+        self.in_match_group = False
+        await self.close(1000)
         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
@@ -170,16 +165,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             return
 
     async def disconnect(self, close_code):
-        if not hasattr(self, "tournament_id"):
-            return await super().disconnect(close_code)
-        if hasattr(self, "user"):
-            UserState.set_value(self.user.username, "tournament_channel", "")
-    
-        self.channel_layer.group_discard(self.tournament_id, self.channel_name)
-
-        await self.tournament_state.exit()
-        
-        return await super().disconnect(close_code)
+        if not hasattr(self, "tournament_id") or not hasattr(self, "user"):
+            return
+        UserState.set_value(self.user.username, "tournament_channel", "")
+        UserState.set_value(self.user.username, "tournament_id", "")
+        await self.channel_layer.group_discard(self.tournament_id, self.channel_name)
         
     async def create_tournament(self, data):
         self.tournament_id = self.tournament_state.create()
@@ -192,11 +182,10 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         await self.send_json(payload)
     
-    async def cleanup_and_close(self):
-        UserState.set_value(self.user.username, "tournament_channel", "")
-        self.channel_layer.group_discard(self.tournament_id, self.channel_name)
-        await self.tournament_state.exit()
+    async def terminate_tournament(self):
         await self.close(1000)
+        if redis_client.hexists("global_tournament", self.tournament_id):
+            redis_client.hdel("global_tournament", self.tournament_id)
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
@@ -334,6 +323,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         print(f"EVENT {self.user.username} tournament_final_start()")
         me = self.user.username
         if event["winner1"] != me and event["winner2"] != me:
+            await self.close(1000)
             return
         
         match_id = MatchState.create("final")
@@ -365,9 +355,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "player_right": player_right
         })
         
+        await self.terminate_tournament()
+        
     async def exit_semifinal_looser(self):
             redis_client.set_map_str(self.user.username, "tournament_id", "")
-            await self.cleanup_and_close()
+            await self.close(1000)
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
