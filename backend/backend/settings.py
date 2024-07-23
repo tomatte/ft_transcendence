@@ -29,7 +29,6 @@ SECRET_KEY = 'django-insecure-)q&xoyupdeg7%l2(n)f0^_#6kk)=x5#lmlobfxz*x=46=upmdz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '0.0.0.0']
 
 
 # Application definition
@@ -75,8 +74,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     ## mys
-    # 'backend.CustomMiddleware.CustomMiddleware',
+    'backend.CustomMiddleware.CustomMiddleware',
 ]
+
+ALLOWED_HOSTS = ['localhost', '0.0.0.0']
+CSRF_TRUSTED_ORIGINS = ['https://localhost']
 
 AUTHENTICATION_BACKENDS=['backend.backends.MyBackend']
 
@@ -84,7 +86,6 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SAMESITE = 'None'
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -125,7 +126,7 @@ DATABASES = {
         'NAME': env('POSTGRES_DB'),
         'USER': env('POSTGRES_USER'),
         'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': env('POSTGRES_HOST'),
+        'HOST': '172.25.232.93',
         'PORT': env('POSTGRES_PORT'),
     }
 }
