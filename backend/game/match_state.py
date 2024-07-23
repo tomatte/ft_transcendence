@@ -104,6 +104,24 @@ class MatchState:
     def set(cls, match_id, match):
         return redis.set_map("global_matches", match_id, match)
     
+    @classmethod
+    def filter_winner(cls, match_data):
+        if match_data["phase"] != "ended":
+            return None
+        return (
+            match_data['player_left']
+            if match_data['player_left']['points'] > match_data['player_right']['points']
+            else match_data['player_right']
+        )
+        
+    @classmethod
+    def filter_loser(cls, match_data):
+        return (
+            match_data['player_left']
+            if match_data['player_left']['points'] < match_data['player_right']['points']
+            else match_data['player_right']
+        )
+    
     def __init__(self) -> None:
         pass
     

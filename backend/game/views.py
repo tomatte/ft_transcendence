@@ -263,6 +263,47 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     async def tournament_bracket_final(self, event):
         print(f"EVENT {self.user.username} tournament_bracket_final()")
         
+        matches = TournamentState.get_value(self.tournament_id, "semi_finals")
+        match1 = MatchState.get(matches[0])
+        match2 = MatchState.get(matches[1])
+        
+        semifinal_left = {
+            "player_left": OnlineState.get_user(match1["player_left"]["username"]),
+            "player_right": OnlineState.get_user(match1["player_right"]["username"])
+        }
+        
+        semifinal_right = {
+            "player_left": OnlineState.get_user(match2["player_left"]["username"]),
+            "player_right": OnlineState.get_user(match2["player_right"]["username"])
+        }
+        
+        winner_left = MatchState.filter_winner(match1)
+        winner_left = (
+            semifinal_left["player_left"] 
+            if winner_left["username"] == match1["player_left"]["username"] 
+            else semifinal_left["player_right"]
+        )
+        
+        winner_right = MatchState.filter_winner(match2)
+        winner_right = (
+            semifinal_right["player_left"] 
+            if winner_right["username"] == match2["player_left"]["username"] 
+            else semifinal_right["player_right"]
+        )
+        
+        final = {
+            "player_left": winner_left,
+            "player_right": winner_right
+        }
+        
+        await self.send_json({
+            "name": "bracket_final_match",
+            "semifinal_left": semifinal_left,
+            "semifinal_right": semifinal_right,
+            "final": final
+        })
+
+        
     def get_tournament_data(self) -> TournamentData:
         return redis_client.get_json(self.tournament_id)
     
