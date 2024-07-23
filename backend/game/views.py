@@ -267,28 +267,20 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         match1 = MatchState.get(matches[0])
         match2 = MatchState.get(matches[1])
         
-        semifinal_left = {
-            "player_left": OnlineState.get_user(match1["player_left"]["username"]),
-            "player_right": OnlineState.get_user(match1["player_right"]["username"])
-        }
-        
-        semifinal_right = {
-            "player_left": OnlineState.get_user(match2["player_left"]["username"]),
-            "player_right": OnlineState.get_user(match2["player_right"]["username"])
-        }
+        players = TournamentState.get_players(self.tournament_id)
         
         winner_left = MatchState.filter_winner(match1)
         winner_left = (
-            semifinal_left["player_left"] 
+            players[0] 
             if winner_left["username"] == match1["player_left"]["username"] 
-            else semifinal_left["player_right"]
+            else players[1]
         )
         
         winner_right = MatchState.filter_winner(match2)
         winner_right = (
-            semifinal_right["player_left"] 
+            players[2] 
             if winner_right["username"] == match2["player_left"]["username"] 
-            else semifinal_right["player_right"]
+            else players[3]
         )
         
         final = {
@@ -298,8 +290,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         await self.send_json({
             "name": "bracket_final_match",
-            "semifinal_left": semifinal_left,
-            "semifinal_right": semifinal_right,
+            "players": players,
             "final": final
         })
 

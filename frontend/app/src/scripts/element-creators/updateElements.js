@@ -2,7 +2,7 @@ import createOnlinePlayersTournamentRows from "./createOnlinePlayersTournament.j
 import createPlayerQueueTournament from "./createPlayerQueueTournament.js"
 import { inviteToTournament, startTournament } from "../websockets/websocketActions.js"
 import Tournament from "../../pages/Tournament.js"
-import { createBracketsSemi } from "./createTournamentBrackets.js"
+import { createBracketsSemi, createBracketsFinal } from "./createTournamentBrackets.js"
 import { injectElement, hideContents, diffOnlineAndQueue } from "./utils.js"
 import state from "../state/state.js"
 import Game from "../../pages/Game.js"
@@ -75,4 +75,16 @@ export function showGameResult(data, goBack = true) {
     const tournamentContainer = document.querySelector('.page-tournament__container')
     tournamentContainer.innerHTML = html
     tournamentContainer.style.display = "block"
+}
+
+export function showTournamentBracketFinal(data) {
+    showTournamentPage()
+    const {leftBrackets, rightBrackets} = createBracketsSemi(data.players)
+    const {finalBracketLeft, finalBracketRight} = createBracketsFinal(data.final.player_left, data.final.player_right)
+
+    document.getElementById("tournament-bracket-semi-left").innerHTML = leftBrackets
+    document.getElementById("tournament-bracket-semi-right").innerHTML = rightBrackets
+
+    document.getElementById("tournament-bracket-final-left").innerHTML = finalBracketLeft
+    document.getElementById("tournament-bracket-final-right").innerHTML = finalBracketRight
 }

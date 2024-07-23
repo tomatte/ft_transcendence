@@ -52,9 +52,17 @@ export function createBracketsSemi(players) {
     return {leftBrackets, rightBrackets}
 }
 
-export function createBracketsFinal(players) {
-    const finalBracketLeft = emptyState
-    const finalBracketRight = emptyState
+export function createBracketsFinal(playerLeft=null, playerRight=null) {
+    let finalBracketLeft = emptyState
+    let finalBracketRight = emptyState
+
+    if (playerLeft) {
+        finalBracketLeft = createBracket(playerLeft)
+    }
+
+    if (playerRight) {
+        finalBracketRight = createBracket(playerRight)
+    }
 
     return {finalBracketLeft, finalBracketRight}
 }

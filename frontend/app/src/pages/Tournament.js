@@ -26,7 +26,7 @@ const Tournament = () => {
                     ${leftBrackets}
             </div>
 
-            <div class="bracket__content__final">
+            <div id="tournament-bracket-final-left" class="bracket__content__final">
                 ${finalBracketLeft}
             </div>
 
@@ -36,7 +36,7 @@ const Tournament = () => {
             </div>
 
 
-            <div class="bracket__content__final">
+            <div id="tournament-bracket-final-right" class="bracket__content__final">
                 ${finalBracketRight}
             </div>
 

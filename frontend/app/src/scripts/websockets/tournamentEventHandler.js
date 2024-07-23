@@ -7,7 +7,8 @@ import {
     addStartTournamentClickEvent,
     showTournamentPage,
     showGamePage,
-    showGameResult
+    showGameResult,
+    showTournamentBracketFinal
 } from "../element-creators/updateElements.js"
 import websocketMatch from "./websocketMatch.js"
 
@@ -88,6 +89,11 @@ function semifinalEnd(data, state) {
     showGameResult(data, false)
 }
 
+function bracketFinalMatch(data, state) {
+    console.log({event: data})
+    showTournamentBracketFinal(data)
+}
+
 const tournamentEventHandler = new TournamentEventHandler(state)
 tournamentEventHandler.register('enter_tournament', enterTournament)
 tournamentEventHandler.register('connected', connectedTournament)
@@ -95,5 +101,6 @@ tournamentEventHandler.register('update_players', updatePlayers)
 tournamentEventHandler.register('creating_tournament', creatingTournament)
 tournamentEventHandler.register('start_match', startMatch)
 tournamentEventHandler.register('semifinal_end', semifinalEnd)
+tournamentEventHandler.register('bracket_final_match', bracketFinalMatch)
 
 export default tournamentEventHandler
