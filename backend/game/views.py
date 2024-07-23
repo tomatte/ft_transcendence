@@ -309,13 +309,20 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "winner2": winner2
         }
         
-        Task.send(self.channel_name, event_payload, 5)
+        Task.send_group(self.tournament_id, event_payload, 5)
         
     async def tournament_final_start(self, event):
         print(f"EVENT {self.user.username} tournament_final_start()")
         me = self.user.username
         if event["winner1"] != me and event["winner2"] != me:
             return
+        
+        match_id = MatchState.create("final")
+        
+        self.tournament_state.add_final_match(match_id)
+        
+        MatchState.add_players(match_id, event["winner1"], event["winner2"])
+        MatchState.start(match_id)
         
         await self.send_json({"name": "start_match"})
 

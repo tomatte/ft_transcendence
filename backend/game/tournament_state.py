@@ -138,6 +138,11 @@ class TournamentState:
         data["semi_finals"] = (match_id_1, match_id_2)
         redis.set_map(global_tournament_name, self.tournament_id, data)
         
+    def add_final_match(self, match_id):
+        data = redis.get_map(global_tournament_name, self.tournament_id)
+        data["final"] = (match_id)
+        redis.set_map(global_tournament_name, self.tournament_id, data)
+        
     def set_value(self, key, value):
         data = redis.get_map(global_tournament_name, self.tournament_id)
         data[key] = value
