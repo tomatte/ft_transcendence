@@ -4,6 +4,7 @@ from users.models import User, Friendship
 from tournament.views import get_tournament, create_Bracket
 from tournament.models import Match, MatchPlayer
 from statistics import mean
+import json
 from django.db.models import Prefetch
 
 ################################################################################
@@ -11,9 +12,15 @@ from django.db.models import Prefetch
 ################################################################################
 
 
-class MethodNotAllowed(Exception):
+class ExceptionMethodNotAllowed(Exception):
 	def __init__(self):
 		super().__init__('Method not allowed!')
+
+
+class ExceptionConflict(Exception):
+	def __init__(self):
+		super().__init__('Method not allowed!')
+
 
 
 def is_valid_method(request, method):
@@ -28,7 +35,7 @@ def is_valid_method(request, method):
 	"""
 
 	if request.method != method:
-		raise MethodNotAllowed()
+		raise ExceptionMethodNotAllowed()
 
 
 def get_global_ranking(player):
@@ -80,7 +87,23 @@ class ManipulateUser:
 		friend = User.objects.get(username=friend_username)
 		if (friend == self.me):
 			raise Exception("you can't add it youself ")
+		if Friendship.objects.filter(from_user=self.me, to_user=friend).exists():
+			raise ExceptionConflict('Friend request already sent!')
+		if Friendship.objects.filter(from_user=friend, to_user=self.me).exists():
+			raise ExceptionConflict('Friend request already sent!')
+
 		Friendship.objects.create(from_user=self.me, to_user=friend, status='pending')
+
+	def remove_friend(self, friend_username):
+		friend = User.objects.get(username=friend_username)
+		if (friend == self.me):
+			raise Exception("you can't add it youself ")
+
+		if Friendship.objects.filter(from_user=self.me, to_user=friend).exists():
+			return Friendship.objects.filter(from_user=self.me, to_user=friend).delete()
+
+		if Friendship.objects.filter(from_user=friend, to_user=self.me).exists():
+			return Friendship.objects.filter(from_user=friend, to_user=self.me).delete()
 
 	def response_friend(self, friend_username, status):
 		friend = User.objects.get(username=friend_username)
@@ -248,7 +271,7 @@ def get_user(request):
 	try:
 		is_valid_method(request, 'POST')
 		return JsonResponse(ManipulateUser(username=request.POST['username']).profile())
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 	except User.DoesNotExist:
 		return JsonResponse({'message': 'User not found!'}, status=404)
@@ -270,7 +293,7 @@ def my_user(request):
 	try:
 		is_valid_method(request, 'GET')
 		return JsonResponse(ManipulateUser(username=request.user.username).profile())
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 
 
@@ -286,9 +309,9 @@ def all_users(request):
 	"""
 	try:
 		is_valid_method(request, "GET")
-		users = User.objects.all().values('username', 'nickname', 'avatar')
+		users = User.objects.all().values('username', 'nickname', 'avatar').order_by('winners')
 		return JsonResponse(list(users), status=200, safe=False)
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 
 
@@ -304,16 +327,47 @@ def add_friend(request):
 	"""
 	try:
 		is_valid_method(request, 'POST')
-		ManipulateUser(username=request.user.username).add_friend(request.POST['username'])
+		data = json.loads(request.body)
+		ManipulateUser(username=request.user.username).add_friend(data.get('username'))
 		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'msg': str(e)}, status=405)
+	except ExceptionConflict as e:
+		return JsonResponse({'msg': str(e)}, status=409)
 	except User.DoesNotExist:
 		return JsonResponse({'msg': 'User not found!'}, status=404)
 	except KeyError:
 		return JsonResponse({'msg': 'Username not send'}, status=400)
 	except Exception as e:
 		return JsonResponse({'msg': str(e)}, status=400)
+
+
+#Testada
+def remove_friend(request):
+	"""Função para adicionar um amigo.
+
+		args:
+			request (OBJ): Requisição do usuario.
+
+		return:
+			http (HTTP): status da requisição.
+	"""
+	try:
+		is_valid_method(request, 'DELETE')
+		data = json.loads(request.body)
+		ManipulateUser(username=request.user.username).remove_friend(data.get('username'))
+		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
+	except ExceptionMethodNotAllowed as e:
+		return JsonResponse({'msg': str(e)}, status=405)
+	except ExceptionConflict as e:
+		return JsonResponse({'msg': str(e)}, status=409)
+	except User.DoesNotExist:
+		return JsonResponse({'msg': 'User not found!'}, status=404)
+	except KeyError:
+		return JsonResponse({'msg': 'Username not send'}, status=400)
+	except Exception as e:
+		return JsonResponse({'msg': str(e)}, status=400)
+
 
 ##TESTADA
 def response_friend(request):
@@ -329,7 +383,7 @@ def response_friend(request):
 		is_valid_method(request, 'POST')
 		ManipulateUser(username=request.user.username).response_friend(request.POST['username'], request.POST['status'])
 		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'msg': str(e)}, status=405)
 	except User.DoesNotExist:
 		return JsonResponse({'msg': 'User not found!'}, status=404)
@@ -353,7 +407,7 @@ def get_list_friends(request):
 	try:
 		is_valid_method(request, 'GET')
 		return JsonResponse(ManipulateUser(username=request.user.username).get_friends_list(), safe=False)
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 	except Friendship.DoesNotExist:
 		return JsonResponse({'message': 'You do not have friends'}, status=404)
@@ -375,7 +429,7 @@ def friend_request_send(request):
 	try:
 		is_valid_method(request, "GET")
 		return JsonResponse(ManipulateUser(request.user.username).seding_friends(), safe=False)
-	except MethodNotAllowed:
+	except ExceptionMethodNotAllowed:
 		return JsonResponse({'message': 'Invalid Method!'}, status=405)
 	except Exception as e:
 		return JsonResponse({'message': str(e)}, status=500)
@@ -394,7 +448,7 @@ def friend_request_received(request):
 	try:
 		is_valid_method(request, "GET")
 		return JsonResponse(ManipulateUser(request.user.username).receive_friends(), safe=False)
-	except MethodNotAllowed:
+	except ExceptionMethodNotAllowed:
 		return JsonResponse({'message': 'Invalid Method!'}, status=405)
 	except Exception as e:
 		return JsonResponse({'message': str(e)}, status=500)
@@ -417,7 +471,7 @@ def response_friend(request):
 		is_valid_method(request, 'POST')
 		ManipulateUser(username=request.user.username).response_friend(request.POST['username'], request.POST['status'])
 		return HttpResponse(status=200, content='Friend request accepted!')
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Friendship.DoesNotExist:
 		return JsonResponse({"msg": 'Friend request not found!'}, status=404)
@@ -442,7 +496,7 @@ def uptade_nickname(request):
 		is_valid_method(request, 'POST')
 		ManipulateUser(username=request.user.username).uptade_nickname(request.POST['nickname'])
 		return HttpResponse(status=200)
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"message": str(e)}, status=405)
 	except KeyError as e:
 		return JsonResponse({"message": 'Nickname not send'}, status=400)
@@ -461,7 +515,7 @@ def uptade_avatar(request):
 		is_valid_method(request, 'POST')
 		ManipulateUser(username=request.user.username).uptade_avatar(request.FILES.get('avatar'))
 		return HttpResponse(status=200)
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except KeyError as e:
 		return JsonResponse({"msg": 'Missing parameters!'}, status=400)
@@ -471,7 +525,7 @@ def ranking(request):
 	try:
 		is_valid_method(request, 'GET')
 		return JsonResponse(ManipulateUser(username=request.user.username).table_ranking(), safe=False)
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Exception as e:
 		print(e)
@@ -482,7 +536,7 @@ def statistics(request):
 	try:
 		is_valid_method(request, 'GET')
 		return JsonResponse(ManipulateUser(username=request.user.username).statistics(), safe=False)
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Exception as e:
 		return JsonResponse({"msg": str(e)}, status=400)
@@ -492,7 +546,7 @@ def historic(request):
 	try:
 		is_valid_method(request, 'GET')
 		return JsonResponse(ManipulateUser(username=request.user.username).historic(), safe=False)
-	except MethodNotAllowed as e:
+	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Exception as e:
 		return JsonResponse({"msg": str(e)}, status=400)

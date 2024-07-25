@@ -1,12 +1,17 @@
 import state from "../state/state.js"
 import websocketTournament from "./websocketTournament.js"
-import { showTournamentPage, updateOnlinePlayersTournament } from "../element-creators/updateElements.js"
-import { 
+import {
+    updateOnlinePlayersTournament,
     updatePlayersQueueTournament, 
     updateTournamentBrackets,
     addStartTournamentClickEvent,
+    showTournamentPage,
+    showGamePage,
+    showGameResult,
+    showTournamentBracketFinal
 } from "../element-creators/updateElements.js"
-import {  } from "../element-creators/updateElements.js"
+import websocketMatch from "./websocketMatch.js"
+
 
 class TournamentEventHandler {
     constructor (state) {
@@ -74,11 +79,34 @@ function updatePlayers(data, state) {
     }
 }
 
-const tournamentEventHandler = new TournamentEventHandler(state)
+const startMatch = (state) => {
+    websocketMatch.listen()
+    showGamePage()
+}
 
+function semifinalEnd(data, state) {
+    console.log({event: data})
+    showGameResult(data, false)
+}
+
+function bracketFinalMatch(data, state) {
+    console.log({event: data})
+    showTournamentBracketFinal(data)
+}
+
+function finalEnd(data, state) {
+    console.log({event: data})
+    showGameResult(data, true)
+}
+
+const tournamentEventHandler = new TournamentEventHandler(state)
 tournamentEventHandler.register('enter_tournament', enterTournament)
 tournamentEventHandler.register('connected', connectedTournament)
 tournamentEventHandler.register('update_players', updatePlayers)
 tournamentEventHandler.register('creating_tournament', creatingTournament)
+tournamentEventHandler.register('start_match', startMatch)
+tournamentEventHandler.register('semifinal_end', semifinalEnd)
+tournamentEventHandler.register('bracket_final_match', bracketFinalMatch)
+tournamentEventHandler.register('final_end', finalEnd)
 
 export default tournamentEventHandler

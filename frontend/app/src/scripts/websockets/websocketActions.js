@@ -1,5 +1,6 @@
 import websocketNotification from "./websocketNotification.js"
 import websocketTournament from "./websocketTournament.js"
+import websocketMatch from "./websocketMatch.js"
 import state from "../state/state.js"
 
 export function inviteToTournament(username) {
@@ -25,5 +26,17 @@ export function startTournament() {
     console.log("startTournament()")
     websocketTournament.send({
         action: 'start'
+    })
+}
+
+let keyPressed = ""
+export function playerMove(key) {
+    if (keyPressed == key)
+        return
+    else
+        keyPressed = key
+    websocketMatch.send({
+        "action": "move",
+        "key": key
     })
 }

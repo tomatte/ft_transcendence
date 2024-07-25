@@ -1,3 +1,5 @@
+import { playerMove } from "./websockets/websocketActions.js"
+
 function setPlayerLeft(y) {
     const player = document.getElementById("player_left")
     player.style.top = `${y}px`
@@ -33,7 +35,6 @@ function playBallKickSound(ball) {
     kickSound.play()
 }
 
-let ws = new WebSocket("wss://localhost:443/ws/match/")
 let payload = {
     key: "",
     player_id: 0,
@@ -41,64 +42,37 @@ let payload = {
     action: ""
 }
 
-ws.onmessage = (event) => {
-    data = JSON.parse(event.data)
+export function updateCoordinates(data) {
+    const player_height = 100
+    const ball_radious = 10
 
-    console.log(data)
+    const ball_x = data.ball.x - ball_radious
+    const ball_y = data.ball.y - ball_radious
 
-    if (data.action == "coordinates") {
-        const player_height = 100
-        const ball_radious = 10
+    const player_left_y = data.player_left.y - (player_height / 2)
+    const player_right_y = data.player_right.y - (player_height / 2)
 
-        ball_x = data.ball.x - ball_radious
-        ball_y = data.ball.y - ball_radious
-
-        player_left_y = data.player_left.y - (player_height / 2)
-        player_right_y = data.player_right.y - (player_height / 2)
-
-        player_left_points = data.player_left.points
-        player_right_points = data.player_right.points
-        playBallKickSound(data.ball)
-        setPlayerLeft(player_left_y)
-        setPlayerRight(player_right_y)
-        setBall(ball_x, ball_y)
-        setScores(player_left_points, player_right_points)
-        return ;
-    }
-
-    if (data.action == "connect") {
-        console.log("start connection")
-        payload.match_id = data.match_id
-        payload.action = "ready"
-        payload.player_id = data.player_id
-        ws.send(JSON.stringify(payload))
-    }
-
-};
-
-
-let keyPressed = ""
-
-async function sendKey(key) {
-    if (keyPressed == key)
-        return
-    else
-        keyPressed = key
-    payload.key = key
-    payload.action = "player_move"
-    ws.send(JSON.stringify(payload))
+    const player_left_points = data.player_left.points
+    const player_right_points = data.player_right.points
+    playBallKickSound(data.ball)
+    setPlayerLeft(player_left_y)
+    setPlayerRight(player_right_y)
+    setBall(ball_x, ball_y)
+    setScores(player_left_points, player_right_points)
 }
 
-document.addEventListener('keydown', async function(event) {
-    if (event.key === 'ArrowUp') {
-        sendKey('up');
-    } else if (event.key === 'ArrowDown') {
-        sendKey('down');
-    }
-});
-
-document.addEventListener('keyup', function(event) {
-    if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-        sendKey("stop");
-    }
-});
+export function listenMoves() {
+    document.addEventListener('keydown', async function(event) {
+        if (event.key === 'ArrowUp') {
+            playerMove('up')
+        } else if (event.key === 'ArrowDown') {
+            playerMove('down');
+        }
+    });
+    
+    document.addEventListener('keyup', function(event) {
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            playerMove("stop");
+        }
+    });
+} 
