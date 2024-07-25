@@ -7,7 +7,7 @@ const Settings = () => {
     }
 
     pageContentContainer.innerHTML = `
-                       <div class="page-content__container__header">
+            <div class="page-content__container__header">
                 <div class="page-content__container__header__info">
                     <h4 class="page-content__container__header__info__title">Settings</h4>
                 </div>
@@ -29,7 +29,12 @@ const Settings = () => {
                         <div class="profile-picture">
                             <img class="profile-picture__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
  
-                            <button class="button button--outline">
+                            <!-- Formulário de upload de foto -->
+                            <form id="uploadForm" action="/upload_photo_endpoint" method="post" enctype="multipart/form-data" style="display: none;">
+                                <input type="file" id="photoFile" name="photo" accept=".png, .jpg, .jpeg">
+                            </form>
+
+                            <button id="updatePhotoBtn" class="button button--outline" onclick="document.getElementById('photoFile').click();">
                                 <span class="button__text font-body-regular-bold">Update photo</span>
                             </button>
                         </div>
@@ -115,6 +120,7 @@ const Settings = () => {
 
                 </div>
             </div>
+
  
     `;
     document.querySelectorAll('.toggle').forEach(toggle => {
