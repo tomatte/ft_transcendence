@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="css/pages/notification.css">
 	<link rel="stylesheet" href="css/pages/ranking.css">
     <link rel="stylesheet" href="css/pages/statistics.css">
-	<link rel="stylesheet" href="../css/pages/tournament.css">
+	<link rel="stylesheet" href="css/pages/tournament.css">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +32,7 @@
     <script type="module" src="scripts/sidebar.js"></script>
     <script type="module" src="scripts/index.js"></script>
 	<script src="scripts/modal.js"></script>
+	<script src="scripts/sound.js"></script>
 </head>
 <body>
 	<div class="stars1"></div>
@@ -50,43 +51,43 @@
 			<div class="sidebar__menu-container__itens">
 				<ul class="sidebar__menu-container__itens__up">
 					<li class="menu-item">
-						<a href="/#Home">
+						<a href="/#Home" onclick="playMenuItem()">
 							<span class="material-icons-round menu-item__icon icon--regular">home</span>
 							<span class="menu-item__text font-body-regular-bold">Home</span>
 						</a>
 					</li>
 					<li class="menu-item">
-						<a href="/#Matches">
+						<a href="/#Matches" onclick="playMenuItem()">
 							<span class="material-icons-round menu-item__icon icon--regular">sports_esports</span>
 							<span class="menu-item__text font-body-regular-bold">Matches</span>
 						</a>
 					</li>
 					<li class="menu-item">
-						<a href="/#Friends">
+						<a href="/#Friends" onclick="playMenuItem()">
 							<span class="material-icons-round menu-item__icon icon--regular">group</span>
 							<span class="menu-item__text font-body-regular-bold">Friends</span>
 						</a>
 					</li>
 					<li class="menu-item">
-						<a href="/#Ranking">
+						<a href="/#Ranking" onclick="playMenuItem()">
 							<span class="material-icons-round menu-item__icon icon--regular">emoji_events</span>
 							<span class="menu-item__text font-body-regular-bold">Ranking</span>
 						</a>
 					</li>
 					<li class="menu-item menu-item--active">
-						<a href="/#Statistics">
+						<a href="/#Statistics" onclick="playMenuItem()">
 							<span class="material-icons-round menu-item__icon icon--regular">bar_chart</span>
 							<span class="menu-item__text font-body-regular-bold">Statistics</span>
 						</a>
 					</li>
 					<li class="menu-item">
-						<a href="/#Notifications">
+						<a href="/#Notifications" onclick="playMenuItem()">
 							<span class="material-icons-round menu-item__icon icon--regular">notifications</span>
 							<span class="menu-item__text font-body-regular-bold">Notifications</span>
 						</a>
 					</li>
 					<li class="menu-item">
-						<a href="/#Settings">
+						<a href="/#Settings" onclick="playMenuItem()">
 							<span class="material-icons-round menu-item__icon icon--regular">settings</span>
 							<span class="menu-item__text font-body-regular-bold">Settings</span>
 						</a>
@@ -120,6 +121,16 @@
 	<div class="page-game__container"></div>
 	<div class="page-tournament__container"></div>
 
+	<!-- <audio id="backgroundMusic" autoplay>
+		<source src="assets/audios/perfect-beauty-191271.mp3" type="audio/mpeg">
+		<embed src="assets/audios/perfect-beauty-191271.mp3" autostart="true" loop="true" width="0" height="0" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio> -->
+	  
+	<audio id="backgroundMusic" src="assets/audios/perfect-beauty-191271.mp3" loop>
+
+	</audio>
+	
 </body>
 </html>
 

@@ -1,5 +1,3 @@
-import mockState from "./mockState.js"
-
 function getCookie(name) {
     let cookieArray = document.cookie.split(';')
 
