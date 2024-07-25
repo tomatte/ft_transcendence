@@ -153,15 +153,15 @@
 
 
 
-// var xco
+
 var playSound = true;
 
-// estado som
+// Alternar estado do som
 function toggleSound() {
     playSound = !playSound;
 }
 
-// reproduzir o efeito sonoro 
+// Reproduzir efeito sonoro
 function playMenuItem() {
     if (playSound) {
         var audio = new Audio('assets/audios/menu-item.mp3');
@@ -169,7 +169,7 @@ function playMenuItem() {
     }
 }
 
-//estado em localStorage
+// Alternar música de fundo
 function toggleBackgroundMusic() {
     var audio = document.getElementById('backgroundMusic');
     if (audio) {
@@ -183,19 +183,20 @@ function toggleBackgroundMusic() {
     }
 }
 
-//config a musica de fundo 
+// Configurar a música de fundo
 function setupBackgroundMusic() {
     var audio = document.getElementById('backgroundMusic');
     var musicPlaying = localStorage.getItem('backgroundMusicPlaying');
 
-    if (musicPlaying === 'true') {
+    // Iniciar a música se o estado em localStorage estiver definido como 'true' ou se não houver valor em localStorage
+    if (musicPlaying === 'true' || musicPlaying === null) {
         audio.play();
+        localStorage.setItem('backgroundMusicPlaying', 'true');
     } else {
         audio.pause();
     }
 }
 
- 
 const Settings = () => {
     const pageContentContainer = document.querySelector('.page-content__container');
 
@@ -279,7 +280,7 @@ const Settings = () => {
                     <div class="sound-toggle">
                         <span class="sound__type font-body-medium">Music</span>
                         <div class="toggle Active Enabled">
-                            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-1">
+                            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-1" checked>
                             <label for="toggle-checkbox-1" class="toggle-label">
                                 <span class="toggle-inner"></span>
                                 <span class="toggle-switch"></span>
@@ -289,7 +290,7 @@ const Settings = () => {
                     <div class="sound-toggle">
                         <span class="sound__type font-body-medium">Sound effects</span>
                         <div class="toggle Active Enabled">
-                            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-2">
+                            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-2" checked>
                             <label for="toggle-checkbox-2" class="toggle-label">
                                 <span class="toggle-inner"></span>
                                 <span class="toggle-switch"></span>
@@ -301,28 +302,51 @@ const Settings = () => {
         </div>
     `;
 
-    //config a música de fundo no carregamento da página
+
     setupBackgroundMusic();
 
-    // inicial dos checkboxe 
+
     document.getElementById('toggle-checkbox-1').checked = localStorage.getItem('backgroundMusicPlaying') === 'true';
     document.getElementById('toggle-checkbox-2').checked = playSound;
 
-    //add listeners 
-    document.querySelectorAll('.toggle').forEach(toggle => {
-        const checkbox = toggle.querySelector('.toggle-checkbox');
-
+    // Adicionar listeners
+    document.querySelectorAll('.toggle-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
+            const toggle = this.closest('.toggle');
             if (this.checked) {
                 toggle.classList.remove('Default');
                 toggle.classList.add('Active');
+                
+                // Reproduzir música se o checkbox de música estiver ativado
+                if (this.id === 'toggle-checkbox-1') {
+                    var audio = document.getElementById('backgroundMusic');
+                    if (audio.paused) {
+                        audio.play();
+                        localStorage.setItem('backgroundMusicPlaying', 'true');
+                    }
+                }
             } else {
                 toggle.classList.remove('Active');
                 toggle.classList.add('Default');
+                
+                // Pausar música se o checkbox de música estiver desativado
+                if (this.id === 'toggle-checkbox-1') {
+                    var audio = document.getElementById('backgroundMusic');
+                    if (!audio.paused) {
+                        audio.pause();
+                        localStorage.setItem('backgroundMusicPlaying', 'false');
+                    }
+                }
+            }
+            
+            // Alternar som se o checkbox de som estiver alterado
+            if (this.id === 'toggle-checkbox-2') {
+                toggleSound();
             }
         });
 
-        // estado do checkbox
+        // Estado inicial com base no estado do checkbox
+        const toggle = checkbox.closest('.toggle');
         if (checkbox.checked) {
             toggle.classList.add('Active');
         } else {
@@ -330,12 +354,7 @@ const Settings = () => {
         }
     });
 
-    // toggles de música e som
-    document.getElementById('toggle-checkbox-1').addEventListener('change', toggleBackgroundMusic);
-    document.getElementById('toggle-checkbox-2').addEventListener('change', toggleSound);
-
     return pageContentContainer;
 };
- 
 
 export default Settings;
