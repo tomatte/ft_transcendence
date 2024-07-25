@@ -11,6 +11,7 @@ from .my_types import *
 import random
 from .match_state import MatchState
 from .redis_models import TournamentRedis
+from backend.tournament_utils import store_tournament
 
 MatchDict = Dict[str, MatchData]
 
@@ -186,6 +187,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         # TODO: save tournament data and delete match from redis
         await self.close(1000)
         if redis_client.hexists("global_tournament", self.tournament_id):
+            # await store_tournament(TournamentRedis(self.tournament_id))
             redis_client.hdel("global_tournament", self.tournament_id)
         
     async def join_tournament(self, data):
