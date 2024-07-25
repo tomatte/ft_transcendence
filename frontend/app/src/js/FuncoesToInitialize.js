@@ -18,6 +18,16 @@ const getCookie = (name) => {
 }
 
 
+async function logout(event) {
+	event.preventDefault();
+	//Quero limpar os cookies
+	document.cookie = 'sessionid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+	const response = await fetch('https://localhost/api/users/logout', { method: 'GET', credentials: 'include' });
+	if (response.status != 200) throw new Error('Failed to fetch friends');
+	window.location.href = 'https://localhost/';
+}
+
+
 const filterUsers = () => {
 	const searchInput = document.getElementById('search__add__friend').value;
 
