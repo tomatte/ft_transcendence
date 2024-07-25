@@ -58,10 +58,10 @@ const loadingPage = () => {
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Ranking</h4>
 			</div>
-			<button class="button button--secondary">
-				<span class="material-icons-round button__icon-left">ios_share</span>
-				<span class="button__text font-body-regular-bold">Share your ranking</span>
-			</button>
+          <button class="button button--secondary">
+            <span class="material-icons-round button__icon-left">refresh</span>
+            <span class="button__text font-body-regular-bold">Refresh</span>
+          </button>
 		</div>
 		<div class="search-bar">
 			<span class="material-icons-round search-bar__icon icon--regular">search</span>

@@ -121,6 +121,12 @@ ul {
     background-color: var(--Cosmic-Forest-700);
 }
 
+.button--success-confirmation
+{
+    color: var(--Cosmic-Forest-400);
+    background-color: var(--Cosmic-Forest-900);
+}
+
 .button--danger
 {
     color: var(--Red-Dwarf-50);
@@ -921,8 +927,7 @@ ul {
 .table-row {
 
     display: flex;
-    height: 76px;
-    padding: 16px;
+    padding: 8px;
     width: 100%;
     align-items: center;
     gap: 16px;
@@ -990,6 +995,7 @@ ul {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    text-align: end;
     gap: 12px;
     flex: 1 0 0;
 }
