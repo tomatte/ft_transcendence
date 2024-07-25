@@ -10,6 +10,7 @@ from .tasks import emit_group_event_task, Task
 from .my_types import *
 import random
 from .match_state import MatchState
+from .redis_models import TournamentRedis
 
 MatchDict = Dict[str, MatchData]
 
@@ -182,6 +183,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         await self.send_json(payload)
     
     async def terminate_tournament(self):
+        # TODO: save tournament data and delete match from redis
         await self.close(1000)
         if redis_client.hexists("global_tournament", self.tournament_id):
             redis_client.hdel("global_tournament", self.tournament_id)
