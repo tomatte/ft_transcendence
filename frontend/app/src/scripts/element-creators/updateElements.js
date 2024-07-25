@@ -2,9 +2,11 @@ import createOnlinePlayersTournamentRows from "./createOnlinePlayersTournament.j
 import createPlayerQueueTournament from "./createPlayerQueueTournament.js"
 import { inviteToTournament, startTournament } from "../websockets/websocketActions.js"
 import Tournament from "../../pages/Tournament.js"
-import { createBracketsSemi } from "./createTournamentBrackets.js"
+import { createBracketsSemi, createBracketsFinal } from "./createTournamentBrackets.js"
 import { injectElement, hideContents, diffOnlineAndQueue } from "./utils.js"
 import state from "../state/state.js"
+import Game from "../../pages/Game.js"
+import createGameResult from "./createGameResult.js"
 
 export function updateOnlinePlayersTournament(players) {
     if (!state.hasOwnProperty("tournament") || !state.tournament.hasOwnProperty("players")) {
@@ -37,6 +39,7 @@ export function showTournamentPage() {
    const gameContainer = document.querySelector('.page-tournament__container'); 
    
     gameContainer.innerHTML = Tournament()
+    gameContainer.style.display = "block"
 };
 
 export function updateTournamentBrackets(players) {
@@ -54,4 +57,34 @@ export function addStartTournamentClickEvent() {
             startTournament()
         })
     }
+}
+
+export function showGamePage() {
+    hideContents()
+    document.querySelector('.page-tournament__container').style.display = "none"
+    Game()
+}
+
+export function showGameResult(data, goBack = true) {
+    const html = createGameResult(data.player_left, data.player_right, goBack)
+
+    const gameContainer = document.querySelector('.page-game__container')
+    gameContainer.innerHTML = ""
+    gameContainer.style.display = "none"
+
+    const tournamentContainer = document.querySelector('.page-tournament__container')
+    tournamentContainer.innerHTML = html
+    tournamentContainer.style.display = "block"
+}
+
+export function showTournamentBracketFinal(data) {
+    showTournamentPage()
+    const {leftBrackets, rightBrackets} = createBracketsSemi(data.players)
+    const {finalBracketLeft, finalBracketRight} = createBracketsFinal(data.final.player_left, data.final.player_right)
+
+    document.getElementById("tournament-bracket-semi-left").innerHTML = leftBrackets
+    document.getElementById("tournament-bracket-semi-right").innerHTML = rightBrackets
+
+    document.getElementById("tournament-bracket-final-left").innerHTML = finalBracketLeft
+    document.getElementById("tournament-bracket-final-right").innerHTML = finalBracketRight
 }

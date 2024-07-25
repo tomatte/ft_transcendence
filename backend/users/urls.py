@@ -14,11 +14,12 @@ urlpatterns = [
 	re_path('get/get-list-friends' , views.get_list_friends, name='get_list_friends'),
 	# re_path('get/friends', views.get_friends, name='get_friends'),
 
-	re_path('uptate/uptade-nickname/', views.uptade_nickname, name='uptade_nickname'),
-	re_path('uptate/uptade-avatar/', views.uptade_avatar, name='uptade_avatar'),
+	re_path('uptate/uptade-nickname', views.uptade_nickname, name='uptade_nickname'),
+	re_path('uptate/uptade-avatar', views.uptade_avatar, name='uptade_avatar'),
 
-	re_path('add/friend/', views.add_friend, name='add_friend'),
-	re_path('response/pedding-friend/', views.response_friend, name='response_friend'),
+	re_path('add/friend', views.add_friend, name='add_friend'),
+	re_path('remove/friend', views.remove_friend, name='remove_friend'),
+	re_path('response/pedding-friend', views.response_friend, name='response_friend'),
 	# re_path('remove/friend/', views.remove_friend, name='remove_friend'),
 
 ]

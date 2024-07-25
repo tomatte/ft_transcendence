@@ -1,4 +1,5 @@
 import matchEventHandler from "./matchEventHandler.js";
+import { listenMoves } from "../game.js";
 
 class WebsocketMatch {
     constructor() {
@@ -15,6 +16,7 @@ class WebsocketMatch {
             console.log(data)
                 
             matchEventHandler.execute(data)
+            listenMoves()
         };
     }
 

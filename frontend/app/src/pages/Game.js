@@ -15,11 +15,7 @@ function addElements() {
     audioElement.id = 'ball-kick';
     audioElement.src = 'assets/audios/soccer-kick-6235.mp3';
     
-    const scriptElement = document.createElement('script');
-    scriptElement.src = 'scripts/game.js';
-    
     document.body.appendChild(audioElement);
-    document.body.appendChild(scriptElement);    
 }
 
 const Game = (state) => {
@@ -28,9 +24,10 @@ const Game = (state) => {
     addGameStyles()
     addElements()
 
-	const pageContentContainer = document.querySelector('.page-game__container');
+	const gameContainer = document.querySelector('.page-game__container');
+    gameContainer.style.display = 'block';
 
-        pageContentContainer.innerHTML = `
+        gameContainer.innerHTML = `
         <img class="stars_game" src="assets/background-stars.svg">
         <img class="logo_match" src="assets/logo/logo_background_match.svg">
 
@@ -44,7 +41,7 @@ const Game = (state) => {
         </div>
       `;
 
-	  return pageContentContainer;
+	  return gameContainer;
 }
 
 export default Game;
