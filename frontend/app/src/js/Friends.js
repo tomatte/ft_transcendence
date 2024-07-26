@@ -100,8 +100,7 @@ const loadingPage = () => {
 				</table>
 			</div>
 		</div>
-		<div id='div_to_modal_delete'>
-		</div>
+		<div id='div_to_modal_delete'></div>
 	<div id="modalOverlay" class="hidden"></div>
 	`
 }
