@@ -77,6 +77,11 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             await self.player_move(data)
             return
         
+        """ TODO: LOCAL """
+        if data["action"] == "player2_move":
+            await self.player2_move(data)
+            return
+        
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("match", self.channel_name)
         if self.match_id:
@@ -87,6 +92,12 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
     async def player_move(self, data: PlayerMoveDataType):
         data["type"] = "player.move"
         data["username"] = self.user.username
+        await self.channel_layer.send(self.game_loop_channel, data)
+        
+        """ TODO: LOCAL """
+    async def player2_move(self, data: PlayerMoveDataType):
+        data["type"] = "player.move"
+        data["username"] = f"{self.user.username}2"
         await self.channel_layer.send(self.game_loop_channel, data)
         
     async def match_tick(self, event):
@@ -108,6 +119,10 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         
         if match["match_type"] == "random":
             await self.end_random_match()
+        elif match["match_type"] == "local":
+            pass
+            """ TODO: LOCAL """
+            # await self.end_local_match()
         else:
             await self.end_match_tournament()
             
@@ -532,3 +547,20 @@ class RandomMatchConsumer(MyAsyncWebsocketConsumer):
         redis_client.set_map_str(self.user.username, "match_id", self.match_id)
         await self.send_json({ "name": "start_random_match" })
         await self.close(1000)
+        
+        
+class LocalMatchConsumer(MyAsyncWebsocketConsumer):
+    async def connect(self):
+        if not await self.authenticate():
+            return 
+        
+        print(f"LocalMatchConsumer {self.user.username} connect()")
+        
+        await self.channel_layer.group_add("local_match", self.channel_name)
+        
+    async def receive(self, text_data):
+        print(f"LocalMatchConsumer {self.user.username} receive()")
+        print(text_data)
+        
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("local_match", self.channel_name)
