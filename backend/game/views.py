@@ -462,6 +462,8 @@ class RandomMatchConsumer(MyAsyncWebsocketConsumer):
         if not await self.authenticate():
             return 
         
+        print(f"RandomMatchConsumer {self.user.username} connect()")
+        
         await self.channel_layer.group_add("random_match", self.channel_name)
         
     async def receive(self, text_data):

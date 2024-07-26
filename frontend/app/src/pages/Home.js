@@ -1,3 +1,12 @@
+import websocketRandomMatch from "../scripts/websockets/websocketRandomMatch.js";
+import { listenButtonClick } from "../scripts/element-creators/utils.js";
+
+listenButtonClick(
+    document.querySelector('.page-content__container'),
+    "button-play-random-match",
+    () => websocketRandomMatch.listen()
+)
+
 const Home = (state) => {
     console.log({state})
 	const pageContentContainer = document.querySelector('.page-content__container');
@@ -29,7 +38,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">1V1 MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button class="button button--secondary">
+                    <button id="button-play-random-match" class="button button--secondary">
                         <span class="material-icons-round button__icon-left">shuffle</span>
                         <span class="button__text font-body-regular-bold">Play randomly</span>
                     </button>

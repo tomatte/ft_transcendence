@@ -2,6 +2,7 @@ import websocketNotification from "./websocketNotification.js"
 import websocketTournament from "./websocketTournament.js"
 import websocketMatch from "./websocketMatch.js"
 import state from "../state/state.js"
+import websocketRandomMatch from "./websocketRandomMatch.js"
 
 export function inviteToTournament(username) {
     console.log(`invite ${username} to tournament`)
@@ -39,4 +40,8 @@ export function playerMove(key) {
         "action": "move",
         "key": key
     })
+}
+
+export function playRandomly() {
+    websocketRandomMatch.listen()
 }
