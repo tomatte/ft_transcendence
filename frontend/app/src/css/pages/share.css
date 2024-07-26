@@ -218,17 +218,18 @@ align-items: center;
 
 .player-name-tournament{
     display: -webkit-box;
--webkit-box-orient: vertical;
--webkit-line-clamp: 1;
-align-self: stretch;
-overflow: hidden;
-color: #D3D9F4;
-text-overflow: ellipsis;
-font-family: Play;
-font-size: 24px;
-font-style: normal;
-font-weight: 400;
-line-height: 100%; /* 24px */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    align-self: stretch;
+    overflow: hidden;
+    color: #D3D9F4;
+    text-overflow: ellipsis;
+    font-family: Play;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; /* 24px */
 }
 
 
@@ -236,15 +237,16 @@ line-height: 100%; /* 24px */
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     align-self: stretch;
     overflow: hidden;
-color: #737993;
-text-overflow: ellipsis;
-font-family: Play;
-font-size: 20px;
-font-style: normal;
-font-weight: 400;
-line-height: 100%; /* 20px */
+    color: #737993;
+    text-overflow: ellipsis;
+    font-family: Play;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
 }
 
 

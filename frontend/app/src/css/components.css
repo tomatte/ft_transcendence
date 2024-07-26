@@ -1195,6 +1195,10 @@ ul {
     display: none;
 }
 
+.text-align-action {
+    text-align: right;
+}
+
 /* Estados do toggle */
 .toggle.Active.Enabled {
     background: var(--Neptune-Blue-600-base, #315BE3);
@@ -1202,10 +1206,4 @@ ul {
 
 .toggle.Default.Enabled {
     background: var(--Lunar-Dust-600, #5D5E6C);
-}
-
-
-.text-align-action{
-    text-align: right;
-
 }

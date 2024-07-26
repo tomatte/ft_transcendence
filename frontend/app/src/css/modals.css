@@ -481,6 +481,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     align-self: stretch;
     overflow: hidden;
     color: #D3D9F4;
@@ -496,6 +497,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     align-self: stretch;
     overflow: hidden;
     color: #737993;
