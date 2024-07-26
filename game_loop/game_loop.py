@@ -183,7 +183,11 @@ class Match:
         for match in list(cls.matches.values()):
             if match.action != "match_end":
                 continue
-            MatchState.set_phase(match.id, "ended")
+            match_data = MatchState.get(match.id)
+            match_data["phase"] = "ended"
+            match_data["player_left"]["winner"] = match.player_left.hits < match.player_right.hits
+            match_data["player_right"]["winner"] = match.player_right.hits < match.player_left.hits
+            MatchState.set(match.id, match_data)
             await Socket.ws.send(json.dumps({
                 "action": "match_end",
                 "match_id": match.id

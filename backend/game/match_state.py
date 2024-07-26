@@ -38,7 +38,7 @@ class MatchState:
                 'x': 0,
                 'y': 0,
                 'points': 0,
-                'result': '',
+                'winner': False,
                 "move": 'stop'
             },
             'player_right': {
@@ -47,7 +47,7 @@ class MatchState:
                 'x': 0,
                 'y': 0,
                 'points': 0,
-                'result': '',
+                'winner': False,
                 "move": 'stop'
             },
             "ball": {
