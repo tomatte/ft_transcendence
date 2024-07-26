@@ -46,7 +46,10 @@ class GameLoopConsumer(MyAsyncWebsocketConsumer):
     async def match_end(self, data):
         await self.channel_layer.group_send(data["match_id"], {
             "type": "match.end"
-        })    
+        })
+        
+    async def player_move(self, event):
+        await self.send_json(event)
     
 
 # Create your views here.
@@ -54,9 +57,9 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
         if await self.authenticate() == False:
             return
-        
+
         self.user = self.scope['user']
-        
+        self.game_loop_channel = redis_client.get("game_loop").decode()
         self.match_id = redis_client.get_map_str(self.user.username, "match_id")
         if self.match_id == None or self.match_id == "":
             print("match error: match_id not found")
@@ -83,12 +86,9 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             redis_client.set_map_str(self.user.username, "match_id", "")
 
     async def player_move(self, data: PlayerMoveDataType):
-        match = MatchState.get(self.match_id)
-        if self.user.username == match["player_left"]["username"]:
-            match["player_left"]["move"] = data["key"]
-        else:
-            match["player_right"]["move"] = data["key"]
-        MatchState.set(self.match_id, match)
+        data["type"] = "player.move"
+        data["username"] = self.user.username
+        await self.channel_layer.send(self.game_loop_channel, data)
         
     async def match_tick(self, event):
         match = MatchState.get(self.match_id)
