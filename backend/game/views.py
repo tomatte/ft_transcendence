@@ -476,6 +476,8 @@ class RandomMatchConsumer(MyAsyncWebsocketConsumer):
         
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("random_match", self.channel_name)
+        if redis_client.exists("random_match"):
+            redis_client.delete("random_match")
         
     async def create_random_match(self):
         match = MatchState.create("random", save=False)
@@ -492,3 +494,11 @@ class RandomMatchConsumer(MyAsyncWebsocketConsumer):
         MatchState.set(match["id"], match)
         self.match_id = match["id"]
         
+        await self.channel_layer.group_send("random_match", {
+            "type": "random_match.start"
+        })
+        
+    async def random_match_start(self, event):
+        redis_client.set_map_str(self.user.username, "match_id", self.match_id)
+        await self.send_json({ "name": "start_random_match" })
+        await self.close(1000)
