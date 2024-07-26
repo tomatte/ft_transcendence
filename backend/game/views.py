@@ -58,7 +58,6 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         if await self.authenticate() == False:
             return
 
-        self.user = self.scope['user']
         self.game_loop_channel = redis_client.get("game_loop").decode()
         self.match_id = redis_client.get_map_str(self.user.username, "match_id")
         if self.match_id == None or self.match_id == "":
@@ -141,7 +140,6 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         if not await self.authenticate():
             return
         
-        self.user = self.scope['user']
         self.player_id = self.user.username
         self.tournament_state = TournamentState(self.user)
         
@@ -359,11 +357,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
-        is_authenticated = await self.authenticate()
-        if is_authenticated == False:
+        if not await self.authenticate():
             return 
         
-        self.user = self.scope['user']
         self.user_state = UserState(self.user, self.channel_name)
         
         payload = {
@@ -459,3 +455,19 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             "online_players": event["players"]
         }
         await self.send_json(payload)
+        
+        
+class RandomMatchConsumer(MyAsyncWebsocketConsumer):
+    async def connect(self):
+        if not await self.authenticate():
+            return 
+        
+        await self.channel_layer.group_add("random_match", self.channel_name)
+        
+    async def receive(self, text_data):
+        print(f"RandomMatchConsumer {self.user.username} receive()")
+        print(text_data)
+        
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("random_match", self.channel_name)
+        

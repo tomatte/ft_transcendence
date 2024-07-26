@@ -20,6 +20,7 @@ class MyAsyncWebsocketConsumer(AsyncWebsocketConsumer):
     async def authenticate(self) -> True | False:
         if self.scope['user'].is_authenticated:
             await self.accept()
+            self.user = self.scope['user']
             return True
 
         await self.close()
