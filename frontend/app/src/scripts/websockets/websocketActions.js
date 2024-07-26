@@ -5,6 +5,7 @@ import state from "../state/state.js"
 import websocketRandomMatch from "./websocketRandomMatch.js"
 import SearchMatch from "../../pages/SearchMatch.js"
 import { injectSearchMatchPage } from "../../pages/SearchMatch.js"
+import websocketLocalMatch from "./websocketLocalMatch.js"
 
 export function inviteToTournament(username) {
     console.log(`invite ${username} to tournament`)
@@ -50,3 +51,6 @@ export function playRandomly() {
     websocketRandomMatch.listen()
 }
 
+export function playLocal() {
+    websocketLocalMatch.listen()
+}

@@ -24,7 +24,7 @@ class LocalMatchEventHandler {
     }
 }
 
-function startLocalMatch(data, state) {
+function start(data, state) {
     console.log("EVENT startLocalMatch()")
     websocketMatch.listen()
     websocketMatch.listen()
@@ -32,6 +32,6 @@ function startLocalMatch(data, state) {
 }
 
 const localMatchEventHandler = new LocalMatchEventHandler(state)
-localMatchEventHandler.register("start_local_match", startLocalMatch)
+localMatchEventHandler.register("start", start)
 
 export default localMatchEventHandler

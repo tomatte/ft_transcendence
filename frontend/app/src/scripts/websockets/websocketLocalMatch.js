@@ -1,4 +1,4 @@
-import localMatchEventHandler from '../eventHandlers/localMatchEventHandler'
+import localMatchEventHandler from "./localMatchEventHandler.js";
 
 class WebsocketLocalMatch {
     constructor() {

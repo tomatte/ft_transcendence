@@ -558,9 +558,15 @@ class LocalMatchConsumer(MyAsyncWebsocketConsumer):
         
         await self.channel_layer.group_add("local_match", self.channel_name)
         
-    async def receive(self, text_data):
-        print(f"LocalMatchConsumer {self.user.username} receive()")
-        print(text_data)
+        match = MatchState.create("local", save=False)
+        match["player_left"]["username"] = self.user.username
+        match["player_right"]["username"] = f"{self.user.username}2"
+        match["player_right"]["ready"] = True
+        match["phase"] = "start"
+        redis_client.set_map_str(self.user.username, "match_id", match["id"])
+        MatchState.set(match["id"], match)
+        
+        await self.send_json({ "name": "start" })
         
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("local_match", self.channel_name)
