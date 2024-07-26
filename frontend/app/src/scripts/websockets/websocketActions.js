@@ -3,6 +3,8 @@ import websocketTournament from "./websocketTournament.js"
 import websocketMatch from "./websocketMatch.js"
 import state from "../state/state.js"
 import websocketRandomMatch from "./websocketRandomMatch.js"
+import SearchMatch from "../../pages/SearchMatch.js"
+import { injectSearchMatchPage } from "../../pages/SearchMatch.js"
 
 export function inviteToTournament(username) {
     console.log(`invite ${username} to tournament`)
@@ -43,5 +45,8 @@ export function playerMove(key) {
 }
 
 export function playRandomly() {
+    const html = SearchMatch(state.user)
+    injectSearchMatchPage(html)
     websocketRandomMatch.listen()
 }
+

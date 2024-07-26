@@ -1,6 +1,7 @@
 import state from "../state/state.js"
 import websocketMatch from "./websocketMatch.js"
 import { showGamePage } from "../element-creators/updateElements.js"
+import { removeSearchMatchPage } from "../../pages/SearchMatch.js"
 
 class RandomMatchEventHandler {
     constructor (state) {
@@ -27,6 +28,7 @@ class RandomMatchEventHandler {
 function startRandomMatch(data, state) {
     websocketMatch.listen()
     showGamePage()
+    removeSearchMatchPage()
 }
 
 const randomMatchEventHandler = new RandomMatchEventHandler(state)

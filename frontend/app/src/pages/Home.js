@@ -1,10 +1,10 @@
-import websocketRandomMatch from "../scripts/websockets/websocketRandomMatch.js";
+import { playRandomly } from "../scripts/websockets/websocketActions.js";
 import { listenButtonClick } from "../scripts/element-creators/utils.js";
 
 listenButtonClick(
     document.querySelector('.page-content__container'),
     "button-play-random-match",
-    () => websocketRandomMatch.listen()
+    () => playRandomly()
 )
 
 const Home = (state) => {
