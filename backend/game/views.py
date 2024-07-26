@@ -465,6 +465,10 @@ class RandomMatchConsumer(MyAsyncWebsocketConsumer):
         print(f"RandomMatchConsumer {self.user.username} connect()")
         
         await self.channel_layer.group_add("random_match", self.channel_name)
+        if redis_client.exists("random_match"):
+            await self.join_random_match()
+        else:
+            await self.create_random_match()
         
     async def receive(self, text_data):
         print(f"RandomMatchConsumer {self.user.username} receive()")
@@ -477,5 +481,14 @@ class RandomMatchConsumer(MyAsyncWebsocketConsumer):
         match = MatchState.create("random", save=False)
         match["player_left"]["username"] = self.user.username
         redis_client.set_json("random_match", match)
+        self.match_id = match["id"]
+        
+    async def join_random_match(self):
+        match = redis_client.get_json("random_match")
+        redis_client.delete("random_match")
+        
+        match["player_right"]["username"] = self.user.username
+        match["phase"] = "start"
+        MatchState.set(match["id"], match)
         self.match_id = match["id"]
         
