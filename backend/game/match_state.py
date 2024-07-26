@@ -26,41 +26,54 @@ class MatchData(TypedDict):
 
 class MatchState:
     global_name = "global_matches"
+    
+    initial_data = {
+        'phase': 'creating',
+        'player_left': {
+            'username': '',
+            'ready': False,
+            'x': 0,
+            'y': 0,
+            'points': 0,
+            'winner': False,
+            "move": 'stop'
+        },
+        'player_right': {
+            'username': '',
+            'ready': False,
+            'x': 0,
+            'y': 0,
+            'points': 0,
+            'winner': False,
+            "move": 'stop'
+        },
+        "ball": {
+            'x': 0,
+            'y': 0,
+            'bounced': False
+        },
+        'match_type': '',
+        'created_at': '',
+        'id': ''
+    }
+    
+    """ 
+        if default save=True then save to redis and return id 
+        else then don't save to redis and just return the match data
+    """
     @classmethod
-    def create(cls, match_type):
+    def create(cls, match_type, save=True):
         id = str(uuid.uuid4())
         
-        match_data: MatchData = {
-            'phase': 'creating',
-            'player_left': {
-                'username': '',
-                'ready': False,
-                'x': 0,
-                'y': 0,
-                'points': 0,
-                'winner': False,
-                "move": 'stop'
-            },
-            'player_right': {
-                'username': '',
-                'ready': False,
-                'x': 0,
-                'y': 0,
-                'points': 0,
-                'winner': False,
-                "move": 'stop'
-            },
-            "ball": {
-                'x': 0,
-                'y': 0,
-                'bounced': False
-            },
-            'match_type': match_type,
-            'created_at': datetime.now().isoformat(),
-        }
+        match_data: MatchData = cls.initial_data
+        match_data["created_at"] = datetime.now().isoformat()
+        match_data['match_type'] = match_type
+        match_data['id'] = id
         
-        redis.set_map(cls.global_name, id, match_data)
-        return  id
+        if save:
+            redis.set_map(cls.global_name, id, match_data)
+            return  id
+        return match_data
     
     @classmethod
     def add_player(cls, match_id, username):

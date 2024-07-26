@@ -471,3 +471,9 @@ class RandomMatchConsumer(MyAsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("random_match", self.channel_name)
         
+    async def create_random_match(self):
+        match = MatchState.create("random", save=False)
+        match["player_left"]["username"] = self.user.username
+        redis_client.set_json("random_match", match)
+        self.match_id = match["id"]
+        
