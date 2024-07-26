@@ -20,6 +20,7 @@ urlpatterns = [
 	re_path('add/friend', views.add_friend, name='add_friend'),
 	re_path('remove/friend', views.remove_friend, name='remove_friend'),
 	re_path('response/pedding-friend', views.response_friend, name='response_friend'),
+	re_path('logout', views.logout, name='logout'),
 	# re_path('remove/friend/', views.remove_friend, name='remove_friend'),
 
 ]
