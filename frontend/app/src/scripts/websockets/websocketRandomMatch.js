@@ -1,3 +1,5 @@
+import randomMatchEventHandler from "./randomMatchEventHandler.js";
+
 class WebsocketRandomMatch {
     constructor() {
         this.listen = this.listen.bind(this)
@@ -11,7 +13,7 @@ class WebsocketRandomMatch {
             let data = JSON.parse(event.data)
             console.log(data)
                 
-            // randomMatchEventHandler.execute(data)
+            randomMatchEventHandler.execute(data)
         };
     }
 
