@@ -1,7 +1,7 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from users.models import User, Friendship
-from tournament.views import get_tournament, create_Bracket
+from tournament.views import get_tournament
 from tournament.models import Match, MatchPlayer
 from statistics import mean
 import json
