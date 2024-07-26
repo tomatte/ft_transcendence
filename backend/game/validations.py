@@ -31,6 +31,9 @@ class _JoinTournamentValiadation:
                 return False
             
             tournament_players = TournamentState.get_players_usernames(data["tournament"]["id"])
+            if tournament_players == None:
+                print("join fail: tournament not found")
+                return False
             if len(tournament_players) == 4:
                 print("join fail: len tournament_players ==  4")
                 return False
