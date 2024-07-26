@@ -1,0 +1,27 @@
+import localMatchEventHandler from '../eventHandlers/localMatchEventHandler'
+
+class WebsocketLocalMatch {
+    constructor() {
+        this.listen = this.listen.bind(this)
+        this.send = this.send.bind(this)
+    }
+
+    listen() {
+        this.client = new WebSocket("wss://localhost:443/ws/local_match/")
+
+        this.client.onmessage = (event) => {
+            let data = JSON.parse(event.data)
+            console.log(data)
+                
+            localMatchEventHandler.execute(data)
+        };
+    }
+
+    send(payload) {
+        this.client.send(JSON.stringify(payload))
+    }
+}
+
+const websocketLocalMatch = new WebsocketLocalMatch()
+
+export default  websocketLocalMatch
