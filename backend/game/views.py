@@ -316,10 +316,13 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         if sent != 4:
             return
         
+        match_id = MatchState.create("final")
+        
         event_payload = {
             "type": "tournament.final_start",
             "winner1": winner1,
-            "winner2": winner2
+            "winner2": winner2,
+            "match_id": match_id
         }
         
         Task.send_group(self.tournament_id, event_payload, 5)
@@ -331,12 +334,10 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             await self.close(1000)
             return
         
-        match_id = MatchState.create("final")
+        self.tournament_state.add_final_match(event["match_id"])
         
-        self.tournament_state.add_final_match(match_id)
-        
-        MatchState.add_players(match_id, event["winner1"], event["winner2"])
-        MatchState.start(match_id)
+        MatchState.add_players(event["match_id"], event["winner1"], event["winner2"])
+        MatchState.start(event["match_id"])
         
         await self.send_json({"name": "start_match"})
 
