@@ -280,21 +280,10 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         match1 = MatchState.get(matches[0])
         match2 = MatchState.get(matches[1])
         
-        players = TournamentState.get_players(self.tournament_id)
-        
         winner_left = MatchState.filter_winner(match1)
-        winner_left = (
-            players[0] 
-            if players[0]["username"] == match1["player_left"]["username"] 
-            else players[1]
-        )
-        
         winner_right = MatchState.filter_winner(match2)
-        winner_right = (
-            players[2] 
-            if players[2]["username"] == match2["player_left"]["username"] 
-            else players[3]
-        )
+        
+        players = TournamentState.get_players(self.tournament_id)
         
         final = {
             "player_left": winner_left,
@@ -307,7 +296,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "final": final
         })
         
-        self.start_final(winner_left["username"], winner_right["username"])
+        self.start_final(winner_left, winner_right)
         
     def start_final(self, winner1, winner2):
         sent = TournamentState.get_value(self.tournament_id, "final_bracket_event_sent")
@@ -320,8 +309,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         event_payload = {
             "type": "tournament.final_start",
-            "winner1": winner1,
-            "winner2": winner2,
+            "winner1": winner1["username"] if winner1 else None,
+            "winner2": winner2["username"] if winner2 else None,
             "match_id": match_id
         }
         

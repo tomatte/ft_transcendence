@@ -108,11 +108,15 @@ class MatchState:
     def filter_winner(cls, match_data):
         if match_data["phase"] != "ended":
             return None
-        return (
+        winner_player = (
             match_data['player_left']
-            if match_data['player_left']['points'] > match_data['player_right']['points']
+            if match_data['player_left']['winner']
             else match_data['player_right']
         )
+        
+        winner_user = OnlineState.get_user(winner_player["username"])
+        
+        return winner_user
         
     @classmethod
     def filter_loser(cls, match_data):
