@@ -1,7 +1,9 @@
 from django.http import JsonResponse, HttpResponse
-from tournament.models import Tournament, Match
+from tournament.models import Tournament, Match, MatchPlayer
 from users.models import User
 from django.db.models import Prefetch
+from game.redis_models import TournamentRedis, MatchRedis
+from asgiref.sync import sync_to_async
 
 ################################################################################
 #						Auxiliaries
@@ -132,3 +134,56 @@ def get_tournament(request):
 	# 	return HttpResponse(status=404, content='Tournament not found!')
 	# except CustomException as e:
 	# 	return HttpResponse(status=e.status, content=str(e))
+ 
+async def create_match(match_redis: MatchRedis):
+    match = await sync_to_async(Match.objects.create)(
+        create_at=match_redis.created_at,
+        duration=None,
+        type=match_redis.match_type
+    )
+
+    # Fetch or create User instances for the players
+    player_left, _ = await sync_to_async(User.objects.get_or_create)(username=match_redis.player_left.username)
+    player_right, _ = await sync_to_async(User.objects.get_or_create)(username=match_redis.player_right.username)
+
+    # Create MatchPlayer instances for both players
+    match_player_left = await sync_to_async(MatchPlayer.objects.create)(
+        match=match,
+        user=player_left,
+        score=match_redis.player_left.points,
+        winner=match_redis.player_left.winner
+    )
+
+    match_player_right = await sync_to_async(MatchPlayer.objects.create)(
+        match=match,
+        user=player_right,
+        score=match_redis.player_right.points,
+        winner=match_redis.player_right.winner
+    )
+
+    # Print the created objects (optional)
+    print(f'Match: {match}')
+    print(f'MatchPlayer Left: {match_player_left}')
+    print(f'MatchPlayer Right: {match_player_right}')
+
+
+async def create_tournament(tournament_redis: TournamentRedis):
+    winner_username = (
+		tournament_redis.final.player_left.username
+		if tournament_redis.final.player_left.winner
+		else tournament_redis.final.player_right.username
+	)
+    
+    winner = await sync_to_async(User.objects.get)(username=winner_username)
+    tournament = await sync_to_async(Tournament.objects.create)(
+        winner=winner
+    )
+
+    # Create semi-final matches
+    for match_redis in tournament_redis.semi_finals:
+        await create_match(match_redis)
+
+    # Create final match
+    await create_match(tournament_redis.final)
+
+    print(f'Tournament: {tournament}')

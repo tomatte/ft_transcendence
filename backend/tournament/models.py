@@ -36,7 +36,3 @@ class Tournament(models.Model):
 	)
 	winner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='winner', default=None, null=True, blank=True)
 	create_at = models.DateTimeField(auto_now_add=True)
-
-	def __str__(self):
-		return self.status
-

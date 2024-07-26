@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from asgiref.sync import async_to_sync
+from asgiref.sync import async_to_sync, sync_to_async
 import json
 from typing import Dict, TypedDict
 import uuid
@@ -13,6 +13,7 @@ from .match_state import MatchState
 from .redis_models import TournamentRedis
 from backend.tournament_utils import store_tournament
 from tournament.models import Tournament, Match, MatchPlayer
+from tournament.views import create_tournament
 
 MatchDict = Dict[str, MatchData]
 
@@ -186,11 +187,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     
     async def terminate_tournament(self):
         # TODO: save tournament data and delete match from redis
-        tournament_redis = TournamentRedis(self.tournament_id)
         await self.close(1000)
-        # if redis_client.hexists("global_tournament", self.tournament_id):
-            # await store_tournament(TournamentRedis(self.tournament_id))
-            # redis_client.hdel("global_tournament", self.tournament_id)
+        if redis_client.hexists("global_tournament", self.tournament_id):
+            tournament_redis = TournamentRedis(self.tournament_id)
+            redis_client.hdel("global_tournament", self.tournament_id)
+            await create_tournament(tournament_redis)
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
