@@ -10,10 +10,10 @@ from .tasks import emit_group_event_task, Task
 from .my_types import *
 import random
 from .match_state import MatchState
-from .redis_models import TournamentRedis
+from .redis_models import TournamentRedis, MatchRedis
 from backend.tournament_utils import store_tournament
 from tournament.models import Tournament, Match, MatchPlayer
-from tournament.views import create_tournament
+from tournament.views import create_tournament, create_match
 
 MatchDict = Dict[str, MatchData]
 
@@ -105,9 +105,11 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
     async  def match_end(self, event):
         print(f"{self.user.username}: match_end()")
         match = MatchState.get(self.match_id)
-        if match["match_type"] != "normal":
+        
+        if match["match_type"] == "random":
+            await self.end_random_match()
+        else:
             await self.end_match_tournament()
-            return
             
     async def end_match_tournament(self):
         print(f"{self.user.username}: end_match_tournament()")
@@ -129,6 +131,34 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         
         self.in_match_group = False
         await self.close(1000)
+        
+    async def end_random_match(self):
+        redis_client.set_map_str(self.user.username, "match_id", "")
+        await self.channel_layer.group_discard("match", self.channel_name)
+        await self.channel_layer.group_discard(self.match_id, self.channel_name)
+        
+        match = MatchState.get(self.match_id)
+        
+        player_left = OnlineState.get_user(match["player_left"]["username"])
+        player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
+        
+        player_right = OnlineState.get_user(match["player_right"]["username"])
+        player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
+        
+        payload = {
+            "name": "random_match_end",
+            "player_left": player_left,
+            "player_right": player_right
+        }
+        
+        await self.send_json(payload)
+        
+        if redis_client.hexists("global_matches", self.match_id):
+            await create_match(MatchRedis(self.match_id))
+            redis_client.hdel("global_matches", self.match_id)
+        
         
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
