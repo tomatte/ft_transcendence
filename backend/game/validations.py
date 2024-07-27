@@ -25,16 +25,20 @@ class _JoinTournamentValiadation:
             if hasattr(self.parent, "tournament_id"):
                 print("join fail: hasattr tournament_id")
                 return False
-            if redis_client.hexists(self.parent.user.username, 'tournament_id'):
+            old_tournament_id = redis_client.get_map_str(self.parent.user.username, "tournament_id")
+            if old_tournament_id != None and old_tournament_id != "":
                 print("join fail: hexists tournament_id")
                 return False
             
-            tournament_players = TournamentState.get_players(data["tournament"]["id"])
+            tournament_players = TournamentState.get_players_usernames(data["tournament"]["id"])
+            if tournament_players == None:
+                print("join fail: tournament not found")
+                return False
             if len(tournament_players) == 4:
                 print("join fail: len tournament_players ==  4")
                 return False
             for player in tournament_players:
-                if player["username"] == self.parent.user.username:
+                if player == self.parent.user.username:
                     print("join fail: user already in tournament")
                     return False
             return True

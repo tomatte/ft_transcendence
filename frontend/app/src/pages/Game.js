@@ -15,11 +15,7 @@ function addElements() {
     audioElement.id = 'ball-kick';
     audioElement.src = 'assets/audios/soccer-kick-6235.mp3';
     
-    const scriptElement = document.createElement('script');
-    scriptElement.src = 'scripts/game.js';
-    
     document.body.appendChild(audioElement);
-    document.body.appendChild(scriptElement);    
 }
 
 const Game = (state) => {
@@ -28,11 +24,13 @@ const Game = (state) => {
     addGameStyles()
     addElements()
 
-	const pageContentContainer = document.querySelector('.page-game__container');
+	const gameContainer = document.querySelector('.page-game__container');
+    gameContainer.style.display = 'block';
 
-        pageContentContainer.innerHTML = `
-        <img class="stars_game" src="assets/background-stars.svg">
-        <img class="logo_match" src="assets/logo/logo_background_match.svg">
+        gameContainer.innerHTML = `
+        <img class="stars_game1" src="assets/background-stars.svg">
+        <img class="stars_game1" src="assets/background-stars.svg">
+        <img class="logo_match" src="assets/logo/logomark_white.svg">
 
         <div id="table">
             <h1 id="score_left">0</h1>
@@ -44,7 +42,7 @@ const Game = (state) => {
         </div>
       `;
 
-	  return pageContentContainer;
+	  return gameContainer;
 }
 
 export default Game;

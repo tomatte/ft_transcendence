@@ -20,6 +20,7 @@ class MyAsyncWebsocketConsumer(AsyncWebsocketConsumer):
     async def authenticate(self) -> True | False:
         if self.scope['user'].is_authenticated:
             await self.accept()
+            self.user = self.scope['user']
             return True
 
         await self.close()
@@ -36,7 +37,9 @@ class MyRedisClient(redis.StrictRedis):
         return self.set(key, json.dumps(value))
     
     def get_map_str(self, name: str, key: str):
-        value = self.hmget(name, key)[0].decode()
+        value = self.hmget(name, key)[0]
+        if value != None:
+            value = value.decode()
         return value
     
     def set_map_str(self, name: str, key: str, value: str):
@@ -58,7 +61,10 @@ class MyRedisClient(redis.StrictRedis):
         
         for key, data_raw in all_raw.items():
             key = key.decode()
-            data = json.loads(data_raw.decode())
+            try:
+                data = json.loads(data_raw.decode())
+            except json.decoder.JSONDecodeError:
+                data = data_raw.decode()
             all[key] = data
         
         return all
@@ -183,6 +189,11 @@ class OnlineState:
         return cls.redis.get_map(cls.global_name, username)
     
     @classmethod
+    def get_value(cls, username, key):
+        data = cls.get_user(username)
+        return data[key] if key in data else None
+    
+    @classmethod
     def set_user_str(cls, username: str, key: str, value: str):
         data = cls.get_user(username)
         data[key] = value
@@ -246,6 +257,10 @@ class OnlineState:
 
 class UserState:
     redis = redis_client
+    
+    @classmethod
+    def  set_value(cls, username, key, value):
+        cls.redis.set_map_str(username, key, value)
     
     def __init__(self, user, channel_name) -> None:
         self.user = user

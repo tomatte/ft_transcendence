@@ -1,4 +1,8 @@
 import websocketMatch from "../websockets/websocketMatch.js"
+import websocketTournament from "../websockets/websocketTournament.js"
+import { showGamePage, showTournamentPage } from "./updateElements.js"
+import { mockPlayers } from "../state/mockState.js"
+import state from "../state/state.js"
 
 export function hideContents() {
     document.querySelector(".sidebar").style.display = 'none'
@@ -28,4 +32,26 @@ export function listenForKeyPress(targetKey, callback) {
 
 export function listenTestKeys() {
     listenForKeyPress("1", () => websocketMatch.listen())
+    listenForKeyPress("2", () => websocketTournament.listen())
+    listenForKeyPress("3", () => websocketTournament.send({action: "start"}))
+    listenForKeyPress("4", () => {
+        state.tournament = {}
+        state.tournament.players = mockPlayers
+        showTournamentPage()
+    })
+    listenForKeyPress("5", () => showGamePage())
+}
+
+export function listenButtonClick(parent, btnId, callback) {
+    parent.addEventListener('click', function(event) {
+        let targetElement = event.target;
+        while (targetElement != null && targetElement !== this) {
+            if (targetElement.id === btnId) {
+                console.log(`${btnId} clicked`);
+                callback()
+                break;
+            }
+            targetElement = targetElement.parentNode;
+        }
+    });
 }

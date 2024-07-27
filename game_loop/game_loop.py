@@ -3,8 +3,9 @@ from websockets.exceptions import ConnectionClosed
 import websockets
 import json
 from pong_entities import *
-from typing import TypedDict
 from environs import Env
+from match_state import MatchState
+
 env = Env()
 env.read_env()
 
@@ -15,12 +16,6 @@ BALL_RADIOUS = 10
 BALL_SPEED = 400
 BALL_START_DIRECTION = 30
 
-class PlayerMoveDataType(TypedDict):
-    key: str
-    player_id: str
-    match_id: str
-    action: str
-
 class Socket:
     uri = f"ws://{env("BACKEND_HOST")}:{env("BACKEND_PORT")}/ws/game_loop/"
     ws: websockets.WebSocketClientProtocol = None
@@ -28,6 +23,7 @@ class Socket:
     @classmethod
     async def  connect_to_server(cls):
         while True:
+            
             try:
                 print("trying to connect to server")
                 cls.ws = await websockets.connect(cls.uri)
@@ -39,10 +35,11 @@ class Socket:
 
     @classmethod
     async def send_info(cls):
+        tick = json.dumps({"action": "tick"})
         while True:
-            if len(Game.payload) > 0:
+            if len(Game.balls) > 0:
                 try:
-                    await cls.ws.send(json.dumps(Game.payload))
+                    await cls.ws.send(tick)
                 except:
                     await cls.connect_to_server()
             await asyncio.sleep(Game.fps_time)
@@ -66,40 +63,26 @@ class Socket:
 class Game:
     balls: dict[int, Ball] = dict()
     fps_time = 1 / FPS
-    payload = {}
 
     @classmethod
     def move_balls(cls):
         for id, ball in cls.balls.items():
             ball.move(FPS)
+            
     @classmethod
-    def create_payload(cls):
-        cls.payload.clear()
-        for match_id, match in Match.matches.items():
-            if match.started == False:
-                continue
-            cls.payload[match_id] = {
-                "ball": {
-                    "x": match.ball.x,
-                    "y": match.ball.y,
-                    "bounced": match.ball.bounced
-                    },
-                "players": {
-                    match.player_left.id: {
-                        "x": match.player_left.x,
-                        "y": match.player_left.y,
-                        "pos": "left",
-                        "points": match.player_right.hits
-                    },
-                    match.player_right.id: {
-                        "x": match.player_right.x,
-                        "y": match.player_right.y,
-                        "pos": "right",
-                        "points": match.player_left.hits
-                    }
-                },
-                "action": match.action
-            }
+    def save_changes(cls):
+        for id, match in Match.matches.items():
+            entities = MatchState.get_entities(match.id)
+            entities["ball"]["x"] = match.ball.x
+            entities["ball"]["y"] = match.ball.y
+            entities["ball"]["bounced"] = match.ball.bounced
+            entities["player_left"]["x"] = match.player_left.x
+            entities["player_left"]["y"] = match.player_left.y
+            entities["player_left"]["points"] = match.player_right.hits
+            entities["player_right"]["x"] = match.player_right.x
+            entities["player_right"]["y"] = match.player_right.y
+            entities["player_right"]["points"] = match.player_left.hits
+            MatchState.set_entities(match.id, entities)
             
         
 class Match:
@@ -109,23 +92,15 @@ class Match:
     
     def __init__(self, data) -> None:
         self.started = False
-        self.id = data["match_id"]
-        self.max_scores = data["max_scores"]
+        self.id = data["id"]
+        self.max_scores = 5
         self.action = "coordinates"
         Match.matches[self.id] = self
+        self._add_ball()
+        self._add_player_left(data)
+        self._add_player_right(data)
         
-        self.player_right: Player | None = None
-        self.player_left = Player(
-            [0, TABLE_HEIGHT / 2],
-            PLAYER_SPEED,
-            PLAYER_WIDTH,
-            PLAYER_HEIGHT,
-            Entity.PLAYER_LEFT,
-            data["player_id"]
-        )
-        Match.players[self.player_left.id] = self.player_left
-        self.player_left.match_id = self.id
-        
+    def _add_ball(self):
         self.ball = Ball(
             [TABLE_WIDTH / 2, TABLE_HEIGHT / 2], 
             BALL_RADIOUS, 
@@ -133,24 +108,33 @@ class Match:
             BALL_START_DIRECTION,
             self.id
         )
-        
-        self.ball.players["left"] = self.player_left
         Match.balls[self.id] = self.ball
         
-        
-        
-    def add_player_right(self, data):
+    def _add_player_right(self, data):
         self.player_right = Player(
             [TABLE_WIDTH, TABLE_HEIGHT / 2],
             PLAYER_SPEED,
             PLAYER_WIDTH,
             PLAYER_HEIGHT,
             Entity.PLAYER_RIGHT,
-            data["player_id"]
+            data["player_right"]["username"]
         )
         Match.players[self.player_right.id] = self.player_right
         self.player_right.match_id = self.id
         self.ball.players["right"] = self.player_right
+        
+    def _add_player_left(self, data):
+        self.player_left = Player(
+            [0, TABLE_HEIGHT / 2],
+            PLAYER_SPEED,
+            PLAYER_WIDTH,
+            PLAYER_HEIGHT,
+            Entity.PLAYER_LEFT,
+            data["player_left"]["username"]
+        )
+        Match.players[self.player_left.id] = self.player_left
+        self.player_left.match_id = self.id
+        self.ball.players["left"] = self.player_left
     
     def start_match(self):
         Game.balls[self.id] = self.ball
@@ -188,63 +172,59 @@ class Match:
                 match.action = "match_end"
                 
     @classmethod
-    def destroy_matches(cls):
+    async def end_matches(cls):
         for match in list(cls.matches.values()):
             if match.action != "match_end":
                 continue
+            match_data = MatchState.get(match.id)
+            match_data["phase"] = "ended"
+            match_data["player_left"]["winner"] = match.player_left.hits < match.player_right.hits
+            match_data["player_right"]["winner"] = match.player_right.hits < match.player_left.hits
+            MatchState.set(match.id, match_data)
+            await Socket.ws.send(json.dumps({
+                "action": "match_end",
+                "match_id": match.id
+            }))
             match.destroy()
+            
 
 class Actions:
-    @classmethod
-    def new_match(cls, data):
-        print("new_match()")
-        match = Match(data)
-        print(f"ball: x:{match.ball.x} y:{match.ball.y}")
-        print(f"player_left: x:{match.player_left.x} y:{match.player_left.y}")
-    
-    @classmethod
-    def player_move(cls, data: PlayerMoveDataType):
-        player = Match.players[data["player_id"]]
-        player.movement = data["key"]
-        
-    @classmethod
-    def player_connect(cls, data):
-        match = Match.find_match(data["match_id"])
-        if not isinstance(match, Match):
-            cls.new_match(data)
-            return
-        match.add_player_right(data)
-        match.start_match()
-    
     @classmethod
     def match_end(cls, data):
         pass
     
     @classmethod
+    def start_matches(cls):
+        matches = MatchState.get_ready()
+        for data in matches:
+            match = Match(data)
+            MatchState.set_phase(data["id"], "running")
+            match.start_match()
+            
+    @classmethod
     def act(cls, data):
-        if data["action"] == "new_match":
-            cls.new_match(data)
-            return 
-        if data["action"] == "player_connect":
-            cls.player_connect(data)
-            return 
-        if data["action"] == "player_move":
-            cls.player_move(data)
-            return 
-
-
+        if data["action"] == "move":
+            cls.move_player(data)
+            
+    @classmethod
+    def move_player(cls, data):
+        player = Match.players[data["username"]]
+        player.movement = data["key"]
+            
+            
 async def main():
     await Socket.connect_to_server()
         
     asyncio.create_task(Socket.send_info())
     asyncio.create_task(Socket.rcve_info())
     while True:
+        Actions.start_matches()
         Game.move_balls()
         Match.move_players()
         Match.verify_ended_matches()
-        Game.create_payload()
-        Match.destroy_matches()
-
+        Game.save_changes()
+        await Match.end_matches()
+        
         await asyncio.sleep(Game.fps_time)
         
 

@@ -1,4 +1,5 @@
 import { joinTournament } from "../scripts/websockets/websocketActions.js"
+import { listenButtonClick } from "../scripts/element-creators/utils.js"
 
 const tournamentRequestInfo = {
     accept_message: "Join Tournament",
@@ -28,26 +29,12 @@ const infoTypes = {
     'match': matchRequestInfo,
 }
 
-function listenButtonClick(parent, btnId, callback) {
-    parent.addEventListener('click', function(event) {
-        let targetElement = event.target;
-        while (targetElement != null && targetElement !== this) {
-            if (targetElement.id === btnId) {
-                console.log(`${btnId} clicked`);
-                callback()
-                break;
-            }
-            targetElement = targetElement.parentNode;
-        }
-    });
-}
-
 function createRow(data) {
     const info = infoTypes[data.type]
     const pageContentContainer = document.querySelector('.page-content__container');
 
-    const btnRefuseId = `button-request-refuse-${data.type}-${data.owner.username}`
-    const btnAcceptId = `button-request-accept-${data.type}-${data.owner.username}`
+    const btnRefuseId = `refuse-${data.tournament_id}`
+    const btnAcceptId = `accept-${data.tournament_id}`
 
     listenButtonClick(
         pageContentContainer,

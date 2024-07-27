@@ -121,6 +121,12 @@ ul {
     background-color: var(--Cosmic-Forest-700);
 }
 
+.button--success-confirmation
+{
+    color: var(--Cosmic-Forest-400);
+    background-color: var(--Cosmic-Forest-900);
+}
+
 .button--danger
 {
     color: var(--Red-Dwarf-50);
@@ -921,8 +927,7 @@ ul {
 .table-row {
 
     display: flex;
-    height: 76px;
-    padding: 16px;
+    padding: 8px;
     width: 100%;
     align-items: center;
     gap: 16px;
@@ -990,6 +995,7 @@ ul {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    text-align: end;
     gap: 12px;
     flex: 1 0 0;
 }
@@ -1033,7 +1039,7 @@ ul {
     align-items: center;
     gap: 8px;
     align-self: stretch;
-    flex: 1 0 0;
+    width: 100%;
     border-radius: 8px;
     background: var(--Lunar-Dust-1000);
 }
@@ -1055,7 +1061,7 @@ ul {
 }
 
 
-.player-bracket__info__text__name, .player-bracket__info__text__nickname, .player-bracket__waiting-text {
+.player-bracket__info__text__name, .player-bracket__info__text__nickname {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
@@ -1080,6 +1086,15 @@ ul {
 
 .player-bracket__waiting-text {
     color: var(--Lunar-Dust-500);
+    flex: 1 0 0;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
@@ -1188,4 +1203,9 @@ ul {
 .toggle.Default.Enabled {
     background: var(--Lunar-Dust-600, #5D5E6C);
 }
- 
+
+
+.text-align-action{
+    text-align: right;
+
+}

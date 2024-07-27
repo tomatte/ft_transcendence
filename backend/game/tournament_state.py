@@ -18,7 +18,7 @@ class ExitTournament:
     async def exit(self):
         data = redis.get_map(global_tournament_name, self.parent.tournament_id)
         if data != None:
-            await self.actions[data['phase']](data)
+            await self.actions[data['status']](data)
         
         await self.exit_user_state()
             
@@ -64,11 +64,25 @@ class TournamentState:
         return players
     
     @classmethod
+    def get_players_usernames(self, id):
+        data = redis.get_map(global_tournament_name, id)
+        return data["players"] if data else None
+    
+    @classmethod
     def shuffle_players(cls, tournament_id):
         data = redis.get_map(global_tournament_name, tournament_id)
         random.shuffle(data["players"])
         redis.set_map(global_tournament_name, tournament_id, data)
         return data["players"]
+    
+    @classmethod
+    def get_value(cls, id, key):
+        data = redis.get_map(global_tournament_name, id)
+        return data[key]
+    
+    @classmethod
+    def get(cls, id):
+        return redis.get_map(global_tournament_name, id)
     
     def __init__(self, user) -> None:
         self.user = user
@@ -83,7 +97,8 @@ class TournamentState:
             'players': [self.user.username],
             'id': self.tournament_id,
             'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'phase': 'creating'
+            'status': 'creating',
+            'final_bracket_event_sent': 0,
         }
         
         redis.set_map(
@@ -117,5 +132,20 @@ class TournamentState:
             'tournament_id', 
             tournament_id
         )
+        
+    def add_semi_final_matches(self, match_id_1, match_id_2):
+        data = redis.get_map(global_tournament_name, self.tournament_id)
+        data["semi_finals"] = (match_id_1, match_id_2)
+        redis.set_map(global_tournament_name, self.tournament_id, data)
+        
+    def add_final_match(self, match_id):
+        data = redis.get_map(global_tournament_name, self.tournament_id)
+        data["final"] = (match_id)
+        redis.set_map(global_tournament_name, self.tournament_id, data)
+        
+    def set_value(self, key, value):
+        data = redis.get_map(global_tournament_name, self.tournament_id)
+        data[key] = value
+        redis.set_map(global_tournament_name, self.tournament_id, data)
 
     

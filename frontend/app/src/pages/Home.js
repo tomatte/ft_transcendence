@@ -1,3 +1,19 @@
+import { playRandomly } from "../scripts/websockets/websocketActions.js";
+import { listenButtonClick } from "../scripts/element-creators/utils.js";
+import { playLocal } from "../scripts/websockets/websocketActions.js";
+
+listenButtonClick(
+    document.querySelector('.page-content__container'),
+    "button-play-random-match",
+    () => playRandomly()
+)
+
+listenButtonClick(
+    document.querySelector('.page-content__container'),
+    "button-play-local-match",
+    () => playLocal()
+)
+
 const Home = (state) => {
     console.log({state})
 	const pageContentContainer = document.querySelector('.page-content__container');
@@ -29,7 +45,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">1V1 MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button class="button button--secondary">
+                    <button id="button-play-random-match" class="button button--secondary">
                         <span class="material-icons-round button__icon-left">shuffle</span>
                         <span class="button__text font-body-regular-bold">Play randomly</span>
                     </button>
@@ -52,6 +68,21 @@ const Home = (state) => {
             </div>
             <div class="game-mode-banner__illustration">
                 <img class="game-mode-banner__illustration__image" src="../assets/images/banners/flag.png" alt="An illustration of a flag">
+            </div>
+        </div>
+
+        <div class="game-mode-banner game-mode-banner--play-randomly">
+            <div class="game-mode-banner__info">
+                <div class="game-mode-banner__info__title">LOCAL MATCH</div>
+                <div class="game-mode-banner__info__button">
+                    <button id="button-play-local-match" class="button button--secondary">
+                        <span class="material-icons-round button__icon-left">shuffle</span>
+                        <span class="button__text font-body-regular-bold">Play Local Game</span>
+                    </button>
+                </div>
+            </div>
+            <div class="game-mode-banner__illustration">
+                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/medal.png" alt="An illustration of a medal">
             </div>
         </div>
 
@@ -88,7 +119,7 @@ const Home = (state) => {
                     <tr class="table-header">
                         <th class="table-header__text font-body-caption-bold">Player</th>
                         <th class="table-header__text font-body-caption-bold">Global ranking</th>
-                        <th class="table-header__text font-body-caption-bold">Actions</th>
+                        <th class="table-header__text text-align-action font-body-caption-bold text-align-action">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="tournament_online_players" class="modal__table__body">
@@ -120,7 +151,7 @@ const Home = (state) => {
                         <tr class="table-header">
                             <th class="table-header__text font-body-caption-bold">Player</th>
                             <th class="table-header__text font-body-caption-bold">Global ranking</th>
-                            <th class="table-header__text font-body-caption-bold">Actions</th>
+                            <th class="table-header__text font-body-caption-bold text-align-action">Actions</th>
                         </tr>
                     </thead>
 
