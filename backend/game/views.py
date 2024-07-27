@@ -177,8 +177,30 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         redis_client.set_map_str(self.user.username, "match_id", "")
         await self.channel_layer.group_discard("match", self.channel_name)
         await self.channel_layer.group_discard(self.match_id, self.channel_name)
-        if redis_client.hexists("global_matches", self.match_id):
+        
+        match = MatchState.get(self.match_id)
+        if match["should_delete"]:
             redis_client.hdel("global_matches", self.match_id)
+            await self.close(1000)
+            return
+        else:
+            match["should_delete"] = True
+            MatchState.set(self.match_id, match)
+        
+        player_left = {}
+        player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
+        
+        player_right = {}
+        player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
+        
+        await self.send_json({
+            "name": "end_local_match",
+            "player_left": player_left,
+            "player_right": player_right
+        })
+        await self.close(1000)
         
         
          
@@ -569,6 +591,7 @@ class LocalMatchConsumer(MyAsyncWebsocketConsumer):
         match["player_right"]["username"] = f"{self.user.username}2"
         match["player_right"]["ready"] = True
         match["phase"] = "start"
+        match["should_delete"] = False 
         redis_client.set_map_str(self.user.username, "match_id", match["id"])
         MatchState.set(match["id"], match)
         
