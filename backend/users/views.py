@@ -251,6 +251,9 @@ class ManipulateUser:
 				"my_score": me.score,
 				"winner": me.winner,
 				"opponent_score": other.score,
+				"opponent_username": other.user.username,
+				"opponent_nickname": other.user.nickname,
+				"opponent_avatar": other.user.avatar.name,
 				"date": _match.create_at.strftime('%d/%m/%y'),
 			})
 		return data

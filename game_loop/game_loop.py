@@ -156,18 +156,11 @@ class Match:
     
     @classmethod
     def move_players(cls):
-        for id, match in cls.matches.items():
-            match = MatchState.get_entities(match.id)
-            cls.move_player(match["player_left"])
-            cls.move_player(match["player_right"])
-                
-    @classmethod
-    def move_player(cls, player_data):
-        player = Match.players[player_data["username"]]
-        if player_data["move"] == "up":
-            player.move_up()
-        elif player_data["move"] == "down":
-            player.move_down()
+        for id, player in cls.players.items():
+            if player.movement == "up":
+                player.move_up()
+            elif player.movement == "down":
+                player.move_down()
                 
     @classmethod
     def verify_ended_matches(cls):
@@ -183,7 +176,11 @@ class Match:
         for match in list(cls.matches.values()):
             if match.action != "match_end":
                 continue
-            MatchState.set_phase(match.id, "ended")
+            match_data = MatchState.get(match.id)
+            match_data["phase"] = "ended"
+            match_data["player_left"]["winner"] = match.player_left.hits < match.player_right.hits
+            match_data["player_right"]["winner"] = match.player_right.hits < match.player_left.hits
+            MatchState.set(match.id, match_data)
             await Socket.ws.send(json.dumps({
                 "action": "match_end",
                 "match_id": match.id
@@ -203,6 +200,17 @@ class Actions:
             match = Match(data)
             MatchState.set_phase(data["id"], "running")
             match.start_match()
+            
+    @classmethod
+    def act(cls, data):
+        if data["action"] == "move":
+            cls.move_player(data)
+            
+    @classmethod
+    def move_player(cls, data):
+        player = Match.players[data["username"]]
+        player.movement = data["key"]
+            
             
 async def main():
     await Socket.connect_to_server()

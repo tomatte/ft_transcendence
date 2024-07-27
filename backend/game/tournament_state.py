@@ -66,7 +66,7 @@ class TournamentState:
     @classmethod
     def get_players_usernames(self, id):
         data = redis.get_map(global_tournament_name, id)
-        return data["players"]
+        return data["players"] if data else None
     
     @classmethod
     def shuffle_players(cls, tournament_id):

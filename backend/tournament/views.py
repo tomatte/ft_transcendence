@@ -1,7 +1,9 @@
 from django.http import JsonResponse, HttpResponse
-from tournament.models import Tournament, TournamentBracket, Match
+from tournament.models import Tournament, Match, MatchPlayer
 from users.models import User
 from django.db.models import Prefetch
+from game.redis_models import TournamentRedis, MatchRedis
+from asgiref.sync import sync_to_async
 
 ################################################################################
 #						Auxiliaries
@@ -56,31 +58,6 @@ def is_method_allowed(request: object, method: str) -> None:
 		raise CustomException('Method not allowed!', 405)
 
 
-def create_Bracket(tournament: object, round: int) -> None:
-	"""Função para criar a tabela de um torneio.
-
-		args:
-			tournament (OBJ): Torneio.
-	"""
-
-	if TournamentBracket.objects.filter(tournament=tournament, round=round).count() > 0:
-		return
-
-	players = list(tournament.players.all())
-	for i in range(0, len(players), 2):
-		match = Match.objects.create(
-			tournament=tournament,
-		)
-		match.players.add(players[i]),
-		match.players.add(players[i + 1]),
-		TournamentBracket.objects.create(
-			player1=players[i],
-			player2=players[i + 1],
-			tournament=tournament,
-			match=match,
-			round=round,
-		)
-
 
 ################################################################################
 #							Routes
@@ -130,30 +107,83 @@ def get_tournament(request):
 			json (JSON): informações com as informações do torneio.
 	"""
 
-	try:
-		# is_method_allowed(request, 'GET')
-		# tournament = Tournament.objects.prefetch_related(
-		# 	Prefetch('players', queryset=User.objects.all().only('id', 'nickname', 'avatar')),
-		# 	Prefetch('tournamentBracket', queryset=TournamentBracket.objects.all().select_related('user1', 'user2', 'match'))
+	# try:
+	# 	# is_method_allowed(request, 'GET')
+	# 	# tournament = Tournament.objects.prefetch_related(
+	# 	# 	Prefetch('players', queryset=User.objects.all().only('id', 'nickname', 'avatar')),
+	# 	# 	Prefetch('tournamentBracket', queryset=TournamentBracket.objects.all().select_related('user1', 'user2', 'match'))
 
-		# ).get(id=request.GET.get('id'))
+	# 	# ).get(id=request.GET.get('id'))
 
-		tournament = Tournament.objects.prefetch_related(
-			Prefetch('players', queryset=User.objects.all().only('id', 'nickname', 'avatar')),
-			Prefetch('tournamentBracket', queryset=TournamentBracket.objects.all().select_related('player1', 'player2', 'match'))
+	# 	tournament = Tournament.objects.prefetch_related(
+	# 		Prefetch('players', queryset=User.objects.all().only('id', 'nickname', 'avatar')),
+	# 		Prefetch('tournamentBracket', queryset=TournamentBracket.objects.all().select_related('player1', 'player2', 'match'))
 
-		).get(id=1)
+	# 	).get(id=1)
 
-		backets = [{
-				f"bracket{i}": format_players_bracket(bracket)
-			} for i, bracket in enumerate(tournament.tournamentBracket.all())
-		]
+	# 	backets = [{
+	# 			f"bracket{i}": format_players_bracket(bracket)
+	# 		} for i, bracket in enumerate(tournament.tournamentBracket.all())
+	# 	]
 
-		response = {
-			"players": list(tournament.players.all().values('nickname', 'id')),
-			"brackets": backets
-		}
-	except Tournament.DoesNotExist:
-		return HttpResponse(status=404, content='Tournament not found!')
-	except CustomException as e:
-		return HttpResponse(status=e.status, content=str(e))
+	# 	response = {
+	# 		"players": list(tournament.players.all().values('nickname', 'id')),
+	# 		"brackets": backets
+	# 	}
+	# except Tournament.DoesNotExist:
+	# 	return HttpResponse(status=404, content='Tournament not found!')
+	# except CustomException as e:
+	# 	return HttpResponse(status=e.status, content=str(e))
+ 
+async def create_match(match_redis: MatchRedis):
+    match = await sync_to_async(Match.objects.create)(
+        create_at=match_redis.created_at,
+        duration=None,
+        type=match_redis.match_type
+    )
+
+    # Fetch or create User instances for the players
+    player_left, _ = await sync_to_async(User.objects.get_or_create)(username=match_redis.player_left.username)
+    player_right, _ = await sync_to_async(User.objects.get_or_create)(username=match_redis.player_right.username)
+
+    # Create MatchPlayer instances for both players
+    match_player_left = await sync_to_async(MatchPlayer.objects.create)(
+        match=match,
+        user=player_left,
+        score=match_redis.player_left.points,
+        winner=match_redis.player_left.winner
+    )
+
+    match_player_right = await sync_to_async(MatchPlayer.objects.create)(
+        match=match,
+        user=player_right,
+        score=match_redis.player_right.points,
+        winner=match_redis.player_right.winner
+    )
+
+    # Print the created objects (optional)
+    print(f'Match: {match}')
+    print(f'MatchPlayer Left: {match_player_left}')
+    print(f'MatchPlayer Right: {match_player_right}')
+
+
+async def create_tournament(tournament_redis: TournamentRedis):
+    winner_username = (
+		tournament_redis.final.player_left.username
+		if tournament_redis.final.player_left.winner
+		else tournament_redis.final.player_right.username
+	)
+    
+    winner = await sync_to_async(User.objects.get)(username=winner_username)
+    tournament = await sync_to_async(Tournament.objects.create)(
+        winner=winner
+    )
+
+    # Create semi-final matches
+    for match_redis in tournament_redis.semi_finals:
+        await create_match(match_redis)
+
+    # Create final match
+    await create_match(tournament_redis.final)
+
+    print(f'Tournament: {tournament}')
