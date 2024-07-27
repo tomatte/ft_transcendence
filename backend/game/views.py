@@ -97,6 +97,7 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         """ TODO: LOCAL """
     async def player2_move(self, data: PlayerMoveDataType):
         data["type"] = "player.move"
+        data["action"] = "move"
         data["username"] = f"{self.user.username}2"
         await self.channel_layer.send(self.game_loop_channel, data)
         

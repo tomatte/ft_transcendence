@@ -45,11 +45,12 @@ export function playerMove(key) {
     })
 }
 
+let keyPressed2 = ""
 export function player2Move(key) {
-    if (keyPressed == key)
+    if (keyPressed2 == key)
         return
     else
-        keyPressed = key
+        keyPressed2 = key
     websocketMatch.send({
         "action": "player2_move",
         "key": key
