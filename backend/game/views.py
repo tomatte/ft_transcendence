@@ -121,9 +121,7 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         if match["match_type"] == "random":
             await self.end_random_match()
         elif match["match_type"] == "local":
-            pass
-            """ TODO: LOCAL """
-            # await self.end_local_match()
+            await self.end_local_match()
         else:
             await self.end_match_tournament()
             
@@ -173,6 +171,13 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         
         if redis_client.hexists("global_matches", self.match_id):
             await create_match(MatchRedis(self.match_id))
+            redis_client.hdel("global_matches", self.match_id)
+            
+    async def end_local_match(self):
+        redis_client.set_map_str(self.user.username, "match_id", "")
+        await self.channel_layer.group_discard("match", self.channel_name)
+        await self.channel_layer.group_discard(self.match_id, self.channel_name)
+        if redis_client.hexists("global_matches", self.match_id):
             redis_client.hdel("global_matches", self.match_id)
         
         
