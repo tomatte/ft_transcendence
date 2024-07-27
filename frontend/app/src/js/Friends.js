@@ -20,11 +20,11 @@ const loadingPage = () => {
 		</div>
 		<div class="page-content__container__header__search-bar">
 			<div class="search-bar">
-			<span class="material-icons-round search-bar__icon icon--regular">search</span>
-			<input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+				<span class="material-icons-round search-bar__icon icon--regular">search</span>
+				<input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+			</div>
 		</div>
-		</div>
-			<div class="page-content__container__content page-content__container__content--matches">
+		<div class="page-content__container__content page-content__container__content--matches">
 			<table>
 				<thead>
 					<tr class="table-header">
@@ -32,7 +32,7 @@ const loadingPage = () => {
 						<th class="table-header__text font-body-caption-bold">Global ranking</th>
 						<th class="table-header__text font-body-caption-bold">Losses against you</th>
 						<th class="table-header__text font-body-caption-bold">Wins against you</th>
-						<th class="table-header__text font-body-caption-bold">Actions</th>
+						<th class="table-header__text font-body-caption-bold table-row__actions">Actions</th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -69,38 +69,38 @@ const loadingPage = () => {
 						</a>
 					</li>
 					<li class="pagination__control">
-					<a class="pagination__control__link" href="#">
-						<span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_right</span>
-						<span class="pagination__control__text">Last</span>
-					</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
-
-	<div class="modal modal--add-friend" id="modalAddFriend">
-		<div class="modal__header-add_friend">
-			<div class="modal__header__title">
-				<h4 class="modal__header__title__text">Add Friend</h4>
-				<span onclick="closeModal('modalAddFriend')" class="material-icons-round modal__header__title__close icon--regular">close</span>
-			</div>
-			<div class="search-bar">
-				<span class="material-icons-round search-bar__icon icon--regular">search</span>
-				<input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name..." id='search__add__friend' oninput="filterUsers()">
-			</div>
-			<table class="modal__table__header-add_friend">
-				<thead class="modal__table__header">
-					<tr class="table-header">
-						<th class="table-header__text font-body-caption-bold">Player</th>
-						<th class="table-header__text font-body-caption-bold">Global ranking</th>
-						<th class="table-header__text font-body-caption-bold" style="text-align: end;">Actions</th>
-					</tr>
-				</thead>
-				<tbody class="modal__table__body" id="body__modal__add__friend">
-				</tbody>
-			</table>
+						<a class="pagination__control__link" href="#">
+							<span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_right</span>
+							<span class="pagination__control__text">Last</span>
+						</a>
+					</li>
+				</ul>
+			</nav>
 		</div>
-	</div>
+		<div class="modal modal--add-friend" id="modalAddFriend">
+			<div class="modal__header-add_friend">
+				<div class="modal__header__title">
+					<h4 class="modal__header__title__text">Add Friend</h4>
+					<span onclick="closeModal('modalAddFriend')" class="material-icons-round modal__header__title__close icon--regular">close</span>
+				</div>
+				<div class="search-bar">
+					<span class="material-icons-round search-bar__icon icon--regular">search</span>
+					<input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name..." id='search__add__friend' oninput="filterUsers()">
+				</div>
+				<table class="modal__table__header-add_friend">
+					<thead class="modal__table__header">
+						<tr class="table-header">
+							<th class="table-header__text font-body-caption-bold">Player</th>
+							<th class="table-header__text font-body-caption-bold">Global ranking</th>
+							<th class="table-header__text font-body-caption-bold" style="text-align: end;">Actions</th>
+						</tr>
+					</thead>
+					<tbody class="modal__table__body" id="body__modal__add__friend">
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id='div_to_modal_delete'></div>
 	<div id="modalOverlay" class="hidden"></div>
 	`
 }
