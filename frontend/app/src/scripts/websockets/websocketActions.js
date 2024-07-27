@@ -45,6 +45,17 @@ export function playerMove(key) {
     })
 }
 
+export function player2Move(key) {
+    if (keyPressed == key)
+        return
+    else
+        keyPressed = key
+    websocketMatch.send({
+        "action": "player2_move",
+        "key": key
+    })
+}
+
 export function playRandomly() {
     const html = SearchMatch(state.user)
     injectSearchMatchPage(html)

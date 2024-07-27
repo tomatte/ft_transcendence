@@ -1,6 +1,7 @@
 import state from "../state/state.js"
 import websocketMatch from "./websocketMatch.js"
 import { showGamePage } from "../element-creators/updateElements.js"
+import { listenPlayer2Moves } from "../game.js"
 
 class LocalMatchEventHandler {
     constructor (state) {
@@ -29,6 +30,7 @@ function start(data, state) {
     websocketMatch.listen()
     websocketMatch.listen()
     showGamePage()
+    listenPlayer2Moves()
 }
 
 const localMatchEventHandler = new LocalMatchEventHandler(state)
