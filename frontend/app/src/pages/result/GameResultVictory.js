@@ -1,10 +1,8 @@
 const goBackButton = /* html */ `
-    <div class="tournament-result__info__buttons">
         <button class="button button--secondary">
             <span class="button__text font-body-regular-bold">Go back to home</span>
             <span class="material-icons-round button__icon-right">arrow_forward</span>
         </button>
-    </div>
 `
 const goBackTitle = `<h6 class="game-result__content__info__redirect">You will be redirected to the brackets in 10 seconds...</h6>`
 
