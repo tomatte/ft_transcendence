@@ -7,6 +7,7 @@ import { injectElement, hideContents, diffOnlineAndQueue } from "./utils.js"
 import state from "../state/state.js"
 import Game from "../../pages/Game.js"
 import createGameResult from "./createGameResult.js"
+import { addLeaveTournamentEventListener } from "../../pages/Tournament.js"
 
 export function updateOnlinePlayersTournament(players) {
     if (!state.hasOwnProperty("tournament") || !state.tournament.hasOwnProperty("players")) {
@@ -37,8 +38,8 @@ export function updatePlayersQueueTournament(players) {
 export function showTournamentPage() {
     hideContents()
    const gameContainer = document.querySelector('.page-tournament__container'); 
-   
     gameContainer.innerHTML = Tournament()
+    addLeaveTournamentEventListener()
     gameContainer.style.display = "block"
 };
 
