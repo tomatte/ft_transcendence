@@ -1,0 +1,29 @@
+
+
+/* ------------------- TAG ------------------- */
+
+.tag
+{
+    display: inline-flex;
+    padding: 4px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+}
+
+.tag--defeat
+{
+    background: var(--Red-Dwarf-900);
+    color: var(--Red-Dwarf-300)
+}
+
+.tag--victory
+{
+    background: var(--Cosmic-Forest-900);
+    color: var(--Cosmic-Forest-300)
+}
+

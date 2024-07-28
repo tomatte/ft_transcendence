@@ -1,0 +1,69 @@
+
+/* ------------------- PLAYER BRACKET ------------------ */
+
+.player-bracket {
+    display: flex;
+    height: 60px;
+    padding: 12px;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    width: 100%;
+    border-radius: 8px;
+    background: var(--Lunar-Dust-1000);
+}
+
+.player-bracket__info__image {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.player-bracket__info__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+}
+
+
+.player-bracket__info__text__name, .player-bracket__info__text__nickname {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    align-self: stretch;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-bracket__info__text__name {
+    color: var(--Comet-Cloud-300);
+}
+
+.player-bracket__info__text__nickname {
+    color: var(--Lunar-Dust-500);
+}
+
+.player-bracket__waiting-icon {
+    color: var(--Lunar-Dust-500);
+}
+
+.player-bracket__waiting-text {
+    color: var(--Lunar-Dust-500);
+    flex: 1 0 0;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+

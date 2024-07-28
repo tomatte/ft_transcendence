@@ -5,23 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/components.css">
-    <link rel="stylesheet" href="../../css/colors.css">
-    <link rel="stylesheet" href="../../css/typography.css">
-    <link rel="stylesheet" href="../playground.css">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="../../../css/colors.css">
+    <link rel="stylesheet" href="../../../css/typography.css">
+    <link rel="stylesheet" href="../../playground.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <title>search-bar</title>
 
-    <script src="../scripts/sidebar.js" defer></script>
+    <script type="module" src="../../../scripts/sidebar.js"></script>
 </head>
 <body>
     <div class="playground-container playground-container--sidebar">
         <aside class="sidebar">
             <header class="sidebar__logo-container">
-                <img class="sidebar__logo-container__logo" id="combinationMark" src="../assets/logo/combination-mark_white.svg" alt="logo combination-mark">
-                <img class="sidebar__logo-container__logo" id="logomark" src="../assets/logo/logomark_white.svg" alt="logo logomark">
+                <img class="sidebar__logo-container__logo" id="combinationMark" src="../../../assets/logo/combination-mark_white.svg" alt="logo combination-mark">
+                <img class="sidebar__logo-container__logo" id="logomark" src="../../../assets/logo/logomark_white.svg" alt="logo logomark">
                 <div class="menu-control" id="menuControl">
                     <div class="menu-control__icon">
                         <span class="material-icons-round icon--regular">keyboard_double_arrow_left</span>
@@ -76,7 +79,7 @@
                     </ul>
                     <ul class="sidebar__menu-container__itens__down">
                         <li class="menu-item">
-                            <a href="#">
+                            <a href="/#">
                                 <span class="material-icons-round menu-item__icon icon--regular">logout</span>
                                 <span class="menu-item__text font-body-regular-bold">Logout</span>
                             </a>
@@ -85,10 +88,10 @@
                 </div>
                 <div class="profile-info">
                     <div class="profile-info__container">
-                        <img id="profile-info-img" class="profile-info__container__image" alt="user profile picture">
+                        <img id="profile-info-img" src="../../../assets/images/players/caos.png" class="profile-info__container__image" alt="user profile picture">
                         <div class="profile-info__container__text">
-                            <span id="profile-info-name" class="profile-info__container__text__name font-body-medium-bold"></span>
-                            <span id="profile-info-nickname" class="profile-info__container__text__nickname font-body-regular"></span>
+                            <span id="profile-info-name" class="profile-info__container__text__name font-body-medium-bold">Camila Caos</span>
+                            <span id="profile-info-nickname" class="profile-info__container__text__nickname font-body-regular">clourenc</span>
                         </div>
                     </div>
                 </div>

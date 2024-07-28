@@ -1,0 +1,128 @@
+@import '../menu-item/styles.css';
+@import '../profile-info/styles.css';
+@import '../menu-control/styles.css';
+
+/* ------------------- SIDEBAR ------------------ */
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar {
+    display: flex;
+    width: 220px;
+    height: 100%;
+    padding: 24px 0px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: all 300ms ease;
+}
+
+.sidebar.collapsed {
+    width: auto;
+}
+
+.sidebar__logo-container {
+    display: flex;
+    padding: 8px 8px 8px 16px;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.sidebar__logo-container__logo {
+    height: 32px;
+}
+
+.sidebar__menu-container {
+    display: flex;
+    padding: 0px 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.sidebar__menu-container .profile-info {
+    display: flex;
+    align-self: stretch;
+}
+
+.sidebar__menu-container__itens {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.sidebar__menu-container__itens__up {
+    display: flex;
+    padding: 8px 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+}
+
+.sidebar__menu-container__itens__down {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+
+/* logo toggle */
+
+.sidebar #logomark {
+	display: none;
+}
+
+.sidebar.collapsed #logomark {
+	display: flex;
+}
+
+.sidebar #combinationMark {
+	display: flex;
+}
+
+.sidebar.collapsed #combinationMark {
+	display: none;
+}
+
+.sidebar.collapsed .sidebar__logo-container {
+    padding: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: auto;
+}
+
+
+/* menu-item toggle */
+
+.sidebar.collapsed .sidebar__menu-container__itens .menu-item__text {
+    display: none;
+}
+
+.sidebar.collapsed .profile-info__container__text {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar {
+    width: auto;
+}
+
+.sidebar.collapsed .profile-info {
+    align-self: auto;
+}
+
+.sidebar.collapsed .sidebar__menu-container__itens {
+    align-self: auto;
+}
