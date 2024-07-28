@@ -45,6 +45,9 @@
     --Cosmic-Forest-100:				rgba(209, 250, 231, 1);
     --Cosmic-Forest-50:					rgba(236, 253, 245, 1); /* Lightest color */
 
+    --Cosmic-Forest-Gradient-Default:   linear-gradient(94deg, #0E0E10 70.02%, #059653 104.02%);
+    --Cosmic-Forest-Gradient-Expanded:  linear-gradient(103deg, #000 9.14%, #000 37.74%, rgba(5, 150, 83, 0.65) 90.86%);
+
 	/* NEPTUNE BLUE */
     --Neptune-Blue-950:					rgba(26, 34, 81, 1); /* Darkest color */
     --Neptune-Blue-900:					rgba(35, 52, 133, 1);
