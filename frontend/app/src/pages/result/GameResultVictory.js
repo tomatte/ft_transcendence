@@ -1,10 +1,11 @@
-const GameResultVictory = (player_left, player_right, description) => {
+const GameResultVictory = (player_left, player_right, description, type) => {
+    const title = type == "local" ? "END OF GAME" : "VICTORY" 
     const html = /* html */ `
     <div class="Game-result-semifinal">
     <div class="game-result__content">
         <div class="game-result__content__info">
             <div class="game-result__content__info__text">
-                <h1 class="game-result__content__info__text__result-semifinal">VICTORY</h1>
+                <h1 class="game-result__content__info__text__result-semifinal">${title}</h1>
                 <h5 class="game-result__content__info__text__status-semifinal">${description}</h5>
                 
             </div>
@@ -21,7 +22,7 @@ const GameResultVictory = (player_left, player_right, description) => {
                 <div class="game-result__content__info__brackets__score">
                     <h1 class="game-result__content__info__brackets__score__data">${player_left.points}</h1>
                     <h1 class="game-result__content__info__brackets__score__data">X</h1>
-                    <h1 class="game-result__content__info__brackets__score__data">${player_left.points}</h1>
+                    <h1 class="game-result__content__info__brackets__score__data">${player_right.points}</h1>
 
                 </div>
 

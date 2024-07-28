@@ -1,6 +1,6 @@
 import state from "../state/state.js"
 import { updateCoordinates } from "../game.js"
-import { showGameResult } from "../../pages/result/gameResults.js"
+import { showGameResult, showGameResultLocal } from "../../pages/result/gameResults.js"
 
 class MatchEventHandler {
     constructor (state) {
@@ -29,11 +29,16 @@ function coordinates(data, state) {
 }
 
 function randomMatchEnd(data, state) {
-    showGameResult(data, "random")
+    showGameResult(data, "random", "Random match")
+}
+
+function endLocalMatch(data, state) {
+    showGameResultLocal(data)
 }
 
 const matchEventHandler = new MatchEventHandler(state)
 matchEventHandler.register("coordinates", coordinates)
 matchEventHandler.register("random_match_end", randomMatchEnd)
+matchEventHandler.register("end_local_match", endLocalMatch)
 
 export default matchEventHandler
