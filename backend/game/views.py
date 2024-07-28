@@ -168,6 +168,7 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         }
         
         await self.send_json(payload)
+        await self.close(1000)
         
         if redis_client.hexists("global_matches", self.match_id):
             await create_match(MatchRedis(self.match_id))
@@ -600,6 +601,7 @@ class LocalMatchConsumer(MyAsyncWebsocketConsumer):
         MatchState.set(match["id"], match)
         
         await self.send_json({ "name": "start" })
+        await self.close(1000)
         
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("local_match", self.channel_name)
