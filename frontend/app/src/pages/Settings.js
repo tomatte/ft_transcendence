@@ -7,7 +7,7 @@ const Settings = () => {
         return;
     }
 
-    pageContentContainer.innerHTML = `
+    pageContentContainer.innerHTML = /*html*/ `
         <div class="page-content__container__header">
             <div class="page-content__container__header__info">
                 <h4 class="page-content__container__header__info__title">Settings</h4>
@@ -99,6 +99,19 @@ const Settings = () => {
                             </label>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="page-content__container__content__setting">
+                <div class="page-content__container__content__setting__info">
+                    <span class="page-content__container__content__setting__info__title font-body-medium-bold">Language</span>
+                    <span class="page-content__container__content__setting__info__description font-body-medium"> Swap between the available languages</span>
+                </div>
+                <div class="page-content__container__content__setting__control">
+
+
                 </div>
             </div>
         </div>
