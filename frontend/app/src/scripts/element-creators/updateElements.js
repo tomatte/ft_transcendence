@@ -90,3 +90,20 @@ export function showTournamentBracketFinal(data) {
     document.getElementById("tournament-bracket-final-left").innerHTML = finalBracketLeft
     document.getElementById("tournament-bracket-final-right").innerHTML = finalBracketRight
 }
+
+function removeResultStars() {
+    document.querySelector(".stars1").classList.remove("stars-result");
+    document.querySelector(".stars2").classList.remove("stars-result");
+}
+
+export function goBackHome() {
+    document.querySelector('.page-game-result__container').style.display = "none"
+    document.querySelector('.page-game__container').style.display = "none"
+    document.querySelector('.page-tournament__container').style.display = "none"
+    document.querySelector('.page-searching-match__container').style.display = "none"
+    document.querySelector(".sidebar").style.display = 'flex'
+    document.querySelector(".page-content").style.display = 'flex'
+    removeResultStars()
+    window.location.hash = "#Home"
+    state.renderPage()
+}
