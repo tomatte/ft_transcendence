@@ -1,5 +1,18 @@
+const goBackButton = /* html */ `
+    <div class="tournament-result__info__buttons">
+        <button class="button button--secondary">
+            <span class="button__text font-body-regular-bold">Go back to home</span>
+            <span class="material-icons-round button__icon-right">arrow_forward</span>
+        </button>
+    </div>
+`
+const goBackTitle = `<h6 class="game-result__content__info__redirect">You will be redirected to the brackets in 10 seconds...</h6>`
+
 const GameResultVictory = (player_left, player_right, description, type) => {
-    const title = type == "local" ? "END OF GAME" : "VICTORY" 
+    const title = type == "local" ? "END OF GAME" : "VICTORY"
+    
+    const goBackContent = type == "semifinal" ? goBackTitle : goBackButton
+
     const html = /* html */ `
     <div class="Game-result-semifinal">
     <div class="game-result__content">
@@ -37,7 +50,9 @@ const GameResultVictory = (player_left, player_right, description, type) => {
 
         </div>
         
-        <h6 class="game-result__content__info__redirect">You will be redirected to the brackets in 10 seconds...</h6>
+        <div>
+            ${goBackContent}
+        </div>
     </div>
     <div class="game-result__footer">
  
