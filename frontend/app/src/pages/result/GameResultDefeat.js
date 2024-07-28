@@ -1,17 +1,11 @@
-export function showStars() {
-    document.querySelector(".stars1").classList.add("stars-result");
-    document.querySelector(".stars2").classList.add("stars-result");
-    document.querySelector("body").classList.add("simple-body");
-}
-
-const GameResultDefeat = (player_left, player_right) => {
+const GameResultDefeat = (player_left, player_right, description) => {
     const html = /* html */ `
      <div class="Game-result-defeat">
         <div class="game-result__content">
             <div class="game-result__content__info">
                 <div class="game-result__content__info__text">
                     <h1 class="game-result__content__info__text__result">DEFEAT</h1>
-                    <h5 class="game-result__content__info__text__status">Tournament semifinal</h5>
+                    <h5 class="game-result__content__info__text__status">${description}</h5>
                     
                 </div>
                 <div class="game-result__content__info__brackets">
