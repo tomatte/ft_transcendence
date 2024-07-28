@@ -333,9 +333,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         player_left = OnlineState.get_user(match["player_left"]["username"])
         player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
         
         player_right = OnlineState.get_user(match["player_right"]["username"])
         player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
         
         await self.send_json({
             "name": "semifinal_end",
@@ -412,9 +414,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         player_left = OnlineState.get_user(match["player_left"]["username"])
         player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
         
         player_right = OnlineState.get_user(match["player_right"]["username"])
         player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
         
         await self.send_json({
             "name": "final_end",

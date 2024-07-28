@@ -7,10 +7,10 @@ import {
     addStartTournamentClickEvent,
     showTournamentPage,
     showGamePage,
-    showGameResult,
     showTournamentBracketFinal
 } from "../element-creators/updateElements.js"
 import websocketMatch from "./websocketMatch.js"
+import { showGameResult } from "../../pages/result/gameResults.js"
 
 
 class TournamentEventHandler {
@@ -86,7 +86,7 @@ const startMatch = (state) => {
 
 function semifinalEnd(data, state) {
     console.log({event: data})
-    showGameResult(data, false)
+    showGameResult(data, "semifinal", "Tournament Semi-final")
 }
 
 function bracketFinalMatch(data, state) {
@@ -96,7 +96,7 @@ function bracketFinalMatch(data, state) {
 
 function finalEnd(data, state) {
     console.log({event: data})
-    showGameResult(data, true)
+    showGameResult(data, "final", "")
 }
 
 const tournamentEventHandler = new TournamentEventHandler(state)

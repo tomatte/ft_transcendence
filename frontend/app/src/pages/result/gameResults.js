@@ -1,5 +1,7 @@
 import GameResultDefeat from "./GameResultDefeat.js";
 import GameResultVictory from "./GameResultVictory.js";
+import GameResultTournamentChampion from "./GameResultTournamentChampion.js";
+import GameResultTournamentSecond from "./GameResultTournamentSecond.js";
 import state from "../../scripts/state/state.js";
 
 function showStars() {
@@ -15,6 +17,14 @@ const resultPages = {
     "local": {
         "defeat": GameResultVictory,
         "victory": GameResultVictory
+    },
+    "semifinal": {
+        "defeat": GameResultDefeat,
+        "victory": GameResultVictory
+    },
+    "final": {
+        "defeat": GameResultTournamentSecond,
+        "victory": GameResultTournamentChampion
     }
 }
 
@@ -25,6 +35,9 @@ function getPageGameResult(data, type, description) {
     const { player_left, player_right } = data
     const me = player_left.username === state.user.username ? player_left : player_right
     const result = me.winner ? "victory" : "defeat"
+    if (type === "final") {
+        return resultPages[type][result](me)
+    }
     return resultPages[type][result](player_left, player_right, description, type)
 }
 
@@ -34,6 +47,7 @@ export function showGameResult(data, type, description) {
     container.innerHTML = html
     container.style.display = "block"
     document.querySelector('.page-game__container').style.display = "none"
+    document.querySelector('.page-tournament__container').style.display = "none"
     showStars()
 }
 

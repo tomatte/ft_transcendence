@@ -82,6 +82,8 @@ export function showTournamentBracketFinal(data) {
     const {leftBrackets, rightBrackets} = createBracketsSemi(data.players)
     const {finalBracketLeft, finalBracketRight} = createBracketsFinal(data.final.player_left, data.final.player_right)
 
+    document.querySelector('.page-game-result__container').style.display = "none"
+
     document.getElementById("tournament-bracket-semi-left").innerHTML = leftBrackets
     document.getElementById("tournament-bracket-semi-right").innerHTML = rightBrackets
 
