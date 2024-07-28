@@ -1210,7 +1210,6 @@ ul {
     text-align: right;
 }
 
-/* Estados do toggle */
 .toggle.Active.Enabled {
     background: var(--Neptune-Blue-600-base, #315BE3);
 }

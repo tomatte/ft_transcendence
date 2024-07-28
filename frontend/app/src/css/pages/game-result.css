@@ -1,4 +1,4 @@
-.Game-result-body{
+.Game-result-body {
     display: flex;
     width: 100%;
     height: 100%;
@@ -8,7 +8,7 @@
     background: linear-gradient(64deg, #000 0%, #000 38.5%, #E68B02 100%);
 }
 
-.tournament-result{
+.tournament-result {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +17,7 @@
     align-self: stretch;
 }
 
-.tournament-result__info{
+.tournament-result__info {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,7 +27,7 @@
     align-self: stretch;
 }
 
-.tournament-result__info__text{
+.tournament-result__info__text {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -35,7 +35,7 @@
     align-self: stretch;
 }
 
-.tournament-result__info__text__display{
+.tournament-result__info__text__display {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -44,7 +44,7 @@
     align-self: stretch;
 }
 
-.tournament-result__info__text__player{
+.tournament-result__info__text__player {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -52,7 +52,7 @@
     align-self: stretch;
 }
 
-.tournament-result__info__text__title{
+.tournament-result__info__text__title {
     align-self: stretch;
     background: linear-gradient(90deg, #E2A60C 0%, #D4470B 85%);
     background-clip: text;
@@ -60,10 +60,9 @@
     -webkit-text-fill-color: transparent;
 }
 
-.tournament-result__info__text__description{
+.tournament-result__info__text__description {
     align-self: stretch;
     color: #737993;
- 
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
@@ -71,7 +70,7 @@
 }
 
 
-.tournament-result__image{
+.tournament-result__image {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -79,7 +78,7 @@
     align-self: stretch;
 }
 
-.tournament-result__info__buttons{
+.tournament-result__info__buttons {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -88,7 +87,7 @@
     align-self: stretch;
 }
 
-.imageplayer-tournament{
+.imageplayer-tournament {
     display: flex;
     width: 48px;
     height: 48px;
@@ -97,7 +96,7 @@
     align-items: center;
 }
 
-.player-info{
+.player-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -105,7 +104,7 @@
     flex: 1 0 0;
 }
 
-.name_player_tournament{
+.name_player_tournament {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
@@ -118,10 +117,10 @@
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
-    line-height: 100%; /* 24px */
+    line-height: 100%;
 }
 
-.nick_player_tournament{
+.nick_player_tournament {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
@@ -134,18 +133,18 @@
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
-    line-height: 100%; /* 20px */
+    line-height: 100%;
 }
 
 
-.trophyImage{
+.trophyImage {
     width: 32rem;
     height: 32rem;
     z-index: 100;
 
- }
+}
 
-.Game-result-body-secound{
+.Game-result-body-secound {
     display: flex;
     width: 100%;
     height: 100%;
@@ -157,7 +156,7 @@
     background: linear-gradient(64deg, #000 0%, #000 38.5%, rgba(73, 73, 85, 0.65) 100%);
 }
 
-.tournament-result__info__text__title-secound{
+.tournament-result__info__text__title-secound {
     align-self: stretch;
        /* Heading/H1 */
     font-family: "Red Hat Display";
@@ -171,10 +170,7 @@
     -webkit-text-fill-color: transparent;
 }
 
-
-/* Game Result  */
-
-.Game-result-defeat{
+.Game-result-defeat {
     display: flex;
     width: 100%;
     height: 100%;
@@ -185,7 +181,7 @@
     background: linear-gradient(156deg, #B91313 -22.74%, #0B0501 37.71%, #000 98.16%);
 }
 
-.game-result__content{
+.game-result__content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -195,7 +191,7 @@
     align-self: stretch;
 }
 
-.game-result__content__info{
+.game-result__content__info {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -204,21 +200,21 @@
     align-self: stretch;
 }
 
-.game-result__content__info__text{
+.game-result__content__info__text {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
 }
 
-.game-result__content__info__brackets{
+.game-result__content__info__brackets {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 32px;
 }
 
-.game-result__footer{
+.game-result__footer {
     display: flex;
     padding-bottom: 64px;
     justify-content: center;
@@ -228,7 +224,7 @@
 
 }
 
-.game-result__content__info__redirect{
+.game-result__content__info__redirect {
     color: var(--Lunar-Dust-500, #737584);
 
     /* Heading/H6 */
@@ -236,17 +232,17 @@
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
-    line-height: 160%; /* 32px */
+    line-height: 160%;
 }
 
-.game-result__content__info__text__result{
+.game-result__content__info__text__result {
 
     /* Heading/H1 */
     font-family: "Red Hat Display";
     font-size: 48px;
     font-style: normal;
     font-weight: 700;
-    line-height: 120%; /* 57.6px */
+    line-height: 120%;
 
     background: linear-gradient(90deg, #CD2420 0%, #FF3A36 49.9%);
     background-clip: text;
@@ -255,14 +251,14 @@
 }
 
 
-.game-result__content__info__text__status{
+.game-result__content__info__text__status {
 
     /* Heading/H5 */
     font-family: "Red Hat Display";
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
-    line-height: 160%; /* 38.4px */
+    line-height: 160%;
 
     background: linear-gradient(90deg, #CD2420 0%, #FF3A36 49.9%);
     background-clip: text;
@@ -270,14 +266,14 @@
     -webkit-text-fill-color: transparent;
 }
 
-.game-result__content__info__brackets__score{
+.game-result__content__info__brackets__score {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 24px;
 }
 
-.game-result__content__info__brackets__score__data{
+.game-result__content__info__brackets__score__data {
     color: var(--Lunar-Dust-0, #FFF);
 
     /* Heading/H1 */
@@ -285,17 +281,17 @@
     font-size: 48px;
     font-style: normal;
     font-weight: 700;
-    line-height: 120%; /* 57.6px */
+    line-height: 120%;
 }
 
-.logo_result{
+.logo_result {
     display: flex;
     align-items: center;
     gap: 10.5px;
 }
  
 
-.Game-result-semifinal{
+.Game-result-semifinal {
     display: flex;
     width: 100%;
     height: 100%;
@@ -306,7 +302,7 @@
     background: linear-gradient(156deg, #1369B9 -22.74%, #0B0501 37.71%, #000 98.16%);
 }
 
-.game-result__content__info__text__result-semifinal{
+.game-result__content__info__text__result-semifinal {
 
     /* Heading/H1 */
     font-family: "Red Hat Display";
@@ -322,22 +318,21 @@
 }
 
 
-.game-result__content__info__text__status-semifinal{
+.game-result__content__info__text__status-semifinal {
 
-/* Heading/H5 */
-font-family: "Red Hat Display";
-font-size: 24px;
-font-style: normal;
-font-weight: 700;
-line-height: 160%; /* 38.4px */
+    /* Heading/H5 */
+    font-family: "Red Hat Display";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 160%; /* 38.4px */
 
-background: linear-gradient(90deg, #1369B9 0%, #60B2FF 100%);
-background-clip: text;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-
+    background: linear-gradient(90deg, #1369B9 0%, #60B2FF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.stars1, .stars2{
+.stars1, .stars2 {
 	z-index: 10;
 }

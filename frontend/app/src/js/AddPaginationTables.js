@@ -4,6 +4,12 @@ const AddPaginationTables = (currentPageData) => {
 	const { rank_list, currentPage, itemsPerPage } = currentPageData;
 	const totalItems = rank_list.length;
 
+	if (totalItems === 0) {
+        // Handle no items case
+        addPaginationOnTable('');
+        return;
+    }
+
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
 	let paginationHtml = generatePreviosAndLastButton(currentPage);
 	paginationHtml += generateNumbersPagination(totalPages, currentPage);
@@ -31,13 +37,13 @@ const generatePreviosAndLastButton = (currentPage) => {
 	const isDisabledClass = currentPage === 1 ? 'pagination__control--disabled' : '';
 
 	return `
-		<li class="pagination__control ${isDisabledClass}}">
+		<li class="pagination__control ${isDisabledClass}">
 			<a href="#" data-page="1">
 				<span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_double_arrow_left</span>
 				<span class="pagination__control__text">First</span>
 			</a>
 		</li>
-		<li class="pagination__control ${isDisabledClass}}">
+		<li class="pagination__control ${isDisabledClass}">
 			<a href="#" data-page="${currentPage - 1}">
 				<span class="material-icons-round pagination__control__icon-left icon--medium">keyboard_arrow_left</span>
 				<span class="pagination__control__text">Previous</span>
