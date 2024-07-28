@@ -17,17 +17,16 @@
 .modal {
     display: none;
     position: fixed;
+    z-index: 2; /* Higher z-index than overlay */
+    top: 50%;
+    left: 50%;
     height: 85%;
     width: 83%;
-    z-index: 2; /* Higher z-index than overlay */
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%) scale(0.5); /* Initial state for closed modal */
     overflow: auto;
     padding: 32px;
     flex-direction: column;
     align-items: flex-start;
-    flex-shrink: 0;
     border-radius: 32px;
     border: 1px solid var(--Lunar-Dust-900);
     background: var(--Lunar-Dust-950);
@@ -284,11 +283,7 @@
 }
 
 .modal--add-friend {
-    display: flex;
-    padding: 32px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+
     transform: translate(-50%, -50%) scale(1);
 }
 

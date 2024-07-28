@@ -1,16 +1,3 @@
-// Alternar música de fundo
-function toggleBackgroundMusic() {
-    var audio = document.getElementById('backgroundMusic');
-    if (audio) {
-        if (audio.paused) {
-            audio.play();
-            localStorage.setItem('backgroundMusicPlaying', 'true');
-        } else {
-            audio.pause();
-            localStorage.setItem('backgroundMusicPlaying', 'false');
-        }
-    }
-}
 
 const Settings = () => {
     const pageContentContainer = document.querySelector('.page-content__container');
@@ -39,7 +26,7 @@ const Settings = () => {
                     <div class="profile-picture">
                         <img class="profile-picture__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
                         <form id="uploadForm" action="/upload_photo_endpoint" method="post" enctype="multipart/form-data" style="display: none;">
-                            <input type="file" id="photoFile" name="photo" accept=".png, .jpg, .jpeg">
+                            <input type="file" id="photoFile" name="photo" accept=".png, .jpg, .jpeg" title="Choose a profile photo">
                         </form>
                         <button id="updatePhotoBtn" class="button button--outline" onclick="document.getElementById('photoFile').click();">
                             <span class="button__text font-body-regular-bold">Update photo</span>
@@ -95,7 +82,7 @@ const Settings = () => {
                     <div class="sound-toggle">
                         <span class="sound__type font-body-medium">Music</span>
                         <div class="toggle Active Enabled">
-                            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-1" checked>
+                            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-1" checked aria-label="Enable Background Music">
                             <label for="toggle-checkbox-1" class="toggle-label">
                                 <span class="toggle-inner"></span>
                                 <span class="toggle-switch"></span>
@@ -105,7 +92,7 @@ const Settings = () => {
                     <div class="sound-toggle">
                         <span class="sound__type font-body-medium">Sound effects</span>
                         <div class="toggle Active Enabled">
-                            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-2" checked>
+                            <input type="checkbox" class="toggle-checkbox" id="toggle-checkbox-2" checked aria-label="Enable Sound Effects">
                             <label for="toggle-checkbox-2" class="toggle-label">
                                 <span class="toggle-inner"></span>
                                 <span class="toggle-switch"></span>
@@ -133,8 +120,8 @@ const Settings = () => {
                     var audio = document.getElementById('backgroundMusic');
                     if (audio.paused) {
                         audio.play();
-                        localStorage.setItem('backgroundMusicPlaying', 'true');
                     }
+                    localStorage.setItem('backgroundMusicPlaying', 'true');
                 }
 
                 // Alternar som se o checkbox de som estiver alterado
@@ -150,8 +137,8 @@ const Settings = () => {
                     var audio = document.getElementById('backgroundMusic');
                     if (!audio.paused) {
                         audio.pause();
-                        localStorage.setItem('backgroundMusicPlaying', 'false');
                     }
+                    localStorage.setItem('backgroundMusicPlaying', 'false');
                 }
 
                 // Alternar som se o checkbox de som estiver alterado
@@ -161,7 +148,7 @@ const Settings = () => {
             }
         });
 
-        // Estado inicial com base no estado do checkbox
+        // Set initial appearance of toggles based on checked state
         const toggle = checkbox.closest('.toggle');
         if (checkbox.checked) {
             toggle.classList.add('Active');

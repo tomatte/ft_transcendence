@@ -128,22 +128,20 @@ const Home = (state) => {
             </table>
         </div>
  
- 
-
-
-<div class="modal modal--invite-to-tournament" id="modalFriendlyMatch">
-                    <div class="modal__header">
-                        <div class="modal__header__title">
-                            <h4 class="modal__header__title__text">Friendly Match</h4>
-                            <button onclick="closeModal('modalFriendlyMatch')" class="button">
-                                <span class="material-icons-round modal__header__title__close icon--regular">close</span>
-                            </button>
-                        </div>
-
-                <div class="search-bar">
-                    <span class="material-icons-round search-bar__icon icon--regular">search</span>
-                    <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+        
+        <div class="modal modal--invite-to-tournament" id="modalFriendlyMatch">
+            <div class="modal__header">
+                <div class="modal__header__title">
+                    <h4 class="modal__header__title__text">Friendly Match</h4>
+                    <button onclick="closeModal('modalFriendlyMatch')" class="button">
+                        <span class="material-icons-round modal__header__title__close icon--regular">close</span>
+                    </button>
                 </div>
+
+        <div class="search-bar">
+            <span class="material-icons-round search-bar__icon icon--regular">search</span>
+            <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+        </div>
 
            <table class="modal__table__header-add_friend"> 
  
