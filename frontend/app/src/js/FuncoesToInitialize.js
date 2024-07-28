@@ -18,6 +18,13 @@ const getCookie = (name) => {
 }
 
 
+async function logout() {
+	document.cookie = 'sessionid=; expires=Thu, csrftoken=; 01 Jan 1970 00:00:00 UTC; path=/;';
+	fetch('https://localhost/api/users/logout', { method: 'GET', credentials: 'include' });
+	window.location.href = 'https://localhost/';
+}
+
+
 const filterUsers = () => {
 	const searchInput = document.getElementById('search__add__friend').value;
 
@@ -48,19 +55,22 @@ const fetchAddFriend = async (username) => {
 
 
 const fetchDeleteFriend = async (username) => {
-	const csrftoken = getCookie('csrftoken');
-	const response = await fetch('https://localhost:443/api/users/remove/friend', {
-		method: 'DELETE',
-		credentials: 'include',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-CSRFToken': csrftoken
-		},
-		body: JSON.stringify({ username: username })
+	document.getElementById('div_to_modal_delete').innerHTML = generatoModalToDelete();
+	document.getElementById('accepted-delete').addEventListener('click', async () => {
+		const csrftoken = getCookie('csrftoken');
+		const response = await fetch('https://localhost:443/api/users/remove/friend', {
+			method: 'DELETE',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrftoken
+			},
+			body: JSON.stringify({ username: username })
+		});
 	});
-	if (response.status != 200) throw new Error('Failed to delete friend');
-	return await response.json();
+	openModal('modalRemoveFriend')
 }
+
 
 const generateListOfUsersToAdd = (usersList) => {
 	return usersList.reduce((acc, user, index) => {
@@ -105,5 +115,32 @@ const openModalToAdd = async () => {
 
 	modalBody.innerHTML = `
 		<div class="spinner"></div>
+	`
+}
+
+
+const generatoModalToDelete = () => {
+	return `
+		<div class="modal modal--remove-friend" id="modalRemoveFriend">
+			<div class="modal__header">
+				<div class="modal__header__title">
+					<div class="modal__header__title__text">
+						<h4>Remove friend</h4>
+					</div>
+					<span onclick="closeModal('modalRemoveFriend')" class="material-icons-round modal__header__title__close icon--regular">close</span>
+				</div>
+				<span class="modal__header__description font-body-medium">
+					Are you sure you want to remove this player as a friend? You can always send another request to the player, whenever you want.
+				</span>
+			</div>
+			<div class="modal__actions">
+				<button onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
+					<span class="button__text font-body-regular-bold">No, cancel</span>
+				</button>
+				<button class="button button--danger" id="accepted-delete">
+					<span class="button__text font-body-regular-bold">Yes, remove friend</span>
+				</button>
+			</div>
+		</div>
 	`
 }

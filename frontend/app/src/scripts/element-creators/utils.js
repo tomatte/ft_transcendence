@@ -41,3 +41,17 @@ export function listenTestKeys() {
     })
     listenForKeyPress("5", () => showGamePage())
 }
+
+export function listenButtonClick(parent, btnId, callback) {
+    parent.addEventListener('click', function(event) {
+        let targetElement = event.target;
+        while (targetElement != null && targetElement !== this) {
+            if (targetElement.id === btnId) {
+                console.log(`${btnId} clicked`);
+                callback()
+                break;
+            }
+            targetElement = targetElement.parentNode;
+        }
+    });
+}

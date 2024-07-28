@@ -1,11 +1,14 @@
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
 from users.models import User, Friendship
-from tournament.views import get_tournament, create_Bracket
 from tournament.models import Match, MatchPlayer
 from statistics import mean
 import json
 from django.db.models import Prefetch
+from django.contrib.auth import logout as _logout
+from django.shortcuts import redirect
+
+
+
 
 ################################################################################
 # 							Auxiliaries
@@ -248,6 +251,9 @@ class ManipulateUser:
 				"my_score": me.score,
 				"winner": me.winner,
 				"opponent_score": other.score,
+				"opponent_username": other.user.username,
+				"opponent_nickname": other.user.nickname,
+				"opponent_avatar": other.user.avatar.name,
 				"date": _match.create_at.strftime('%d/%m/%y'),
 			})
 		return data
@@ -554,3 +560,19 @@ def historic(request):
 		return JsonResponse({"msg": {}}, status=200)
 	except MatchPlayer.DoesNotExist as e:
 		return JsonResponse({"msg": {}}, status=200)
+
+
+def logout(request):
+	try:
+		_logout(request)
+		response = redirect('/')
+		response.delete_cookie('sessionid')
+		response.delete_cookie('csrftoken')
+		response.delete_cookie('username')
+		response.delete_cookie('nickname')
+		response.delete_cookie('avatar')
+		return response
+	except ExceptionMethodNotAllowed as e:
+		return JsonResponse({'msg': str(e)}, status=405)
+	except Exception as e:
+		return JsonResponse({'msg': str(e)}, status=400)

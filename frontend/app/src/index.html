@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="css/pages/ranking.css">
     <link rel="stylesheet" href="css/pages/statistics.css">
 	<link rel="stylesheet" href="css/pages/tournament.css">
+	<link rel="stylesheet" href="css/pages/searching-match.css">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,7 +95,7 @@
 				</ul>
 				<ul class="sidebar__menu-container__itens__down">
 					<li class="menu-item">
-						<a href="#">
+						<a onclick="logout()">
 							<span class="material-icons-round menu-item__icon icon--regular">logout</span>
 							<span class="menu-item__text font-body-regular-bold">Logout</span>
 						</a>
@@ -117,12 +118,15 @@
 		</div>
 	</div>
 
-	<div class="page-game__container"></div>
-	<div class="page-tournament__container"></div>
+	<div class="page-game__container" style="display: none;"></div>
+	<div class="page-tournament__container" style="display: none;"></div>
+
+	<div class="page-searching-match__container" style="display: none;" ></div>
 
 	<audio id="backgroundMusic" src="assets/audios/perfect-beauty-191271.mp3" loop>
 		Your browser does not support the audio element.
 	</audio>
+
 </body>
 </html>
 

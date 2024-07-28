@@ -1,4 +1,4 @@
-import { playerMove } from "./websockets/websocketActions.js"
+import { playerMove, player2Move } from "./websockets/websocketActions.js"
 
 function setPlayerLeft(y) {
     const player = document.getElementById("player_left")
@@ -75,4 +75,31 @@ export function listenMoves() {
             playerMove("stop");
         }
     });
-} 
+}
+
+async function handlePlayer2KeyDown(event) {
+    console.log("handlePlayer2KeyDown")
+    if (event.key === 'w') {
+        player2Move('up');
+    } else if (event.key === 's') {
+        player2Move('down');
+    }
+}
+
+async function handlePlayer2KeyUp(event) {
+    console.log("handlePlayer2KeyUp")
+    if (event.key == 'w' || event.key == 's') {
+        player2Move("stop");
+    }
+}
+
+export function listenPlayer2Moves() {
+    document.addEventListener('keydown', handlePlayer2KeyDown);
+    document.addEventListener('keyup', handlePlayer2KeyUp);
+}
+
+/* TODO: call this function in end of local match event*/
+export function removePlayer2MovesListeners() {
+    document.removeEventListener('keydown', handlePlayer2KeyDown);
+    document.removeEventListener('keyup', handlePlayer2KeyUp);
+}

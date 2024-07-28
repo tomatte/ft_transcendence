@@ -75,6 +75,8 @@ services:
     environment:
       - BACKEND_HOST=backend
       - BACKEND_PORT=${BACKEND_PORT}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_HOST=redis
     networks:
       - trans
     depends_on:
