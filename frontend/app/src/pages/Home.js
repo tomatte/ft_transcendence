@@ -37,22 +37,22 @@ const Home = (state) => {
                 </div>
             </div>
             <div class="game-mode-banner__illustration">
-                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/trophy.png" alt="An illustration of a Trophy">
+                <img class="game-mode-banner__illustration__image" src="../../assets/images/banners/tournament.png" alt="An illustration of a Trophy">
             </div>
         </div>
 
-        <div class="game-mode-banner game-mode-banner--play-randomly">
+        <div class="game-mode-banner game-mode-banner--local-match">
             <div class="game-mode-banner__info">
-                <div class="game-mode-banner__info__title">1V1 MATCH</div>
+                <div class="game-mode-banner__info__title">LOCAL MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button id="button-play-random-match" class="button button--secondary">
-                        <span class="material-icons-round button__icon-left">shuffle</span>
-                        <span class="button__text font-body-regular-bold">Play randomly</span>
+                    <button id="button-play-local-match" class="button button--secondary">
+                        <span class="material-icons-round button__icon-left">computer</span>
+                        <span class="button__text font-body-regular-bold">Play locally</span>
                     </button>
                 </div>
             </div>
             <div class="game-mode-banner__illustration">
-                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/medal.png" alt="An illustration of a medal">
+                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/local-match.png" alt="An illustration of a medal">
             </div>
         </div>
 
@@ -60,33 +60,33 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">FRIENDLY MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button onclick="openModal('modalFriendlyMatch')" class="button button--primary">
+                    <button onclick="openModal('modalFriendlyMatch')" class="button button--success">
                         <span class="material-icons-round button__icon-left">sports_esports</span>
                         <span class="button__text font-body-regular-bold">Play with a friend</span>
                     </button>
                 </div>
             </div>
             <div class="game-mode-banner__illustration">
-                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/flag.png" alt="An illustration of a flag">
+                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/friendly-match.png" alt="An illustration of a hashtag">
             </div>
         </div>
+ 
 
-        <div class="game-mode-banner game-mode-banner--play-randomly">
+        <div class="game-mode-banner game-mode-banner--random-match">
             <div class="game-mode-banner__info">
-                <div class="game-mode-banner__info__title">LOCAL MATCH</div>
+                <div class="game-mode-banner__info__title">RANDOM MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button id="button-play-local-match" class="button button--secondary">
+                    <button id="button-play-random-match" class="button button--primary">
                         <span class="material-icons-round button__icon-left">shuffle</span>
-                        <span class="button__text font-body-regular-bold">Play Local Game</span>
+                        <span class="button__text font-body-regular-bold">Play randomly</span>
                     </button>
                 </div>
             </div>
             <div class="game-mode-banner__illustration">
-                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/medal.png" alt="An illustration of a medal">
+                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/random-match.png" alt="An illustration of a medal">
             </div>
         </div>
 
- 
         <div class="modal modal--invite-to-tournament" id="modalInviteToTournament">
                     <div class="modal__header">
                         <div class="modal__header__title">
@@ -128,22 +128,20 @@ const Home = (state) => {
             </table>
         </div>
  
- 
-
-
-<div class="modal modal--invite-to-tournament" id="modalFriendlyMatch">
-                    <div class="modal__header">
-                        <div class="modal__header__title">
-                            <h4 class="modal__header__title__text">Friendly Match</h4>
-                            <button onclick="closeModal('modalFriendlyMatch')" class="button">
-                                <span class="material-icons-round modal__header__title__close icon--regular">close</span>
-                            </button>
-                        </div>
-
-                <div class="search-bar">
-                    <span class="material-icons-round search-bar__icon icon--regular">search</span>
-                    <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+        
+        <div class="modal modal--invite-to-tournament" id="modalFriendlyMatch">
+            <div class="modal__header">
+                <div class="modal__header__title">
+                    <h4 class="modal__header__title__text">Friendly Match</h4>
+                    <button onclick="closeModal('modalFriendlyMatch')" class="button">
+                        <span class="material-icons-round modal__header__title__close icon--regular">close</span>
+                    </button>
                 </div>
+
+        <div class="search-bar">
+            <span class="material-icons-round search-bar__icon icon--regular">search</span>
+            <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
+        </div>
 
            <table class="modal__table__header-add_friend"> 
  

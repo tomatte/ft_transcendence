@@ -1,5 +1,15 @@
 import { createBracketsSemi, createBracketsFinal } from "../scripts/element-creators/createTournamentBrackets.js";
 import state from "../scripts/state/state.js";
+import { goBackHome } from "../scripts/element-creators/updateElements.js";
+import websocketTournament from "../scripts/websockets/websocketTournament.js";
+
+export function addLeaveTournamentEventListener() {
+    const btn = document.getElementById("button-leave-tournament")
+    btn.addEventListener('click', () => {
+        goBackHome()
+        websocketTournament.client.close()
+    })
+}
 
 const Tournament = () => {
     const {leftBrackets, rightBrackets} = createBracketsSemi(state.tournament.players)
@@ -10,7 +20,7 @@ const Tournament = () => {
         <div class="bracket__header">  
             <button class="button button--secondary">
                 <span class="material-icons-round button__icon-left">arrow_back</span>
-                <span class="button__text font-body-regular-bold"> Leave tournament</span>
+                <span id="button-leave-tournament" class="button__text font-body-regular-bold"> Leave tournament</span>
                  
             </button>
             <button id="button-start-tournament" class="button button--tertiary">

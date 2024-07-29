@@ -123,6 +123,6 @@ html, body
     gap: 8px;
 }
 
-.playground-container--modal-confirmation-remove-friend{
+.playground-container--modal-confirmation-remove-friend {
     flex-direction: row;
 }

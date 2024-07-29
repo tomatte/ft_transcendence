@@ -162,25 +162,36 @@ ul {
     background: var(--Solar-Flare-Gradient-Expanded);
 }
 
-.game-mode-banner--play-randomly
+.game-mode-banner--local-match
 {
     background: var(--Lunar-Dust-Gradient-Default);
 }
 
-.game-mode-banner--play-randomly:hover
+.game-mode-banner--local-match:hover
 {
     background: var(--Lunar-Dust-Gradient-Expanded);
 }
 
-.game-mode-banner--friendly-match
+.game-mode-banner--random-match
 {
     background: var(--Neptune-Blue-Gradient-Default);
 }
 
-.game-mode-banner--friendly-match:hover
+.game-mode-banner--random-match:hover
 {
     background: var(--Neptune-Blue-Gradient-Expanded);
 }
+
+.game-mode-banner--friendly-match
+{
+    background: var(--Cosmic-Forest-Gradient-Default);
+}
+
+.game-mode-banner--friendly-match:hover
+{
+    background: var(--Cosmic-Forest-Gradient-Expanded);
+}
+
 
 .game-mode-banner {
     width: 100%;
@@ -1195,17 +1206,14 @@ ul {
     display: none;
 }
 
-/* Estados do toggle */
+.text-align-action {
+    text-align: right;
+}
+
 .toggle.Active.Enabled {
     background: var(--Neptune-Blue-600-base, #315BE3);
 }
 
 .toggle.Default.Enabled {
     background: var(--Lunar-Dust-600, #5D5E6C);
-}
-
-
-.text-align-action{
-    text-align: right;
-
 }
