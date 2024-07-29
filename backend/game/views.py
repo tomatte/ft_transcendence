@@ -253,10 +253,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         print(f"***{self.user.username} disconnected from tournament***")
         if not hasattr(self, "tournament_id") or not hasattr(self, "user"):
             return
-        UserState.set_value(self.user.username, "tournament_channel", "")
-        tournament = TournamentState.get(self.tournament_id)
-        if tournament == None or tournament["status"] != "started":
-            UserState.set_value(self.user.username, "tournament_id", "")
+        await self.tournament_state.exit()
         await self.channel_layer.group_discard(self.tournament_id, self.channel_name)
         
     async def reconnect(self, tournament_id):

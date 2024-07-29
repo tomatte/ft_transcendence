@@ -6,18 +6,24 @@ from channels.layers import get_channel_layer
 from backend.utils import OnlineState
 import random
 from .match_state import MatchState
+from backend.utils import UserState
 
 global_tournament_name = 'global_tournament'
 
 class ExitTournament:
     def __init__(self, parent: 'TournamentState') -> None:
         self.parent = parent
+        self.user = parent.user
+        self.channel_layer = self.parent.channel_layer
+        self.tournament_id = parent.tournament_id
         self.actions = {
             'creating': self.exit_creating,
         }
     
     async def exit(self):
         data = redis.get_map(global_tournament_name, self.parent.tournament_id)
+        if data != None and data["status"] == "started":
+            return
         if data != None:
             await self.actions[data['status']](data)
         
@@ -42,14 +48,17 @@ class ExitTournament:
         )
     
     async def exit_player(self, data):
-        pass
-    
+        data = self.parent.get(self.parent.tournament_id)
+        data["players"].remove(self.user.username)
+        self.parent.set_value("players", data["players"])
+        await self.channel_layer.group_send(self.tournament_id, {
+            "type": "tournament.update_players",
+            "players": self.parent.get_players(self.tournament_id)
+        })
+
     async def exit_user_state(self):
-        exists = redis.hexists(self.parent.user.username, 'tournament_id')
-        if exists == False:
-            return
-        
-        redis.hdel(self.parent.user.username, 'tournament_id')
+        UserState.set_value(self.user.username, "tournament_id", "")
+        UserState.set_value(self.user.username, "tournament_channel", "")
 
 class TournamentState:
     @classmethod
