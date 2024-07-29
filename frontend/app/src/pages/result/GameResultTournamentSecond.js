@@ -19,7 +19,7 @@ const GameResultTournamentSecond = (player) => {
                 </div>
     
                 <div class="tournament-result__info__buttons">
-                    <button class="button button--secondary">
+                    <button id="button-go-back-home" class="button button--secondary">
                         <span class="button__text font-body-regular-bold">Go back to home</span>
                         <span class="material-icons-round button__icon-right">arrow_forward</span>
                     </button>

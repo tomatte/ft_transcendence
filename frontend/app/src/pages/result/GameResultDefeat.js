@@ -1,4 +1,14 @@
-const GameResultDefeat = (player_left, player_right, description) => {
+const goBackButton = /* html */ `
+        <button id="button-go-back-home" class="button button--secondary">
+            <span class="button__text font-body-regular-bold">Go back to home</span>
+            <span class="material-icons-round button__icon-right">arrow_forward</span>
+        </button>
+`
+const redirectMessage = `<h6 class="game-result__content__info__redirect">You will be redirected to the brackets in 10 seconds...</h6>`
+
+const GameResultDefeat = (player_left, player_right, description, type) => {
+    const goBackContent = type == "semifinal" ? redirectMessage : goBackButton
+
     const html = /* html */ `
      <div class="Game-result-defeat">
         <div class="game-result__content">
@@ -37,10 +47,7 @@ const GameResultDefeat = (player_left, player_right, description) => {
             </div>
             
             <div>
-                <button class="button button--secondary">
-                    <span class="button__text font-body-regular-bold">Go back to home</span>
-                    <span class="material-icons-round button__icon-right">arrow_forward</span>
-                </button>
+                ${goBackContent}
             </div>
         </div>
         <div class="game-result__footer">

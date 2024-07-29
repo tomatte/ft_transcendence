@@ -58,3 +58,8 @@ export function listenButtonClick(parent, btnId, callback) {
         }
     });
 }
+
+export function addGoBackHomeButtonEventListener() {
+    const parent = document.querySelector(".page-game-result__container")
+    listenButtonClick(parent, "button-go-back-home", goBackHome)
+}
