@@ -375,7 +375,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "player_right": player_right
         })
         
-        Task.send(self.channel_name, {"type": "tournament.bracket_final"}, 5)
+        Task.send_tournament(self.user.username, {"type": "tournament.bracket_final"}, 5)
         
     async def tournament_bracket_final(self, event):
         print(f"EVENT {self.user.username} tournament_bracket_final()")
