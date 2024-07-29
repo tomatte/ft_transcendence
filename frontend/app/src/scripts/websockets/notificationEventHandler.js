@@ -2,6 +2,7 @@ import state from "../state/state.js"
 import { updateOnlinePlayersTournament } from "../element-creators/updateElements.js"
 import { showGamePage } from "../element-creators/updateElements.js"
 import websocketMatch from "./websocketMatch.js"
+import websocketTournament from "./websocketTournament.js"
 
 class NotificationEventHandler {
     constructor (state) {
@@ -59,6 +60,10 @@ function enterRunningMatch() {
     showGamePage()
 }
 
+function enterRunningTournament() {
+    websocketTournament.listen()
+}
+
 const notificationEventHandler = new NotificationEventHandler(state)
 
 notificationEventHandler.register("new_connection", newConnection)
@@ -66,5 +71,6 @@ notificationEventHandler.register("new_notification", newNotification)
 notificationEventHandler.register("update_online_players", updateOnlinePlayers)
 notificationEventHandler.register('tournament_invitation', tournamentInvitation)
 notificationEventHandler.register("enter_running_match", enterRunningMatch)
+notificationEventHandler.register("enter_running_tournament", enterRunningTournament)
 
 export default notificationEventHandler

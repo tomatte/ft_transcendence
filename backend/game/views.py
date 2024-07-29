@@ -226,7 +226,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         UserState.set_value(self.user.username, "tournament_channel", self.channel_name)
         
-        await self.send_json({ 'name': 'connected' })
+        tournament_id = redis_client.get_map_str(self.user.username, "tournament_id")
+        if tournament_id != None and tournament_id != "":
+            await self.reconnect(tournament_id)
+        else: 
+            await self.send_json({ 'name': 'connected' })
 
     async def receive(self, text_data):
         print(text_data)
@@ -250,8 +254,26 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         if not hasattr(self, "tournament_id") or not hasattr(self, "user"):
             return
         UserState.set_value(self.user.username, "tournament_channel", "")
-        UserState.set_value(self.user.username, "tournament_id", "")
+        tournament = TournamentState.get(self.tournament_id)
+        if tournament == None or tournament["status"] != "started":
+            UserState.set_value(self.user.username, "tournament_id", "")
         await self.channel_layer.group_discard(self.tournament_id, self.channel_name)
+        
+    async def reconnect(self, tournament_id):
+        if TournamentState.get(tournament_id) == None:
+            redis_client.set_map_str(self.user.username, "tournament_id", "")
+            await self.send_json({ 'name': 'connected' })
+            return
+        
+        self.tournament_id = tournament_id
+        self.tournament_state.tournament_id = tournament_id
+        redis_client.set_map_str(self.user.username, "tournament_channel", self.channel_name)
+        await self.channel_layer.group_add(self.tournament_id, self.channel_name)
+        await self.send_json({
+            'name': 'reconnected',
+            'tournament_id': self.tournament_id,
+            'players': TournamentState.get_players(self.tournament_id)
+        })
         
     async def create_tournament(self, data):
         self.tournament_id = self.tournament_state.create()
@@ -463,6 +485,7 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         await self.send_json(payload)
         
         await self.enter_running_match()
+        await self.enter_running_tournament()
 
     async def receive(self, text_data):
         print(f"{self.user.username} received a notification:")
@@ -496,12 +519,20 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         if match_id == None or match_id == "":
             return
         
-        match = MatchState.get(match_id)
-        if match["phase"] != "running":
-            UserState.set_value(self.user.username, "match_id", "")
+        await self.send_json({"name": "enter_running_match"})
+        
+    async def enter_running_tournament(self):
+        tournament_id = redis_client.get_map_str(self.user.username, "tournament_id")
+        if tournament_id == None or tournament_id == "":
             return
         
-        await self.send_json({"name": "enter_running_match"})
+        tournament = TournamentState.get(tournament_id)
+        if tournament == None:
+            UserState.set_value(self.user.username, "tournament_id", "")
+            UserState.set_value(self.user.username, "tournament_channel", "")
+            return
+        
+        await self.send_json({"name": "enter_running_tournament"})
         
     async def tournament_invitation(self, event):
         print(f"{self.user.username} received a tournament invitation")

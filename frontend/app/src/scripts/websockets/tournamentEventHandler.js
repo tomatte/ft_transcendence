@@ -99,6 +99,14 @@ function finalEnd(data, state) {
     showGameResult(data, "final", "")
 }
 
+function reconnected(data) {
+    state.tournament = {
+        id: data.tournament_id,
+        players: data.players,
+        action: ""
+    }
+}
+
 const tournamentEventHandler = new TournamentEventHandler(state)
 tournamentEventHandler.register('enter_tournament', enterTournament)
 tournamentEventHandler.register('connected', connectedTournament)
@@ -108,5 +116,6 @@ tournamentEventHandler.register('start_match', startMatch)
 tournamentEventHandler.register('semifinal_end', semifinalEnd)
 tournamentEventHandler.register('bracket_final_match', bracketFinalMatch)
 tournamentEventHandler.register('final_end', finalEnd)
+tournamentEventHandler.register('reconnected', reconnected)
 
 export default tournamentEventHandler
