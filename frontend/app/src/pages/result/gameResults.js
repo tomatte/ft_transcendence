@@ -3,6 +3,7 @@ import GameResultVictory from "./GameResultVictory.js";
 import GameResultTournamentChampion from "./GameResultTournamentChampion.js";
 import GameResultTournamentSecond from "./GameResultTournamentSecond.js";
 import state from "../../scripts/state/state.js";
+import { hideContents } from "../../scripts/element-creators/utils.js";
 
 function showStars() {
     document.querySelector(".stars1").classList.add("stars-result");
@@ -42,6 +43,7 @@ function getPageGameResult(data, type, description) {
 }
 
 export function showGameResult(data, type, description) {
+    hideContents()
     const html = getPageGameResult(data, type, description)
     const container  = document.querySelector('.page-game-result__container')
     container.innerHTML = html

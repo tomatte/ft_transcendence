@@ -260,7 +260,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.group_discard(self.tournament_id, self.channel_name)
         
     async def reconnect(self, tournament_id):
-        if TournamentState.get(tournament_id) == None:
+        tournament = TournamentState.get(tournament_id)
+        if tournament == None:
             redis_client.set_map_str(self.user.username, "tournament_id", "")
             await self.send_json({ 'name': 'connected' })
             return
@@ -269,11 +270,16 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.tournament_state.tournament_id = tournament_id
         redis_client.set_map_str(self.user.username, "tournament_channel", self.channel_name)
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
+        
         await self.send_json({
             'name': 'reconnected',
             'tournament_id': self.tournament_id,
             'players': TournamentState.get_players(self.tournament_id)
         })
+        
+        if "stage" in tournament and tournament["stage"] == "semifinal_result":
+            match = TournamentState.get_match_by_tournament(self.tournament_id, self.user.username)
+            await self.send_tournament_semifinal_end_result(match)
         
     async def create_tournament(self, data):
         self.tournament_id = self.tournament_state.create()
@@ -357,10 +363,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     async def tournament_cancel(self, event):
         print("EVENT tournament_cancel()")
         
-    async def tournament_semifinal_end(self, event):
-        print(f"EVENT {self.user.username} tournament_semifinal_end()")
-        match = MatchState.get(event["match_id"])
-        
+    async def send_tournament_semifinal_end_result(self, match):
         player_left = OnlineState.get_user(match["player_left"]["username"])
         player_left["points"] = match["player_left"]["points"]
         player_left["winner"] = match["player_left"]["winner"]
@@ -375,10 +378,20 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "player_right": player_right
         })
         
+    async def tournament_semifinal_end(self, event):
+        print(f"EVENT {self.user.username} tournament_semifinal_end()")
+        match = MatchState.get(event["match_id"])
+        
+        await self.send_tournament_semifinal_end_result(match)
+        
+        self.tournament_state.set_value("stage", "semifinal_result")
+        
         Task.send_tournament(self.user.username, {"type": "tournament.bracket_final"}, 5)
         
     async def tournament_bracket_final(self, event):
         print(f"EVENT {self.user.username} tournament_bracket_final()")
+        
+        self.tournament_state.set_value("stage", "")
         
         matches = TournamentState.get_value(self.tournament_id, "semi_finals")
         match1 = MatchState.get(matches[0])

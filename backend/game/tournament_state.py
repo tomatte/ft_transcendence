@@ -5,6 +5,7 @@ from enum import Enum
 from channels.layers import get_channel_layer
 from backend.utils import OnlineState
 import random
+from .match_state import MatchState
 
 global_tournament_name = 'global_tournament'
 
@@ -49,9 +50,23 @@ class ExitTournament:
             return
         
         redis.hdel(self.parent.user.username, 'tournament_id')
-    
 
 class TournamentState:
+    @classmethod
+    def get_match_by_tournament(cls, tournament_id, username):
+        print("lets go")
+        tournament = TournamentState.get(tournament_id)
+        match = MatchState.get(tournament["semi_finals"][0])
+        
+        is_user_in_match = (
+            username == match["player_left"]["username"]
+            or username == match["player_right"]["username"]
+        )
+        
+        if is_user_in_match:
+            return match
+        return MatchState.get(tournament["semi_finals"][1])
+    
     @classmethod
     def get_players(self, id):
         data = redis.get_map(global_tournament_name, id)
