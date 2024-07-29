@@ -532,7 +532,11 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         if match_id == None or match_id == "":
             return
         
-        await self.send_json({"name": "enter_running_match"})
+        match = MatchState.get(match_id)
+        if match["match_type"] == "local":
+            await self.send_json({"name": "enter_running_local_match"})
+        else:
+            await self.send_json({"name": "enter_running_match"})
         
     async def enter_running_tournament(self):
         tournament_id = redis_client.get_map_str(self.user.username, "tournament_id")
