@@ -42,8 +42,8 @@ class ExitTournament:
     async def exit_owner(self):
         print("exit_owner()")
         redis.hdel(global_tournament_name, self.parent.tournament_id)
-        self.parent.channel_layer.group_send(
-            self.parent.tournament_id,
+        await self.channel_layer.group_send(
+            self.tournament_id,
             { 'type': 'tournament.cancel'}
         )
     

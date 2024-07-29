@@ -280,6 +280,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def create_tournament(self, data):
         self.tournament_id = self.tournament_state.create()
+        self.is_owner = True
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
         payload = {
@@ -299,6 +300,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
+        self.is_owner = False
         if not self.validation.join_tournament.can_join(data):
             #TODO: send error message to client
             return 
@@ -359,6 +361,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def tournament_cancel(self, event):
         print("EVENT tournament_cancel()")
+        if not self.is_owner:
+            await self.send_json({ "name": "cancel_tournament" })
+        await self.close(1000)
         
     async def send_tournament_semifinal_end_result(self, match):
         player_left = OnlineState.get_user(match["player_left"]["username"])

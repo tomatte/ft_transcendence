@@ -7,7 +7,8 @@ import {
     addStartTournamentClickEvent,
     showTournamentPage,
     showGamePage,
-    showTournamentBracketFinal
+    showTournamentBracketFinal,
+    goBackHome
 } from "../element-creators/updateElements.js"
 import websocketMatch from "./websocketMatch.js"
 import { showGameResult } from "../../pages/result/gameResults.js"
@@ -107,6 +108,11 @@ function reconnected(data) {
     }
 }
 
+function cancelTournament(data) {
+    goBackHome()
+    delete state.tournament
+}
+
 const tournamentEventHandler = new TournamentEventHandler(state)
 tournamentEventHandler.register('enter_tournament', enterTournament)
 tournamentEventHandler.register('connected', connectedTournament)
@@ -117,5 +123,6 @@ tournamentEventHandler.register('semifinal_end', semifinalEnd)
 tournamentEventHandler.register('bracket_final_match', bracketFinalMatch)
 tournamentEventHandler.register('final_end', finalEnd)
 tournamentEventHandler.register('reconnected', reconnected)
+tournamentEventHandler.register('cancel_tournament', cancelTournament)
 
 export default tournamentEventHandler
