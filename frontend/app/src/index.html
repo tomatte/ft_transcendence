@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="css/components.css">
 	<link rel="stylesheet" href="css/modals.css">
 
-	<link rel="stylesheet" href="css/pages/friends.css">
 	<link rel="stylesheet" href="css/pages/settings.css">
 	<link rel="stylesheet" href="css/pages/matches.css">
 	<link rel="stylesheet" href="css/pages/notification.css">
 	<link rel="stylesheet" href="css/pages/ranking.css">
     <link rel="stylesheet" href="css/pages/statistics.css">
 	<link rel="stylesheet" href="css/pages/tournament.css">
+	<link rel="stylesheet" href="css/pages/searching-match.css">
+	<link rel="stylesheet" href="css/pages/game-result.css">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +33,6 @@
     <script type="module" src="scripts/sidebar.js"></script>
     <script type="module" src="scripts/index.js"></script>
 	<script src="scripts/modal.js"></script>
-	<script src="scripts/sound.js"></script>
 </head>
 <body>
 	<div class="stars1"></div>
@@ -118,20 +118,17 @@
 		</div>
 	</div>
 
-	<div class="page-game__container"></div>
-	<div class="page-tournament__container"></div>
+	<div class="page-game__container" style="display: none;"></div>
+	<div class="page-tournament__container" style="display: none;"></div>
 
-	<!-- <audio id="backgroundMusic" autoplay>
-		<source src="assets/audios/perfect-beauty-191271.mp3" type="audio/mpeg">
-		<embed src="assets/audios/perfect-beauty-191271.mp3" autostart="true" loop="true" width="0" height="0" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio> -->
+	<div class="page-searching-match__container" style="display: none;" ></div>
+	<div class="page-game-result__container" style="display: none;" ></div>
 
 	<audio id="backgroundMusic" src="assets/audios/perfect-beauty-191271.mp3" loop>
-
+		Your browser does not support the audio element.
 	</audio>
 	<iframe id='iframe__login'src="https://localhost/login.html"></iframe>
-
+	<script src="scripts/sound.js"></script>
 </body>
 </html>
 

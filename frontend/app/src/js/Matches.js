@@ -31,10 +31,10 @@ const createTableLines = (matchesList) => {
 	return matchesList.reduce((acc, item) => {return acc + `
 		<tr class="table-row">
 			<td class="table-row__player">
-				<img class="table-row__player__image" src="../assets/images/players/caos.png" alt="player">
+				<img class="table-row__player__image" src="${item.opponent_avatar}" alt="player">
 				<div class="table-row__player__text">
-					<span class="table-row__player__text__name font-body-medium-bold">${nickname}</span>
-					<span class="table-row__player__text__nickname font-body-regular">${username}</span>
+					<span class="table-row__player__text__name font-body-medium-bold">${item.opponent_username}</span>
+					<span class="table-row__player__text__nickname font-body-regular">${item.opponent_nickname}</span>
 				</div>
 			</td>
 			<td class="table-row__data-default font-body-medium-bold">Friendly Match</td>
