@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from asgiref.sync import async_to_sync, sync_to_async
 import json
+import asyncio
 from typing import Dict, TypedDict
 import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState, OnlineState
@@ -83,10 +84,16 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             return
         
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard("match", self.channel_name)
+        try:
+            await self.channel_layer.group_discard("match", self.channel_name)
+        except asyncio.CancelledError:
+            print("Task was cancelled")
         if self.match_id:
             await self.channel_layer.group_discard(self.match_id, self.channel_name)
         if redis_client.hexists(self.user.username, "match_id"):
+            match = MatchState.get(self.match_id)
+            if match != None and match["phase"] == "running":
+                return
             redis_client.set_map_str(self.user.username, "match_id", "")
 
     async def player_move(self, data: PlayerMoveDataType):
@@ -454,6 +461,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.group_add("notification", self.channel_name)
 
         await self.send_json(payload)
+        
+        await self.enter_running_match()
 
     async def receive(self, text_data):
         print(f"{self.user.username} received a notification:")
@@ -481,6 +490,18 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             await self.user_state.online.disconnected()
         await self.channel_layer.group_discard("chat", self.channel_name)
         return await super().disconnect(close_code)
+    
+    async def enter_running_match(self):
+        match_id = redis_client.get_map_str(self.user.username, "match_id")
+        if match_id == None or match_id == "":
+            return
+        
+        match = MatchState.get(match_id)
+        if match["phase"] != "running":
+            UserState.set_value(self.user.username, "match_id", "")
+            return
+        
+        await self.send_json({"name": "enter_running_match"})
         
     async def tournament_invitation(self, event):
         print(f"{self.user.username} received a tournament invitation")
