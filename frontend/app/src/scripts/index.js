@@ -43,6 +43,9 @@ const listenHashChanges = () => {
 };
 
 window.addEventListener('load', () => {
+  if (!getCookie('username')) {
+    document.getElementById('iframe__login').style.display = 'block'
+  }
   initState()
   websocketNotification.listen()
   renderPage();
