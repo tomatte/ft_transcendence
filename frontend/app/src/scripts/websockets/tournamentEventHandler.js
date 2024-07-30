@@ -7,10 +7,11 @@ import {
     addStartTournamentClickEvent,
     showTournamentPage,
     showGamePage,
-    showGameResult,
-    showTournamentBracketFinal
+    showTournamentBracketFinal,
+    goBackHome
 } from "../element-creators/updateElements.js"
 import websocketMatch from "./websocketMatch.js"
+import { showGameResult } from "../../pages/result/gameResults.js"
 
 
 class TournamentEventHandler {
@@ -86,7 +87,7 @@ const startMatch = (state) => {
 
 function semifinalEnd(data, state) {
     console.log({event: data})
-    showGameResult(data, false)
+    showGameResult(data, "semifinal", "Tournament Semi-final")
 }
 
 function bracketFinalMatch(data, state) {
@@ -96,7 +97,20 @@ function bracketFinalMatch(data, state) {
 
 function finalEnd(data, state) {
     console.log({event: data})
-    showGameResult(data, true)
+    showGameResult(data, "final", "")
+}
+
+function reconnected(data) {
+    state.tournament = {
+        id: data.tournament_id,
+        players: data.players,
+        action: ""
+    }
+}
+
+function cancelTournament(data) {
+    goBackHome()
+    delete state.tournament
 }
 
 const tournamentEventHandler = new TournamentEventHandler(state)
@@ -108,5 +122,7 @@ tournamentEventHandler.register('start_match', startMatch)
 tournamentEventHandler.register('semifinal_end', semifinalEnd)
 tournamentEventHandler.register('bracket_final_match', bracketFinalMatch)
 tournamentEventHandler.register('final_end', finalEnd)
+tournamentEventHandler.register('reconnected', reconnected)
+tournamentEventHandler.register('cancel_tournament', cancelTournament)
 
 export default tournamentEventHandler

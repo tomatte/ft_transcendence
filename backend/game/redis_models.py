@@ -10,7 +10,7 @@ class PlayerRedis:
         self.x: int = data['x']
         self.y: int = data['y']
         self.points: int = data['points']
-        self.result: str = data['result']
+        self.winner: bool = data['winner']
         self.move: str = data['move']
         
 class BallRedis:

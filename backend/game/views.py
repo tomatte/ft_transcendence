@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from asgiref.sync import async_to_sync
+from asgiref.sync import async_to_sync, sync_to_async
 import json
+import asyncio
 from typing import Dict, TypedDict
 import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState, OnlineState
@@ -10,8 +11,10 @@ from .tasks import emit_group_event_task, Task
 from .my_types import *
 import random
 from .match_state import MatchState
-from .redis_models import TournamentRedis
+from .redis_models import TournamentRedis, MatchRedis
 from backend.tournament_utils import store_tournament
+from tournament.models import Tournament, Match, MatchPlayer
+from tournament.views import create_tournament, create_match
 
 MatchDict = Dict[str, MatchData]
 
@@ -44,7 +47,10 @@ class GameLoopConsumer(MyAsyncWebsocketConsumer):
     async def match_end(self, data):
         await self.channel_layer.group_send(data["match_id"], {
             "type": "match.end"
-        })    
+        })
+        
+    async def player_move(self, event):
+        await self.send_json(event)
     
 
 # Create your views here.
@@ -52,9 +58,8 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
         if await self.authenticate() == False:
             return
-        
-        self.user = self.scope['user']
-        
+
+        self.game_loop_channel = redis_client.get("game_loop").decode()
         self.match_id = redis_client.get_map_str(self.user.username, "match_id")
         if self.match_id == None or self.match_id == "":
             print("match error: match_id not found")
@@ -73,20 +78,35 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             await self.player_move(data)
             return
         
+        """ TODO: LOCAL """
+        if data["action"] == "player2_move":
+            await self.player2_move(data)
+            return
+        
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard("match", self.channel_name)
+        try:
+            await self.channel_layer.group_discard("match", self.channel_name)
+        except asyncio.CancelledError:
+            print("Task was cancelled")
         if self.match_id:
             await self.channel_layer.group_discard(self.match_id, self.channel_name)
         if redis_client.hexists(self.user.username, "match_id"):
+            match = MatchState.get(self.match_id)
+            if match != None and match["phase"] == "running":
+                return
             redis_client.set_map_str(self.user.username, "match_id", "")
 
     async def player_move(self, data: PlayerMoveDataType):
-        match = MatchState.get(self.match_id)
-        if self.user.username == match["player_left"]["username"]:
-            match["player_left"]["move"] = data["key"]
-        else:
-            match["player_right"]["move"] = data["key"]
-        MatchState.set(self.match_id, match)
+        data["type"] = "player.move"
+        data["username"] = self.user.username
+        await self.channel_layer.send(self.game_loop_channel, data)
+        
+        """ TODO: LOCAL """
+    async def player2_move(self, data: PlayerMoveDataType):
+        data["type"] = "player.move"
+        data["action"] = "move"
+        data["username"] = f"{self.user.username}2"
+        await self.channel_layer.send(self.game_loop_channel, data)
         
     async def match_tick(self, event):
         match = MatchState.get(self.match_id)
@@ -104,9 +124,13 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
     async  def match_end(self, event):
         print(f"{self.user.username}: match_end()")
         match = MatchState.get(self.match_id)
-        if match["match_type"] != "normal":
+        
+        if match["match_type"] == "random":
+            await self.end_random_match()
+        elif match["match_type"] == "local":
+            await self.end_local_match()
+        else:
             await self.end_match_tournament()
-            return
             
     async def end_match_tournament(self):
         print(f"{self.user.username}: end_match_tournament()")
@@ -129,6 +153,64 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         self.in_match_group = False
         await self.close(1000)
         
+    async def end_random_match(self):
+        redis_client.set_map_str(self.user.username, "match_id", "")
+        await self.channel_layer.group_discard("match", self.channel_name)
+        await self.channel_layer.group_discard(self.match_id, self.channel_name)
+        
+        match = MatchState.get(self.match_id)
+        
+        player_left = OnlineState.get_user(match["player_left"]["username"])
+        player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
+        
+        player_right = OnlineState.get_user(match["player_right"]["username"])
+        player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
+        
+        payload = {
+            "name": "random_match_end",
+            "player_left": player_left,
+            "player_right": player_right
+        }
+        
+        await self.send_json(payload)
+        await self.close(1000)
+        
+        if redis_client.hexists("global_matches", self.match_id):
+            await create_match(MatchRedis(self.match_id))
+            redis_client.hdel("global_matches", self.match_id)
+            
+    async def end_local_match(self):
+        redis_client.set_map_str(self.user.username, "match_id", "")
+        await self.channel_layer.group_discard("match", self.channel_name)
+        await self.channel_layer.group_discard(self.match_id, self.channel_name)
+        
+        match = MatchState.get(self.match_id)
+        if match["should_delete"]:
+            redis_client.hdel("global_matches", self.match_id)
+            await self.close(1000)
+            return
+        else:
+            match["should_delete"] = True
+            MatchState.set(self.match_id, match)
+        
+        player_left = {}
+        player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
+        
+        player_right = {}
+        player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
+        
+        await self.send_json({
+            "name": "end_local_match",
+            "player_left": player_left,
+            "player_right": player_right
+        })
+        await self.close(1000)
+        
+        
          
 class TournamentConsumer(MyAsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
@@ -139,13 +221,16 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         if not await self.authenticate():
             return
         
-        self.user = self.scope['user']
         self.player_id = self.user.username
         self.tournament_state = TournamentState(self.user)
         
         UserState.set_value(self.user.username, "tournament_channel", self.channel_name)
         
-        await self.send_json({ 'name': 'connected' })
+        tournament_id = redis_client.get_map_str(self.user.username, "tournament_id")
+        if tournament_id != None and tournament_id != "":
+            await self.reconnect(tournament_id)
+        else: 
+            await self.send_json({ 'name': 'connected' })
 
     async def receive(self, text_data):
         print(text_data)
@@ -168,12 +253,34 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         print(f"***{self.user.username} disconnected from tournament***")
         if not hasattr(self, "tournament_id") or not hasattr(self, "user"):
             return
-        UserState.set_value(self.user.username, "tournament_channel", "")
-        UserState.set_value(self.user.username, "tournament_id", "")
+        await self.tournament_state.exit()
         await self.channel_layer.group_discard(self.tournament_id, self.channel_name)
+        
+    async def reconnect(self, tournament_id):
+        tournament = TournamentState.get(tournament_id)
+        if tournament == None:
+            redis_client.set_map_str(self.user.username, "tournament_id", "")
+            await self.send_json({ 'name': 'connected' })
+            return
+        
+        self.tournament_id = tournament_id
+        self.tournament_state.tournament_id = tournament_id
+        redis_client.set_map_str(self.user.username, "tournament_channel", self.channel_name)
+        await self.channel_layer.group_add(self.tournament_id, self.channel_name)
+        
+        await self.send_json({
+            'name': 'reconnected',
+            'tournament_id': self.tournament_id,
+            'players': TournamentState.get_players(self.tournament_id)
+        })
+        
+        if "stage" in tournament and tournament["stage"] == "semifinal_result":
+            match = TournamentState.get_match_by_tournament(self.tournament_id, self.user.username)
+            await self.send_tournament_semifinal_end_result(match)
         
     async def create_tournament(self, data):
         self.tournament_id = self.tournament_state.create()
+        self.is_owner = True
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
         payload = {
@@ -187,11 +294,13 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         # TODO: save tournament data and delete match from redis
         await self.close(1000)
         if redis_client.hexists("global_tournament", self.tournament_id):
-            # await store_tournament(TournamentRedis(self.tournament_id))
+            tournament_redis = TournamentRedis(self.tournament_id)
             redis_client.hdel("global_tournament", self.tournament_id)
+            await create_tournament(tournament_redis)
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
+        self.is_owner = False
         if not self.validation.join_tournament.can_join(data):
             #TODO: send error message to client
             return 
@@ -252,16 +361,18 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def tournament_cancel(self, event):
         print("EVENT tournament_cancel()")
+        if not self.is_owner:
+            await self.send_json({ "name": "cancel_tournament" })
+        await self.close(1000)
         
-    async def tournament_semifinal_end(self, event):
-        print(f"EVENT {self.user.username} tournament_semifinal_end()")
-        match = MatchState.get(event["match_id"])
-        
+    async def send_tournament_semifinal_end_result(self, match):
         player_left = OnlineState.get_user(match["player_left"]["username"])
         player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
         
         player_right = OnlineState.get_user(match["player_right"]["username"])
         player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
         
         await self.send_json({
             "name": "semifinal_end",
@@ -269,30 +380,29 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "player_right": player_right
         })
         
-        Task.send(self.channel_name, {"type": "tournament.bracket_final"}, 5)
+    async def tournament_semifinal_end(self, event):
+        print(f"EVENT {self.user.username} tournament_semifinal_end()")
+        match = MatchState.get(event["match_id"])
+        
+        await self.send_tournament_semifinal_end_result(match)
+        
+        self.tournament_state.set_value("stage", "semifinal_result")
+        
+        Task.send_tournament(self.user.username, {"type": "tournament.bracket_final"}, 5)
         
     async def tournament_bracket_final(self, event):
         print(f"EVENT {self.user.username} tournament_bracket_final()")
+        
+        self.tournament_state.set_value("stage", "")
         
         matches = TournamentState.get_value(self.tournament_id, "semi_finals")
         match1 = MatchState.get(matches[0])
         match2 = MatchState.get(matches[1])
         
-        players = TournamentState.get_players(self.tournament_id)
-        
         winner_left = MatchState.filter_winner(match1)
-        winner_left = (
-            players[0] 
-            if players[0]["username"] == match1["player_left"]["username"] 
-            else players[1]
-        )
-        
         winner_right = MatchState.filter_winner(match2)
-        winner_right = (
-            players[2] 
-            if players[2]["username"] == match2["player_left"]["username"] 
-            else players[3]
-        )
+        
+        players = TournamentState.get_players(self.tournament_id)
         
         final = {
             "player_left": winner_left,
@@ -305,7 +415,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "final": final
         })
         
-        self.start_final(winner_left["username"], winner_right["username"])
+        self.start_final(winner_left, winner_right)
         
     def start_final(self, winner1, winner2):
         sent = TournamentState.get_value(self.tournament_id, "final_bracket_event_sent")
@@ -314,10 +424,13 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         if sent != 4:
             return
         
+        match_id = MatchState.create("final")
+        
         event_payload = {
             "type": "tournament.final_start",
-            "winner1": winner1,
-            "winner2": winner2
+            "winner1": winner1["username"] if winner1 else None,
+            "winner2": winner2["username"] if winner2 else None,
+            "match_id": match_id
         }
         
         Task.send_group(self.tournament_id, event_payload, 5)
@@ -329,12 +442,10 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             await self.close(1000)
             return
         
-        match_id = MatchState.create("final")
+        self.tournament_state.add_final_match(event["match_id"])
         
-        self.tournament_state.add_final_match(match_id)
-        
-        MatchState.add_players(match_id, event["winner1"], event["winner2"])
-        MatchState.start(match_id)
+        MatchState.add_players(event["match_id"], event["winner1"], event["winner2"])
+        MatchState.start(event["match_id"])
         
         await self.send_json({"name": "start_match"})
 
@@ -348,9 +459,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         player_left = OnlineState.get_user(match["player_left"]["username"])
         player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
         
         player_right = OnlineState.get_user(match["player_right"]["username"])
         player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
         
         await self.send_json({
             "name": "final_end",
@@ -366,11 +479,9 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
          
 class NotificationConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
-        is_authenticated = await self.authenticate()
-        if is_authenticated == False:
+        if not await self.authenticate():
             return 
         
-        self.user = self.scope['user']
         self.user_state = UserState(self.user, self.channel_name)
         
         payload = {
@@ -387,6 +498,9 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.group_add("notification", self.channel_name)
 
         await self.send_json(payload)
+        
+        await self.enter_running_match()
+        await self.enter_running_tournament()
 
     async def receive(self, text_data):
         print(f"{self.user.username} received a notification:")
@@ -414,6 +528,30 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             await self.user_state.online.disconnected()
         await self.channel_layer.group_discard("chat", self.channel_name)
         return await super().disconnect(close_code)
+    
+    async def enter_running_match(self):
+        match_id = redis_client.get_map_str(self.user.username, "match_id")
+        if match_id == None or match_id == "":
+            return
+        
+        match = MatchState.get(match_id)
+        if match["match_type"] == "local":
+            await self.send_json({"name": "enter_running_local_match"})
+        else:
+            await self.send_json({"name": "enter_running_match"})
+        
+    async def enter_running_tournament(self):
+        tournament_id = redis_client.get_map_str(self.user.username, "tournament_id")
+        if tournament_id == None or tournament_id == "":
+            return
+        
+        tournament = TournamentState.get(tournament_id)
+        if tournament == None:
+            UserState.set_value(self.user.username, "tournament_id", "")
+            UserState.set_value(self.user.username, "tournament_channel", "")
+            return
+        
+        await self.send_json({"name": "enter_running_tournament"})
         
     async def tournament_invitation(self, event):
         print(f"{self.user.username} received a tournament invitation")
@@ -466,3 +604,75 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             "online_players": event["players"]
         }
         await self.send_json(payload)
+        
+        
+class RandomMatchConsumer(MyAsyncWebsocketConsumer):
+    async def connect(self):
+        if not await self.authenticate():
+            return 
+        
+        print(f"RandomMatchConsumer {self.user.username} connect()")
+        
+        await self.channel_layer.group_add("random_match", self.channel_name)
+        if redis_client.exists("random_match"):
+            await self.join_random_match()
+        else:
+            await self.create_random_match()
+        
+    async def receive(self, text_data):
+        print(f"RandomMatchConsumer {self.user.username} receive()")
+        print(text_data)
+        
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("random_match", self.channel_name)
+        if redis_client.exists("random_match"):
+            redis_client.delete("random_match")
+        
+    async def create_random_match(self):
+        match = MatchState.create("random", save=False)
+        match["player_left"]["username"] = self.user.username
+        redis_client.set_json("random_match", match)
+        self.match_id = match["id"]
+        
+    async def join_random_match(self):
+        match = redis_client.get_json("random_match")
+        redis_client.delete("random_match")
+        
+        match["player_right"]["username"] = self.user.username
+        match["phase"] = "start"
+        MatchState.set(match["id"], match)
+        self.match_id = match["id"]
+        
+        await self.channel_layer.group_send("random_match", {
+            "type": "random_match.start"
+        })
+        
+    async def random_match_start(self, event):
+        redis_client.set_map_str(self.user.username, "match_id", self.match_id)
+        await self.send_json({ "name": "start_random_match" })
+        await self.close(1000)
+        
+        
+class LocalMatchConsumer(MyAsyncWebsocketConsumer):
+    async def connect(self):
+        if not await self.authenticate():
+            return 
+        
+        print(f"LocalMatchConsumer {self.user.username} connect()")
+        
+        await self.channel_layer.group_add("local_match", self.channel_name)
+        
+        match = MatchState.create("local", save=False)
+        match["player_left"]["username"] = self.user.username
+        match["player_right"]["username"] = f"{self.user.username}2"
+        match["player_right"]["ready"] = True
+        match["phase"] = "start"
+        match["should_delete"] = False 
+        redis_client.set_map_str(self.user.username, "match_id", match["id"])
+        MatchState.set(match["id"], match)
+        
+        await self.send_json({ "name": "start" })
+        await self.close(1000)
+        
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("local_match", self.channel_name)

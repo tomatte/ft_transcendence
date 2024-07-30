@@ -12,3 +12,7 @@ Makefile Manual Usage:
 - del_vol	(removes unused docker volumes)
 - del_net   (removes unused docker networks)
 - purge     (removes unused docker files (data, volumes & networks) & shutdowns gracefully)
+- dev       (runs for debugging purposes)
+- run       (runs other facilities for local machine)
+- celery    (runs celery python service for tasks)
+- loop      (hangs the game in loop)

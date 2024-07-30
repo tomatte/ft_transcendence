@@ -3,6 +3,7 @@ import websocketTournament from "../websockets/websocketTournament.js"
 import { showGamePage, showTournamentPage } from "./updateElements.js"
 import { mockPlayers } from "../state/mockState.js"
 import state from "../state/state.js"
+import { goBackHome } from "./updateElements.js"
 
 export function hideContents() {
     document.querySelector(".sidebar").style.display = 'none'
@@ -30,6 +31,7 @@ export function listenForKeyPress(targetKey, callback) {
     document.addEventListener('keydown', handleKeyPress);
 }
 
+/* TODO: remove in production */
 export function listenTestKeys() {
     listenForKeyPress("1", () => websocketMatch.listen())
     listenForKeyPress("2", () => websocketTournament.listen())
@@ -40,4 +42,24 @@ export function listenTestKeys() {
         showTournamentPage()
     })
     listenForKeyPress("5", () => showGamePage())
+    listenForKeyPress("6", () => goBackHome())
+}
+
+export function listenButtonClick(parent, btnId, callback) {
+    parent.addEventListener('click', function(event) {
+        let targetElement = event.target;
+        while (targetElement != null && targetElement !== this) {
+            if (targetElement.id === btnId) {
+                console.log(`${btnId} clicked`);
+                callback()
+                break;
+            }
+            targetElement = targetElement.parentNode;
+        }
+    });
+}
+
+export function addGoBackHomeButtonEventListener() {
+    const parent = document.querySelector(".page-game-result__container")
+    listenButtonClick(parent, "button-go-back-home", goBackHome)
 }

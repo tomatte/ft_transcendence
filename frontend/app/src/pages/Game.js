@@ -27,9 +27,10 @@ const Game = (state) => {
 	const gameContainer = document.querySelector('.page-game__container');
     gameContainer.style.display = 'block';
 
-        gameContainer.innerHTML = `
-        <img class="stars_game" src="assets/background-stars.svg">
-        <img class="logo_match" src="assets/logo/logo_background_match.svg">
+        gameContainer.innerHTML = /*html*/ `
+        <img class="stars_game1" src="assets/background-stars.svg">
+        <img class="stars_game1" src="assets/background-stars.svg">
+        <img class="logo_match" src="assets/logo/logomark_white.svg">
 
         <div id="table">
             <h1 id="score_left">0</h1>

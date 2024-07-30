@@ -33,6 +33,7 @@ body {
     height: 100%;
     overflow: hidden;
     position: relative;
+    z-index: 1;
     
     background: linear-gradient(248deg, #B96C13 -10.67%, #0B0501 26.8%, #000 64.28%);
 }
@@ -153,3 +154,4 @@ body {
     gap: 8px;
     align-self: stretch;
 }
+
