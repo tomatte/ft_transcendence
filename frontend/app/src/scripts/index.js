@@ -44,23 +44,26 @@ const listenHashChanges = () => {
 };
 
 window.addEventListener('load', () => {
-  if (!getCookie('username')) {
-    document.getElementById('iframe__login').style.display = 'block'
-  }
   initState()
   websocketNotification.listen()
+  getMyUser()
+  insertProfileInfoData()
   renderPage();
   listenHashChanges();
-  insertProfileInfoData(state.user)
   listenTestKeys() // TODO: remove in production
   addGoBackHomeButtonEventListener()
-  getMyUser()
 });
 
 
 async function getMyUser() {
 	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
 	if (response.status !== 200) {
-    window.location.href = '/login.html'
+      cleanupPage(false)
+      document.body.innerHTML =PageLogin()
+      $('#carouselExampleIndicators').carousel({
+        interval: 6000,
+        ride: 'carousel',
+        pause: false
+    });
   }
 }

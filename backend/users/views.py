@@ -172,6 +172,8 @@ class ManipulateUser:
 		return data
 
 	def uptade_nickname(self, nickname):
+		if (User.objects.filter(nickname=nickname).exists()):
+			raise Exception('Nickname already exists!')
 		self.me.nickname = nickname
 		self.me.save()
 
@@ -500,12 +502,22 @@ def uptade_nickname(request):
 
 	try:
 		is_valid_method(request, 'POST')
-		ManipulateUser(username=request.user.username).uptade_nickname(request.POST['nickname'])
+		nickname = json.loads(request.body).get('nickname')
+
+		if not nickname:
+			raise KeyError('Nickname not send')
+
+		if len(nickname) > 40:
+			return JsonResponse({"msg": 'Nickname too long!'}, status=400)
+
+		ManipulateUser(username=request.user.username).uptade_nickname(nickname)
 		return HttpResponse(status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"message": str(e)}, status=405)
 	except KeyError as e:
 		return JsonResponse({"message": 'Nickname not send'}, status=400)
+	except Exception as e:
+		return JsonResponse({"message": str(e)}, status=209)
 
 
 def uptade_avatar(request):
