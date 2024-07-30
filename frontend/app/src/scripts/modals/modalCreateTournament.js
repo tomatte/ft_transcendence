@@ -40,11 +40,6 @@ class ModalCreateTournament {
         if (closeBtn) {
             closeBtn.addEventListener('click', this.close)
         }
-
-        const modalOverlay = document.getElementById('modalOverlay')
-        if (modalOverlay) {
-            modalOverlay.addEventListener('click', this.close)
-        }
     }
 
     close() {
