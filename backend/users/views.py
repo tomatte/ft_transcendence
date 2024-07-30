@@ -6,6 +6,7 @@ import json
 from django.db.models import Prefetch
 from django.contrib.auth import logout as _logout
 from django.shortcuts import redirect
+from datetime import datetime
 
 
 
@@ -127,8 +128,15 @@ class ManipulateUser:
 			'from_user__id',
 			'from_user__nickname',
 			'from_user__username',
+			'created_at'
 		)
-		return list(response)
+		formatted_response = []
+		for item in response:
+			created_at = item['created_at']
+			if isinstance(created_at, datetime):
+				item['created_at'] = created_at.strftime('%Y-%m-%d %H:%M:%S')
+			formatted_response.append(item)
+		return formatted_response
 
 	def player_statistics_by_you(self, friend: object) -> dict:
 		if not friend:
