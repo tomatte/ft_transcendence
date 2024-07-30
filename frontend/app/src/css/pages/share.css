@@ -18,63 +18,55 @@ body
 }
 
 
-
-
-
-
-
 .share{
     display: flex;
-/* width: 1080px;
-height: 680px; */
-
-padding: 32px;
-flex-direction: column;
-align-items: flex-start;
-gap: 26px;
-border-radius: flex;
- 
-background: linear-gradient(64deg, #000 0%, #000 38.5%, #E68B02 100%);
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 26px;
+    border-radius: flex;
+    
+    background: linear-gradient(64deg, #000 0%, #000 38.5%, #E68B02 100%);
 }
 
 .Frame-10092{
     display: flex;
-flex-direction: column;
-align-items: flex-start;
-gap: 16px;
-align-self: stretch;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    align-self: stretch;
 }
 
 .Frame-10072{
     display: flex;
-justify-content: space-between;
-align-items: center;
-align-self: stretch;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
 }
 
 .Frame-10073{
     display: flex;
-align-items: center;
-gap: 12px;
+    align-items: center;
+    gap: 12px;
 }
 
 .Share-ranking{
-    /* color: #FFF;
-    font-family: "Red Hat Display";
-font-size: 24px;
-font-style: normal;
-font-weight: 400;
-line-height: normal; */
+        /* color: #FFF;
+        font-family: "Red Hat Display";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal; */
 
-font-family: "Red Hat Display";
-font-size: 24px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
-background: #FFF;
-background-clip: text;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
+    font-family: "Red Hat Display";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: #FFF;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .Frame-10074{
@@ -88,11 +80,11 @@ background-clip: text;
 
 .Frame-10106{
     display: flex;
-flex-direction: column;
-justify-content: space-between;
-align-items: flex-start;
-flex: 1 0 0;
-align-self: stretch;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
 }
 
 .trophy-dynamic-premium{
@@ -218,17 +210,18 @@ align-items: center;
 
 .player-name-tournament{
     display: -webkit-box;
--webkit-box-orient: vertical;
--webkit-line-clamp: 1;
-align-self: stretch;
-overflow: hidden;
-color: #D3D9F4;
-text-overflow: ellipsis;
-font-family: Play;
-font-size: 24px;
-font-style: normal;
-font-weight: 400;
-line-height: 100%; /* 24px */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    align-self: stretch;
+    overflow: hidden;
+    color: #D3D9F4;
+    text-overflow: ellipsis;
+    font-family: Play;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; /* 24px */
 }
 
 
@@ -236,15 +229,16 @@ line-height: 100%; /* 24px */
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     align-self: stretch;
     overflow: hidden;
-color: #737993;
-text-overflow: ellipsis;
-font-family: Play;
-font-size: 20px;
-font-style: normal;
-font-weight: 400;
-line-height: 100%; /* 20px */
+    color: #737993;
+    text-overflow: ellipsis;
+    font-family: Play;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
 }
 
 
@@ -260,23 +254,22 @@ line-height: 100%; /* 20px */
     gap: 26px;
     border-radius: flex;
  
-background: linear-gradient(64deg, #000 0%, #000 38.5%, rgba(73, 73, 85, 0.65) 100%);
+    background: linear-gradient(64deg, #000 0%, #000 38.5%, rgba(73, 73, 85, 0.65) 100%);
 }
 
 .tornament-first-header-two{
     align-self: stretch;
- 
-    
-/* Heading/H1 */
-font-family: "Red Hat Display";
-font-size: 48px;
-font-style: normal;
-font-weight: 700;
-line-height: 120%; /* 57.6px */
-background: linear-gradient(90deg, #A7A7BF 0%, #606084 85%);
-background-clip: text;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
+
+    /* Heading/H1 */
+    font-family: "Red Hat Display";
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 57.6px */
+    background: linear-gradient(90deg, #A7A7BF 0%, #606084 85%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 
@@ -284,13 +277,12 @@ background-clip: text;
 
 .sharethird{
     display: flex;
-/* width: 1080px;
-height: 680px; */
-padding: 32px;
-flex-direction: column;
-align-items: flex-start;
-gap: 26px;
-border-radius: flex;
- 
-background: linear-gradient(64deg, #000 0%, #000 38.5%, #4377EE 100%);
+
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 26px;
+    border-radius: flex;
+    
+    background: linear-gradient(64deg, #000 0%, #000 38.5%, #4377EE 100%);
 }

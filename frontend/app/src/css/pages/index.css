@@ -1,19 +1,28 @@
 html, body
 {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 	height: 100%;
 	width: 100%;
 }
 
 body
 {
-    background: var(--gradient-blue-background);
+	background: var(--gradient-blue-background);
 	overflow: hidden;
 	justify-content: flex-start;
 	align-items: center;
 	gap: 8px;
 	display: inline-flex;
+}
+
+iframe {
+	position: absolute;
+	height: 100vh;
+	width: 100vw;
+	top: 0;
+	left: 0;
+	display: none;
 }
 
 .stars2 {
@@ -36,25 +45,25 @@ body
 }
 
 @keyframes shift1 {
-    0% {
-        opacity: 1;
-    }
+	0% {
+		opacity: 1;
+	}
 
-    25% {
-        opacity: 0.25;
-    }
+	25% {
+		opacity: 0.25;
+	}
 
-    50% {
-        opacity: 0.5;
-    }
+	50% {
+		opacity: 0.5;
+	}
 
 	75% {
-        opacity: 0.75;
-    }
+		opacity: 0.75;
+	}
 
 	100% {
-        opacity: 1;
-    }
+		opacity: 1;
+	}
 }
 
 
@@ -138,7 +147,7 @@ body
 
 
 .table-actions-align-right {
-    text-align: right;
+	text-align: right;
 }
 
 .spinner {

@@ -63,4 +63,4 @@ loop:
 # celery --workdir ./backend -A backend worker -D
 
 #PHONY
-.PHONY: all help setup up down re ls disk fclean del del_vol del_net purge
+.PHONY: all help setup up down re ls disk fclean del del_vol del_net purge dev run celery loop

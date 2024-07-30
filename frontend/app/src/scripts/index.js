@@ -5,6 +5,7 @@ import { initState } from './state/state.js';
 import { insertProfileInfoData } from './sidebar.js';
 import modalCreateTournament from './modals/modalCreateTournament.js';
 import { listenTestKeys } from './element-creators/utils.js';
+import { addGoBackHomeButtonEventListener } from './element-creators/utils.js';
 
 
 const container = document.querySelector('.page-content__container');
@@ -43,12 +44,16 @@ const listenHashChanges = () => {
 };
 
 window.addEventListener('load', () => {
+  if (!getCookie('username')) {
+    document.getElementById('iframe__login').style.display = 'block'
+  }
   initState()
   websocketNotification.listen()
   renderPage();
   listenHashChanges();
   insertProfileInfoData(state.user)
   listenTestKeys() // TODO: remove in production
+  addGoBackHomeButtonEventListener()
   getMyUser()
 });
 

@@ -2,7 +2,6 @@
     --font-primary: 'Red Hat Display', sans-serif;
 	--font-secondary: 'Play', sans-serif;
     --font-size-default: 16px;
-    --line-height-default: 1.0;
 
     --h1-font-size: 48px;
     --h1-line-height: 120%;
@@ -36,7 +35,6 @@
 body {
     font-family: var(--font-primary);
     font-size: var(--font-size-default);
-    line-height: var(--line-height-default);
 }
 
 h1 {
