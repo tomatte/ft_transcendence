@@ -9,6 +9,14 @@ import Game from "../../pages/Game.js"
 import createGameResult from "./createGameResult.js"
 import { addLeaveTournamentEventListener } from "../../pages/Tournament.js"
 
+function addButtonInvitationSentStyle(btn) {
+    btn.innerText = "invitation sent!"
+    btn.classList.remove("button--secondary")
+    btn.classList.add("button--success-confirmation")
+    btn.style.cursor = "default"
+    btn.setAttribute('data-invitation-sent', 'true')
+}
+
 export function updateOnlinePlayersTournament(players) {
     if (!state.hasOwnProperty("tournament") || !state.tournament.hasOwnProperty("players")) {
         return 
@@ -21,8 +29,18 @@ export function updateOnlinePlayersTournament(players) {
     for (let key in players) {
         const player = players[key]
         const btn = document.getElementById(`button-tournament-invite-${player.username}`)
+
+        const buttonClickHandler = () => {
+            if (btn.getAttribute('data-invitation-sent')) {
+                return
+            }
+            inviteToTournament(player.username)
+            addButtonInvitationSentStyle(btn)
+            btn.removeEventListener('click', buttonClickHandler)
+        }
+
         if (btn) {
-            btn.addEventListener('click', () => inviteToTournament(player.username))
+            btn.addEventListener('click', buttonClickHandler)
         }
     }
 }
