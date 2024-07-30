@@ -348,6 +348,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.group_send(self.tournament_id, {
             "type": "match.start"
         })
+        
+        TournamentState.erase_invitations(self.tournament_id)
             
     async def tournament_update_players(self, event):
         await self.send_json({

@@ -41,7 +41,9 @@ class ExitTournament:
     
     async def exit_owner(self):
         print("exit_owner()")
+        self.parent.erase_invitations(self.tournament_id)
         redis.hdel(global_tournament_name, self.parent.tournament_id)
+        
         await self.channel_layer.group_send(
             self.tournament_id,
             { 'type': 'tournament.cancel'}
@@ -61,6 +63,27 @@ class ExitTournament:
         UserState.set_value(self.user.username, "tournament_channel", "")
 
 class TournamentState:
+    @classmethod
+    def delete_invitation(cls, id, username):
+        notifications = redis.get_map(username, "notifications")
+        to_remove = []
+        for n in notifications:
+            if n["type"] == "tournament" and n["tournament_id"] == id:
+                to_remove.append(n)
+                
+        for n in to_remove:
+            notifications.remove(n)
+            
+        redis.set_map(username, "notifications", notifications)
+    
+    @classmethod
+    def erase_invitations(cls, tournament_id):
+        data = cls.get(tournament_id)
+        players = data["invited_players"]
+        for player in players:
+            cls.delete_invitation(tournament_id, player)
+        
+    
     @classmethod
     def add_invited_player(cls, tournament_id, username):
         data = cls.get(tournament_id)
