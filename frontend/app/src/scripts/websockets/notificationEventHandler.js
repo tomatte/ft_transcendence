@@ -72,6 +72,13 @@ function enterRunningLocalMatch() {
     listenPlayer2Moves()
 }
 
+function updateNotifications(data) {
+    state['notifications'] = data.notifications
+    if (state.currentPage == 'Notifications') { //TODO: change this to inject the html
+        state.renderPage()
+    }
+}
+
 const notificationEventHandler = new NotificationEventHandler(state)
 
 notificationEventHandler.register("new_connection", newConnection)
@@ -81,5 +88,6 @@ notificationEventHandler.register('tournament_invitation', tournamentInvitation)
 notificationEventHandler.register("enter_running_match", enterRunningMatch)
 notificationEventHandler.register("enter_running_tournament", enterRunningTournament)
 notificationEventHandler.register("enter_running_local_match", enterRunningLocalMatch)
+notificationEventHandler.register("update_notifications", updateNotifications)
 
 export default notificationEventHandler
