@@ -37,9 +37,16 @@ export function updateOnlinePlayersTournament(players) {
             inviteToTournament(player.username)
             addButtonInvitationSentStyle(btn)
             btn.removeEventListener('click', buttonClickHandler)
+            state.tournament.invitedPlayers.push(player.username)
         }
 
-        if (btn) {
+        if (!btn) {
+            continue
+        }
+
+        if (state.tournament.invitedPlayers.includes(player.username)) {
+            addButtonInvitationSentStyle(btn)
+        } else {
             btn.addEventListener('click', buttonClickHandler)
         }
     }
