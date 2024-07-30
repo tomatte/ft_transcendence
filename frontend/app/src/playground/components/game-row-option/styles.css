@@ -1,0 +1,43 @@
+
+/* ------------------- GAME ROW OPTION ------------------- */
+
+.game-row-option
+{
+    display: inline-flex;
+    padding: 10px;
+    align-items: center;
+    gap: 8px;
+    background: var(--Comet-Cloud-950);
+    color: var(--Comet-Cloud-500);
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+    transition: all 0.2s ease;
+}
+
+.game-row-option:hover
+{
+    background: var(--Comet-Cloud-900);
+    color: var(--Comet-Cloud-300);
+}
+
+.game-row-option--active
+{
+    background: var(--Comet-Cloud-900);
+    color: var(--Comet-Cloud-300);
+}
+
+.game-row-option--active:hover
+{
+    background: var(--Comet-Cloud-800);
+    color: var(--Comet-Cloud-200);
+}
+
+.game-row-option__icon
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+

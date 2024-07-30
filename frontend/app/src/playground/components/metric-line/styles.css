@@ -1,0 +1,27 @@
+
+/* ------------------- METRIC LINE ------------------- */
+
+.metric-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+}
+
+.metric-line__line {
+    display: flex;
+    height: 1px;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1 0 0;
+    border: 1px dashed var(--Comet-Cloud-600);
+}
+
+.metric-line__label {
+    color: var(--Comet-Cloud-600);
+}
+
+.metric-line__data {
+    color: var(--Comet-Cloud-300);
+}
+
