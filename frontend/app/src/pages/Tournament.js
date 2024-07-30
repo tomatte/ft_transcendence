@@ -11,9 +11,22 @@ export function addLeaveTournamentEventListener() {
     })
 }
 
+const getStartTournamentButton = () => {
+    const html = /* html */ `
+        <button id="button-start-tournament" class="button button--tertiary">
+            <span class="material-icons-round button__icon-left">emoji_events</span>
+            <span class="button__text font-body-regular-bold"> Start the tournament</span>
+                
+        </button>
+    `
+
+    return state.tournament.isOwner ? html : "<span></span>"
+}
+
 const Tournament = () => {
     const {leftBrackets, rightBrackets} = createBracketsSemi(state.tournament.players)
     const {finalBracketLeft, finalBracketRight} = createBracketsFinal()
+    const startTournamentButton = getStartTournamentButton()
 
     const tournamentHTML = /* html */ `
     <div class="brackets">
@@ -23,12 +36,10 @@ const Tournament = () => {
                 <span id="button-leave-tournament" class="button__text font-body-regular-bold"> Leave tournament</span>
                  
             </button>
-            <button id="button-start-tournament" class="button button--tertiary">
-                <span class="material-icons-round button__icon-left">emoji_events</span>
-                <span class="button__text font-body-regular-bold"> Start the tournament</span>
-                 
-            </button>
-        </div>
+            
+            ${startTournamentButton}
+        
+            </div>
 
         <div class="bracket__content"> 
 

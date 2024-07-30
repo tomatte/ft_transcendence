@@ -16,7 +16,8 @@ class ModalCreateTournament {
     updateState() {
         state.tournament = {
             players: [state.user],
-            action: 'create'
+            action: 'create',
+            isOwner: true
         }
     }
 
