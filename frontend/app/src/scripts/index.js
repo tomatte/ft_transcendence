@@ -46,12 +46,12 @@ const listenHashChanges = () => {
 window.addEventListener('load', () => {
   initState()
   websocketNotification.listen()
+  getMyUser()
+  insertProfileInfoData()
   renderPage();
   listenHashChanges();
-  insertProfileInfoData(state.user)
   listenTestKeys() // TODO: remove in production
   addGoBackHomeButtonEventListener()
-  getMyUser()
 });
 
 

@@ -78,7 +78,7 @@ const uptadeNickname = () => {
 		let body = {
 			nickname: document.getElementById('nicknameInput').value
 		}
-		fetch('https://localhost:443/api/users/uptate/uptade-nickname', {
+		fetch('https://localhost/api/users/uptate/uptade-nickname', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -86,7 +86,10 @@ const uptadeNickname = () => {
 				'X-CSRFToken': csrftoken
 			},
 			body: JSON.stringify(body)
-		})
+		}).then(() => {
+			document.cookie = `nickname=${nickname}`;
+			insertProfileInfoData();
+		});
 	}
 }
 
@@ -190,13 +193,13 @@ const PageLogin = () => {
 			<div id="carouselExampleIndicators" class="carousel slide carousel-fade">
 				<div class="carousel-inner">
 					<div class="carousel-item active">
-						<img class="d-block w-100" src="/assets/images/Login/login-carousel-slide-1.png" alt="Slide 1">
+						<img class="d-block w-100" src="./assets/images/login/login-carousel-slide-1.png" alt="Slide 1">
 					</div>
 					<div class="carousel-item">
-						<img class="d-block w-100" src="/assets/images/Login/login-carousel-slide-2.png" alt="Slide 2">
+						<img class="d-block w-100" src="./assets/images/login/login-carousel-slide-2.png" alt="Slide 2">
 					</div>
 					<div class="carousel-item">
-						<img class="d-block w-100" src="/assets/images/Login/login-carousel-slide-3.png" alt="Slide 3">
+						<img class="d-block w-100" src="./assets/images/login/login-carousel-slide-3.png" alt="Slide 3">
 					</div>
 				</div>
 			</div>
