@@ -102,18 +102,9 @@ const Settings = () => {
                 </div>
             </div>
 
-            <div class="divider"></div>
-
-            <div class="page-content__container__content__setting">
-                <div class="page-content__container__content__setting__info">
-                    <span class="page-content__container__content__setting__info__title font-body-medium-bold">Language</span>
-                    <span class="page-content__container__content__setting__info__description font-body-medium"> Swap between the available languages</span>
-                </div>
-                <div class="page-content__container__content__setting__control">
+  
 
 
-                </div>
-            </div>
         </div>
     `;
 
