@@ -6,7 +6,7 @@ from channels.layers import get_channel_layer
 from backend.utils import OnlineState
 import random
 from .match_state import MatchState
-from backend.utils import UserState
+from backend.utils import UserState, NotificationState
 
 global_tournament_name = 'global_tournament'
 
@@ -41,7 +41,7 @@ class ExitTournament:
     
     async def exit_owner(self):
         print("exit_owner()")
-        self.parent.erase_invitations(self.tournament_id)
+        await self.parent.erase_invitations(self.tournament_id)
         redis.hdel(global_tournament_name, self.parent.tournament_id)
         
         await self.channel_layer.group_send(
@@ -77,11 +77,14 @@ class TournamentState:
         redis.set_map(username, "notifications", notifications)
     
     @classmethod
-    def erase_invitations(cls, tournament_id):
+    async def erase_invitations(cls, tournament_id):
         data = cls.get(tournament_id)
         players = data["invited_players"]
-        for player in players:
-            cls.delete_invitation(tournament_id, player)
+        for username in players:
+            cls.delete_invitation(tournament_id, username)
+            await NotificationState.notify2(username, {
+                "type": "notification.update",
+            })
         
     
     @classmethod

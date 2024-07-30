@@ -349,7 +349,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "type": "match.start"
         })
         
-        TournamentState.erase_invitations(self.tournament_id)
+        await TournamentState.erase_invitations(self.tournament_id)
             
     async def tournament_update_players(self, event):
         await self.send_json({
@@ -609,6 +609,13 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         }
         await self.send_json(payload)
         
+    async def notification_update(self, event):
+        print("notification_update()")
+        notifications = self.user_state.notification.get()
+        await self.send_json({
+            "name": "update_notifications",
+            "notifications": notifications
+        })
         
 class RandomMatchConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
