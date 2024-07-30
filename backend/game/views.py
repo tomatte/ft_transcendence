@@ -572,6 +572,8 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
         self.user_state.notification.add(payload)
         
+        TournamentState.add_invited_player(event['tournament_id'], self.user.username)
+        
         print(f"NOTIFICATION_STATE: {self.user_state.notification.get()}")
         await self.send_json(payload)
         

@@ -62,6 +62,12 @@ class ExitTournament:
 
 class TournamentState:
     @classmethod
+    def add_invited_player(cls, tournament_id, username):
+        data = cls.get(tournament_id)
+        data["invited_players"].append(username)
+        redis.set_map(global_tournament_name, tournament_id, data)
+    
+    @classmethod
     def get_match_by_tournament(cls, tournament_id, username):
         print("lets go")
         tournament = TournamentState.get(tournament_id)
@@ -123,6 +129,7 @@ class TournamentState:
             'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'status': 'creating',
             'final_bracket_event_sent': 0,
+            'invited_players': []
         }
         
         redis.set_map(
