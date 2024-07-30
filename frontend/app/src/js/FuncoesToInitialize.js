@@ -1,6 +1,5 @@
 var LIST_USERS_TO_ADD = [];
 
-
 const getCookie = (name) => {
 	let cookieValue = null;
 	if (document.cookie && document.cookie !== '') {
@@ -69,6 +68,26 @@ const fetchDeleteFriend = async (username) => {
 		});
 	});
 	openModal('modalRemoveFriend')
+}
+
+
+const uptadeNickname = () => {
+	nickname = document.getElementById('nicknameInput').value;
+	if (nickname) {
+		const csrftoken = getCookie('csrftoken');
+		let body = {
+			nickname: document.getElementById('nicknameInput').value
+		}
+		fetch('https://localhost:443/api/users/uptate/uptade-nickname', {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrftoken
+			},
+			body: JSON.stringify(body)
+		})
+	}
 }
 
 
@@ -143,4 +162,52 @@ const generatoModalToDelete = () => {
 			</div>
 		</div>
 	`
+}
+
+
+const PageLogin = () => {
+	return `
+		<div class="simula_body">
+		<div class="login-container">
+			<img class="login-container__logo" src="/assets/logo/combination-mark_white.svg" alt="logo logomark">
+			<div class="login-container__content">
+
+				<div class="login-container__content__info">
+					<h1 class="login-container__content__info__title">Welcome, traveler!</h1>
+					<span class="login-container__content__info__subtitle font-body-medium">Log-in with your 42 account to access the game</span>
+				</div>
+
+				<form class="login-form-button">
+					<a class="button button--primary" id="login-42-button" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a&redirect_uri=https://localhost/api/auth/&response_type=code&scope=public&state=YOUR_UNIQUE_STATE_STRING">
+						<img class="login-container__logo" src="/assets/logo/logo_42_white.svg" alt="logo logomark 42">
+						<span class="button__text font-body-regular-bold">Login with 42</span>
+					</a>
+				</form>
+			</div>
+			<span class="login-container__credits-text font-body-regular">A project made by: etomiyos, dbrandao and clourenc, with the support of clandestino</span>
+		</div>
+		<div class="login-carousel">
+			<div id="carouselExampleIndicators" class="carousel slide carousel-fade">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<img class="d-block w-100" src="/assets/images/Login/login-carousel-slide-1.png" alt="Slide 1">
+					</div>
+					<div class="carousel-item">
+						<img class="d-block w-100" src="/assets/images/Login/login-carousel-slide-2.png" alt="Slide 2">
+					</div>
+					<div class="carousel-item">
+						<img class="d-block w-100" src="/assets/images/Login/login-carousel-slide-3.png" alt="Slide 3">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	`
+}
+
+const cleanupPage = (show) => {
+	let display = show === true ? 'block' : 'none';
+	document.querySelector('.sidebar').style.display = display;
+	document.querySelector('.page-content').style.display = display;
 }
