@@ -26,6 +26,10 @@ body {
     height: auto; /* Automatically adjust height */
     transform: translate(-50%, -50%);
     z-index: 3;
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+    pointer-events: none;
 }
 
 #score_left
@@ -34,6 +38,10 @@ body {
     position: absolute;
     top: 10%;
     left: 25%;
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+    pointer-events: none;
 }
 
 #score_right
@@ -42,6 +50,10 @@ body {
     position: absolute;
     top: 10%;
     right: 25%;
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+    pointer-events: none;
 }
 
 #table

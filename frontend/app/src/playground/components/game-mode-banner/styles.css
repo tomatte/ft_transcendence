@@ -72,6 +72,11 @@
     font-weight: 700;
     line-height: 32px;
     word-wrap: break-word;
+
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+    pointer-events: none;
 }
 
 .game-mode-banner__info__button {
@@ -89,6 +94,11 @@
     flex-shrink: 0;
     align-self: stretch;
     transition: width 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+    pointer-events: none;
 }
 
 .game-mode-banner:hover .game-mode-banner__illustration {
