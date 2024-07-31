@@ -52,6 +52,7 @@ run:
 	celery --workdir ./backend -A backend worker -D
 	-pkill -f 'python3 ./game_loop/game_loop.py'
 	python3 ./game_loop/game_loop.py &
+	python3 ./backend/manage.py migrate
 	python3 ./backend/manage.py runserver 0.0.0.0:8000
 
 celery:

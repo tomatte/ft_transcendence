@@ -14,6 +14,8 @@ listenButtonClick(
     () => playLocal()
 )
 
+
+ 
 const Home = (state) => {
     console.log({state})
 	const pageContentContainer = document.querySelector('.page-content__container');
@@ -91,9 +93,10 @@ const Home = (state) => {
                     <div class="modal__header">
                         <div class="modal__header__title">
                             <h4 class="modal__header__title__text">Invite to tournament</h4>
-                            <button id="button-close-create-tournament" class="button">
+                            <button id="button-close-invite-tournament" class="button" onclick="openModal('modalDeleteTournament')">
                                 <span class="material-icons-round modal__header__title__close icon--regular">close</span>
                             </button>
+
                         </div>
                 <div class="search-bar">
                     <span class="material-icons-round search-bar__icon icon--regular">search</span>
@@ -204,6 +207,28 @@ const Home = (state) => {
 			</table>
         </div>
     </div>
+            <div class="modal modal--remove-friend" id="modalDeleteTournament">
+			<div class="modal__header">
+				<div class="modal__header__title">
+					<div class="modal__header__title__text">
+						<h4>Delete tournament</h4>
+					</div>
+					<span class="material-icons-round modal__header__title__close icon--regular">close</span>
+				</div>
+				<span class="modal__header__description font-body-medium">
+					If you leave this page, the tournament will be ended.
+				</span>
+			</div>
+        <div class="modal__actions">
+            <button class="button button--secondary" onclick="closeModal('modalDeleteTournament')">
+                <span class="button__text font-body-regular-bold">No, stay</span>
+            </button>
+            <button id="button-close-create-tournament" class="button button--danger" onclick="closeBothModals()">
+                <span class="button__text font-body-regular-bold">Yes, leave tournament</span>
+            </button>
+			</div>
+		</div>
+
     
  <div id="modalOverlay" class="hidden"></div>
 

@@ -1,3 +1,5 @@
+/* TODO: change this filename */
+
 var LIST_USERS_TO_ADD = [];
 
 const getCookie = (name) => {
@@ -36,8 +38,21 @@ const filterUsers = () => {
 	document.getElementById('body__modal__add__friend').innerHTML = generateListOfUsersToAdd(filteredUsers);
 }
 
+const setButtonAddFriendSentStyle = (friend_username) => {
+	const btnId = `button-add-friend-${friend_username}`
+	const btn = document.getElementById(btnId)
+	btn.innerHTML = `
+		<span class="material-icons-round button__icon-left">sports_esports</span>
+		<span class="button__text font-body-regular-bold">Request sent!</span>
+		<span class="material-icons-round button__icon-right">sports_esports</span>
+	`
+	btn.style.cursor = 'default';
+	btn.classList.remove('button--success');
+	btn.classList.add('button--success-confirmation');
+}
 
 const fetchAddFriend = async (username) => {
+	setButtonAddFriendSentStyle(username);
 	const csrftoken = getCookie('csrftoken');
 	const response = await fetch('https://localhost:443/api/users/add/friend', {
 		method: 'POST',
@@ -52,24 +67,84 @@ const fetchAddFriend = async (username) => {
 	return await response.json();
 }
 
+const fetchAcceptFriendRequest = async (username) => {
+	document.getElementById(`row-friend-${username}`).remove()
+	const csrftoken = getCookie('csrftoken');
+	const response = await fetch('https://localhost:443/api/users/response/pedding-friend', {
+		method: 'POST',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRFToken': csrftoken
+		},
+		body: JSON.stringify({
+			username: username,
+			status: "accepted" 
+		})
+	});
+	if (response.status != 200) throw new Error('Failed to add friend');
+}
+
+const fetchRefuseFriendRequest = async (username) => {
+	document.getElementById(`row-friend-${username}`).remove()
+	const csrftoken = getCookie('csrftoken');
+	const response = await fetch('https://localhost:443/api/users/response/pedding-friend', {
+		method: 'POST',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRFToken': csrftoken
+		},
+		body: JSON.stringify({
+			username: username,
+			status: "declined"
+		})
+	});
+	if (response.status != 200) throw new Error('Failed to add friend');
+}
+
+const sendDeleteFriendRequest = async (username) => {
+	const csrftoken = getCookie('csrftoken');
+	await fetch('https://localhost:443/api/users/remove/friend', {
+		method: 'DELETE',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRFToken': csrftoken
+		},
+		body: JSON.stringify({ username: username })
+	});
+
+	document.getElementById(`row-friend-${username}`).remove()
+}
 
 const fetchDeleteFriend = async (username) => {
 	document.getElementById('div_to_modal_delete').innerHTML = generatoModalToDelete();
-	document.getElementById('accepted-delete').addEventListener('click', async () => {
-		const csrftoken = getCookie('csrftoken');
-		const response = await fetch('https://localhost:443/api/users/remove/friend', {
-			method: 'DELETE',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRFToken': csrftoken
-			},
-			body: JSON.stringify({ username: username })
-		});
-	});
+	const btnAcceptDelete = document.getElementById('button-accept-delete')
+	btnAcceptDelete.addEventListener('click', () => sendDeleteFriendRequest(username));
 	openModal('modalRemoveFriend')
 }
 
+const getAddFriendButton = (user) => {
+	const toAdd = /* html */ `
+		<button id="button-add-friend-${user.username}" class="button button--success" onclick="fetchAddFriend('${user.username}')">
+            <span class="material-icons-round button__icon-left">sports_esports</span>
+            <span class="button__text font-body-regular-bold">Add friend</span>
+            <span class="material-icons-round button__icon-right">sports_esports</span>
+		</button>
+	`
+
+	const pending = /* html */ `
+		<button class="button button--success-confirmation" style="cursor: default;">
+			<span class="material-icons-round button__icon-left">sports_esports</span>
+			<span class="button__text font-body-regular-bold">Request sent!</span>
+			<span class="material-icons-round button__icon-right">sports_esports</span>
+		</button>
+	`
+
+	if (user.friend_status == "pending") return pending;
+	return toAdd
+}
 
 const uptadeNickname = () => {
 	nickname = document.getElementById('nicknameInput').value;
@@ -95,7 +170,10 @@ const uptadeNickname = () => {
 
 
 const generateListOfUsersToAdd = (usersList) => {
+	usersList = usersList.filter((user) => user.friend_status != 'friend');
+	usersList = usersList.filter((user) => user.username != getCookie('username'));
 	return usersList.reduce((acc, user, index) => {
+		const addFriendButton = getAddFriendButton(user)
 		return acc + `
 			<tr class="table-row">
 				<td class="table-row__player">
@@ -107,9 +185,7 @@ const generateListOfUsersToAdd = (usersList) => {
 				</td>
 				<td class="table-row__data-default font-body-medium-bold">${index + 1}</td>
 				<td class="table-row__actions">
-					<button class="game-row-option" onclick="fetchAddFriend('${user.username}')">
-						<span class="material-icons-round game-row-option__icon">person_add</span>
-					</button>
+					${addFriendButton}
 				</td>
 			</tr>
 		`
@@ -159,7 +235,7 @@ const generatoModalToDelete = () => {
 				<button onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
 					<span class="button__text font-body-regular-bold">No, cancel</span>
 				</button>
-				<button class="button button--danger" id="accepted-delete">
+				<button onclick="closeModal('modalRemoveFriend')" class="button button--danger" id="button-accept-delete">
 					<span class="button__text font-body-regular-bold">Yes, remove friend</span>
 				</button>
 			</div>

@@ -4,6 +4,7 @@ import { showGamePage, showTournamentPage } from "./updateElements.js"
 import { mockPlayers } from "../state/mockState.js"
 import state from "../state/state.js"
 import { goBackHome } from "./updateElements.js"
+import { createTableLines } from "../../js/Friends.js"
 
 export function hideContents() {
     document.querySelector(".sidebar").style.display = 'none'
@@ -43,6 +44,7 @@ export function listenTestKeys() {
     })
     listenForKeyPress("5", () => showGamePage())
     listenForKeyPress("6", () => goBackHome())
+    listenForKeyPress("7", () => console.log({state}))
 }
 
 export function listenButtonClick(parent, btnId, callback) {
@@ -62,4 +64,41 @@ export function listenButtonClick(parent, btnId, callback) {
 export function addGoBackHomeButtonEventListener() {
     const parent = document.querySelector(".page-game-result__container")
     listenButtonClick(parent, "button-go-back-home", goBackHome)
+}
+
+export const fetchFriendRequests = async () => {
+	const response = await fetch('https://localhost/api/users/get/friends-request-receive', { method: 'GET', credentials: 'include' });
+	if (response.status != 200) throw new Error('Failed to fetch friends');
+	return await response.json();
+}
+
+export const orderNotificationsByDate = (notifications) => {
+    notifications.sort((a, b) => new Date(b.time) - new Date(a.time));
+}
+
+export const updateStateFriendNotifications = async () => {
+    const friendRequests = await fetchFriendRequests()
+    if (friendRequests.length <= 0) return ;
+    state.notifications = [...friendRequests, ...state.notifications]
+    orderNotificationsByDate(state.notifications)
+    if (state.currentPage == 'Notifications') { //TODO: change this to inject the html
+        state.renderPage()
+    }
+}
+
+export async function fetchFriends() {
+	const response = await fetch('https://localhost/api/users/get/get-list-friends', { method: 'GET', credentials: 'include' });
+	if (response.status != 200) throw new Error('Failed to fetch friends');
+	return await response.json();
+}
+
+export const updateStateFriends = async () => {
+    const friends = await fetchFriends()
+    if (friends.length <= 0) return ;
+    state.friends = friends
+    console.log({friends})
+    if (state.currentPage == 'Friends') {
+        const tableBody = document.querySelector('.page-content__container__content tbody');
+        tableBody.innerHTML = createTableLines(state.friends)
+    }
 }

@@ -6,7 +6,7 @@ from channels.layers import get_channel_layer
 from backend.utils import OnlineState
 import random
 from .match_state import MatchState
-from backend.utils import UserState
+from backend.utils import UserState, NotificationState
 
 global_tournament_name = 'global_tournament'
 
@@ -41,7 +41,9 @@ class ExitTournament:
     
     async def exit_owner(self):
         print("exit_owner()")
+        await self.parent.erase_invitations(self.tournament_id)
         redis.hdel(global_tournament_name, self.parent.tournament_id)
+        
         await self.channel_layer.group_send(
             self.tournament_id,
             { 'type': 'tournament.cancel'}
@@ -61,6 +63,36 @@ class ExitTournament:
         UserState.set_value(self.user.username, "tournament_channel", "")
 
 class TournamentState:
+    @classmethod
+    def delete_invitation(cls, id, username):
+        notifications = redis.get_map(username, "notifications")
+        to_remove = []
+        for n in notifications:
+            if n["type"] == "tournament" and n["tournament_id"] == id:
+                to_remove.append(n)
+                
+        for n in to_remove:
+            notifications.remove(n)
+            
+        redis.set_map(username, "notifications", notifications)
+    
+    @classmethod
+    async def erase_invitations(cls, tournament_id):
+        data = cls.get(tournament_id)
+        players = data["invited_players"]
+        for username in players:
+            cls.delete_invitation(tournament_id, username)
+            await NotificationState.notify2(username, {
+                "type": "notification.update",
+            })
+        
+    
+    @classmethod
+    def add_invited_player(cls, tournament_id, username):
+        data = cls.get(tournament_id)
+        data["invited_players"].append(username)
+        redis.set_map(global_tournament_name, tournament_id, data)
+    
     @classmethod
     def get_match_by_tournament(cls, tournament_id, username):
         print("lets go")
@@ -123,6 +155,7 @@ class TournamentState:
             'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'status': 'creating',
             'final_bracket_event_sent': 0,
+            'invited_players': []
         }
         
         redis.set_map(

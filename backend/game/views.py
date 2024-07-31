@@ -348,6 +348,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.group_send(self.tournament_id, {
             "type": "match.start"
         })
+        
+        await TournamentState.erase_invitations(self.tournament_id)
             
     async def tournament_update_players(self, event):
         await self.send_json({
@@ -572,8 +574,25 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
         self.user_state.notification.add(payload)
         
+        TournamentState.add_invited_player(event['tournament_id'], self.user.username)
+        
         print(f"NOTIFICATION_STATE: {self.user_state.notification.get()}")
         await self.send_json(payload)
+        
+    async def notification_new(self, event):
+        print(f"{self.user.username} notification_new()")
+        notification = event["data"]
+        notification["name"] = "new_notification"
+        print(notification)
+        await self.send_json(notification)
+        
+    async def notification_dynamic(self, event):
+        print(f"{self.user.username} notification_dynamic()")
+        print(event)
+        if "data" not in event:
+            print("WARNING: no data")
+            return
+        await self.send_json(event["data"])
         
     async def invite_to_tournament(self, data):
         print("invite_to_tournament()")
@@ -605,6 +624,13 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         }
         await self.send_json(payload)
         
+    async def notification_update(self, event):
+        print("notification_update()")
+        notifications = self.user_state.notification.get()
+        await self.send_json({
+            "name": "update_notifications",
+            "notifications": notifications
+        })
         
 class RandomMatchConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):

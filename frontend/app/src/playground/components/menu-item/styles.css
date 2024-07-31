@@ -1,0 +1,64 @@
+
+/* ------------------- MENU ITEM ------------------- */
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 4px;
+    justify-content: flex-start;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+}
+
+.menu-item a {
+    display: flex;
+    width: 100%;
+    padding: 8px;
+    align-items: center;
+    align-self: stretch;
+    text-decoration: none;
+    gap: 8px;
+    color: var(--Lunar-Dust-600);
+    border-radius: inherit;
+}
+
+.menu-item__icon {
+    color: inherit;
+}
+
+.menu-item__text {
+    flex: 1;
+    color: inherit;
+}
+
+.menu-item:hover{
+    background: var(--Comet-Cloud-950);
+}
+
+.menu-item:hover .menu-item__icon,
+.menu-item:hover .menu-item__text {
+    color: var(--Comet-Cloud-500);
+}
+
+.menu-item--active {
+    background: var(--gradient-menu-item-blue);
+}
+
+.menu-item--active .menu-item__icon, .menu-item--active:hover .menu-item__icon {
+    color: var(--Neptune-Blue-200);
+}
+
+.menu-item--active .menu-item__text, .menu-item--active:hover .menu-item__text {
+    color: var(--Comet-Cloud-50);
+}
+
+.menu-item--active:hover {
+    background: var(--gradient-blue-menu-item-hover);
+}
+

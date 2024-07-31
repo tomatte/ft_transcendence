@@ -1,0 +1,118 @@
+
+/* ------------------- PAGINATION ------------------- */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination__control {
+    position: relative;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--Comet-Cloud-1000);
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+}
+
+.pagination__control a {
+    text-decoration: none;
+    color: var(--Lunar-Dust-500);
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.pagination__control:hover {
+    background: var(--Comet-Cloud-950);
+}
+
+.pagination__control__text {
+    text-decoration: none;
+    color: var(--Lunar-Dust-500);
+}
+
+.pagination__control__icon-left, .pagination__control__icon-right {
+    text-decoration: none;
+    color: var(--Lunar-Dust-500);
+}
+
+.pagination__control:hover .pagination__control__text,
+.pagination__control:hover .pagination__control__icon-left,
+.pagination__control:hover .pagination__control__icon-right {
+    color: var(--Comet-Cloud-300);
+}
+
+.pagination__control--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.pagination__item-number {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--Comet-Cloud-1000);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+}
+
+
+.pagination__item-number a {
+    color: var(--Lunar-Dust-400);
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 12px;
+    width: 100%;
+    height: 100%;
+}
+
+.pagination__item-number:hover a {
+    color: var(--Comet-Cloud-300);
+}
+
+.pagination__item-number:hover {
+    background: var(--Comet-Cloud-950);
+}
+
+.pagination__item-number--active, .pagination__item-number--active:hover{
+    background: var(--Comet-Cloud-900);
+}
+
+.pagination__item-number--active a, .pagination__item-number--active:hover a{
+    color: var(--Comet-Cloud-200);
+}
+
+

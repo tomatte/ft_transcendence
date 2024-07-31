@@ -1,12 +1,7 @@
 import AddTableLines from './AddTableLines.js';
 import AddPaginationTables from './AddPaginationTables.js';
-
-async function fetchFriends() {
-	const response = await fetch('https://localhost/api/users/get/get-list-friends', { method: 'GET', credentials: 'include' });
-	if (response.status != 200) throw new Error('Failed to fetch friends');
-	return await response.json();
-}
-
+import { fetchFriends } from '../scripts/element-creators/utils.js';
+import state from '../scripts/state/state.js';
 
 const loadingPage = () => {
 	document.querySelector('.page-content__container').innerHTML = `
@@ -106,10 +101,10 @@ const loadingPage = () => {
 }
 
 
-const createTableLines = (matchesList) => {
+export const createTableLines = (matchesList) => {
 	return matchesList.reduce((acc, friend) => {
 		return acc + `
-			<tr class="table-row">
+			<tr id="row-friend-${friend.username}" class="table-row">
 				<td class="table-row__player">
 					<img class="table-row__player__image" src="${friend.avatar}" alt="player">
 					<div class="table-row__player__text">
@@ -140,7 +135,7 @@ var rankingData = {
 
 
 const Friends = async () => {
-	rankingData['rank_list'] = await fetchFriends();
+	rankingData['rank_list'] = state.friends;
 	loadingPage();
 	AddTableLines(rankingData);
 	AddPaginationTables(rankingData);
