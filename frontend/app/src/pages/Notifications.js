@@ -30,12 +30,23 @@ const infoTypes = {
     'match': matchRequestInfo,
 }
 
-function createRow(data) {
-    const info = infoTypes[data.type]
-    const pageContentContainer = document.querySelector('.page-content__container');
+function getBtnAcceptId(data) {
+    if (data.type == 'tournament') {
+        return `accept-${data.tournament_id}`
+    }
+    return `accept-friend-${data.owner.username}`
+}
 
-    const btnRefuseId = `refuse-${data.tournament_id}`
-    const btnAcceptId = `accept-${data.tournament_id}`
+function getBtnRefuseId(data) {
+    if (data.type == 'tournament') {
+        return `refuse-${data.tournament_id}`
+    }
+    return `refuse-friend-${data.owner.username}`
+}
+
+function getTournamentButton(data, info) {
+    const btnRefuseId = getBtnRefuseId(data)
+    const btnAcceptId = getBtnAcceptId(data)
 
     listenButtonClick(
         pageContentContainer,
@@ -48,7 +59,34 @@ function createRow(data) {
         btnRefuseId,
         () => console.log(`refuse ${data.owner.username}'s tournament`)
     )
-    
+
+    return /* html */ `
+        <button id="${btnAcceptId}" class="button ${info.buttonStyle}">
+            <span class="material-icons-round button__icon-left">${info.icon}</span>
+            <span class="button__text font-body-regular-bold">${info.accept_message}</span>
+        </button>
+    `
+}
+
+function getFriendRequestButtons(data, info) {
+    const btnRefuseId = getBtnRefuseId(data)
+    const btnAcceptId = getBtnAcceptId(data)
+    return /* html */ `
+        <button id="${btnAcceptId}" class="button ${info.buttonStyle}" onclick="fetchAcceptFriendRequest('${data.owner.username}')">
+            <span class="material-icons-round button__icon-left">${info.icon}</span>
+            <span class="button__text font-body-regular-bold">${info.accept_message}</span>
+        </button>
+        <button id="${btnRefuseId}" class="button button--outline">
+            <span class="material-icons-round button__icon-left">close</span>
+            <span class="button__text font-body-regular-bold">${info.refuse_message}</span>
+        </button>
+    `
+}
+
+function createRow(data) {
+    const info = infoTypes[data.type]
+    const pageContentContainer = document.querySelector('.page-content__container');
+    const buttons = info.type == 'tournament' ? getTournamentButton(data, info) : getFriendRequestButtons(data, info)
     return `<tr class="table-row">
             <td class="table-row__message">
                 <img class="table-row__message__image" src="${data.owner.avatar}" alt="player">
@@ -58,14 +96,7 @@ function createRow(data) {
                 </div>
             </td>
             <td class="table-row__actions">
-                <button id="${btnAcceptId}" class="button ${info.buttonStyle}">
-                    <span class="material-icons-round button__icon-left">${info.icon}</span>
-                    <span class="button__text font-body-regular-bold">${info.accept_message}</span>
-                </button>
-                <button id="${btnRefuseId}" class="button button--outline">
-                    <span class="material-icons-round button__icon-left">close</span>
-                    <span class="button__text font-body-regular-bold">${info.refuse_message}</span>
-                </button>
+                ${buttons}
             </td>
         </tr>
     `

@@ -536,7 +536,11 @@ def response_friend(request):
 
 	try:
 		is_valid_method(request, 'POST')
-		ManipulateUser(username=request.user.username).response_friend(request.POST['username'], request.POST['status'])
+		data = json.loads(request.body)
+		friend_username = data.get('username')
+		if friend_username is None:
+			return JsonResponse({'error': 'Missing username or status in the request'}, status=400)
+		ManipulateUser(username=request.user.username).response_friend(friend_username, "accepted")
 		return HttpResponse(status=200, content='Friend request accepted!')
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
