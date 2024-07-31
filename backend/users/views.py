@@ -27,6 +27,29 @@ class ExceptionConflict(Exception):
 		super().__init__('Method not allowed!')
 
 
+def send_notification_event(username, data):
+	channel_layer = get_channel_layer()
+	async_to_sync(channel_layer.group_send)(
+		username,
+		{
+			'type': 'notification.new',
+			'data': data,
+		}
+	)
+ 
+def send_update_friends_notification(username):
+	notification_data = {
+		'name': 'update_friends',
+	}
+    
+	channel_layer = get_channel_layer()
+	async_to_sync(channel_layer.group_send)(
+		username,
+		{
+			'type': "notification.dynamic",
+			'data': notification_data,
+		}
+	)
 
 def is_valid_method(request, method):
 	"""Função para verificar se o método é válido. Caso não seja, levanta uma exceção.
@@ -133,9 +156,11 @@ class ManipulateUser:
 		friendship.status = status
 		if friendship.status == 'accepted':
 			friendship.save()
+			send_update_friends_notification(self.me.username)
+			send_update_friends_notification(friend_username)
 		else:
 			friendship.delete()
-  
+   
 	def seding_friends(self):
 		response = Friendship.objects.filter(from_user=self.me, status='pending').values(
 			'to_user__id',
@@ -369,15 +394,6 @@ def all_users(request):
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 
-def send_notification_event(username, notification):
-	channel_layer = get_channel_layer()
-	async_to_sync(channel_layer.group_send)(
-		username,
-		{
-			'type': 'notification.new',
-			'data': notification,
-		}
-	)
 
 ##TESTADA
 def add_friend(request):

@@ -1,7 +1,7 @@
 import AddTableLines from './AddTableLines.js';
 import AddPaginationTables from './AddPaginationTables.js';
 import { fetchFriends } from '../scripts/element-creators/utils.js';
-
+import state from '../scripts/state/state.js';
 
 const loadingPage = () => {
 	document.querySelector('.page-content__container').innerHTML = `
@@ -135,7 +135,7 @@ var rankingData = {
 
 
 const Friends = async () => {
-	rankingData['rank_list'] = await fetchFriends();
+	rankingData['rank_list'] = state.friends;
 	loadingPage();
 	AddTableLines(rankingData);
 	AddPaginationTables(rankingData);
