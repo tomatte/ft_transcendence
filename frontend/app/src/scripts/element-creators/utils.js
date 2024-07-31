@@ -75,7 +75,7 @@ export const orderNotificationsByDate = (notifications) => {
     notifications.sort((a, b) => new Date(b.time) - new Date(a.time));
 }
 
-export const updateStateFriendNotifications = async (username, action) => {
+export const updateStateFriendNotifications = async () => {
     const friendRequests = await fetchFriendRequests()
     if (friendRequests.length <= 0) return ;
     state.notifications = [...friendRequests, ...state.notifications]
@@ -83,4 +83,17 @@ export const updateStateFriendNotifications = async (username, action) => {
     if (state.currentPage == 'Notifications') { //TODO: change this to inject the html
         state.renderPage()
     }
+}
+
+export async function fetchFriends() {
+	const response = await fetch('https://localhost/api/users/get/get-list-friends', { method: 'GET', credentials: 'include' });
+	if (response.status != 200) throw new Error('Failed to fetch friends');
+	return await response.json();
+}
+
+export const updateStateFriends = async () => {
+    const friends = await fetchFriends()
+    if (friends.length <= 0) return ;
+    state.friends = friends
+    console.log({friends})
 }

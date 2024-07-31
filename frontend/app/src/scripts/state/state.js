@@ -23,7 +23,8 @@ function getUserInfo() {
 const state = {
     user: {},
     notifications: [],
-    online_players: []
+    online_players: [],
+    friends: [],
 }
 export default state
 

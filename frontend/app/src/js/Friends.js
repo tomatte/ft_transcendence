@@ -1,11 +1,6 @@
 import AddTableLines from './AddTableLines.js';
 import AddPaginationTables from './AddPaginationTables.js';
-
-async function fetchFriends() {
-	const response = await fetch('https://localhost/api/users/get/get-list-friends', { method: 'GET', credentials: 'include' });
-	if (response.status != 200) throw new Error('Failed to fetch friends');
-	return await response.json();
-}
+import { fetchFriends } from '../scripts/element-creators/utils.js';
 
 
 const loadingPage = () => {
