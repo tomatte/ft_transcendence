@@ -75,7 +75,9 @@ function enterRunningLocalMatch() {
 }
 
 function updateNotifications(data) {
-    state['notifications'] = data.notifications
+    state.notifications = state.notifications.filter(n => n.type !== "tournament");
+    state['notifications'] = [...data.notifications, ...state.notifications]
+    orderNotificationsByDate(state.notifications)
     if (state.currentPage == 'Notifications') { //TODO: change this to inject the html
         state.renderPage()
     }

@@ -24,6 +24,7 @@ export function updateOnlinePlayersTournament(players) {
 
     const newOnline = diffOnlineAndQueue(players, state.tournament.players)
     const html = createOnlinePlayersTournamentRows(newOnline)
+    if (!html) return ;
     injectElement(html, "tournament_online_players")
     
     for (let key in players) {
