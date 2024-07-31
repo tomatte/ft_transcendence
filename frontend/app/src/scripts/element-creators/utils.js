@@ -80,4 +80,7 @@ export const updateStateFriendNotifications = async (username, action) => {
     if (friendRequests.length <= 0) return ;
     state.notifications = [...friendRequests, ...state.notifications]
     orderNotificationsByDate(state.notifications)
+    if (state.currentPage == 'Notifications') { //TODO: change this to inject the html
+        state.renderPage()
+    }
 }

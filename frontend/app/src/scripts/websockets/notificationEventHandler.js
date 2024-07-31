@@ -4,6 +4,7 @@ import { showGamePage } from "../element-creators/updateElements.js"
 import websocketMatch from "./websocketMatch.js"
 import websocketTournament from "./websocketTournament.js"
 import { listenPlayer2Moves } from "../game.js"
+import { orderNotificationsByDate } from "../element-creators/utils.js"
 
 class NotificationEventHandler {
     constructor (state) {
@@ -29,7 +30,8 @@ class NotificationEventHandler {
 
 function newConnection(data, state) {
     // TODO: create a function to merge the notifications from redis with notifications from database
-    state.notifications = data.notifications
+    state.notifications = [...data.notifications, ...state.notifications]
+    orderNotificationsByDate(state.notifications)
     state.online_players = data.online_players
     state.renderPage()
     console.log("newConnection()")
