@@ -101,7 +101,7 @@ const loadingPage = () => {
 }
 
 
-const createTableLines = (matchesList) => {
+export const createTableLines = (matchesList) => {
 	return matchesList.reduce((acc, friend) => {
 		return acc + `
 			<tr id="row-friend-${friend.username}" class="table-row">

@@ -4,6 +4,7 @@ import { showGamePage, showTournamentPage } from "./updateElements.js"
 import { mockPlayers } from "../state/mockState.js"
 import state from "../state/state.js"
 import { goBackHome } from "./updateElements.js"
+import { createTableLines } from "../../js/Friends.js"
 
 export function hideContents() {
     document.querySelector(".sidebar").style.display = 'none'
@@ -96,4 +97,8 @@ export const updateStateFriends = async () => {
     if (friends.length <= 0) return ;
     state.friends = friends
     console.log({friends})
+    if (state.currentPage == 'Friends') {
+        const tableBody = document.querySelector('.page-content__container__content tbody');
+        tableBody.innerHTML = createTableLines(state.friends)
+    }
 }
