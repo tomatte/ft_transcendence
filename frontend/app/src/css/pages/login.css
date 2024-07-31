@@ -26,6 +26,13 @@ body {
 	align-self: stretch;
 }
 
+.login-container__logo {
+	user-select: none; /* standard property for modern browsers */
+    -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
+    -moz-user-select: none; /* for older versions of Firefox */
+    pointer-events: none;
+}
+
 .login-container__content {
 	display: flex;
 	flex-direction: column;
