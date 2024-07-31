@@ -42,6 +42,23 @@ def is_valid_method(request, method):
 		raise ExceptionMethodNotAllowed()
 
 
+def format_friend_requests(friend_requests):
+	formatted_response = []
+	for item in friend_requests:
+		created_at = item['created_at']
+		if isinstance(created_at, datetime):
+			item['created_at'] = created_at.strftime('%Y-%m-%d %H:%M:%S')
+		formatted_response.append({
+			"owner": {
+				"username": item['from_user__username'],
+				"nickname": item['from_user__nickname'],
+				"avatar": item['from_user__avatar']
+			},
+			"time": item['created_at'],
+			"type": "friend"	
+		})
+	return formatted_response
+
 def get_global_ranking(player):
 	users_by_winners = User.objects.all().order_by('-winners')
 	return list(users_by_winners).index(player) + 1
@@ -124,19 +141,14 @@ class ManipulateUser:
 		return list(response)
 
 	def receive_friends(self):
-		response = Friendship.objects.filter(to_user=self.me, status='pending').values(
-			'from_user__id',
+		friend_requests = Friendship.objects.filter(to_user=self.me, status='pending').values(
 			'from_user__nickname',
 			'from_user__username',
+			'from_user__avatar',
 			'created_at'
 		)
-		formatted_response = []
-		for item in response:
-			created_at = item['created_at']
-			if isinstance(created_at, datetime):
-				item['created_at'] = created_at.strftime('%Y-%m-%d %H:%M:%S')
-			formatted_response.append(item)
-		return formatted_response
+  
+		return format_friend_requests(friend_requests)
 
 	def player_statistics_by_you(self, friend: object) -> dict:
 		if not friend:
