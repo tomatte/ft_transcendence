@@ -84,6 +84,12 @@ function getFriendRequestButtons(data, info) {
         () => removeStateFriendRequestNotification(data.owner.username)
     )
 
+    listenButtonClick(
+        pageContentContainer,
+        btnRefuseId,
+        () => removeStateFriendRequestNotification(data.owner.username)
+    )
+
     return /* html */ `
         <button id="${btnAcceptId}" class="button ${info.buttonStyle}" onclick="fetchAcceptFriendRequest('${data.owner.username}')">
             <span class="material-icons-round button__icon-left">${info.icon}</span>
