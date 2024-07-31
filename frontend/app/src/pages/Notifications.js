@@ -1,5 +1,6 @@
 import { joinTournament } from "../scripts/websockets/websocketActions.js"
 import { listenButtonClick } from "../scripts/element-creators/utils.js"
+import state from "../scripts/state/state.js"
 
 const tournamentRequestInfo = {
     accept_message: "Join Tournament",
@@ -45,6 +46,7 @@ function getBtnRefuseId(data) {
 }
 
 function getTournamentButton(data, info) {
+    const pageContentContainer = document.querySelector('.page-content__container');
     const btnRefuseId = getBtnRefuseId(data)
     const btnAcceptId = getBtnAcceptId(data)
 
@@ -52,12 +54,6 @@ function getTournamentButton(data, info) {
         pageContentContainer,
         btnAcceptId,
         () => joinTournament(data)
-    )
-
-    listenButtonClick(
-        pageContentContainer,
-        btnRefuseId,
-        () => console.log(`refuse ${data.owner.username}'s tournament`)
     )
 
     return /* html */ `
@@ -68,9 +64,26 @@ function getTournamentButton(data, info) {
     `
 }
 
+function removeStateFriendRequestNotification(username) {
+    state.notifications = state.notifications.filter((notification) => {
+        return (
+            notification.owner.username != username ||
+            notification.type != 'friend'
+        )
+    })
+}
+
 function getFriendRequestButtons(data, info) {
+    const pageContentContainer = document.querySelector('.page-content__container');
     const btnRefuseId = getBtnRefuseId(data)
     const btnAcceptId = getBtnAcceptId(data)
+
+    listenButtonClick(
+        pageContentContainer,
+        btnAcceptId,
+        () => removeStateFriendRequestNotification(data.owner.username)
+    )
+
     return /* html */ `
         <button id="${btnAcceptId}" class="button ${info.buttonStyle}" onclick="fetchAcceptFriendRequest('${data.owner.username}')">
             <span class="material-icons-round button__icon-left">${info.icon}</span>
@@ -83,11 +96,18 @@ function getFriendRequestButtons(data, info) {
     `
 }
 
+function getNotificationRowId(data) {
+    if (data.type == 'tournament') {
+        return `row-tournament-${data.tournament_id}`
+    }
+    return `row-friend-${data.owner.username}`
+}
+
 function createRow(data) {
     const info = infoTypes[data.type]
-    const pageContentContainer = document.querySelector('.page-content__container');
-    const buttons = info.type == 'tournament' ? getTournamentButton(data, info) : getFriendRequestButtons(data, info)
-    return `<tr class="table-row">
+    const buttons = data.type == 'tournament' ? getTournamentButton(data, info) : getFriendRequestButtons(data, info)
+    const rowId = getNotificationRowId(data)
+    return `<tr id="${rowId}" class="table-row">
             <td class="table-row__message">
                 <img class="table-row__message__image" src="${data.owner.avatar}" alt="player">
                 <div class="table-row__message__text">
@@ -121,10 +141,7 @@ const Notifications = (state) => {
           <div class="page-content__container__header__info">
             <h4 class="page-content__container__header__info__title">Notifications</h4>
           </div>
-          <button class="button button--secondary">
-            <span class="material-icons-round button__icon-left">refresh</span>
-            <span class="button__text font-body-regular-bold">Refresh</span>
-          </button>
+            <span></span>
         </div>
         
         <div class="page-content__container__content page-content__container__content--notification">

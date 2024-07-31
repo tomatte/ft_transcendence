@@ -541,7 +541,7 @@ def response_friend(request):
 		if friend_username is None:
 			return JsonResponse({'error': 'Missing username or status in the request'}, status=400)
 		ManipulateUser(username=request.user.username).response_friend(friend_username, "accepted")
-		return HttpResponse(status=200, content='Friend request accepted!')
+		return HttpResponse(status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Friendship.DoesNotExist:

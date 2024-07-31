@@ -69,6 +69,7 @@ const fetchAddFriend = async (username) => {
 }
 
 const fetchAcceptFriendRequest = async (username) => {
+	document.getElementById(`row-friend-${username}`).remove()
 	const csrftoken = getCookie('csrftoken');
 	const response = await fetch('https://localhost:443/api/users/response/pedding-friend', {
 		method: 'POST',
@@ -80,7 +81,6 @@ const fetchAcceptFriendRequest = async (username) => {
 		body: JSON.stringify({ username: username })
 	});
 	if (response.status != 200) throw new Error('Failed to add friend');
-	return await response.json();
 }
 
 const fetchDeleteFriend = async (username) => {
