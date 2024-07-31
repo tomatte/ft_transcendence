@@ -92,10 +92,16 @@ export async function fetchFriends() {
 	return await response.json();
 }
 
+function setFriendsOnlineStatus() {
+    state.friends.forEach(friend => {
+        friend.online = friend.username in state.online_players;
+    })
+}
+
 export const updateStateFriends = async () => {
     const friends = await fetchFriends()
-    if (friends.length <= 0) return ;
     state.friends = friends
+    setFriendsOnlineStatus()
     console.log({friends})
     if (state.currentPage == 'Friends') {
         const tableBody = document.querySelector('.page-content__container__content tbody');
