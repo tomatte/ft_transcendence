@@ -1,9 +1,6 @@
-function checkAndReplaceContent() {
-      const content = document.getElementById('.page-content__container');
-
-      if (!content.innerHTML.trim()) {
-        document.documentElement.innerHTML = `
-                 <div class="page-content__container__empty-state"> 
+const generateFriendsEmptyState = () => {
+	return `
+            <div class="page-content__container__empty-state"> 
             
                 <img src="../assets/images/empty/mail-dynamic-clay.png" alt="Mail Dynamic Clay" class="empty-state-image">
 
@@ -15,11 +12,6 @@ function checkAndReplaceContent() {
                 <button type="button" class="button button--success empty-button">
                     <span class="button__text font-body-regular-bold">Add friend</span>
                 </button>
-                </div>
-        `;
-      }
-    }
-
-    window.onload = checkAndReplaceContent;
-
- 
+            </div>
+	`
+}
