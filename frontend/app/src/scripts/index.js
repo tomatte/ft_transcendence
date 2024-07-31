@@ -6,6 +6,7 @@ import { insertProfileInfoData } from './sidebar.js';
 import modalCreateTournament from './modals/modalCreateTournament.js';
 import { listenTestKeys } from './element-creators/utils.js';
 import { addGoBackHomeButtonEventListener } from './element-creators/utils.js';
+import { updateStateFriendNotifications } from './element-creators/utils.js';
 
 
 const container = document.querySelector('.page-content__container');
@@ -55,6 +56,7 @@ window.addEventListener('load', () => {
   listenTestKeys() // TODO: remove in production
   addGoBackHomeButtonEventListener()
   getMyUser()
+  updateStateFriendNotifications()
 });
 
 
