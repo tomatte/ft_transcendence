@@ -39,8 +39,21 @@ const filterUsers = () => {
 	document.getElementById('body__modal__add__friend').innerHTML = generateListOfUsersToAdd(filteredUsers);
 }
 
+const setButtonAddFriendSentStyle = (friend_username) => {
+	const btnId = `button-add-friend-${friend_username}`
+	const btn = document.getElementById(btnId)
+	btn.innerHTML = `
+		<span class="material-icons-round button__icon-left">sports_esports</span>
+		<span class="button__text font-body-regular-bold">Request sent!</span>
+		<span class="material-icons-round button__icon-right">sports_esports</span>
+	`
+	btn.style.cursor = 'default';
+	btn.classList.remove('button--success');
+	btn.classList.add('button--success-confirmation');
+}
 
 const fetchAddFriend = async (username) => {
+	setButtonAddFriendSentStyle(username);
 	const csrftoken = getCookie('csrftoken');
 	const response = await fetch('https://localhost:443/api/users/add/friend', {
 		method: 'POST',
@@ -75,7 +88,7 @@ const fetchDeleteFriend = async (username) => {
 
 const getAddFriendButton = (user) => {
 	const toAdd = /* html */ `
-		<button class="button button--success" onclick="fetchAddFriend('${user.username}')">
+		<button id="button-add-friend-${user.username}" class="button button--success" onclick="fetchAddFriend('${user.username}')">
             <span class="material-icons-round button__icon-left">sports_esports</span>
             <span class="button__text font-body-regular-bold">Add friend</span>
             <span class="material-icons-round button__icon-right">sports_esports</span>
@@ -83,7 +96,7 @@ const getAddFriendButton = (user) => {
 	`
 
 	const pending = /* html */ `
-		<button class="button button--success-confirmation" style="cursor: default;" onclick="fetchAddFriend('${user.username}')">
+		<button class="button button--success-confirmation" style="cursor: default;">
 			<span class="material-icons-round button__icon-left">sports_esports</span>
 			<span class="button__text font-body-regular-bold">Request sent!</span>
 			<span class="material-icons-round button__icon-right">sports_esports</span>
