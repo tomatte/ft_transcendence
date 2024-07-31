@@ -78,7 +78,28 @@ const fetchAcceptFriendRequest = async (username) => {
 			'Content-Type': 'application/json',
 			'X-CSRFToken': csrftoken
 		},
-		body: JSON.stringify({ username: username })
+		body: JSON.stringify({
+			username: username,
+			status: "accepted" 
+		})
+	});
+	if (response.status != 200) throw new Error('Failed to add friend');
+}
+
+const fetchRefuseFriendRequest = async (username) => {
+	document.getElementById(`row-friend-${username}`).remove()
+	const csrftoken = getCookie('csrftoken');
+	const response = await fetch('https://localhost:443/api/users/response/pedding-friend', {
+		method: 'POST',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRFToken': csrftoken
+		},
+		body: JSON.stringify({
+			username: username,
+			status: "declined"
+		})
 	});
 	if (response.status != 200) throw new Error('Failed to add friend');
 }

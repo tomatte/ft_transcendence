@@ -89,7 +89,7 @@ function getFriendRequestButtons(data, info) {
             <span class="material-icons-round button__icon-left">${info.icon}</span>
             <span class="button__text font-body-regular-bold">${info.accept_message}</span>
         </button>
-        <button id="${btnRefuseId}" class="button button--outline">
+        <button id="${btnRefuseId}" class="button button--outline" onclick="fetchRefuseFriendRequest('${data.owner.username}')">
             <span class="material-icons-round button__icon-left">close</span>
             <span class="button__text font-body-regular-bold">${info.refuse_message}</span>
         </button>
