@@ -7,7 +7,8 @@ from django.db.models import Prefetch
 from django.contrib.auth import logout as _logout
 from django.shortcuts import redirect
 from datetime import datetime
-
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 
@@ -113,7 +114,7 @@ class ManipulateUser:
 		if Friendship.objects.filter(from_user=friend, to_user=self.me).exists():
 			raise ExceptionConflict('Friend request already sent!')
 
-		Friendship.objects.create(from_user=self.me, to_user=friend, status='pending')
+		return Friendship.objects.create(from_user=self.me, to_user=friend, status='pending')
 
 	def remove_friend(self, friend_username):
 		friend = User.objects.get(username=friend_username)
@@ -340,6 +341,15 @@ def all_users(request):
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 
+def send_notification_event(username, notification):
+	channel_layer = get_channel_layer()
+	async_to_sync(channel_layer.group_send)(
+		username,
+		{
+			'type': 'notification.new',
+			'data': notification,
+		}
+	)
 
 ##TESTADA
 def add_friend(request):
@@ -354,7 +364,13 @@ def add_friend(request):
 	try:
 		is_valid_method(request, 'POST')
 		data = json.loads(request.body)
-		ManipulateUser(username=request.user.username).add_friend(data.get('username'))
+		friend_username = data.get('username')
+		friendship = ManipulateUser(username=request.user.username).add_friend(friend_username)
+		send_notification_event(friend_username, {
+			'type': 'friend',
+			'owner': ManipulateUser(username=request.user.username).profile(),
+			'time': friendship.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+		})
 		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'msg': str(e)}, status=405)

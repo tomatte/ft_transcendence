@@ -13,6 +13,7 @@ const friendRequestInfo = {
     refuse_message: "Decline request",
     icon: "person_add",
     buttonStyle: "button--success",
+    message: 'wants to be your friend'
 }
 
 const matchRequestInfo = {

@@ -579,6 +579,13 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         print(f"NOTIFICATION_STATE: {self.user_state.notification.get()}")
         await self.send_json(payload)
         
+    async def notification_new(self, event):
+        print(f"{self.user.username} notification_new()")
+        notification = event["data"]
+        notification["name"] = "new_notification"
+        print(notification)
+        await self.send_json(notification)
+        
     async def invite_to_tournament(self, data):
         print("invite_to_tournament()")
         if "friend" not in data:
