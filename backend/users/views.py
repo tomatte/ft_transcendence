@@ -324,6 +324,28 @@ def my_user(request):
 		return JsonResponse({'message': str(e)}, status=405)
 
 
+def set_pending_friend_status(username, users: list):
+	friend_requests_sent = ManipulateUser(username=username).seding_friends()
+	friend_requests_usernames = {request['to_user__username'] for request in friend_requests_sent}
+	for user in users:
+		if user['username'] in friend_requests_usernames:
+			user['friend_status'] = "pending"
+   
+def set_friend_status(username, users: list):
+	friends = ManipulateUser(username=username).friends()
+	friends_usernames = {
+		friend.from_user.username
+		if friend.from_user.username != username
+		else friend.to_user.username
+		for friend in friends
+	}
+ 
+	for user in users:
+		if user['username'] in friends_usernames:
+			user['friend_status'] = "friend"
+		else:
+			user['friend_status'] = "not_friend"
+  
 ##TESTADA
 def all_users(request):
 	"""Função para retornar todos os usuarios.
@@ -337,7 +359,10 @@ def all_users(request):
 	try:
 		is_valid_method(request, "GET")
 		users = User.objects.all().values('username', 'nickname', 'avatar').order_by('winners')
-		return JsonResponse(list(users), status=200, safe=False)
+		users_list = list(users)
+		set_friend_status(request.user.username, users_list)
+		set_pending_friend_status(request.user.username, users_list)
+		return JsonResponse(users_list, status=200, safe=False)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 

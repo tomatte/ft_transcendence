@@ -73,9 +73,32 @@ const fetchDeleteFriend = async (username) => {
 	openModal('modalRemoveFriend')
 }
 
+const getAddFriendButton = (user) => {
+	const toAdd = /* html */ `
+		<button class="button button--success" onclick="fetchAddFriend('${user.username}')">
+            <span class="material-icons-round button__icon-left">sports_esports</span>
+            <span class="button__text font-body-regular-bold">Add friend</span>
+            <span class="material-icons-round button__icon-right">sports_esports</span>
+		</button>
+	`
+
+	const pending = /* html */ `
+		<button class="button button--success-confirmation" style="cursor: default;" onclick="fetchAddFriend('${user.username}')">
+			<span class="material-icons-round button__icon-left">sports_esports</span>
+			<span class="button__text font-body-regular-bold">Request sent!</span>
+			<span class="material-icons-round button__icon-right">sports_esports</span>
+		</button>
+	`
+
+	if (user.friend_status == "pending") return pending;
+	return toAdd
+}
 
 const generateListOfUsersToAdd = (usersList) => {
+	usersList = usersList.filter((user) => user.friend_status != 'friend');
+	usersList = usersList.filter((user) => user.username != getCookie('username'));
 	return usersList.reduce((acc, user, index) => {
+		const addFriendButton = getAddFriendButton(user)
 		return acc + `
 			<tr class="table-row">
 				<td class="table-row__player">
@@ -87,9 +110,7 @@ const generateListOfUsersToAdd = (usersList) => {
 				</td>
 				<td class="table-row__data-default font-body-medium-bold">${index + 1}</td>
 				<td class="table-row__actions">
-					<button class="game-row-option" onclick="fetchAddFriend('${user.username}')">
-						<span class="material-icons-round game-row-option__icon">person_add</span>
-					</button>
+					${addFriendButton}
 				</td>
 			</tr>
 		`
