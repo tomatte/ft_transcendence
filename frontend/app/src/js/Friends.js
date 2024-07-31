@@ -109,7 +109,7 @@ const loadingPage = () => {
 const createTableLines = (matchesList) => {
 	return matchesList.reduce((acc, friend) => {
 		return acc + `
-			<tr class="table-row">
+			<tr id="row-friend-${friend.username}" class="table-row">
 				<td class="table-row__player">
 					<img class="table-row__player__image" src="${friend.avatar}" alt="player">
 					<div class="table-row__player__text">

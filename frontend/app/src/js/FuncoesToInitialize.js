@@ -83,20 +83,25 @@ const fetchAcceptFriendRequest = async (username) => {
 	if (response.status != 200) throw new Error('Failed to add friend');
 }
 
+const sendDeleteFriendRequest = async (username) => {
+	const csrftoken = getCookie('csrftoken');
+	await fetch('https://localhost:443/api/users/remove/friend', {
+		method: 'DELETE',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRFToken': csrftoken
+		},
+		body: JSON.stringify({ username: username })
+	});
+
+	document.getElementById(`row-friend-${username}`).remove()
+}
+
 const fetchDeleteFriend = async (username) => {
 	document.getElementById('div_to_modal_delete').innerHTML = generatoModalToDelete();
-	document.getElementById('accepted-delete').addEventListener('click', async () => {
-		const csrftoken = getCookie('csrftoken');
-		const response = await fetch('https://localhost:443/api/users/remove/friend', {
-			method: 'DELETE',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRFToken': csrftoken
-			},
-			body: JSON.stringify({ username: username })
-		});
-	});
+	const btnAcceptDelete = document.getElementById('button-accept-delete')
+	btnAcceptDelete.addEventListener('click', () => sendDeleteFriendRequest(username));
 	openModal('modalRemoveFriend')
 }
 
@@ -187,7 +192,7 @@ const generatoModalToDelete = () => {
 				<button onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
 					<span class="button__text font-body-regular-bold">No, cancel</span>
 				</button>
-				<button class="button button--danger" id="accepted-delete">
+				<button onclick="closeModal('modalRemoveFriend')" class="button button--danger" id="button-accept-delete">
 					<span class="button__text font-body-regular-bold">Yes, remove friend</span>
 				</button>
 			</div>
