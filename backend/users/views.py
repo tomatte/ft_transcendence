@@ -131,8 +131,11 @@ class ManipulateUser:
 		friend = User.objects.get(username=friend_username)
 		friendship = Friendship.objects.get(from_user=friend, to_user=self.me)
 		friendship.status = status
-		friendship.save()
-
+		if friendship.status == 'accepted':
+			friendship.save()
+		else:
+			friendship.delete()
+  
 	def seding_friends(self):
 		response = Friendship.objects.filter(from_user=self.me, status='pending').values(
 			'to_user__id',
@@ -538,9 +541,10 @@ def response_friend(request):
 		is_valid_method(request, 'POST')
 		data = json.loads(request.body)
 		friend_username = data.get('username')
+		status = data.get('status')
 		if friend_username is None:
 			return JsonResponse({'error': 'Missing username or status in the request'}, status=400)
-		ManipulateUser(username=request.user.username).response_friend(friend_username, "accepted")
+		ManipulateUser(username=request.user.username).response_friend(friend_username, status)
 		return HttpResponse(status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
