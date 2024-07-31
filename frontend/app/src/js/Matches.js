@@ -75,7 +75,7 @@ const loadingPage = () => {
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Matches</h4>
 			</div>
-			<button class="button button--secondary">
+			<button type="button" class="button button--secondary">
 				<span class="material-icons-round button__icon-left">refresh</span>
 				<span class="button__text font-body-regular-bold">Refresh</span>
 			</button>

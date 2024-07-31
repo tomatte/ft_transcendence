@@ -1,6 +1,6 @@
 :root {
-    --font-primary: 'Red Hat Display', sans-serif;
-	--font-secondary: 'Play', sans-serif;
+    --font-primary: 'Red Hat Display', 'Inter', sans-serif;
+    --font-secondary: 'Play', 'Inter', sans-serif;
     --font-size-default: 16px;
 
     --h1-font-size: 48px;

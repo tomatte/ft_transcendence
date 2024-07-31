@@ -85,7 +85,7 @@ const generateListOfUsersToAdd = (usersList) => {
 				</td>
 				<td class="table-row__data-default font-body-medium-bold">${index + 1}</td>
 				<td class="table-row__actions">
-					<button class="game-row-option" onclick="fetchAddFriend('${user.username}')">
+					<button type="button" class="game-row-option" onclick="fetchAddFriend('${user.username}')">
 						<span class="material-icons-round game-row-option__icon">person_add</span>
 					</button>
 				</td>
@@ -134,10 +134,10 @@ const generatoModalToDelete = () => {
 				</span>
 			</div>
 			<div class="modal__actions">
-				<button onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
+				<button type="button" onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
 					<span class="button__text font-body-regular-bold">No, cancel</span>
 				</button>
-				<button class="button button--danger" id="accepted-delete">
+				<button type="button" class="button button--danger" id="accepted-delete">
 					<span class="button__text font-body-regular-bold">Yes, remove friend</span>
 				</button>
 			</div>

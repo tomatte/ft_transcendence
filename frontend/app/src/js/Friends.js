@@ -14,7 +14,7 @@ const loadingPage = () => {
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Friends</h4>
 			</div>
-			<button id="addFriendButton" class="button button--success" onclick="openModalToAdd()">
+			<button type="button" id="addFriendButton" class="button button--success" onclick="openModalToAdd()">
 				 <span class="button__text font-body-regular-bold">Add Friend</span>
 			</button>
 		</div>
@@ -121,7 +121,7 @@ const createTableLines = (matchesList) => {
 				<td class="table-row__data-default font-body-medium-bold">${friend.losses_against_you}</td>
 				<td class="table-row__data-default font-body-medium-bold">${friend.winners_against_you}</td>
 				<td class="table-row__actions">
-					<button class="game-row-option" onclick="fetchDeleteFriend('${friend.username}')">
+					<button type="button" class="game-row-option" onclick="fetchDeleteFriend('${friend.username}')">
 						<span class="material-icons-round game-row-option__icon">person_remove</span>
 					</button>
 				</td>
