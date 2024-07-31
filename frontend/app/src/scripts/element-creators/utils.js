@@ -94,7 +94,6 @@ export async function fetchFriends() {
 
 export const updateStateFriends = async () => {
     const friends = await fetchFriends()
-    if (friends.length <= 0) return ;
     state.friends = friends
     console.log({friends})
     if (state.currentPage == 'Friends') {

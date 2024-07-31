@@ -444,6 +444,8 @@ def remove_friend(request):
 		is_valid_method(request, 'DELETE')
 		data = json.loads(request.body)
 		ManipulateUser(username=request.user.username).remove_friend(data.get('username'))
+		send_update_friends_notification(request.user.username)
+		send_update_friends_notification(data.get('username'))
 		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'msg': str(e)}, status=405)
