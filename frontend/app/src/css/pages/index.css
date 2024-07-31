@@ -16,7 +16,7 @@
 @import '../../playground/components/tag/styles.css';
 @import '../../playground/components/toggle/styles.css';
 
-html, body
+html, body, .simula_body
 {
 	margin: 0;
 	padding: 0;
@@ -24,7 +24,7 @@ html, body
 	width: 100%;
 }
 
-body
+body , .simula_body 
 {
 	background: var(--gradient-blue-background);
 	overflow: hidden;
