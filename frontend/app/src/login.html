@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" href="assets/logo/logo_fav_icon.svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round" rel="stylesheet">
-    
+
 
     <link rel="stylesheet" href="css/pages/login.css">
     <link rel="stylesheet" href="css/pages/index.css">
@@ -14,11 +14,11 @@
     <link rel="stylesheet" href="css/colors.css">
     <link rel="stylesheet" href="css/typography.css">
     <link rel="stylesheet" href="css/components.css">
-  
+
 	<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    
+
 	<title>Welcome to Otter Space</title>
 
 	<script src ="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -35,12 +35,12 @@
                 <h1 class="login-container__content__info__title">Welcome, traveler!</h1>
                 <span class="login-container__content__info__subtitle font-body-medium">Log-in with your 42 account to access the game</span>
             </div>
-            
+
             <form class="login-form-button">
-                <button type="button" class="button button--primary" id="login-42-button">
+                <a type="button" class="button button--primary" id="login-42-button" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a&redirect_uri=https://localhost/api/auth/&response_type=code&scope=public&state=YOUR_UNIQUE_STATE_STRING">
                     <img class="login-container__logo" src="/assets/logo/logo_42_white.svg" alt="logo logomark 42">
                     <span class="button__text font-body-regular-bold">Login with 42</span>
-                </button>
+                </a>
             </form>
         </div>
         <span class="login-container__credits-text font-body-regular">A project made by: etomiyos, dbrandao and clourenc, for 42 São Paulo</span>
@@ -73,17 +73,6 @@
             interval: 6000,
             ride: 'carousel',
             pause: false
-        });
-
-        document.getElementById("login-42-button").addEventListener("click", function(event) {
-            event.preventDefault(); // Prevent default form submission
-            const clientId = 'u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a';
-            const redirectUri = 'https://localhost/api/auth/';
-            const scope = 'public';
-            const state = 'YOUR_UNIQUE_STATE_STRING'; // This should be a unique value for each request to prevent CSRF attacks
-
-            const authUrl = `https://api.intra.42.fr/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&state=${state}`;
-            window.location.href = authUrl;
         });
     </script>
 </html>

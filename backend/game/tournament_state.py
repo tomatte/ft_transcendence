@@ -5,18 +5,25 @@ from enum import Enum
 from channels.layers import get_channel_layer
 from backend.utils import OnlineState
 import random
+from .match_state import MatchState
+from backend.utils import UserState, NotificationState
 
 global_tournament_name = 'global_tournament'
 
 class ExitTournament:
     def __init__(self, parent: 'TournamentState') -> None:
         self.parent = parent
+        self.user = parent.user
+        self.channel_layer = self.parent.channel_layer
+        self.tournament_id = parent.tournament_id
         self.actions = {
             'creating': self.exit_creating,
         }
     
     async def exit(self):
         data = redis.get_map(global_tournament_name, self.parent.tournament_id)
+        if data != None and data["status"] == "started":
+            return
         if data != None:
             await self.actions[data['status']](data)
         
@@ -34,24 +41,73 @@ class ExitTournament:
     
     async def exit_owner(self):
         print("exit_owner()")
+        await self.parent.erase_invitations(self.tournament_id)
         redis.hdel(global_tournament_name, self.parent.tournament_id)
-        self.parent.channel_layer.group_send(
-            self.parent.tournament_id,
+        
+        await self.channel_layer.group_send(
+            self.tournament_id,
             { 'type': 'tournament.cancel'}
         )
     
     async def exit_player(self, data):
-        pass
-    
+        data = self.parent.get(self.parent.tournament_id)
+        data["players"].remove(self.user.username)
+        self.parent.set_value("players", data["players"])
+        await self.channel_layer.group_send(self.tournament_id, {
+            "type": "tournament.update_players",
+            "players": self.parent.get_players(self.tournament_id)
+        })
+
     async def exit_user_state(self):
-        exists = redis.hexists(self.parent.user.username, 'tournament_id')
-        if exists == False:
-            return
-        
-        redis.hdel(self.parent.user.username, 'tournament_id')
-    
+        UserState.set_value(self.user.username, "tournament_id", "")
+        UserState.set_value(self.user.username, "tournament_channel", "")
 
 class TournamentState:
+    @classmethod
+    def delete_invitation(cls, id, username):
+        notifications = redis.get_map(username, "notifications")
+        to_remove = []
+        for n in notifications:
+            if n["type"] == "tournament" and n["tournament_id"] == id:
+                to_remove.append(n)
+                
+        for n in to_remove:
+            notifications.remove(n)
+            
+        redis.set_map(username, "notifications", notifications)
+    
+    @classmethod
+    async def erase_invitations(cls, tournament_id):
+        data = cls.get(tournament_id)
+        players = data["invited_players"]
+        for username in players:
+            cls.delete_invitation(tournament_id, username)
+            await NotificationState.notify2(username, {
+                "type": "notification.update",
+            })
+        
+    
+    @classmethod
+    def add_invited_player(cls, tournament_id, username):
+        data = cls.get(tournament_id)
+        data["invited_players"].append(username)
+        redis.set_map(global_tournament_name, tournament_id, data)
+    
+    @classmethod
+    def get_match_by_tournament(cls, tournament_id, username):
+        print("lets go")
+        tournament = TournamentState.get(tournament_id)
+        match = MatchState.get(tournament["semi_finals"][0])
+        
+        is_user_in_match = (
+            username == match["player_left"]["username"]
+            or username == match["player_right"]["username"]
+        )
+        
+        if is_user_in_match:
+            return match
+        return MatchState.get(tournament["semi_finals"][1])
+    
     @classmethod
     def get_players(self, id):
         data = redis.get_map(global_tournament_name, id)
@@ -99,6 +155,7 @@ class TournamentState:
             'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'status': 'creating',
             'final_bracket_event_sent': 0,
+            'invited_players': []
         }
         
         redis.set_map(

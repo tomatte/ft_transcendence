@@ -4,7 +4,7 @@ import Ranking from "../js/Ranking.js";
 import Friends from "../js/Friends.js";
 import Statistics from "../js/Statistics.js";
 import Notifications from "../pages/Notifications.js";
-import Settings from "../pages/Settings.js";
+import Settings from "../js/Settings.js";
 import Game from "../pages/Game.js";
 import Tournament from "../pages/Tournament.js";
 

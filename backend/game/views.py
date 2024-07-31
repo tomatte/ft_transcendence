@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from asgiref.sync import async_to_sync, sync_to_async
 import json
+import asyncio
 from typing import Dict, TypedDict
 import uuid
 from backend.utils import redis_client, MyAsyncWebsocketConsumer, UserState, OnlineState
@@ -83,10 +84,16 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
             return
         
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard("match", self.channel_name)
+        try:
+            await self.channel_layer.group_discard("match", self.channel_name)
+        except asyncio.CancelledError:
+            print("Task was cancelled")
         if self.match_id:
             await self.channel_layer.group_discard(self.match_id, self.channel_name)
         if redis_client.hexists(self.user.username, "match_id"):
+            match = MatchState.get(self.match_id)
+            if match != None and match["phase"] == "running":
+                return
             redis_client.set_map_str(self.user.username, "match_id", "")
 
     async def player_move(self, data: PlayerMoveDataType):
@@ -168,6 +175,7 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         }
         
         await self.send_json(payload)
+        await self.close(1000)
         
         if redis_client.hexists("global_matches", self.match_id):
             await create_match(MatchRedis(self.match_id))
@@ -218,7 +226,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         UserState.set_value(self.user.username, "tournament_channel", self.channel_name)
         
-        await self.send_json({ 'name': 'connected' })
+        tournament_id = redis_client.get_map_str(self.user.username, "tournament_id")
+        if tournament_id != None and tournament_id != "":
+            await self.reconnect(tournament_id)
+        else: 
+            await self.send_json({ 'name': 'connected' })
 
     async def receive(self, text_data):
         print(text_data)
@@ -241,12 +253,34 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         print(f"***{self.user.username} disconnected from tournament***")
         if not hasattr(self, "tournament_id") or not hasattr(self, "user"):
             return
-        UserState.set_value(self.user.username, "tournament_channel", "")
-        UserState.set_value(self.user.username, "tournament_id", "")
+        await self.tournament_state.exit()
         await self.channel_layer.group_discard(self.tournament_id, self.channel_name)
+        
+    async def reconnect(self, tournament_id):
+        tournament = TournamentState.get(tournament_id)
+        if tournament == None:
+            redis_client.set_map_str(self.user.username, "tournament_id", "")
+            await self.send_json({ 'name': 'connected' })
+            return
+        
+        self.tournament_id = tournament_id
+        self.tournament_state.tournament_id = tournament_id
+        redis_client.set_map_str(self.user.username, "tournament_channel", self.channel_name)
+        await self.channel_layer.group_add(self.tournament_id, self.channel_name)
+        
+        await self.send_json({
+            'name': 'reconnected',
+            'tournament_id': self.tournament_id,
+            'players': TournamentState.get_players(self.tournament_id)
+        })
+        
+        if "stage" in tournament and tournament["stage"] == "semifinal_result":
+            match = TournamentState.get_match_by_tournament(self.tournament_id, self.user.username)
+            await self.send_tournament_semifinal_end_result(match)
         
     async def create_tournament(self, data):
         self.tournament_id = self.tournament_state.create()
+        self.is_owner = True
         await self.channel_layer.group_add(self.tournament_id, self.channel_name)
         
         payload = {
@@ -266,6 +300,7 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
+        self.is_owner = False
         if not self.validation.join_tournament.can_join(data):
             #TODO: send error message to client
             return 
@@ -313,6 +348,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.group_send(self.tournament_id, {
             "type": "match.start"
         })
+        
+        await TournamentState.erase_invitations(self.tournament_id)
             
     async def tournament_update_players(self, event):
         await self.send_json({
@@ -326,16 +363,18 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
     async def tournament_cancel(self, event):
         print("EVENT tournament_cancel()")
+        if not self.is_owner:
+            await self.send_json({ "name": "cancel_tournament" })
+        await self.close(1000)
         
-    async def tournament_semifinal_end(self, event):
-        print(f"EVENT {self.user.username} tournament_semifinal_end()")
-        match = MatchState.get(event["match_id"])
-        
+    async def send_tournament_semifinal_end_result(self, match):
         player_left = OnlineState.get_user(match["player_left"]["username"])
         player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
         
         player_right = OnlineState.get_user(match["player_right"]["username"])
         player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
         
         await self.send_json({
             "name": "semifinal_end",
@@ -343,10 +382,20 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
             "player_right": player_right
         })
         
-        Task.send(self.channel_name, {"type": "tournament.bracket_final"}, 5)
+    async def tournament_semifinal_end(self, event):
+        print(f"EVENT {self.user.username} tournament_semifinal_end()")
+        match = MatchState.get(event["match_id"])
+        
+        await self.send_tournament_semifinal_end_result(match)
+        
+        self.tournament_state.set_value("stage", "semifinal_result")
+        
+        Task.send_tournament(self.user.username, {"type": "tournament.bracket_final"}, 5)
         
     async def tournament_bracket_final(self, event):
         print(f"EVENT {self.user.username} tournament_bracket_final()")
+        
+        self.tournament_state.set_value("stage", "")
         
         matches = TournamentState.get_value(self.tournament_id, "semi_finals")
         match1 = MatchState.get(matches[0])
@@ -412,9 +461,11 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         
         player_left = OnlineState.get_user(match["player_left"]["username"])
         player_left["points"] = match["player_left"]["points"]
+        player_left["winner"] = match["player_left"]["winner"]
         
         player_right = OnlineState.get_user(match["player_right"]["username"])
         player_right["points"] = match["player_right"]["points"]
+        player_right["winner"] = match["player_right"]["winner"]
         
         await self.send_json({
             "name": "final_end",
@@ -449,6 +500,9 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.group_add("notification", self.channel_name)
 
         await self.send_json(payload)
+        
+        await self.enter_running_match()
+        await self.enter_running_tournament()
 
     async def receive(self, text_data):
         print(f"{self.user.username} received a notification:")
@@ -476,6 +530,30 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
             await self.user_state.online.disconnected()
         await self.channel_layer.group_discard("chat", self.channel_name)
         return await super().disconnect(close_code)
+    
+    async def enter_running_match(self):
+        match_id = redis_client.get_map_str(self.user.username, "match_id")
+        if match_id == None or match_id == "":
+            return
+        
+        match = MatchState.get(match_id)
+        if match["match_type"] == "local":
+            await self.send_json({"name": "enter_running_local_match"})
+        else:
+            await self.send_json({"name": "enter_running_match"})
+        
+    async def enter_running_tournament(self):
+        tournament_id = redis_client.get_map_str(self.user.username, "tournament_id")
+        if tournament_id == None or tournament_id == "":
+            return
+        
+        tournament = TournamentState.get(tournament_id)
+        if tournament == None:
+            UserState.set_value(self.user.username, "tournament_id", "")
+            UserState.set_value(self.user.username, "tournament_channel", "")
+            return
+        
+        await self.send_json({"name": "enter_running_tournament"})
         
     async def tournament_invitation(self, event):
         print(f"{self.user.username} received a tournament invitation")
@@ -496,8 +574,25 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
         self.user_state.notification.add(payload)
         
+        TournamentState.add_invited_player(event['tournament_id'], self.user.username)
+        
         print(f"NOTIFICATION_STATE: {self.user_state.notification.get()}")
         await self.send_json(payload)
+        
+    async def notification_new(self, event):
+        print(f"{self.user.username} notification_new()")
+        notification = event["data"]
+        notification["name"] = "new_notification"
+        print(notification)
+        await self.send_json(notification)
+        
+    async def notification_dynamic(self, event):
+        print(f"{self.user.username} notification_dynamic()")
+        print(event)
+        if "data" not in event:
+            print("WARNING: no data")
+            return
+        await self.send_json(event["data"])
         
     async def invite_to_tournament(self, data):
         print("invite_to_tournament()")
@@ -529,6 +624,13 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         }
         await self.send_json(payload)
         
+    async def notification_update(self, event):
+        print("notification_update()")
+        notifications = self.user_state.notification.get()
+        await self.send_json({
+            "name": "update_notifications",
+            "notifications": notifications
+        })
         
 class RandomMatchConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
@@ -596,6 +698,7 @@ class LocalMatchConsumer(MyAsyncWebsocketConsumer):
         MatchState.set(match["id"], match)
         
         await self.send_json({ "name": "start" })
+        await self.close(1000)
         
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard("local_match", self.channel_name)

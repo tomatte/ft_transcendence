@@ -16,7 +16,9 @@ class ModalCreateTournament {
     updateState() {
         state.tournament = {
             players: [state.user],
-            action: 'create'
+            action: 'create',
+            isOwner: true,
+            invitedPlayers: [],
         }
     }
 
@@ -37,11 +39,6 @@ class ModalCreateTournament {
         const closeBtn = document.getElementById(this.closeBtnId)
         if (closeBtn) {
             closeBtn.addEventListener('click', this.close)
-        }
-
-        const modalOverlay = document.getElementById('modalOverlay')
-        if (modalOverlay) {
-            modalOverlay.addEventListener('click', this.close)
         }
     }
 

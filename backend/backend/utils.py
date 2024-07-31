@@ -122,6 +122,13 @@ class NotificationState:
     redis = redis_client
     channel_notification_key = "channels_notification"
     channel_layer = get_channel_layer()
+    
+    @classmethod
+    async def notify2(cls, username, event):
+        await cls.channel_layer.group_send(
+            username,
+            event
+        )
    
     def __init__(self, user, channel_name) -> None:
         self.user = user

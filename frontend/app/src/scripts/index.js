@@ -5,6 +5,8 @@ import { initState } from './state/state.js';
 import { insertProfileInfoData } from './sidebar.js';
 import modalCreateTournament from './modals/modalCreateTournament.js';
 import { listenTestKeys } from './element-creators/utils.js';
+import { addGoBackHomeButtonEventListener } from './element-creators/utils.js';
+import { updateStateFriendNotifications, updateStateFriends } from './element-creators/utils.js';
 
 
 const container = document.querySelector('.page-content__container');
@@ -45,17 +47,26 @@ const listenHashChanges = () => {
 window.addEventListener('load', () => {
   initState()
   websocketNotification.listen()
+  getMyUser()
+  insertProfileInfoData()
   renderPage();
   listenHashChanges();
-  insertProfileInfoData(state.user)
   listenTestKeys() // TODO: remove in production
-  getMyUser()
+  addGoBackHomeButtonEventListener()
+  updateStateFriendNotifications()
+  updateStateFriends()
 });
 
 
 async function getMyUser() {
 	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
 	if (response.status !== 200) {
-    window.location.href = '/login.html'
+      cleanupPage(false)
+      document.body.innerHTML =PageLogin()
+      $('#carouselExampleIndicators').carousel({
+        interval: 6000,
+        ride: 'carousel',
+        pause: false
+    });
   }
 }

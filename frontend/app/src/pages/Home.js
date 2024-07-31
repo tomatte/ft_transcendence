@@ -223,7 +223,7 @@ const Home = (state) => {
             <button class="button button--secondary" onclick="closeModal('modalDeleteTournament')">
                 <span class="button__text font-body-regular-bold">No, stay</span>
             </button>
-            <button class="button button--danger" onclick="closeBothModals()">
+            <button id="button-close-create-tournament" class="button button--danger" onclick="closeBothModals()">
                 <span class="button__text font-body-regular-bold">Yes, leave tournament</span>
             </button>
 			</div>
