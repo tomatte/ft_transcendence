@@ -28,6 +28,7 @@ class MatchRedis:
         self.ball = BallRedis(data['ball'])
         self.match_type:str = data['match_type']
         self.created_at:str = data['created_at']
+        self.id:str = data['id']
 
 class TournamentRedis:
     def __init__(self, id):
@@ -36,7 +37,7 @@ class TournamentRedis:
         self.id:str = data['id']
         self.date:str = data['date']
         self.status:str = data['status']
-        self.final_bracket_event_sent:int = data['final_bracket_event_sent']
+        self.final_started:bool = data['final_started']
         self.final = data['final']
         self.semi_finals = (
             MatchRedis(data['semi_finals'][0]),

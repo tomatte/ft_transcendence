@@ -45,6 +45,7 @@ export function listenTestKeys() {
     listenForKeyPress("5", () => showGamePage())
     listenForKeyPress("6", () => goBackHome())
     listenForKeyPress("7", () => console.log({state}))
+    listenForKeyPress("8", () => showGamePage())
 }
 
 export function listenButtonClick(parent, btnId, callback) {
@@ -92,13 +93,23 @@ export async function fetchFriends() {
 	return await response.json();
 }
 
-export const updateStateFriends = async () => {
-    const friends = await fetchFriends()
-    if (friends.length <= 0) return ;
-    state.friends = friends
-    console.log({friends})
+function setFriendsOnlineStatus() {
+    state.friends.forEach(friend => {
+        friend.online = friend.username in state.online_players;
+    })
+}
+
+export const updateFriendsOnlineStatus = async () => {
+    setFriendsOnlineStatus()
+    console.log({panpan: state})
     if (state.currentPage == 'Friends') {
         const tableBody = document.querySelector('.page-content__container__content tbody');
         tableBody.innerHTML = createTableLines(state.friends)
     }
+}
+
+export const updateStateFriends = async () => {
+    const friends = await fetchFriends()
+    state.friends = friends
+    updateFriendsOnlineStatus()
 }

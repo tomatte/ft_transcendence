@@ -293,10 +293,17 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     async def terminate_tournament(self):
         # TODO: save tournament data and delete match from redis
         await self.close(1000)
-        if redis_client.hexists("global_tournament", self.tournament_id):
-            tournament_redis = TournamentRedis(self.tournament_id)
-            redis_client.hdel("global_tournament", self.tournament_id)
-            await create_tournament(tournament_redis)
+        
+        if not redis_client.hexists("global_tournament", self.tournament_id):
+            return
+        
+        tournament_redis = TournamentRedis(self.tournament_id)
+        redis_client.hdel("global_tournament", self.tournament_id)
+        await create_tournament(tournament_redis)
+        MatchState.delete(tournament_redis.semi_finals[0].id)
+        MatchState.delete(tournament_redis.semi_finals[1].id)
+        MatchState.delete(tournament_redis.final.id)
+            
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
@@ -420,11 +427,10 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.start_final(winner_left, winner_right)
         
     def start_final(self, winner1, winner2):
-        sent = TournamentState.get_value(self.tournament_id, "final_bracket_event_sent")
-        sent += 1
-        self.tournament_state.set_value("final_bracket_event_sent", sent)
-        if sent != 4:
+        if not TournamentState.can_start_final(self.tournament_id):
             return
+
+        self.tournament_state.set_value("final_started", True)
         
         match_id = MatchState.create("final")
         
