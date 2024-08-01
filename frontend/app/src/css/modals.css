@@ -442,8 +442,8 @@
 .share-ranking__content__info__player__text__place{
     align-self: stretch;
     background: linear-gradient(90deg, #E2A60C 0%, #D4470B 85%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
      font-weight: 700;
 }
@@ -519,8 +519,8 @@
 .share-ranking__content__info__player__text__place-two{
     align-self: stretch;
     background: linear-gradient(90deg, #A7A7BF 0%, #606084 85%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
      font-weight: 700;
 }

@@ -126,8 +126,8 @@ body {
 
 .game-result__content__info__winner {
     background: linear-gradient(90deg, #E2A60C 0%, #D4470B 85%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0;
     font-weight: 700;

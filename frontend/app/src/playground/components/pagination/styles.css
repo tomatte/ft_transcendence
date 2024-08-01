@@ -30,9 +30,9 @@
     transition: all 0.2s ease;
     cursor: pointer;
 
-    user-select: none; /* standard property for modern browsers */
     -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
     -moz-user-select: none; /* for older versions of Firefox */
+    user-select: none; /* standard property for modern browsers */
 }
 
 .pagination__control a {
@@ -82,9 +82,9 @@
     cursor: pointer;
     transition: all 0.2s ease;
 
-    user-select: none; /* standard property for modern browsers */
     -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
     -moz-user-select: none; /* for older versions of Firefox */
+    user-select: none; /* standard property for modern browsers */
 }
 
 

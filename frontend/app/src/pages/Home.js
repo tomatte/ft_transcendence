@@ -47,7 +47,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">LOCAL MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button id="button-play-local-match" class="button button--secondary">
+                    <button type="button" id="button-play-local-match" class="button button--secondary">
                         <span class="material-icons-round button__icon-left">computer</span>
                         <span class="button__text font-body-regular-bold">Play locally</span>
                     </button>
@@ -62,7 +62,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">FRIENDLY MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button onclick="openModal('modalFriendlyMatch')" class="button button--success">
+                    <button type="button" onclick="openModal('modalFriendlyMatch')" class="button button--success">
                         <span class="material-icons-round button__icon-left">sports_esports</span>
                         <span class="button__text font-body-regular-bold">Play with a friend</span>
                     </button>
@@ -78,7 +78,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">RANDOM MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button id="button-play-random-match" class="button button--primary">
+                    <button type="button" id="button-play-random-match" class="button button--primary">
                         <span class="material-icons-round button__icon-left">shuffle</span>
                         <span class="button__text font-body-regular-bold">Play randomly</span>
                     </button>
@@ -93,7 +93,7 @@ const Home = (state) => {
                     <div class="modal__header">
                         <div class="modal__header__title">
                             <h4 class="modal__header__title__text">Invite to tournament</h4>
-                            <button id="button-close-invite-tournament" class="button" onclick="openModal('modalDeleteTournament')">
+                            <button type="button" id="button-close-invite-tournament" class="button" onclick="openModal('modalDeleteTournament')">
                                 <span class="material-icons-round modal__header__title__close icon--regular">close</span>
                             </button>
 
@@ -136,7 +136,7 @@ const Home = (state) => {
             <div class="modal__header">
                 <div class="modal__header__title">
                     <h4 class="modal__header__title__text">Friendly Match</h4>
-                    <button onclick="closeModal('modalFriendlyMatch')" class="button">
+                    <button type="button" onclick="closeModal('modalFriendlyMatch')" class="button">
                         <span class="material-icons-round modal__header__title__close icon--regular">close</span>
                     </button>
                 </div>
@@ -168,7 +168,7 @@ const Home = (state) => {
                             </td>
                             <td class="table-row__data-default font-body-medium-bold">#132</td>
                             <td class="table-row__actions-friendly">
-                                <button class="button button--success">
+                                <button type="button" class="button button--success">
                                     <span class="button__text font-body-regular-bold"> Send invite</span>
                                 </button>
                             </td>
@@ -183,7 +183,7 @@ const Home = (state) => {
                             </td>
                             <td class="table-row__data-default font-body-medium-bold">#155</td>
                             <td class="table-row__actions-friendly">
-                                <button class="button button--success">
+                                <button type="button" class="button button--success">
                                     <span class="button__text font-body-regular-bold"> Send invite</span>
                                 </button>
                             </td>
@@ -198,7 +198,7 @@ const Home = (state) => {
                             </td>
                             <td class="table-row__data-default font-body-medium-bold">#133</td>
                             <td class="table-row__actions-friendly">
-                                <button class="button button--success">
+                                <button type="button" class="button button--success">
                                     <span class="button__text font-body-regular-bold"> Send invite </span>
                                 </button>
                             </td>
@@ -213,17 +213,16 @@ const Home = (state) => {
 					<div class="modal__header__title__text">
 						<h4>Delete tournament</h4>
 					</div>
-					<span class="material-icons-round modal__header__title__close icon--regular">close</span>
 				</div>
 				<span class="modal__header__description font-body-medium">
 					If you leave this page, the tournament will be ended.
 				</span>
 			</div>
         <div class="modal__actions">
-            <button class="button button--secondary" onclick="closeModal('modalDeleteTournament')">
+            <button type="button" class="button button--secondary" onclick="closeModal('modalDeleteTournament')">
                 <span class="button__text font-body-regular-bold">No, stay</span>
             </button>
-            <button id="button-close-create-tournament" class="button button--danger" onclick="closeBothModals()">
+            <button type="button" id="button-close-create-tournament" class="button button--danger" onclick="closeBothModals()">
                 <span class="button__text font-body-regular-bold">Yes, leave tournament</span>
             </button>
 			</div>

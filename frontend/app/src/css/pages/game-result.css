@@ -62,8 +62,8 @@
 .tournament-result__info__text__title {
     align-self: stretch;
     background: linear-gradient(90deg, #E2A60C 0%, #D4470B 85%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -172,8 +172,8 @@
     font-weight: 700;
     line-height: 120%; /* 57.6px */
     background: linear-gradient(90deg, #9A9AAF 0%, #565665 85%, #151515 100%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -252,8 +252,8 @@
     line-height: 120%;
 
     background: linear-gradient(90deg, #CD2420 0%, #FF3A36 49.9%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -268,8 +268,8 @@
     line-height: 160%;
 
     background: linear-gradient(90deg, #CD2420 0%, #FF3A36 49.9%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -319,8 +319,8 @@
     line-height: 120%; /* 57.6px */
 
     background: linear-gradient(90deg, #1369B9 0%, #60B2FF 100%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -335,8 +335,8 @@
     line-height: 160%; /* 38.4px */
 
     background: linear-gradient(90deg, #1369B9 0%, #60B2FF 100%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 

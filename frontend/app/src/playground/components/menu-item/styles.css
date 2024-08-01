@@ -12,9 +12,9 @@
     cursor: pointer;
     box-sizing: border-box;
 
-    user-select: none; /* standard property for modern browsers */
     -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
     -moz-user-select: none; /* for older versions of Firefox */
+    user-select: none; /* standard property for modern browsers */
 }
 
 .menu-item a {
@@ -22,6 +22,7 @@
     align-items: center;
     gap: 8px;
     padding: 8px;
+    align-self: stretch;
     width: 100%;
     text-decoration: none;
     color: var(--Lunar-Dust-600);

@@ -6,7 +6,7 @@ const settingsPageHtml = () => {
             <div class="page-content__container__header__info">
                 <h4 class="page-content__container__header__info__title">Settings</h4>
             </div>
-            <button class="button button--primary">
+            <button type="button" class="button button--primary">
                 <span class="button__text font-body-regular-bold" onclick="updateInformationSettings()">Save changes</span>
             </button>
         </div>
@@ -22,7 +22,7 @@ const settingsPageHtml = () => {
                         <form id="uploadForm" action="/upload_photo_endpoint" method="post" enctype="multipart/form-data" style="display: none;">
                             <input type="file" id="photoFile" name="photo" accept=".png, .jpg, .jpeg" onChange="aux_uptadePhotoFront(this)">
                         </form>
-                        <button id="updatePhotoBtn" class="button button--outline" onclick="document.getElementById('photoFile').click();">
+                        <button type="button" id="updatePhotoBtn" class="button button--outline" onclick="document.getElementById('photoFile').click();">
                             <span class="button__text font-body-regular-bold">Update photo</span>
                         </button>
                     </div>

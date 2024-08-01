@@ -56,8 +56,8 @@ html, body
 
 .Searching-Title {
     background: linear-gradient(90deg, #9A9AAF 0%, #565665 85%, #151515 100%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 

@@ -308,7 +308,7 @@ const generatoModalToDelete = () => {
 				<button type="button" onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
 					<span class="button__text font-body-regular-bold">No, cancel</span>
 				</button>
-				<button onclick="closeModal('modalRemoveFriend')" class="button button--danger" id="button-accept-delete">
+				<button type="button" onclick="closeModal('modalRemoveFriend')" class="button button--danger" id="button-accept-delete">
 					<span class="button__text font-body-regular-bold">Yes, remove friend</span>
 				</button>
 			</div>

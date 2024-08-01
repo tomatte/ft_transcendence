@@ -98,7 +98,7 @@ const loadingBasePage = () => {
 				</span>
 			</div>
 			<div class="modal__actions">
-				<button onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
+				<button type="button" onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
 					<span class="button__text font-body-regular-bold">No, cancel</span>
 				</button>
 				<button class="button button--danger">
