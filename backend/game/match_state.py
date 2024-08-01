@@ -57,6 +57,13 @@ class MatchState:
         'id': ''
     }
     
+    @classmethod
+    def delete(cls, id):
+        if redis.hexists("global_matches", id):
+            redis.hdel("global_matches", id)
+            return True
+        return False
+    
     """ 
         if default save=True then save to redis and return id 
         else then don't save to redis and just return the match data

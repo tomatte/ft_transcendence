@@ -28,6 +28,7 @@ class MatchRedis:
         self.ball = BallRedis(data['ball'])
         self.match_type:str = data['match_type']
         self.created_at:str = data['created_at']
+        self.id:str = data['id']
 
 class TournamentRedis:
     def __init__(self, id):
