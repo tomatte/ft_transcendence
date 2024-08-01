@@ -27,8 +27,8 @@ const getMyProfile = () => {
 		document.cookie = `nickname=${data.nickname}`;
 		document.getElementById("profile-info-nickname").innerText = data.nickname;
 
-		document.cookie = `avatar=https://localhost/${data.avatar}`;
-		document.getElementById("profile-info-img").src = 'https://localhost/' + data.avatar;
+		document.cookie = `avatar=${data.avatar}`;
+		document.getElementById("profile-info-img").src = data.avatar;
 
 		document.cookie = `username=${data.username}`;
 		document.getElementById("profile-info-name").innerText = data.username;
