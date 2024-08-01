@@ -87,7 +87,6 @@ export function listenMoves() {
 }
 
 async function handlePlayer2KeyDown(event) {
-    console.log("handlePlayer2KeyDown")
     if (event.key === 'w') {
         player2Move('up');
     } else if (event.key === 's') {
@@ -96,7 +95,6 @@ async function handlePlayer2KeyDown(event) {
 }
 
 async function handlePlayer2KeyUp(event) {
-    console.log("handlePlayer2KeyUp")
     if (event.key == 'w' || event.key == 's') {
         player2Move("stop");
     }

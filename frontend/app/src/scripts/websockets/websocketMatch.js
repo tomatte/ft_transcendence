@@ -8,12 +8,10 @@ class WebsocketMatch {
     }
 
     listen() {
-        console.log("listening to match...")
         this.client = new WebSocket("wss://134.209.223.141:443/ws/match/")
 
         this.client.onmessage = (event) => {
             let data = JSON.parse(event.data)
-            console.log(data)
                 
             matchEventHandler.execute(data)
             listenMoves()

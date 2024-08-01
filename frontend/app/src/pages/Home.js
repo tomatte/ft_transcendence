@@ -17,7 +17,6 @@ listenButtonClick(
 
  
 const Home = (state) => {
-    console.log({state})
 	const pageContentContainer = document.querySelector('.page-content__container');
   
         pageContentContainer.innerHTML = /*html*/ `

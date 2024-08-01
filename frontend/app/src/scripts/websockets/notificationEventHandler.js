@@ -37,12 +37,10 @@ function newConnection(data, state) {
     state.online_players = data.online_players
     updateFriendsOnlineStatus()
     state.renderPage()
-    console.log("newConnection()")
 }
 
 function newNotification(data, state) {
     state['notifications'].unshift(data)
-    console.log({state})
     if (state.currentPage == 'Notifications') { //TODO: change this to inject the html
         state.renderPage()
     }
@@ -54,12 +52,9 @@ function updateOnlinePlayers(data, state) {
     if (state.hasOwnProperty("tournament") && state.tournament.is_owner) {
         updateOnlinePlayersTournament(state.online_players)
     }
-    console.log("updateOnlinePlayers()")
 }
 
 function tournamentInvitation(data, state) {
-    console.log("tournamentInvitation()")
-    console.log(data)
 }
 
 function enterRunningMatch() {

@@ -140,8 +140,6 @@ function createRows(notifications) {
 }
 
 const Notifications = (state) => {
-    console.log(state)
-    console.log(state.notifications)
 	const pageContentContainer = document.querySelector('.page-content__container');
   
 	pageContentContainer.innerHTML = `

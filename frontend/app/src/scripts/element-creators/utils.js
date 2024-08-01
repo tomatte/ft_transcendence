@@ -37,7 +37,6 @@ export function listenButtonClick(parent, btnId, callback) {
         let targetElement = event.target;
         while (targetElement != null && targetElement !== this) {
             if (targetElement.id === btnId) {
-                console.log(`${btnId} clicked`);
                 callback()
                 break;
             }
@@ -85,7 +84,6 @@ function setFriendsOnlineStatus() {
 
 export const updateFriendsOnlineStatus = async () => {
     setFriendsOnlineStatus()
-    console.log({panpan: state})
     if (state.currentPage == 'Friends') {
         const tableBody = document.querySelector('.page-content__container__content tbody');
         tableBody.innerHTML = createTableLines(state.friends)
