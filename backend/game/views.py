@@ -420,11 +420,10 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.start_final(winner_left, winner_right)
         
     def start_final(self, winner1, winner2):
-        sent = TournamentState.get_value(self.tournament_id, "final_bracket_event_sent")
-        sent += 1
-        self.tournament_state.set_value("final_bracket_event_sent", sent)
-        if sent != 4:
+        if not TournamentState.can_start_final(self.tournament_id):
             return
+
+        self.tournament_state.set_value("final_started", True)
         
         match_id = MatchState.create("final")
         

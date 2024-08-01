@@ -36,7 +36,7 @@ class TournamentRedis:
         self.id:str = data['id']
         self.date:str = data['date']
         self.status:str = data['status']
-        self.final_bracket_event_sent:int = data['final_bracket_event_sent']
+        self.final_started:bool = data['final_started']
         self.final = data['final']
         self.semi_finals = (
             MatchRedis(data['semi_finals'][0]),
