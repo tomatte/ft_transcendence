@@ -110,6 +110,8 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         
     async def match_tick(self, event):
         match = MatchState.get(self.match_id)
+        if match is None:
+            return
         payload = {
             "name": "coordinates",
             "player_left": match["player_left"],
@@ -177,8 +179,7 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         await self.send_json(payload)
         await self.close(1000)
         
-        if MatchState.can_save(self.match_id):
-            match = MatchState.get(self.match_id)
+        if match["should_save"]:
             match["should_save"] = False
             MatchState.set(self.match_id, match)
             match_redis = MatchRedis(self.match_id)

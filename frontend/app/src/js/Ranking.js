@@ -53,11 +53,11 @@ const createTableLines = (ranking_list, start) => {
 						<span class="table-row__player__text__nickname font-body-regular">${item.username}</span>
 					</div>
 				</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.global_ranking}</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.losses_against_you}</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.winners_against_you}</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.percent_winner}%</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.percent_losses}</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.total_score}</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.wins}</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.losses}</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.win_rate}%</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.losses_rate}</td>
 			</tr>
 		`;
 	}, '');
