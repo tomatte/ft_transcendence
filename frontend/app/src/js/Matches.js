@@ -31,7 +31,7 @@ const createTableLines = (matchesList) => {
 	return matchesList.reduce((acc, item) => {return acc + `
 		<tr class="table-row">
 			<td class="table-row__player">
-				<div class="table-row__player__image-container player__status-offline">
+				<div class="table-row__player__image-container">
 					<img class="table-row__player__image" src="${item.opponent_avatar}" alt="player">
 				</div>
 				<div class="table-row__player__text">
