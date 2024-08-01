@@ -248,7 +248,7 @@ const generateListOfUsersToAdd = (usersList) => {
 		return acc + `
 			<tr class="table-row">
 				<td class="table-row__player">
-					<div class="table-row__player__image-container player__status-offline">
+					<div class="table-row__player__image-container">
 						<img class="table-row__player__image" src="${user.avatar}" alt="player">
 					</div>
 					<div class="table-row__player__text">
