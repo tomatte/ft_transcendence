@@ -177,9 +177,15 @@ class MatchConsumer(MyAsyncWebsocketConsumer):
         await self.send_json(payload)
         await self.close(1000)
         
-        if redis_client.hexists("global_matches", self.match_id):
-            await create_match(MatchRedis(self.match_id))
-            redis_client.hdel("global_matches", self.match_id)
+        if MatchState.can_save(self.match_id):
+            match = MatchState.get(self.match_id)
+            match["should_save"] = False
+            MatchState.set(self.match_id, match)
+            match_redis = MatchRedis(self.match_id)
+            await create_match(match_redis)
+        else:
+            MatchState.delete(self.match_id)
+
             
     async def end_local_match(self):
         redis_client.set_map_str(self.user.username, "match_id", "")
