@@ -3,7 +3,6 @@ import websocketNotification from './websockets/websocketNotification.js'
 import state from './state/state.js';
 import { initState } from './state/state.js';
 import modalCreateTournament from './modals/modalCreateTournament.js';
-import { listenTestKeys } from './element-creators/utils.js';
 import { addGoBackHomeButtonEventListener } from './element-creators/utils.js';
 import { updateStateFriendNotifications, updateStateFriends } from './element-creators/utils.js';
 
@@ -49,7 +48,6 @@ window.addEventListener('load', () => {
   getMyUser()
   renderPage();
   listenHashChanges();
-  listenTestKeys() // TODO: remove in production
   addGoBackHomeButtonEventListener()
   updateStateFriendNotifications()
   updateStateFriends()
