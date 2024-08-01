@@ -247,7 +247,7 @@ const generatoModalToDelete = () => {
 
 
 const PageLogin = () => {
-	return /* html */`
+	return /* html */ `
 	<div class="simula_body">
 		<img class="stars_game1 star-login" src="assets/background-stars.svg" alt="Star Background 1">
 		<img class="stars_game2 star-login" src="assets/background-stars.svg" alt="Star Background 2">
@@ -280,6 +280,15 @@ const PageLogin = () => {
 					</div>
 					<div class="carousel-item">
 						<img class="d-block w-100" src="./assets/images/login/login-carousel-slide-3.png" alt="Slide 3">
+					</div>
+					<div class="carousel-item">
+						<img class="d-block w-100" src="./assets/images/login/login-carousel-slide-4.png" alt="Slide 4">
+					</div>
+					<div class="carousel-item">
+						<img class="d-block w-100" src="./assets/images/login/login-carousel-slide-5.png" alt="Slide 5">
+					</div>
+					<div class="carousel-item">
+						<img class="d-block w-100" src="./assets/images/login/login-carousel-slide-6.png" alt="Slide 6">
 					</div>
 				</div>
 			</div>
