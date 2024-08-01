@@ -115,7 +115,9 @@ function createRow(data) {
     const rowId = getNotificationRowId(data)
     return `<tr id="${rowId}" class="table-row">
             <td class="table-row__message">
-                <img class="table-row__message__image" src="${data.owner.avatar}" alt="player">
+                <div class="table-row__player__image-container">
+                    <img class="table-row__message__image" src="${data.owner.avatar}" alt="player">
+                </div>
                 <div class="table-row__message__text">
                     <span class="table-row__message__text__content font-body-medium">${data.owner.username} ${info.message}</span>
                     <span class="table-row__message__text__timestamp font-body-regular">${data.time}</span>
