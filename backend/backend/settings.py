@@ -77,7 +77,7 @@ MIDDLEWARE = [
     'backend.CustomMiddleware.CustomMiddleware',
 ]
 
-ALLOWED_HOSTS = ['localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '134.209.223.141']
 CSRF_TRUSTED_ORIGINS = ['https://localhost']
 
 AUTHENTICATION_BACKENDS=['backend.backends.MyBackend']
