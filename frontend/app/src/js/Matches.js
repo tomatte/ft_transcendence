@@ -31,7 +31,7 @@ const createTableLines = (matchesList) => {
 	return matchesList.reduce((acc, item) => {return acc + `
 		<tr class="table-row">
 			<td class="table-row__player">
-				<div class="table-row__player__image-container player__status-offline">
+				<div class="table-row__player__image-container">
 					<img class="table-row__player__image" src="${item.opponent_avatar}" alt="player">
 				</div>
 				<div class="table-row__player__text">
@@ -39,12 +39,12 @@ const createTableLines = (matchesList) => {
 					<span class="table-row__player__text__nickname font-body-regular">${item.opponent_nickname}</span>
 				</div>
 			</td>
-			<td class="table-row__data-default font-body-medium-bold">Friendly Match</td>
+			<td class="table-row__data-default font-body-medium-bold">${item.type}</td>
 			<td class="table-row__data-default font-body-medium-bold">${item.my_score} X ${item.opponent_score}</td>
 			<td class="table-row__tag">
 			   ${get_status_match(item.winner)}
 			</td>
-			<td class="table-row__data-default font-body-medium-bold">30/06/2024</td>
+			<td class="table-row__data-default font-body-medium-bold">${item.date}</td>
 		</tr>`
 	}, '')
 }

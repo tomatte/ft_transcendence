@@ -164,7 +164,7 @@ class TournamentState:
         payload = {
             'players': [self.user.username],
             'id': self.tournament_id,
-            'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'date': datetime.now().strftime('%Y-%m-%d %H:%M'),
             'status': 'creating',
             'final_started': False,
             'invited_players': []

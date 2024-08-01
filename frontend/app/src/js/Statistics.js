@@ -79,7 +79,7 @@ const Statistics = async () => {
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Average Points Taken per Match</span>
 						<div class="metric-line__line"></div>
-						<span class="metric-line__data font-body-medium-bold">Um dia eu faço</span>
+						<span class="metric-line__data font-body-medium-bold">${statistics_data.average_points_taken}</span>
 					</div>
 				</div>
 			</div>
