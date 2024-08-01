@@ -28,7 +28,6 @@ class TournamentEventHandler {
 
     execute(eventData) {
         if (this.events.hasOwnProperty(eventData.name) == false) {
-            console.log(`no callback for event: ${eventData.name}`)
            return
         }
 
@@ -39,7 +38,6 @@ class TournamentEventHandler {
 function enterTournament(data, state) {
     if (data.hasOwnProperty('tournament_id') == false)
             return
-    console.log("EVENT enterTournament()")
     
     state.tournament.id = data.tournament_id
     state.tournament.players = data.players
@@ -47,8 +45,6 @@ function enterTournament(data, state) {
 }
 
 function connectedTournament(data, state) {
-    console.log("EVENT connectedTournament")
-
     websocketTournament.send({
         action: state.tournament.action,
         tournament: state.tournament
@@ -59,10 +55,8 @@ function creatingTournament(data, state) {
     if (data.hasOwnProperty('tournament_id') == false)
         return
 
-    console.log("creatingTournament()")
     state.tournament.id = data.tournament_id
     state.tournament.is_owner = true
-    console.log({state})
 }
 
 function updatePlayers(data, state) {
@@ -86,17 +80,14 @@ const startMatch = (state) => {
 }
 
 function semifinalEnd(data, state) {
-    console.log({event: data})
     showGameResult(data, "semifinal", "Tournament Semi-final")
 }
 
 function bracketFinalMatch(data, state) {
-    console.log({event: data})
     showTournamentBracketFinal(data)
 }
 
 function finalEnd(data, state) {
-    console.log({event: data})
     showGameResult(data, "final", "")
 }
 

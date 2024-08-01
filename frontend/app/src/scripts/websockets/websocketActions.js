@@ -8,7 +8,6 @@ import { injectSearchMatchPage } from "../../pages/SearchMatch.js"
 import websocketLocalMatch from "./websocketLocalMatch.js"
 
 export function inviteToTournament(username) {
-    console.log(`invite ${username} to tournament`)
     websocketNotification.send({
         action: 'invite_to_tournament',
         friend: username,
@@ -17,7 +16,6 @@ export function inviteToTournament(username) {
 }
 
 export function joinTournament(data) {
-    console.log("joinTournament()")
     state.tournament = {
         action: 'join',
         id: data.tournament_id
@@ -27,7 +25,6 @@ export function joinTournament(data) {
 }
 
 export function startTournament() {
-    console.log("startTournament()")
     websocketTournament.send({
         action: 'start'
     })

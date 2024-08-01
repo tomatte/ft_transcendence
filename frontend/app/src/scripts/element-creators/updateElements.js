@@ -80,7 +80,6 @@ export function addStartTournamentClickEvent() {
     const btn = document.getElementById("button-start-tournament")
     if (btn) {
         btn.addEventListener('click', () => {
-            console.log("start tournament")
             startTournament()
         })
     }

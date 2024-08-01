@@ -11,7 +11,6 @@ class WebsocketLocalMatch {
 
         this.client.onmessage = (event) => {
             let data = JSON.parse(event.data)
-            console.log(data)
                 
             localMatchEventHandler.execute(data)
         };

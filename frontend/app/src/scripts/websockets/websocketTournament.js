@@ -11,7 +11,6 @@ class WebsocketTournament {
 
         this.client.onmessage = (event) => {
             let data = JSON.parse(event.data)
-            console.log(data)
                 
             tournamentEventHandler.execute(data)
         };

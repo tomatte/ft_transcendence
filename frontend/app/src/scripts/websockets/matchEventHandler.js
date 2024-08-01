@@ -16,7 +16,6 @@ class MatchEventHandler {
 
     execute(eventData) {
         if (this.events.hasOwnProperty(eventData.name) == false) {
-            console.log(`no callback for event: ${eventData.name}`)
            return
         }
 

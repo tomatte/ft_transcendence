@@ -12,7 +12,6 @@ class WebsocketNotification {
 
         this.client.onmessage = (event) => {
             let data = JSON.parse(event.data)
-            console.log(data)
                 
             notificationEventHandler.execute(data)
         };
