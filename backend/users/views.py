@@ -27,6 +27,9 @@ class ExceptionConflict(Exception):
 	def __init__(self):
 		super().__init__('Method not allowed!')
 
+def convert_to_local_time(date):
+	gmt_minus_3 = pytz.timezone('Etc/GMT+3')
+	return date.astimezone(gmt_minus_3).strftime('%d/%m/%y - %H:%M')
 
 def send_notification_event(username, data):
 	channel_layer = get_channel_layer()
@@ -72,7 +75,7 @@ def format_friend_requests(friend_requests):
 	for item in friend_requests:
 		created_at = item['created_at']
 		if isinstance(created_at, datetime):
-			item['created_at'] = created_at.strftime('%Y-%m-%d %H:%M:%S')
+			item['created_at'] = convert_to_local_time(created_at)
 		formatted_response.append({
 			"owner": {
 				"username": item['from_user__username'],
@@ -418,7 +421,7 @@ def add_friend(request):
 		send_notification_event(friend_username, {
 			'type': 'friend',
 			'owner': ManipulateUser(username=request.user.username).profile(),
-			'time': friendship.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+			'time': convert_to_local_time(friendship.created_at),
 		})
 		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
 	except ExceptionMethodNotAllowed as e:

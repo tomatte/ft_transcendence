@@ -118,7 +118,7 @@ function createRow(data) {
                 <img class="table-row__message__image" src="${data.owner.avatar}" alt="player">
                 <div class="table-row__message__text">
                     <span class="table-row__message__text__content font-body-medium">${data.owner.username} ${info.message}</span>
-                    <span class="table-row__message__text__timestamp font-body-regular">07/07 - 10:00</span>
+                    <span class="table-row__message__text__timestamp font-body-regular">${data.time}</span>
                 </div>
             </td>
             <td class="table-row__actions">
