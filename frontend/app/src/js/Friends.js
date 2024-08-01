@@ -9,7 +9,7 @@ const loadingPage = () => {
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Friends</h4>
 			</div>
-			<button id="addFriendButton" class="button button--success" onclick="openModalToAdd()">
+			<button type="button" id="addFriendButton" class="button button--success" onclick="openModalToAdd()">
 				 <span class="button__text font-body-regular-bold">Add Friend</span>
 			</button>
 		</div>
@@ -103,13 +103,15 @@ const loadingPage = () => {
 /* TODO: change str to green/red online status ball */
 export const createTableLines = (friendList) => {
 	return friendList.reduce((acc, friend) => {
-		const onlineStatus = friend.online ? "ON" : "OFF"
+		const onlineStatus = friend.online ? "player__status-offline" : "player__status-online"
 		return acc + `
 			<tr id="row-friend-${friend.username}" class="table-row">
 				<td class="table-row__player">
-					<img class="table-row__player__image" src="${friend.avatar}" alt="player">
+					<div class="table-row__player__image-container ${onlineStatus}">
+						<img class="table-row__player__image" src="${friend.avatar}" alt="player">
+					</div>
 					<div class="table-row__player__text">
-						<span class="table-row__player__text__name font-body-medium-bold">${friend.username} ${onlineStatus}</span>
+						<span class="table-row__player__text__name font-body-medium-bold">${friend.username}</span>
 						<span class="table-row__player__text__nickname font-body-regular">${friend.nickname}</span>
 					</div>
 				</td>
@@ -117,7 +119,7 @@ export const createTableLines = (friendList) => {
 				<td class="table-row__data-default font-body-medium-bold">${friend.losses_against_you}</td>
 				<td class="table-row__data-default font-body-medium-bold">${friend.winners_against_you}</td>
 				<td class="table-row__actions">
-					<button class="game-row-option" onclick="fetchDeleteFriend('${friend.username}')">
+					<button type="button" class="game-row-option" onclick="fetchDeleteFriend('${friend.username}')">
 						<span class="material-icons-round game-row-option__icon">person_remove</span>
 					</button>
 				</td>

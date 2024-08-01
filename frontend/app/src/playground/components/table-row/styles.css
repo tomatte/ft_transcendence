@@ -37,10 +37,47 @@
     flex: 1 0 0;
 }
 
-.table-row__player__image, .table-row__message__image {
+
+.table-row__player__image-container {
+    position: relative;
+    display: flex;
     width: 36px;
     height: 36px;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.table-row__player__image, .table-row__message__image {
+    width: 100%;
+    height: 100%;
     border-radius: 8px;
+    object-fit: cover;
+}
+
+.player__status-offline::before,
+.player__status-online:before {
+    content: '';
+    display: block;
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--Lunar-Dust-950);
+}
+
+.player__status-offline::before {
+    background: var(--Cosmic-Forest-500);
+}
+
+.player__status-online::before {
+    background: var(--Lunar-Dust-600);
+}
+
+.table-row:hover .player__status-offline::before,
+.table-row:hover .player__status-online::before {
+  box-shadow: 0 0 0 3px var(--Comet-Cloud-950); /* Hover effect for both statuses */
 }
 
 .table-row__player__text {

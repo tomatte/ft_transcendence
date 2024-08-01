@@ -14,3 +14,5 @@ IGNORE_*
 # Virtualenv
 venv/
 launch.json
+
+backend/media/api/images/avatars

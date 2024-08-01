@@ -2,7 +2,6 @@ import routes from './router.js';
 import websocketNotification from './websockets/websocketNotification.js'
 import state from './state/state.js';
 import { initState } from './state/state.js';
-import { insertProfileInfoData } from './sidebar.js';
 import modalCreateTournament from './modals/modalCreateTournament.js';
 import { listenTestKeys } from './element-creators/utils.js';
 import { addGoBackHomeButtonEventListener } from './element-creators/utils.js';
@@ -48,7 +47,6 @@ window.addEventListener('load', () => {
   initState()
   websocketNotification.listen()
   getMyUser()
-  insertProfileInfoData()
   renderPage();
   listenHashChanges();
   listenTestKeys() // TODO: remove in production
@@ -58,15 +56,29 @@ window.addEventListener('load', () => {
 });
 
 
-async function getMyUser() {
-	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
-	if (response.status !== 200) {
+const getMyUser = () => {
+	fetch('https://localhost/api/users/get/my_user', { method: 'GET', credentials: 'include' })
+	.then((response) => {
+    if (response.status != 200) {
       cleanupPage(false)
-      document.body.innerHTML =PageLogin()
+      document.body.innerHTML = PageLogin()
       $('#carouselExampleIndicators').carousel({
         interval: 6000,
         ride: 'carousel',
         pause: false
-    });
-  }
+      });
+    }
+    else {
+      return response.json();
+    }
+	}).then((data) => {
+		document.cookie = `nickname=${data.nickname}`;
+		document.getElementById("profile-info-nickname").innerText = data.nickname;
+
+		document.cookie = `avatar=${data.avatar}`;
+		document.getElementById("profile-info-img").src =  data.avatar;
+
+    document.cookie = `username=${data.username}`;
+		document.getElementById("profile-info-name").innerText = data.username;
+	}).catch((error) => {console.log(error)});
 }

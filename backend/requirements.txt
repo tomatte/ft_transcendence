@@ -10,3 +10,4 @@ django-cors-headers
 redis
 channels-redis
 celery[redis]
+pytz

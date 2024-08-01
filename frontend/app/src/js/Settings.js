@@ -1,6 +1,5 @@
 var playSound = true;
 
-
 const settingsPageHtml = () => {
     return `
         <div class="page-content__container__header">
@@ -8,7 +7,7 @@ const settingsPageHtml = () => {
                 <h4 class="page-content__container__header__info__title">Settings</h4>
             </div>
             <button class="button button--primary">
-                <span class="button__text font-body-regular-bold" onclick="uptadeNickname()">Save changes</span>
+                <span class="button__text font-body-regular-bold" onclick="updateInformationSettings()">Save changes</span>
             </button>
         </div>
         <div class="settings_content">
@@ -19,9 +18,9 @@ const settingsPageHtml = () => {
                 </div>
                 <div class="page-content__container__content__setting__control-name">
                     <div class="profile-picture">
-                        <img class="profile-picture__image" src="../../assets/images/players/tomatte.png" alt="Player Image"/>
+                        <img class="profile-picture__image" src="${getCookie('avatar').replace(/^"|"$/g, '')}" alt="Player Image" id="photo_settings"/>
                         <form id="uploadForm" action="/upload_photo_endpoint" method="post" enctype="multipart/form-data" style="display: none;">
-                            <input type="file" id="photoFile" name="photo" accept=".png, .jpg, .jpeg">
+                            <input type="file" id="photoFile" name="photo" accept=".png, .jpg, .jpeg" onChange="aux_uptadePhotoFront(this)">
                         </form>
                         <button id="updatePhotoBtn" class="button button--outline" onclick="document.getElementById('photoFile').click();">
                             <span class="button__text font-body-regular-bold">Update photo</span>

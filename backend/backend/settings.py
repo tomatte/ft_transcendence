@@ -176,7 +176,11 @@ AUTH_USER_MODEL = 'users.User'
 
 STATIC_URL  = '/static/'
 STATIC_ROOT = Path(BASE_DIR, 'static')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = Path(BASE_DIR,'media')
 
 STATICFILES_DIRS = [
-	Path(BASE_DIR, 'media', 'static')
+	Path(BASE_DIR, 'media', 'static'),
+	Path(BASE_DIR, 'media', 'api', 'images', 'static'),
 ]
+
