@@ -6,9 +6,18 @@ import requests
 from environs import Env
 import os
 from django.conf import settings
+from tournament.models import Match, Tournament
 
 env = Env()
 env.read_env()
+
+def stats(request):
+	data = {
+		"users": User.objects.count(),
+		"matches": Match.objects.count(),
+		"tournaments": Tournament.objects.count(),
+	}
+	return JsonResponse(data)
 
 def get_access_token(code):
 	data = {
