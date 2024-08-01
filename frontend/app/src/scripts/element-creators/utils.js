@@ -32,22 +32,6 @@ export function listenForKeyPress(targetKey, callback) {
     document.addEventListener('keydown', handleKeyPress);
 }
 
-/* TODO: remove in production */
-export function listenTestKeys() {
-    listenForKeyPress("1", () => websocketMatch.listen())
-    listenForKeyPress("2", () => websocketTournament.listen())
-    listenForKeyPress("3", () => websocketTournament.send({action: "start"}))
-    listenForKeyPress("4", () => {
-        state.tournament = {}
-        state.tournament.players = mockPlayers
-        showTournamentPage()
-    })
-    listenForKeyPress("5", () => showGamePage())
-    listenForKeyPress("6", () => goBackHome())
-    listenForKeyPress("7", () => console.log({state}))
-    listenForKeyPress("8", () => showGamePage())
-}
-
 export function listenButtonClick(parent, btnId, callback) {
     parent.addEventListener('click', function(event) {
         let targetElement = event.target;
