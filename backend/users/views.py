@@ -1,3 +1,4 @@
+import pytz
 from django.http import JsonResponse, HttpResponse
 from users.models import User, Friendship
 from tournament.models import Match, MatchPlayer
@@ -295,8 +296,10 @@ class ManipulateUser:
 		prefetch = Prefetch('matchMatch', queryset=MatchPlayer.objects.all())
 		matches = Match.objects.prefetch_related(prefetch).order_by('create_at')
 		data = []
+		gmt_minus_3 = pytz.timezone('Etc/GMT+3')
 		for _match in matches:
 			me, other = self.separate_players(_match.matchMatch.all())
+			created_at = _match.create_at.astimezone(gmt_minus_3)
 			data.append({
 				"is_tournament": _match.tournament,
 				"my_score": me.score,
@@ -305,7 +308,7 @@ class ManipulateUser:
 				"opponent_username": other.user.username,
 				"opponent_nickname": other.user.nickname,
 				"opponent_avatar": other.user.avatar.name,
-				"date": _match.create_at.strftime('%d/%m/%y'),
+				"date": created_at.strftime('%d/%m/%y'),
 			})
 		return data
 

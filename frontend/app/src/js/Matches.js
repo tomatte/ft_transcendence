@@ -42,7 +42,7 @@ const createTableLines = (matchesList) => {
 			<td class="table-row__tag">
 			   ${get_status_match(item.winner)}
 			</td>
-			<td class="table-row__data-default font-body-medium-bold">30/06/2024</td>
+			<td class="table-row__data-default font-body-medium-bold">${item.date}</td>
 		</tr>`
 	}, '')
 }
