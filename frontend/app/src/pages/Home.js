@@ -32,7 +32,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">TOURNAMENT</div>
                 <div class="game-mode-banner__info__button">
-                    <button id="button-create-tournament" onclick="" class="button button--tertiary">
+                    <button type="button" id="button-create-tournament" onclick="" class="button button--tertiary">
                         <span class="material-icons-round button__icon-left">add</span>
                         <span class="button__text font-body-regular-bold">Create</span>
                     </button>

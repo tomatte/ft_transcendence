@@ -18,7 +18,9 @@ const renderTable = (data, page) => {
         return acc + `
             <tr class="table-row">
                 <td class="table-row__player">
-                    <img class="table-row__player__image" src="${friend.avatar}" alt="player">
+                    <div class="table-row__player__image-container player__status-offline">
+                        <img class="table-row__player__image" src="${friend.avatar}" alt="player">
+                    </div>
                     <div class="table-row__player__text">
                         <span class="table-row__player__text__name font-body-medium-bold">${friend.username}</span>
                         <span class="table-row__player__text__nickname font-body-regular">${friend.nickname}</span>
@@ -28,7 +30,7 @@ const renderTable = (data, page) => {
                 <td class="table-row__data-default font-body-medium-bold">${friend.losses_against_you}</td>
                 <td class="table-row__data-default font-body-medium-bold">${friend.winners_against_you}</td>
                 <td class="table-row__actions">
-                    <button class="game-row-option">
+                    <button type="button" class="game-row-option">
                         <span class="material-icons-round game-row-option__icon">person_remove</span>
                     </button>
                 </td>
@@ -107,7 +109,7 @@ const Friends = async () => {
             <div class="page-content__container__header__info">
                 <h4 class="page-content__container__header__info__title">Friends</h4>
             </div>
-            <button onclick="openModal('modalAddFriend')" class="button button--success">
+            <button type="button" onclick="openModal('modalAddFriend')" class="button button--success">
                 <span class="button__text font-body-regular-bold">Add Friend</span>
             </button>
         </div>

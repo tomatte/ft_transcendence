@@ -31,7 +31,9 @@ const createTableLines = (matchesList) => {
 	return matchesList.reduce((acc, item) => {return acc + `
 		<tr class="table-row">
 			<td class="table-row__player">
-				<img class="table-row__player__image" src="${item.opponent_avatar}" alt="player">
+				<div class="table-row__player__image-container player__status-offline">
+					<img class="table-row__player__image" src="${item.opponent_avatar}" alt="player">
+				</div>
 				<div class="table-row__player__text">
 					<span class="table-row__player__text__name font-body-medium-bold">${item.opponent_username}</span>
 					<span class="table-row__player__text__nickname font-body-regular">${item.opponent_nickname}</span>
@@ -75,7 +77,7 @@ const loadingPage = () => {
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Matches</h4>
 			</div>
-			<button class="button button--secondary">
+			<button type="button" class="button button--secondary">
 				<span class="material-icons-round button__icon-left">refresh</span>
 				<span class="button__text font-body-regular-bold">Refresh</span>
 			</button>
