@@ -58,22 +58,6 @@ const Home = (state) => {
             </div>
         </div>
 
-        <div class="game-mode-banner game-mode-banner--friendly-match">
-            <div class="game-mode-banner__info">
-                <div class="game-mode-banner__info__title">FRIENDLY MATCH</div>
-                <div class="game-mode-banner__info__button">
-                    <button onclick="openModal('modalFriendlyMatch')" class="button button--success">
-                        <span class="material-icons-round button__icon-left">sports_esports</span>
-                        <span class="button__text font-body-regular-bold">Play with a friend</span>
-                    </button>
-                </div>
-            </div>
-            <div class="game-mode-banner__illustration">
-                <img class="game-mode-banner__illustration__image" src="../assets/images/banners/friendly-match.png" alt="An illustration of a hashtag">
-            </div>
-        </div>
- 
-
         <div class="game-mode-banner game-mode-banner--random-match">
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">RANDOM MATCH</div>
@@ -131,82 +115,6 @@ const Home = (state) => {
             </table>
         </div>
  
-        
-        <div class="modal modal--invite-to-tournament" id="modalFriendlyMatch">
-            <div class="modal__header">
-                <div class="modal__header__title">
-                    <h4 class="modal__header__title__text">Friendly Match</h4>
-                    <button onclick="closeModal('modalFriendlyMatch')" class="button">
-                        <span class="material-icons-round modal__header__title__close icon--regular">close</span>
-                    </button>
-                </div>
-
-        <div class="search-bar">
-            <span class="material-icons-round search-bar__icon icon--regular">search</span>
-            <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
-        </div>
-
-           <table class="modal__table__header-add_friend"> 
- 
-                    <thead class="modal__table__header">
-                        <tr class="table-header">
-                            <th class="table-header__text font-body-caption-bold">Player</th>
-                            <th class="table-header__text font-body-caption-bold">Global ranking</th>
-                            <th class="table-header__text font-body-caption-bold text-align-action">Actions</th>
-                        </tr>
-                    </thead>
-
-
-                    <tbody class="modal__table__body">
-                        <tr class="table-row">
-                            <td class="table-row__player">
-                                <img class="table-row__player__image" src="../../assets/images/players/estagiario.png" alt="player">
-                                <div class="table-row__player__text">
-                                    <span class="table-row__player__text__name font-body-medium-bold">Luigi Encanador</span>
-                                    <span class="table-row__player__text__nickname font-body-regular">Luador</span>
-                                </div>
-                            </td>
-                            <td class="table-row__data-default font-body-medium-bold">#132</td>
-                            <td class="table-row__actions-friendly">
-                                <button class="button button--success">
-                                    <span class="button__text font-body-regular-bold"> Send invite</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="table-row">
-                            <td class="table-row__player">
-                                <img class="table-row__player__image" src="../../assets/images/players/wwag.png" alt="player">
-                                <div class="table-row__player__text">
-                                    <span class="table-row__player__text__name font-body-medium-bold">Corsinha Amarelo</span>
-                                    <span class="table-row__player__text__nickname font-body-regular">CAmarel</span>
-                                </div>
-                            </td>
-                            <td class="table-row__data-default font-body-medium-bold">#155</td>
-                            <td class="table-row__actions-friendly">
-                                <button class="button button--success">
-                                    <span class="button__text font-body-regular-bold"> Send invite</span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="table-row">
-                            <td class="table-row__player">
-                                <img class="table-row__player__image" src="../../assets/images/players/tomatte.png" alt="player">
-                                <div class="table-row__player__text">
-                                    <span class="table-row__player__text__name font-body-medium-bold">Nega Drive</span>
-                                    <span class="table-row__player__text__nickname font-body-regular">NDriv</span>
-                                </div>
-                            </td>
-                            <td class="table-row__data-default font-body-medium-bold">#133</td>
-                            <td class="table-row__actions-friendly">
-                                <button class="button button--success">
-                                    <span class="button__text font-body-regular-bold"> Send invite </span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-			</table>
-        </div>
-    </div>
             <div class="modal modal--remove-friend" id="modalDeleteTournament">
 			<div class="modal__header">
 				<div class="modal__header__title">

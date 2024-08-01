@@ -44,7 +44,7 @@ var rankingData = {
 }
 
 async function fetchMatches() {
-	let response = await fetch('https://localhost:443/api/users/get/historic', { method: 'GET', credentials: 'include' })
+	let response = await fetch('/api/users/get/historic', { method: 'GET', credentials: 'include' })
 	return response.json();
 }
 
