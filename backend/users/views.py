@@ -250,11 +250,27 @@ class ManipulateUser:
 			'all_points': 0,
 			'average_points': 0,
 		}
+  
+	def avarage_points_taken(self):
+		prefetch = Prefetch('matchMatch', queryset=MatchPlayer.objects.all())
+		matches = Match.objects.prefetch_related(prefetch).order_by('create_at')
+		total_points = 0
+		num_matches = matches.count()
+		if num_matches == 0:
+			return 0
+		for _match in matches:
+			me, other = self.separate_players(_match.matchMatch.all())
+			total_points += other.score
+		if total_points == 0:
+			return 0
+		avarage = total_points / num_matches
+		return round(avarage, 2)
 
 	def statistic_match(self):
 		try:
 			dict = self.dictionary_matchs()
 			all_matchs = MatchPlayer.objects.filter(user=self.me).order_by('match__create_at')
+			Match.objects.filter()
 			consecutives = 0
 			points = list()
 			for match in all_matchs:
@@ -268,6 +284,7 @@ class ManipulateUser:
 					consecutives = 0
 			dict['all_matchs'] = all_matchs.count()
 			dict['average_points'] = mean(points) if points else 0
+			dict['average_points_taken'] = self.avarage_points_taken()
 			return dict
 
 		except MatchPlayer.DoesNotExist as e:
