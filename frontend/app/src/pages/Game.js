@@ -28,8 +28,8 @@ const Game = (state) => {
     gameContainer.style.display = 'flex';
 
         gameContainer.innerHTML = /*html*/ `
-        <img class="stars_game1" src="assets/background-stars.svg">
-        <img class="stars_game1" src="assets/background-stars.svg">
+        <img class="stars_game1 star-match" src="assets/background-stars.svg" alt="Star Background 1">
+        <img class="stars_game2 star-match" src="assets/background-stars.svg" alt="Star Background 2">
         <img class="logo_match" src="assets/logo/logomark_white.svg">
 
         <div id="table">

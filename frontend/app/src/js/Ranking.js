@@ -50,7 +50,9 @@ const createTableLines = (ranking_list, start) => {
 			<tr class="table-row">
 				<td class="table-row__data-rank font-body-large">#${start + index + 1}</td>
 				<td class="table-row__player">
-					<img class="table-row__player__image" src="${item.avatar}">
+					<div class="table-row__player__image-container player__status-offline">
+						<img class="table-row__player__image" src="${item.avatar}" alt="player">
+					</div>
 					<div class="table-row__player__text">
 						<span class="table-row__player__text__name font-body-medium-bold">${item.nickname}</span>
 						<span class="table-row__player__text__nickname font-body-regular">${item.username}</span>

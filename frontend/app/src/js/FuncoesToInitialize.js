@@ -177,7 +177,9 @@ const generateListOfUsersToAdd = (usersList) => {
 		return acc + `
 			<tr class="table-row">
 				<td class="table-row__player">
-					<img class="table-row__player__image" src="${user.avatar}" alt="player">
+					<div class="table-row__player__image-container player__status-offline">
+						<img class="table-row__player__image" src="${user.avatar}" alt="player">
+					</div>
 					<div class="table-row__player__text">
 						<span class="table-row__player__text__name font-body-medium-bold">${user.username}</span>
 						<span class="table-row__player__text__nickname font-body-regular">${user.nickname}</span>
@@ -245,8 +247,10 @@ const generatoModalToDelete = () => {
 
 
 const PageLogin = () => {
-	return `
-		<div class="simula_body">
+	return /* html */`
+	<div class="simula_body">
+		<img class="stars_game1 star-login" src="assets/background-stars.svg" alt="Star Background 1">
+		<img class="stars_game2 star-login" src="assets/background-stars.svg" alt="Star Background 2">
 		<div class="login-container">
 			<img class="login-container__logo" src="/assets/logo/combination-mark_white.svg" alt="logo logomark">
 			<div class="login-container__content">
@@ -263,7 +267,7 @@ const PageLogin = () => {
 					</a>
 				</form>
 			</div>
-			<span class="login-container__credits-text font-body-regular">A project made by: etomiyos, dbrandao and clourenc, with the support of clandestino</span>
+			<span class="login-container__credits-text font-body-regular">A project made by: etomiyos, dbrandao and clourenc, for 42 São Paulo</span>
 		</div>
 		<div class="login-carousel">
 			<div id="carouselExampleIndicators" class="carousel slide carousel-fade">

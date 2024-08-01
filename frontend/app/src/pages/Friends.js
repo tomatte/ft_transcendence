@@ -18,7 +18,9 @@ const renderTable = (data, page) => {
         return acc + `
             <tr class="table-row">
                 <td class="table-row__player">
-                    <img class="table-row__player__image" src="${friend.avatar}" alt="player">
+                    <div class="table-row__player__image-container player__status-offline">
+                        <img class="table-row__player__image" src="${friend.avatar}" alt="player">
+                    </div>
                     <div class="table-row__player__text">
                         <span class="table-row__player__text__name font-body-medium-bold">${friend.username}</span>
                         <span class="table-row__player__text__nickname font-body-regular">${friend.nickname}</span>

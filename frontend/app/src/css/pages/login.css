@@ -71,6 +71,11 @@ body {
 	align-items: center;
 	align-self: stretch;
 }
+.login-form-button a {
+	text-decoration: none;
+	border: none;
+	outline: none;
+}
 
 #login-42-button {
 	flex: 1 0 0;
