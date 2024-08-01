@@ -1,4 +1,7 @@
 import { hideContents } from "../scripts/element-creators/utils.js";
+import { goBackHome } from "../scripts/element-creators/updateElements.js";
+import { listenButtonClick } from "../scripts/element-creators/utils.js";
+import websocketRandomMatch from "../scripts/websockets/websocketRandomMatch.js";
 
 const createBracket = (player) => {
     const html = /* html */ `
@@ -21,11 +24,17 @@ export  const injectPlayer = (player) => {
     document.querySelector(".Footer-Searching").style.display = "none"
 }
 
+function goBackHomeSearch() {
+    goBackHome()
+    websocketRandomMatch.client.close()
+}
+
 export const injectSearchMatchPage = (html) => {
     hideContents()
     const container = document.querySelector(".page-searching-match__container")
     container.innerHTML = html
     container.style.display = "block"
+    listenButtonClick(container, "button-go-back-home2", goBackHomeSearch)
 }
 
 export const removeSearchMatchPage = () => {
@@ -56,6 +65,12 @@ const SearchMatch = (player) => {
                     </div>
     
                 </div>
+
+                <button id="button-go-back-home2" class="button button--secondary" type="button" style="">
+                    <span class="button__text font-body-regular-bold">Go back to Home</span>
+                    <span class="material-icons-round button__icon-right">arrow_forward</span>
+                </button>
+
             </div>
         </div>
     
