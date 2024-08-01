@@ -11,6 +11,8 @@ server {
 
     server_name localhost;
 
+    client_max_body_size 50M;
+
 
     location / {
         root /var/www/src;
