@@ -1,12 +1,10 @@
-var playSound = true;
-
 const settingsPageHtml = () => {
     return `
         <div class="page-content__container__header">
             <div class="page-content__container__header__info">
                 <h4 class="page-content__container__header__info__title">Settings</h4>
             </div>
-            <button class="button button--primary">
+            <button type="button" class="button button--primary">
                 <span class="button__text font-body-regular-bold" onclick="updateInformationSettings()">Save changes</span>
             </button>
         </div>
@@ -22,7 +20,7 @@ const settingsPageHtml = () => {
                         <form id="uploadForm" action="/upload_photo_endpoint" method="post" enctype="multipart/form-data" style="display: none;">
                             <input type="file" id="photoFile" name="photo" accept=".png, .jpg, .jpeg" onChange="aux_uptadePhotoFront(this)">
                         </form>
-                        <button id="updatePhotoBtn" class="button button--outline" onclick="document.getElementById('photoFile').click();">
+                        <button type="button" id="updatePhotoBtn" class="button button--outline" onclick="document.getElementById('photoFile').click();">
                             <span class="button__text font-body-regular-bold">Update photo</span>
                         </button>
                     </div>
@@ -99,19 +97,6 @@ const settingsPageHtml = () => {
     `
 }
 
-// Alternar estado do som
-function toggleSound() {
-    playSound = !playSound;
-}
-
-// Reproduzir efeito sonoro
-function playMenuItem() {
-    if (playSound) {
-        var audio = new Audio('assets/audios/menu-item.mp3');
-        audio.play();
-    }
-}
-
 // Alternar música de fundo
 function toggleBackgroundMusic() {
     var audio = document.getElementById('backgroundMusic');
@@ -143,8 +128,8 @@ function setupBackgroundMusic() {
 const Settings = () => {
     document.querySelector('.page-content__container').innerHTML = settingsPageHtml();;
     setupBackgroundMusic();
-    document.getElementById('toggle-checkbox-1').checked = localStorage.getItem('backgroundMusicPlaying') === 'true';
-    document.getElementById('toggle-checkbox-2').checked = playSound;
+    document.getElementById('toggle-checkbox-1').checked = localStorage.getItem('backgroundMusicPlaying') !== 'false';
+    document.getElementById('toggle-checkbox-2').checked = localStorage.getItem('soundEffectsPlaying') !== 'false';
 
     // Adicionar listeners
     document.querySelectorAll('.toggle-checkbox').forEach(checkbox => {
@@ -161,6 +146,8 @@ const Settings = () => {
                         audio.play();
                         localStorage.setItem('backgroundMusicPlaying', 'true');
                     }
+                } else if (this.id === 'toggle-checkbox-2') {
+                    localStorage.setItem('soundEffectsPlaying', 'true');
                 }
             } else {
                 toggle.classList.remove('Active');
@@ -173,12 +160,9 @@ const Settings = () => {
                         audio.pause();
                         localStorage.setItem('backgroundMusicPlaying', 'false');
                     }
+                } else if (this.id === 'toggle-checkbox-2') {
+                    localStorage.setItem('soundEffectsPlaying', 'false');
                 }
-            }
-
-            // Alternar som se o checkbox de som estiver alterado
-            if (this.id === 'toggle-checkbox-2') {
-                toggleSound();
             }
         });
 

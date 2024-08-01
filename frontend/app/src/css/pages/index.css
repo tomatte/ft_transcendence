@@ -57,9 +57,9 @@ iframe {
 .star-login {
 	cursor: none;
 	pointer-events: none;
-	user-select: none; /* standard property for modern browsers */
     -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
     -moz-user-select: none; /* for older versions of Firefox */
+	user-select: none; /* standard property for modern browsers */
 	z-index: 0;
 }
 
