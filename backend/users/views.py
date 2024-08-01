@@ -319,7 +319,6 @@ class ManipulateUser:
 			"nickname": self.me.nickname,
 			"avatar": self.me.avatar.name,
 			"winners": self.me.winners,
-			"losses": self.me.losses,
 			"global_ranking": self.position_ranking(),
 			"percent_winner": 0,
 			"percent_losses": 0,
@@ -335,11 +334,12 @@ class ManipulateUser:
 			return query_obj[1], player1
 
 	def historic(self):
-		prefetch = Prefetch('matchMatch', queryset=MatchPlayer.objects.all())
-		matches = Match.objects.prefetch_related(prefetch).order_by('create_at')
+		matches = MatchPlayer.objects.filter(user=self.me)
+	
 		data = []
 		gmt_minus_3 = pytz.timezone('Etc/GMT+3')
 		for _match in matches:
+			_match = _match.match
 			me, other = self.separate_players(_match.matchMatch.all())
 			created_at = _match.create_at.astimezone(gmt_minus_3)
 			data.append({
