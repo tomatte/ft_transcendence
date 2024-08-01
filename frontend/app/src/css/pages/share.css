@@ -64,8 +64,8 @@ body
     font-weight: 400;
     line-height: normal;
     background: #FFF;
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -149,16 +149,16 @@ align-self: stretch;
 .tornament-first-header{
     align-self: stretch;
     
-/* Heading/H1 */
-font-family: "Red Hat Display";
-font-size: 48px;
-font-style: normal;
-font-weight: 700;
-line-height: 120%; /* 57.6px */
-background: linear-gradient(90deg, #E2A60C 0%, #D4470B 85%);
-background-clip: text;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
+    /* Heading/H1 */
+    font-family: "Red Hat Display";
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 57.6px */
+    background: linear-gradient(90deg, #E2A60C 0%, #D4470B 85%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .tornament-second-header{
@@ -267,8 +267,8 @@ align-items: center;
     font-weight: 700;
     line-height: 120%; /* 57.6px */
     background: linear-gradient(90deg, #A7A7BF 0%, #606084 85%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
