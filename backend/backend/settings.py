@@ -78,7 +78,7 @@ MIDDLEWARE = [
 ]
 
 ALLOWED_HOSTS = ['localhost', '0.0.0.0', '134.209.223.141']
-CSRF_TRUSTED_ORIGINS = ['https://localhost']
+CSRF_TRUSTED_ORIGINS = ['https://localhost', 'https://134.209.223.141']
 
 AUTHENTICATION_BACKENDS=['backend.backends.MyBackend']
 
