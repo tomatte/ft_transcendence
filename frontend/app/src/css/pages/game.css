@@ -1,4 +1,4 @@
-html, body
+html, body, .page-game__container
 {
     margin: 0;
     padding: 0;
@@ -6,7 +6,7 @@ html, body
 	width: 100%;
 }
 
-body {
+body, .page-game__container {
     display: flex;
     justify-content: center;
     align-items: center;

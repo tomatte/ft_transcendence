@@ -45,6 +45,7 @@ export function listenTestKeys() {
     listenForKeyPress("5", () => showGamePage())
     listenForKeyPress("6", () => goBackHome())
     listenForKeyPress("7", () => console.log({state}))
+    listenForKeyPress("8", () => showGamePage())
 }
 
 export function listenButtonClick(parent, btnId, callback) {
