@@ -6,7 +6,9 @@ import json
 from django.db.models import Prefetch
 from django.contrib.auth import logout as _logout
 from django.shortcuts import redirect
-
+from datetime import datetime
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 
@@ -25,6 +27,29 @@ class ExceptionConflict(Exception):
 		super().__init__('Method not allowed!')
 
 
+def send_notification_event(username, data):
+	channel_layer = get_channel_layer()
+	async_to_sync(channel_layer.group_send)(
+		username,
+		{
+			'type': 'notification.new',
+			'data': data,
+		}
+	)
+ 
+def send_update_friends_notification(username):
+	notification_data = {
+		'name': 'update_friends',
+	}
+    
+	channel_layer = get_channel_layer()
+	async_to_sync(channel_layer.group_send)(
+		username,
+		{
+			'type': "notification.dynamic",
+			'data': notification_data,
+		}
+	)
 
 def is_valid_method(request, method):
 	"""Função para verificar se o método é válido. Caso não seja, levanta uma exceção.
@@ -40,6 +65,23 @@ def is_valid_method(request, method):
 	if request.method != method:
 		raise ExceptionMethodNotAllowed()
 
+
+def format_friend_requests(friend_requests):
+	formatted_response = []
+	for item in friend_requests:
+		created_at = item['created_at']
+		if isinstance(created_at, datetime):
+			item['created_at'] = created_at.strftime('%Y-%m-%d %H:%M:%S')
+		formatted_response.append({
+			"owner": {
+				"username": item['from_user__username'],
+				"nickname": item['from_user__nickname'],
+				"avatar": item['from_user__avatar']
+			},
+			"time": item['created_at'],
+			"type": "friend"	
+		})
+	return formatted_response
 
 def get_global_ranking(player):
 	users_by_winners = User.objects.all().order_by('-winners')
@@ -95,7 +137,7 @@ class ManipulateUser:
 		if Friendship.objects.filter(from_user=friend, to_user=self.me).exists():
 			raise ExceptionConflict('Friend request already sent!')
 
-		Friendship.objects.create(from_user=self.me, to_user=friend, status='pending')
+		return Friendship.objects.create(from_user=self.me, to_user=friend, status='pending')
 
 	def remove_friend(self, friend_username):
 		friend = User.objects.get(username=friend_username)
@@ -112,8 +154,13 @@ class ManipulateUser:
 		friend = User.objects.get(username=friend_username)
 		friendship = Friendship.objects.get(from_user=friend, to_user=self.me)
 		friendship.status = status
-		friendship.save()
-
+		if friendship.status == 'accepted':
+			friendship.save()
+			send_update_friends_notification(self.me.username)
+			send_update_friends_notification(friend_username)
+		else:
+			friendship.delete()
+   
 	def seding_friends(self):
 		response = Friendship.objects.filter(from_user=self.me, status='pending').values(
 			'to_user__id',
@@ -123,12 +170,14 @@ class ManipulateUser:
 		return list(response)
 
 	def receive_friends(self):
-		response = Friendship.objects.filter(to_user=self.me, status='pending').values(
-			'from_user__id',
+		friend_requests = Friendship.objects.filter(to_user=self.me, status='pending').values(
 			'from_user__nickname',
 			'from_user__username',
+			'from_user__avatar',
+			'created_at'
 		)
-		return list(response)
+  
+		return format_friend_requests(friend_requests)
 
 	def player_statistics_by_you(self, friend: object) -> dict:
 		if not friend:
@@ -172,6 +221,8 @@ class ManipulateUser:
 		return data
 
 	def uptade_nickname(self, nickname):
+		if (User.objects.filter(nickname=nickname).exists()):
+			raise Exception('Nickname already exists!')
 		self.me.nickname = nickname
 		self.me.save()
 
@@ -303,6 +354,28 @@ def my_user(request):
 		return JsonResponse({'message': str(e)}, status=405)
 
 
+def set_pending_friend_status(username, users: list):
+	friend_requests_sent = ManipulateUser(username=username).seding_friends()
+	friend_requests_usernames = {request['to_user__username'] for request in friend_requests_sent}
+	for user in users:
+		if user['username'] in friend_requests_usernames:
+			user['friend_status'] = "pending"
+   
+def set_friend_status(username, users: list):
+	friends = ManipulateUser(username=username).friends()
+	friends_usernames = {
+		friend.from_user.username
+		if friend.from_user.username != username
+		else friend.to_user.username
+		for friend in friends
+	}
+ 
+	for user in users:
+		if user['username'] in friends_usernames:
+			user['friend_status'] = "friend"
+		else:
+			user['friend_status'] = "not_friend"
+  
 ##TESTADA
 def all_users(request):
 	"""Função para retornar todos os usuarios.
@@ -316,7 +389,10 @@ def all_users(request):
 	try:
 		is_valid_method(request, "GET")
 		users = User.objects.all().values('username', 'nickname', 'avatar').order_by('winners')
-		return JsonResponse(list(users), status=200, safe=False)
+		users_list = list(users)
+		set_friend_status(request.user.username, users_list)
+		set_pending_friend_status(request.user.username, users_list)
+		return JsonResponse(users_list, status=200, safe=False)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'message': str(e)}, status=405)
 
@@ -334,7 +410,13 @@ def add_friend(request):
 	try:
 		is_valid_method(request, 'POST')
 		data = json.loads(request.body)
-		ManipulateUser(username=request.user.username).add_friend(data.get('username'))
+		friend_username = data.get('username')
+		friendship = ManipulateUser(username=request.user.username).add_friend(friend_username)
+		send_notification_event(friend_username, {
+			'type': 'friend',
+			'owner': ManipulateUser(username=request.user.username).profile(),
+			'time': friendship.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+		})
 		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'msg': str(e)}, status=405)
@@ -362,6 +444,8 @@ def remove_friend(request):
 		is_valid_method(request, 'DELETE')
 		data = json.loads(request.body)
 		ManipulateUser(username=request.user.username).remove_friend(data.get('username'))
+		send_update_friends_notification(request.user.username)
+		send_update_friends_notification(data.get('username'))
 		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({'msg': str(e)}, status=405)
@@ -475,8 +559,13 @@ def response_friend(request):
 
 	try:
 		is_valid_method(request, 'POST')
-		ManipulateUser(username=request.user.username).response_friend(request.POST['username'], request.POST['status'])
-		return HttpResponse(status=200, content='Friend request accepted!')
+		data = json.loads(request.body)
+		friend_username = data.get('username')
+		status = data.get('status')
+		if friend_username is None:
+			return JsonResponse({'error': 'Missing username or status in the request'}, status=400)
+		ManipulateUser(username=request.user.username).response_friend(friend_username, status)
+		return HttpResponse(status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except Friendship.DoesNotExist:
@@ -500,12 +589,22 @@ def uptade_nickname(request):
 
 	try:
 		is_valid_method(request, 'POST')
-		ManipulateUser(username=request.user.username).uptade_nickname(request.POST['nickname'])
+		nickname = json.loads(request.body).get('nickname')
+
+		if not nickname:
+			raise KeyError('Nickname not send')
+
+		if len(nickname) > 40:
+			return JsonResponse({"msg": 'Nickname too long!'}, status=400)
+
+		ManipulateUser(username=request.user.username).uptade_nickname(nickname)
 		return HttpResponse(status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"message": str(e)}, status=405)
 	except KeyError as e:
 		return JsonResponse({"message": 'Nickname not send'}, status=400)
+	except Exception as e:
+		return JsonResponse({"message": str(e)}, status=209)
 
 
 def uptade_avatar(request):

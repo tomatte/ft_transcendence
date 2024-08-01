@@ -122,6 +122,13 @@ class NotificationState:
     redis = redis_client
     channel_notification_key = "channels_notification"
     channel_layer = get_channel_layer()
+    
+    @classmethod
+    async def notify2(cls, username, event):
+        await cls.channel_layer.group_send(
+            username,
+            event
+        )
    
     def __init__(self, user, channel_name) -> None:
         self.user = user
@@ -170,9 +177,14 @@ class OnlineState:
     async def broadcast_online_players(cls):
         players = cls.get_all()
         
+        online_players = {}
+        for key, player in players.items():
+            if player["connections"] > 0:
+                online_players[key] = player
+        
         payload = {
             "type": "notification.online_players",
-            "players": players
+            "players": online_players
         }
         
         await cls.channel_layer.group_send(
@@ -209,7 +221,8 @@ class OnlineState:
         self.user = user
         
     async def connected(self):
-        if self.redis.hexists(self.global_name, self.user.username):
+        player = self.get()
+        if player is not None and player["connections"] >= 1:
             self.multi_connection()
             return 
         
@@ -227,14 +240,11 @@ class OnlineState:
     async def disconnected(self):
         data = self.get()
     
-        if data['connections'] == 1:
-            self.redis.hdel(self.global_name, self.user.username)
-            await self.broadcast_online_players()  
-            return
-
-        
         data['connections'] -= 1
         self.set(data)
+
+        if data['connections'] == 0:
+            await self.broadcast_online_players()  
         
     def multi_connection(self):
         data = self.get()

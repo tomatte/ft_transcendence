@@ -25,7 +25,7 @@ const Game = (state) => {
     addElements()
 
 	const gameContainer = document.querySelector('.page-game__container');
-    gameContainer.style.display = 'block';
+    gameContainer.style.display = 'flex';
 
         gameContainer.innerHTML = /*html*/ `
         <img class="stars_game1" src="assets/background-stars.svg">

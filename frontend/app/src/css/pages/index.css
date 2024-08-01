@@ -1,4 +1,22 @@
-html, body
+@import '../../playground/components/button/styles.css';
+@import '../../playground/components/game-mode-banner/styles.css';
+@import '../../playground/components/game-row-option/styles.css';
+@import '../../playground/components/input/styles.css';
+@import '../../playground/components/menu-control/styles.css';
+@import '../../playground/components/menu-item/styles.css';
+@import '../../playground/components/metric-card/styles.css';
+@import '../../playground/components/metric-line/styles.css';
+@import '../../playground/components/pagination/styles.css';
+@import '../../playground/components/player-bracket/styles.css';
+@import '../../playground/components/profile-info/styles.css';
+@import '../../playground/components/search-bar/styles.css';
+@import '../../playground/components/sidebar/styles.css';
+@import '../../playground/components/table-header/styles.css';
+@import '../../playground/components/table-row/styles.css';
+@import '../../playground/components/tag/styles.css';
+@import '../../playground/components/toggle/styles.css';
+
+html, body, .simula_body
 {
 	margin: 0;
 	padding: 0;
@@ -6,7 +24,7 @@ html, body
 	width: 100%;
 }
 
-body
+body , .simula_body 
 {
 	background: var(--gradient-blue-background);
 	overflow: hidden;

@@ -20,11 +20,14 @@ function getUserInfo() {
     return user
 }
 
-const state = {}
+const state = {
+    user: {},
+    notifications: [],
+    online_players: [],
+    friends: [],
+}
 export default state
 
 export function initState() {
     state.user = getUserInfo()
-    state.notifications = []
-    state.online_players = []
 }

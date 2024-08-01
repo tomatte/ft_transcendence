@@ -293,10 +293,17 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
     async def terminate_tournament(self):
         # TODO: save tournament data and delete match from redis
         await self.close(1000)
-        if redis_client.hexists("global_tournament", self.tournament_id):
-            tournament_redis = TournamentRedis(self.tournament_id)
-            redis_client.hdel("global_tournament", self.tournament_id)
-            await create_tournament(tournament_redis)
+        
+        if not redis_client.hexists("global_tournament", self.tournament_id):
+            return
+        
+        tournament_redis = TournamentRedis(self.tournament_id)
+        redis_client.hdel("global_tournament", self.tournament_id)
+        await create_tournament(tournament_redis)
+        MatchState.delete(tournament_redis.semi_finals[0].id)
+        MatchState.delete(tournament_redis.semi_finals[1].id)
+        MatchState.delete(tournament_redis.final.id)
+            
         
     async def join_tournament(self, data):
         self.validation.join_tournament.validate_data(data)
@@ -348,6 +355,8 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         await self.channel_layer.group_send(self.tournament_id, {
             "type": "match.start"
         })
+        
+        await TournamentState.erase_invitations(self.tournament_id)
             
     async def tournament_update_players(self, event):
         await self.send_json({
@@ -418,11 +427,10 @@ class TournamentConsumer(MyAsyncWebsocketConsumer):
         self.start_final(winner_left, winner_right)
         
     def start_final(self, winner1, winner2):
-        sent = TournamentState.get_value(self.tournament_id, "final_bracket_event_sent")
-        sent += 1
-        self.tournament_state.set_value("final_bracket_event_sent", sent)
-        if sent != 4:
+        if not TournamentState.can_start_final(self.tournament_id):
             return
+
+        self.tournament_state.set_value("final_started", True)
         
         match_id = MatchState.create("final")
         
@@ -572,8 +580,25 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         
         self.user_state.notification.add(payload)
         
+        TournamentState.add_invited_player(event['tournament_id'], self.user.username)
+        
         print(f"NOTIFICATION_STATE: {self.user_state.notification.get()}")
         await self.send_json(payload)
+        
+    async def notification_new(self, event):
+        print(f"{self.user.username} notification_new()")
+        notification = event["data"]
+        notification["name"] = "new_notification"
+        print(notification)
+        await self.send_json(notification)
+        
+    async def notification_dynamic(self, event):
+        print(f"{self.user.username} notification_dynamic()")
+        print(event)
+        if "data" not in event:
+            print("WARNING: no data")
+            return
+        await self.send_json(event["data"])
         
     async def invite_to_tournament(self, data):
         print("invite_to_tournament()")
@@ -605,6 +630,13 @@ class NotificationConsumer(MyAsyncWebsocketConsumer):
         }
         await self.send_json(payload)
         
+    async def notification_update(self, event):
+        print("notification_update()")
+        notifications = self.user_state.notification.get()
+        await self.send_json({
+            "name": "update_notifications",
+            "notifications": notifications
+        })
         
 class RandomMatchConsumer(MyAsyncWebsocketConsumer):
     async def connect(self):
