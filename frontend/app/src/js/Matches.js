@@ -37,7 +37,7 @@ const createTableLines = (matchesList) => {
 					<span class="table-row__player__text__nickname font-body-regular">${item.opponent_nickname}</span>
 				</div>
 			</td>
-			<td class="table-row__data-default font-body-medium-bold">Friendly Match</td>
+			<td class="table-row__data-default font-body-medium-bold">${item.type}</td>
 			<td class="table-row__data-default font-body-medium-bold">${item.my_score} X ${item.opponent_score}</td>
 			<td class="table-row__tag">
 			   ${get_status_match(item.winner)}

@@ -304,6 +304,7 @@ class ManipulateUser:
 			me, other = self.separate_players(_match.matchMatch.all())
 			created_at = _match.create_at.astimezone(gmt_minus_3)
 			data.append({
+				"type": _match.type,
 				"is_tournament": _match.tournament,
 				"my_score": me.score,
 				"winner": me.winner,
