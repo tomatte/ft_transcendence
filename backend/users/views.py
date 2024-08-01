@@ -10,6 +10,7 @@ from django.shortcuts import redirect
 from datetime import datetime
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.core.files.base import ContentFile
 
 
 
@@ -40,12 +41,12 @@ def send_notification_event(username, data):
 			'data': data,
 		}
 	)
- 
+
 def send_update_friends_notification(username):
 	notification_data = {
 		'name': 'update_friends',
 	}
-    
+
 	channel_layer = get_channel_layer()
 	async_to_sync(channel_layer.group_send)(
 		username,
@@ -83,7 +84,7 @@ def format_friend_requests(friend_requests):
 				"avatar": item['from_user__avatar']
 			},
 			"time": item['created_at'],
-			"type": "friend"	
+			"type": "friend"
 		})
 	return formatted_response
 
@@ -129,7 +130,7 @@ class ManipulateUser:
 		return {
 			"username": self.me.username,
 			"nickname": self.me.nickname,
-			"avatar": self.me.avatar.name,
+			"avatar": self.me.avatar.name
 		}
 
 	def add_friend(self, friend_username):
@@ -164,7 +165,7 @@ class ManipulateUser:
 			send_update_friends_notification(friend_username)
 		else:
 			friendship.delete()
-   
+
 	def seding_friends(self):
 		response = Friendship.objects.filter(from_user=self.me, status='pending').values(
 			'to_user__id',
@@ -180,7 +181,7 @@ class ManipulateUser:
 			'from_user__avatar',
 			'created_at'
 		)
-  
+
 		return format_friend_requests(friend_requests)
 
 	def player_statistics_by_you(self, friend: object) -> dict:
@@ -231,10 +232,9 @@ class ManipulateUser:
 		self.me.save()
 
 	def uptade_avatar(self, avatar):
-		if self.me.avatar:
+		if self.me.avatar and self.me.avatar.name != "../assets/images/players/avatars/default.webp":
 			self.me.avatar.delete(save=False)
-		self.me.avatar = avatar
-		self.me.save()
+		self.me.avatar.save(avatar.name, ContentFile(avatar.read()), save=True)
 
 	def table_ranking(self):
 		all_players = User.objects.all().order_by('-winners')
@@ -384,7 +384,7 @@ def set_pending_friend_status(username, users: list):
 	for user in users:
 		if user['username'] in friend_requests_usernames:
 			user['friend_status'] = "pending"
-   
+
 def set_friend_status(username, users: list):
 	friends = ManipulateUser(username=username).friends()
 	friends_usernames = {
@@ -393,13 +393,13 @@ def set_friend_status(username, users: list):
 		else friend.to_user.username
 		for friend in friends
 	}
- 
+
 	for user in users:
 		if user['username'] in friends_usernames:
 			user['friend_status'] = "friend"
 		else:
 			user['friend_status'] = "not_friend"
-  
+
 ##TESTADA
 def all_users(request):
 	"""Função para retornar todos os usuarios.
@@ -614,12 +614,15 @@ def uptade_nickname(request):
 	try:
 		is_valid_method(request, 'POST')
 		nickname = json.loads(request.body).get('nickname')
+		nickname = nickname.strip()
+		words = nickname.split()
+		nickname = ' '.join(words)
 
 		if not nickname:
 			raise KeyError('Nickname not send')
 
-		if len(nickname) > 40:
-			return JsonResponse({"msg": 'Nickname too long!'}, status=400)
+		if len(nickname) > 15 or len(nickname) < 3:
+			return JsonResponse({"msg": 'Nickname invalid size!'}, status=400)
 
 		ManipulateUser(username=request.user.username).uptade_nickname(nickname)
 		return HttpResponse(status=200)
@@ -642,8 +645,17 @@ def uptade_avatar(request):
 	"""
 	try:
 		is_valid_method(request, 'POST')
-		ManipulateUser(username=request.user.username).uptade_avatar(request.FILES.get('avatar'))
-		return HttpResponse(status=200)
+		print(request.FILES)
+		if 'file' not in request.FILES:
+			return JsonResponse({"status": "error", "msg": "Error: file not sent"}, status=400)
+
+		file = request.FILES['file']
+		file_extension = file.name.split('.')[-1].lower()
+		print(file_extension)
+		if file_extension not in ['jpg', 'png', 'jpeg']:
+			return JsonResponse({"status": "error", "msg": "Error: file extension is not valid"}, status=400)
+		ManipulateUser(username=request.user.username).uptade_avatar(file)
+		return JsonResponse({"msg": "Avatar updated successfully!"}, status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except KeyError as e:

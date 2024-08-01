@@ -19,6 +19,23 @@ const getCookie = (name) => {
 }
 
 
+const getMyProfile = () => {
+	fetch('https://localhost/api/users/get/my_user', { method: 'GET', credentials: 'include' })
+	.then((response) => {
+		return response.json();
+	}).then((data) => {
+		document.cookie = `nickname=${data.nickname}`;
+		document.getElementById("profile-info-nickname").innerText = data.nickname;
+
+		document.cookie = `avatar=${data.avatar}`;
+		document.getElementById("profile-info-img").src = data.avatar;
+
+		document.cookie = `username=${data.username}`;
+		document.getElementById("profile-info-name").innerText = data.username;
+	}).catch((error) => {console.log(error)});
+}
+
+
 async function logout() {
 	document.cookie = 'sessionid=; expires=Thu, csrftoken=; 01 Jan 1970 00:00:00 UTC; path=/;';
 	fetch('https://localhost/api/users/logout', { method: 'GET', credentials: 'include' });
@@ -79,7 +96,7 @@ const fetchAcceptFriendRequest = async (username) => {
 		},
 		body: JSON.stringify({
 			username: username,
-			status: "accepted" 
+			status: "accepted"
 		})
 	});
 	if (response.status != 200) throw new Error('Failed to add friend');
@@ -114,7 +131,6 @@ const sendDeleteFriendRequest = async (username) => {
 		},
 		body: JSON.stringify({ username: username })
 	});
-
 	document.getElementById(`row-friend-${username}`).remove()
 }
 
@@ -128,9 +144,9 @@ const fetchDeleteFriend = async (username) => {
 const getAddFriendButton = (user) => {
 	const toAdd = /* html */ `
 		<button id="button-add-friend-${user.username}" class="button button--success" onclick="fetchAddFriend('${user.username}')">
-            <span class="material-icons-round button__icon-left">sports_esports</span>
-            <span class="button__text font-body-regular-bold">Add friend</span>
-            <span class="material-icons-round button__icon-right">sports_esports</span>
+			<span class="material-icons-round button__icon-left">sports_esports</span>
+			<span class="button__text font-body-regular-bold">Add friend</span>
+			<span class="material-icons-round button__icon-right">sports_esports</span>
 		</button>
 	`
 
@@ -146,26 +162,81 @@ const getAddFriendButton = (user) => {
 	return toAdd
 }
 
-const uptadeNickname = () => {
-	nickname = document.getElementById('nicknameInput').value;
-	if (nickname) {
-		const csrftoken = getCookie('csrftoken');
-		let body = {
-			nickname: document.getElementById('nicknameInput').value
-		}
-		fetch('https://localhost/api/users/uptate/uptade-nickname', {
-			method: 'POST',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRFToken': csrftoken
-			},
-			body: JSON.stringify(body)
-		}).then(() => {
-			document.cookie = `nickname=${nickname}`;
-			insertProfileInfoData();
-		});
+
+const updateNickname = async (nickname) => {
+	let body = {
+		nickname: nickname
 	}
+	fetch('https://localhost/api/users/uptate/uptade-nickname', {
+		method: 'POST',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRFToken': getCookie('csrftoken')
+		},
+		body: JSON.stringify(body)
+	}).then(() => {
+		getMyProfile();
+	});
+}
+
+
+const updateInformationSettings = () => {
+	let nickname = document.getElementById('nicknameInput').value;
+	if (nickname) {
+		updateNickname(nickname);
+	}
+	let photoInput = document.getElementById('photoFile');
+	if (photoInput && photoInput.files.length > 0) {
+		let photo = photoInput.files[0];
+		updatePhotoBack(photo);
+	}
+}
+
+
+function uptadePhotoFront(file, id) {
+	const reader = new FileReader()
+	reader.onloadend = function () {
+		document.getElementById(id).src = reader.result
+	}
+	if (file) {
+		reader.readAsDataURL(file)
+	}
+}
+
+
+function aux_uptadePhotoFront(event) {
+	const file = event.files[0];
+	const reader = new FileReader();
+
+	reader.onloadend = function () {
+		// Certifique-se de que o ID do elemento esteja definido corretamente
+		document.getElementById('photo_settings').src = reader.result;
+	}
+
+	if (file) {
+		reader.readAsDataURL(file);
+	} else {
+		// Opcional: lidar com o caso em que nenhum arquivo foi selecionado
+		console.log("Nenhum arquivo selecionado");
+	}
+}
+
+
+function updatePhotoBack(file) {
+	const formData = new FormData();
+	formData.append('file', file);
+	fetch('https://localhost/api/users/uptate/uptade-avatar', {
+		method: 'POST',
+		body: formData,
+		credentials: 'include',
+		headers: {
+			'X-CSRFToken': getCookie('csrftoken')
+		},
+	}).then(() => {
+		getMyProfile();
+
+	}).catch((response) => console.log(response));
 }
 
 
@@ -294,12 +365,13 @@ const PageLogin = () => {
 			</div>
 		</div>
 	</div>
-
 	`
 }
+
 
 const cleanupPage = (show) => {
 	let display = show === true ? 'block' : 'none';
 	document.querySelector('.sidebar').style.display = display;
 	document.querySelector('.page-content').style.display = display;
 }
+
