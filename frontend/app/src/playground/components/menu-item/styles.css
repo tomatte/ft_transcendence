@@ -10,6 +10,7 @@
     justify-content: flex-start;
     transition: all 0.2s ease;
     cursor: pointer;
+    box-sizing: border-box;
 
     user-select: none; /* standard property for modern browsers */
     -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
@@ -18,14 +19,14 @@
 
 .menu-item a {
     display: flex;
-    width: 100%;
-    padding: 8px;
     align-items: center;
-    align-self: stretch;
-    text-decoration: none;
     gap: 8px;
+    padding: 8px;
+    width: 100%;
+    text-decoration: none;
     color: var(--Lunar-Dust-600);
     border-radius: inherit;
+    box-sizing: border-box;
 }
 
 .menu-item__icon {
@@ -35,6 +36,13 @@
 .menu-item__text {
     flex: 1;
     color: inherit;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    flex: 1 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .menu-item:hover{
@@ -62,3 +70,35 @@
     background: var(--gradient-blue-menu-item-hover);
 }
 
+
+
+/* ------------------- NOTIFICATION BADGE ------------------- */
+
+.notification-badge {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-badge__dot {
+    position: relative;
+    border-radius: 50%;
+}
+
+.notification-badge__count {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    line-height: 100%;
+    text-align: center;
+    font-family: Play;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--Red-Dwarf-600);
+    border-radius: 100%;
+    color: var(--Lunar-Dust-0);
+}
