@@ -20,7 +20,7 @@ const getCookie = (name) => {
 
 
 const getMyProfile = () => {
-	fetch('https://localhost/api/users/get/my_user', { method: 'GET', credentials: 'include' })
+	fetch('/api/users/get/my_user', { method: 'GET', credentials: 'include' })
 	.then((response) => {
 		return response.json();
 	}).then((data) => {
@@ -38,8 +38,8 @@ const getMyProfile = () => {
 
 async function logout() {
 	document.cookie = 'sessionid=; expires=Thu, csrftoken=; 01 Jan 1970 00:00:00 UTC; path=/;';
-	fetch('https://localhost/api/users/logout', { method: 'GET', credentials: 'include' });
-	window.location.href = 'https://localhost/';
+	fetch('/api/users/logout', { method: 'GET', credentials: 'include' });
+	window.location.href = '/';
 }
 
 
@@ -71,7 +71,7 @@ const setButtonAddFriendSentStyle = (friend_username) => {
 const fetchAddFriend = async (username) => {
 	setButtonAddFriendSentStyle(username);
 	const csrftoken = getCookie('csrftoken');
-	const response = await fetch('https://localhost:443/api/users/add/friend', {
+	const response = await fetch('/api/users/add/friend', {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
@@ -87,7 +87,7 @@ const fetchAddFriend = async (username) => {
 const fetchAcceptFriendRequest = async (username) => {
 	document.getElementById(`row-friend-${username}`).remove()
 	const csrftoken = getCookie('csrftoken');
-	const response = await fetch('https://localhost:443/api/users/response/pedding-friend', {
+	const response = await fetch('/api/users/response/pedding-friend', {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
@@ -105,7 +105,7 @@ const fetchAcceptFriendRequest = async (username) => {
 const fetchRefuseFriendRequest = async (username) => {
 	document.getElementById(`row-friend-${username}`).remove()
 	const csrftoken = getCookie('csrftoken');
-	const response = await fetch('https://localhost:443/api/users/response/pedding-friend', {
+	const response = await fetch('/api/users/response/pedding-friend', {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
@@ -122,7 +122,7 @@ const fetchRefuseFriendRequest = async (username) => {
 
 const sendDeleteFriendRequest = async (username) => {
 	const csrftoken = getCookie('csrftoken');
-	await fetch('https://localhost:443/api/users/remove/friend', {
+	await fetch('/api/users/remove/friend', {
 		method: 'DELETE',
 		credentials: 'include',
 		headers: {
@@ -167,7 +167,7 @@ const updateNickname = async (nickname) => {
 	let body = {
 		nickname: nickname
 	}
-	fetch('https://localhost/api/users/uptate/uptade-nickname', {
+	fetch('/api/users/uptate/uptade-nickname', {
 		method: 'POST',
 		credentials: 'include',
 		headers: {
@@ -226,7 +226,7 @@ function aux_uptadePhotoFront(event) {
 function updatePhotoBack(file) {
 	const formData = new FormData();
 	formData.append('file', file);
-	fetch('https://localhost/api/users/uptate/uptade-avatar', {
+	fetch('/api/users/uptate/uptade-avatar', {
 		method: 'POST',
 		body: formData,
 		credentials: 'include',
@@ -267,7 +267,7 @@ const generateListOfUsersToAdd = (usersList) => {
 
 
 async function fetchAllUsers() {
-	const response = await fetch('https://localhost/api/users/get/all_users', { method: 'GET', credentials: 'include' });
+	const response = await fetch('/api/users/get/all_users', { method: 'GET', credentials: 'include' });
 	if (response.status != 200) throw new Error('Failed to fetch friends');
 	return await response.json();
 }
@@ -332,7 +332,7 @@ const PageLogin = () => {
 				</div>
 
 				<form class="login-form-button">
-					<a class="button button--primary" id="login-42-button" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a&redirect_uri=https://localhost/api/auth/&response_type=code&scope=public&state=YOUR_UNIQUE_STATE_STRING">
+					<a class="button button--primary" id="login-42-button" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a&redirect_uri=https%3A%2F%2F134.209.223.141%2Fapi%2Fauth%2F&response_type=code">
 						<img class="login-container__logo" src="/assets/logo/logo_42_white.svg" alt="logo logomark 42">
 						<span class="button__text font-body-regular-bold">Login with 42</span>
 					</a>

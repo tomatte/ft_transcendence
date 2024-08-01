@@ -37,7 +37,7 @@ var rankingData = {
 }
 
 async function fetchApiRanking() {
-	let response = await fetch('https://localhost:443/api/users/get/ranking', { method: 'GET', credentials: 'include' })
+	let response = await fetch('/api/users/get/ranking', { method: 'GET', credentials: 'include' })
 	if (response.status !== 200) throw new Error('Error status is not 200' + response.method); else return await response.json()
 }
 

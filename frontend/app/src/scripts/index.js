@@ -57,7 +57,7 @@ window.addEventListener('load', () => {
 
 
 const getMyUser = () => {
-	fetch('https://localhost/api/users/get/my_user', { method: 'GET', credentials: 'include' })
+	fetch('/api/users/get/my_user', { method: 'GET', credentials: 'include' })
 	.then((response) => {
     if (response.status != 200) {
       cleanupPage(false)
