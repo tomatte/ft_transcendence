@@ -184,6 +184,28 @@ class ManipulateUser:
 
 		return format_friend_requests(friend_requests)
 
+	def get_ranking_stats(self, user: User):
+		matches_player = MatchPlayer.objects.filter(user=user)
+
+		total_matchs = matches_player.count()
+		wins = user.winners
+		win_rate = (wins / total_matchs) * 100 if total_matchs > 0 else 0
+		losses_rate = 100 - win_rate
+		losses = total_matchs - user.winners,
+		total_score = 0
+		for m in matches_player:
+			total_score += m.score
+		return {
+			"username": user.username,
+			"nickname": user.nickname,
+			"avatar": user.avatar.name,
+			"wins": wins,
+			"losses": losses,
+			"win_rate": round(win_rate, 2),
+			"losses_rate": round(losses_rate, 2),
+			"total_score": total_score,
+		}
+
 	def player_statistics_by_you(self, friend: object) -> dict:
 		if not friend:
 			Exception('Error: get_statistics_by_you() line 100: Users not found!')
@@ -238,7 +260,7 @@ class ManipulateUser:
 
 	def table_ranking(self):
 		all_players = User.objects.all().order_by('-winners')
-		return [self.player_statistics_by_you(friend=play) for play in all_players]
+		return [self.get_ranking_stats(user=play) for play in all_players]
 
 	def number_of_matchs(self):
 		return Match.objects.filter(players=self.me).count()

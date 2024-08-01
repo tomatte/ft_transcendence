@@ -59,9 +59,7 @@ const setButtonAddFriendSentStyle = (friend_username) => {
 	const btnId = `button-add-friend-${friend_username}`
 	const btn = document.getElementById(btnId)
 	btn.innerHTML = `
-		<span class="material-icons-round button__icon-left">sports_esports</span>
 		<span class="button__text font-body-regular-bold">Request sent!</span>
-		<span class="material-icons-round button__icon-right">sports_esports</span>
 	`
 	btn.style.cursor = 'default';
 	btn.classList.remove('button--success');
@@ -144,17 +142,13 @@ const fetchDeleteFriend = async (username) => {
 const getAddFriendButton = (user) => {
 	const toAdd = /* html */ `
 		<button id="button-add-friend-${user.username}" class="button button--success" onclick="fetchAddFriend('${user.username}')">
-			<span class="material-icons-round button__icon-left">sports_esports</span>
 			<span class="button__text font-body-regular-bold">Add friend</span>
-			<span class="material-icons-round button__icon-right">sports_esports</span>
 		</button>
 	`
 
 	const pending = /* html */ `
 		<button class="button button--success-confirmation" style="cursor: default;">
-			<span class="material-icons-round button__icon-left">sports_esports</span>
 			<span class="button__text font-body-regular-bold">Request sent!</span>
-			<span class="material-icons-round button__icon-right">sports_esports</span>
 		</button>
 	`
 

@@ -136,35 +136,42 @@ def get_tournament(request):
 	# 	return HttpResponse(status=e.status, content=str(e))
  
 async def create_match(match_redis: MatchRedis):
-    match = await sync_to_async(Match.objects.create)(
-        create_at=match_redis.created_at,
-        duration=None,
-        type=match_redis.match_type
-    )
+	match = await sync_to_async(Match.objects.create)(
+		create_at=match_redis.created_at,
+		duration=None,
+		type=match_redis.match_type
+	)
 
-    # Fetch or create User instances for the players
-    player_left, _ = await sync_to_async(User.objects.get_or_create)(username=match_redis.player_left.username)
-    player_right, _ = await sync_to_async(User.objects.get_or_create)(username=match_redis.player_right.username)
+	# Fetch or create User instances for the players
+	player_left, _ = await sync_to_async(User.objects.get_or_create)(username=match_redis.player_left.username)
+	player_right, _ = await sync_to_async(User.objects.get_or_create)(username=match_redis.player_right.username)
+    
+	if match_redis.player_left.points > match_redis.player_right.points:
+		player_left.winners += 1
+		await sync_to_async(player_left.save)()
+	else:
+		player_right.winners += 1
+		await sync_to_async(player_right.save)()
 
     # Create MatchPlayer instances for both players
-    match_player_left = await sync_to_async(MatchPlayer.objects.create)(
-        match=match,
-        user=player_left,
-        score=match_redis.player_left.points,
-        winner=match_redis.player_left.winner
-    )
+	match_player_left = await sync_to_async(MatchPlayer.objects.create)(
+		match=match,
+		user=player_left,
+		score=match_redis.player_left.points,
+		winner=match_redis.player_left.points > match_redis.player_right.points
+	)
 
-    match_player_right = await sync_to_async(MatchPlayer.objects.create)(
-        match=match,
-        user=player_right,
-        score=match_redis.player_right.points,
-        winner=match_redis.player_right.winner
-    )
+	match_player_right = await sync_to_async(MatchPlayer.objects.create)(
+		match=match,
+		user=player_right,
+		score=match_redis.player_right.points,
+		winner=match_redis.player_right.points > match_redis.player_left.points
+	)
 
     # Print the created objects (optional)
-    print(f'Match: {match}')
-    print(f'MatchPlayer Left: {match_player_left}')
-    print(f'MatchPlayer Right: {match_player_right}')
+	print(f'Match: {match}')
+	print(f'MatchPlayer Left: {match_player_left}')
+	print(f'MatchPlayer Right: {match_player_right}')
 
 
 async def create_tournament(tournament_redis: TournamentRedis):

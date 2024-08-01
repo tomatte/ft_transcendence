@@ -8,10 +8,6 @@ const loadingPage = () => {
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Ranking</h4>
 			</div>
-			<button type="button" class="button button--secondary">
-				<span class="material-icons-round button__icon-left">refresh</span>
-				<span class="button__text font-body-regular-bold">Refresh</span>
-			</button>
 		</div>
 		<div class="search-bar">
 			<span class="material-icons-round search-bar__icon icon--regular">search</span>
@@ -28,7 +24,6 @@ const loadingPage = () => {
 						<th class="table-header__text font-body-caption-bold">LOSSES</th>
 						<th class="table-header__text font-body-caption-bold">WIN RATE</th>
 						<th class="table-header__text font-body-caption-bold">LOSS RATE</th>
-						<th class="table-header__text font-body-caption-bold table-actions-align-right">ACTIONS</th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -58,16 +53,11 @@ const createTableLines = (ranking_list, start) => {
 						<span class="table-row__player__text__nickname font-body-regular">${item.username}</span>
 					</div>
 				</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.global_ranking}</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.losses_against_you}</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.winners_against_you}</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.percent_winner}%</td>
-				<td class="table-row__data-default font-body-medium-bold">${item.percent_losses}</td>
-				<td class="table-row__actions" onclick="fetchDeleteFriend('${item.username}')">
-					<button type="button" class="game-row-option">
-						<span class="material-icons-round game-row-option__icon">person_remove</span>
-					</button>
-				</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.total_score}</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.wins}</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.losses}</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.win_rate}%</td>
+				<td class="table-row__data-default font-body-medium-bold">${item.losses_rate}</td>
 			</tr>
 		`;
 	}, '');

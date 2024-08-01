@@ -54,8 +54,15 @@ class MatchState:
         },
         'match_type': '',
         'created_at': '',
-        'id': ''
+        'id': '',
+        'should_save': True,
+        'should_delete': False
     }
+    
+    @classmethod
+    def can_save(cls, id):
+        match = cls.get(id)
+        return match is not None and match['should_save']
     
     @classmethod
     def delete(cls, id):
