@@ -12,12 +12,10 @@ html, body
     padding: 0;
   	height: 100%;
 	width: 100%;
-    background: linear-gradient(156deg, #494955 -22.74%, #000 32.87%, #000 98.16%);
 	overflow: hidden;
     display: flex;
 	justify-content: flex-start;
 	align-items: center;
-    z-index: -1;
 }
 
 .Bracket-Searching
