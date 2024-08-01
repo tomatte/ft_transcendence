@@ -1,21 +1,30 @@
 import { playerMove, player2Move } from "./websockets/websocketActions.js"
 
+function getProportion() {
+    const table = document.getElementById("table")
+    const tableHeight = table.offsetHeight
+    return tableHeight / 720
+}
+
 function setPlayerLeft(y) {
     const player = document.getElementById("player_left")
-    player.style.top = `${y}px`
-    player.style.left = `${30}px`
+    const proportion = getProportion()
+    player.style.top = `${y * proportion}px`
+    player.style.left = `${30 * proportion}px`
 }
 
 function setPlayerRight(y) {
     const player = document.getElementById("player_right")
-    player.style.top = `${y}px`
-    player.style.right = `${40}px`
+    const proportion = getProportion()
+    player.style.top = `${y * proportion}px`
+    player.style.right = `${40 * proportion}px`
 }
 
 function setBall(x, y) {
     const ball = document.getElementById("ball")
-    ball.style.left = `${x}px`
-    ball.style.top = `${y}px`
+    const proportion = getProportion()
+    ball.style.left = `${x * proportion}px`
+    ball.style.top = `${y * proportion}px`
 }
 
 function setScores(leftScore, rightScore) {

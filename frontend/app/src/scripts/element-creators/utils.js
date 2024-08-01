@@ -45,6 +45,7 @@ export function listenTestKeys() {
     listenForKeyPress("5", () => showGamePage())
     listenForKeyPress("6", () => goBackHome())
     listenForKeyPress("7", () => console.log({state}))
+    listenForKeyPress("8", () => showGamePage())
 }
 
 export function listenButtonClick(parent, btnId, callback) {
@@ -98,13 +99,17 @@ function setFriendsOnlineStatus() {
     })
 }
 
-export const updateStateFriends = async () => {
-    const friends = await fetchFriends()
-    state.friends = friends
+export const updateFriendsOnlineStatus = async () => {
     setFriendsOnlineStatus()
-    console.log({friends})
+    console.log({panpan: state})
     if (state.currentPage == 'Friends') {
         const tableBody = document.querySelector('.page-content__container__content tbody');
         tableBody.innerHTML = createTableLines(state.friends)
     }
+}
+
+export const updateStateFriends = async () => {
+    const friends = await fetchFriends()
+    state.friends = friends
+    updateFriendsOnlineStatus()
 }

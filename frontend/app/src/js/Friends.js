@@ -100,15 +100,16 @@ const loadingPage = () => {
 	`
 }
 
-
-export const createTableLines = (matchesList) => {
-	return matchesList.reduce((acc, friend) => {
+/* TODO: change str to green/red online status ball */
+export const createTableLines = (friendList) => {
+	return friendList.reduce((acc, friend) => {
+		const onlineStatus = friend.online ? "ON" : "OFF"
 		return acc + `
 			<tr id="row-friend-${friend.username}" class="table-row">
 				<td class="table-row__player">
 					<img class="table-row__player__image" src="${friend.avatar}" alt="player">
 					<div class="table-row__player__text">
-						<span class="table-row__player__text__name font-body-medium-bold">${friend.username}</span>
+						<span class="table-row__player__text__name font-body-medium-bold">${friend.username} ${onlineStatus}</span>
 						<span class="table-row__player__text__nickname font-body-regular">${friend.nickname}</span>
 					</div>
 				</td>
