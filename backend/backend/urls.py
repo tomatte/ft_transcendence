@@ -10,4 +10,5 @@ urlpatterns = [
 	path('api/notAuthorized/', views.not_authorized, name='not_authorized'),
 	path('api/users/', include('users.urls')),
 	path('api/tournament/', include('tournament.urls')),
+	path('api/images/avatars/<str:image_name>/', views.get_image, name='get_image'),
 ]
