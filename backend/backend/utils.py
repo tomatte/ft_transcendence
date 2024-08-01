@@ -1,3 +1,4 @@
+import pytz
 import redis
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.layers import get_channel_layer
@@ -118,6 +119,11 @@ redis_client.config_set('save', '')
 redis_client.config_set('appendonly', 'no')
 
 
+def get_date_now():
+    gmt_minus_3 = pytz.timezone('Etc/GMT+3')
+    now_gmt_minus_3 = datetime.now(pytz.utc).astimezone(gmt_minus_3)
+    return now_gmt_minus_3.strftime('%d/%m/%y - %H:%M')
+
 class NotificationState:
     redis = redis_client
     channel_notification_key = "channels_notification"
@@ -147,7 +153,7 @@ class NotificationState:
         return  data if data else []
     
     def add(self, value: dict):
-        value["time"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        value["time"] = get_date_now()
         self.redis.append_list_start(
             self.user.username,
             'notifications',

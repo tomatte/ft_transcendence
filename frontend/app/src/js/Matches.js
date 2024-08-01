@@ -31,18 +31,20 @@ const createTableLines = (matchesList) => {
 	return matchesList.reduce((acc, item) => {return acc + `
 		<tr class="table-row">
 			<td class="table-row__player">
-				<img class="table-row__player__image" src="${item.opponent_avatar}" alt="player">
+				<div class="table-row__player__image-container player__status-offline">
+					<img class="table-row__player__image" src="${item.opponent_avatar}" alt="player">
+				</div>
 				<div class="table-row__player__text">
 					<span class="table-row__player__text__name font-body-medium-bold">${item.opponent_username}</span>
 					<span class="table-row__player__text__nickname font-body-regular">${item.opponent_nickname}</span>
 				</div>
 			</td>
-			<td class="table-row__data-default font-body-medium-bold">Friendly Match</td>
+			<td class="table-row__data-default font-body-medium-bold">${item.type}</td>
 			<td class="table-row__data-default font-body-medium-bold">${item.my_score} X ${item.opponent_score}</td>
 			<td class="table-row__tag">
 			   ${get_status_match(item.winner)}
 			</td>
-			<td class="table-row__data-default font-body-medium-bold">30/06/2024</td>
+			<td class="table-row__data-default font-body-medium-bold">${item.date}</td>
 		</tr>`
 	}, '')
 }
@@ -75,7 +77,7 @@ const loadingPage = () => {
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Matches</h4>
 			</div>
-			<button class="button button--secondary">
+			<button type="button" class="button button--secondary">
 				<span class="material-icons-round button__icon-left">refresh</span>
 				<span class="button__text font-body-regular-bold">Refresh</span>
 			</button>

@@ -5,15 +5,15 @@ class Match(models.Model):
 	"""Model to represent a match in a tournament."""
 	"""Model to represent a tournament."""
 	ROLE_CHOICES = (
-		('friendly', 'friendly'),
-		('semi-final', 'semi-final'),
-		('final', 'final'),
+		('random', 'Random'),
+		('semi_final', 'Semi-Final'),
+		('final', 'Final'),
 	)
 	players = models.ManyToManyField('users.User', through='MatchPlayer')
 	tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE, default=None, blank=True, null=True)
 	create_at = models.DateTimeField(auto_now_add=True)
 	duration = models.DurationField(null=True, blank=True)
-	type = models.CharField(max_length=10, choices=ROLE_CHOICES, default='friendly') # friendly | semi-final | final
+	type = models.CharField(max_length=10, choices=ROLE_CHOICES, default='random')
 
 class MatchPlayer(models.Model):
 	"""Model to represent a player in a match."""

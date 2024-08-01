@@ -1,3 +1,4 @@
+import pytz
 from django.http import JsonResponse, HttpResponse
 from users.models import User, Friendship
 from tournament.models import Match, MatchPlayer
@@ -9,6 +10,7 @@ from django.shortcuts import redirect
 from datetime import datetime
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.core.files.base import ContentFile
 
 
 
@@ -26,6 +28,9 @@ class ExceptionConflict(Exception):
 	def __init__(self):
 		super().__init__('Method not allowed!')
 
+def convert_to_local_time(date):
+	gmt_minus_3 = pytz.timezone('Etc/GMT+3')
+	return date.astimezone(gmt_minus_3).strftime('%d/%m/%y - %H:%M')
 
 def send_notification_event(username, data):
 	channel_layer = get_channel_layer()
@@ -36,12 +41,12 @@ def send_notification_event(username, data):
 			'data': data,
 		}
 	)
- 
+
 def send_update_friends_notification(username):
 	notification_data = {
 		'name': 'update_friends',
 	}
-    
+
 	channel_layer = get_channel_layer()
 	async_to_sync(channel_layer.group_send)(
 		username,
@@ -71,7 +76,7 @@ def format_friend_requests(friend_requests):
 	for item in friend_requests:
 		created_at = item['created_at']
 		if isinstance(created_at, datetime):
-			item['created_at'] = created_at.strftime('%Y-%m-%d %H:%M:%S')
+			item['created_at'] = convert_to_local_time(created_at)
 		formatted_response.append({
 			"owner": {
 				"username": item['from_user__username'],
@@ -79,7 +84,7 @@ def format_friend_requests(friend_requests):
 				"avatar": item['from_user__avatar']
 			},
 			"time": item['created_at'],
-			"type": "friend"	
+			"type": "friend"
 		})
 	return formatted_response
 
@@ -125,7 +130,7 @@ class ManipulateUser:
 		return {
 			"username": self.me.username,
 			"nickname": self.me.nickname,
-			"avatar": self.me.avatar.name,
+			"avatar": self.me.avatar.name
 		}
 
 	def add_friend(self, friend_username):
@@ -160,7 +165,7 @@ class ManipulateUser:
 			send_update_friends_notification(friend_username)
 		else:
 			friendship.delete()
-   
+
 	def seding_friends(self):
 		response = Friendship.objects.filter(from_user=self.me, status='pending').values(
 			'to_user__id',
@@ -176,7 +181,7 @@ class ManipulateUser:
 			'from_user__avatar',
 			'created_at'
 		)
-  
+
 		return format_friend_requests(friend_requests)
 
 	def player_statistics_by_you(self, friend: object) -> dict:
@@ -227,10 +232,9 @@ class ManipulateUser:
 		self.me.save()
 
 	def uptade_avatar(self, avatar):
-		if self.me.avatar:
+		if self.me.avatar and self.me.avatar.name != "../assets/images/players/avatars/default.webp":
 			self.me.avatar.delete(save=False)
-		self.me.avatar = avatar
-		self.me.save()
+		self.me.avatar.save(avatar.name, ContentFile(avatar.read()), save=True)
 
 	def table_ranking(self):
 		all_players = User.objects.all().order_by('-winners')
@@ -246,11 +250,27 @@ class ManipulateUser:
 			'all_points': 0,
 			'average_points': 0,
 		}
+  
+	def avarage_points_taken(self):
+		prefetch = Prefetch('matchMatch', queryset=MatchPlayer.objects.all())
+		matches = Match.objects.prefetch_related(prefetch).order_by('create_at')
+		total_points = 0
+		num_matches = matches.count()
+		if num_matches == 0:
+			return 0
+		for _match in matches:
+			me, other = self.separate_players(_match.matchMatch.all())
+			total_points += other.score
+		if total_points == 0:
+			return 0
+		avarage = total_points / num_matches
+		return round(avarage, 2)
 
 	def statistic_match(self):
 		try:
 			dict = self.dictionary_matchs()
 			all_matchs = MatchPlayer.objects.filter(user=self.me).order_by('match__create_at')
+			Match.objects.filter()
 			consecutives = 0
 			points = list()
 			for match in all_matchs:
@@ -264,6 +284,7 @@ class ManipulateUser:
 					consecutives = 0
 			dict['all_matchs'] = all_matchs.count()
 			dict['average_points'] = mean(points) if points else 0
+			dict['average_points_taken'] = self.avarage_points_taken()
 			return dict
 
 		except MatchPlayer.DoesNotExist as e:
@@ -295,9 +316,12 @@ class ManipulateUser:
 		prefetch = Prefetch('matchMatch', queryset=MatchPlayer.objects.all())
 		matches = Match.objects.prefetch_related(prefetch).order_by('create_at')
 		data = []
+		gmt_minus_3 = pytz.timezone('Etc/GMT+3')
 		for _match in matches:
 			me, other = self.separate_players(_match.matchMatch.all())
+			created_at = _match.create_at.astimezone(gmt_minus_3)
 			data.append({
+				"type": _match.type,
 				"is_tournament": _match.tournament,
 				"my_score": me.score,
 				"winner": me.winner,
@@ -305,7 +329,7 @@ class ManipulateUser:
 				"opponent_username": other.user.username,
 				"opponent_nickname": other.user.nickname,
 				"opponent_avatar": other.user.avatar.name,
-				"date": _match.create_at.strftime('%d/%m/%y'),
+				"date": created_at.strftime('%d/%m/%y'),
 			})
 		return data
 
@@ -360,7 +384,7 @@ def set_pending_friend_status(username, users: list):
 	for user in users:
 		if user['username'] in friend_requests_usernames:
 			user['friend_status'] = "pending"
-   
+
 def set_friend_status(username, users: list):
 	friends = ManipulateUser(username=username).friends()
 	friends_usernames = {
@@ -369,13 +393,13 @@ def set_friend_status(username, users: list):
 		else friend.to_user.username
 		for friend in friends
 	}
- 
+
 	for user in users:
 		if user['username'] in friends_usernames:
 			user['friend_status'] = "friend"
 		else:
 			user['friend_status'] = "not_friend"
-  
+
 ##TESTADA
 def all_users(request):
 	"""Função para retornar todos os usuarios.
@@ -415,7 +439,7 @@ def add_friend(request):
 		send_notification_event(friend_username, {
 			'type': 'friend',
 			'owner': ManipulateUser(username=request.user.username).profile(),
-			'time': friendship.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+			'time': convert_to_local_time(friendship.created_at),
 		})
 		return JsonResponse({'msg': 'Friend request sent!'}, status=200)
 	except ExceptionMethodNotAllowed as e:
@@ -590,12 +614,15 @@ def uptade_nickname(request):
 	try:
 		is_valid_method(request, 'POST')
 		nickname = json.loads(request.body).get('nickname')
+		nickname = nickname.strip()
+		words = nickname.split()
+		nickname = ' '.join(words)
 
 		if not nickname:
 			raise KeyError('Nickname not send')
 
-		if len(nickname) > 40:
-			return JsonResponse({"msg": 'Nickname too long!'}, status=400)
+		if len(nickname) > 15 or len(nickname) < 3:
+			return JsonResponse({"msg": 'Nickname invalid size!'}, status=400)
 
 		ManipulateUser(username=request.user.username).uptade_nickname(nickname)
 		return HttpResponse(status=200)
@@ -618,8 +645,17 @@ def uptade_avatar(request):
 	"""
 	try:
 		is_valid_method(request, 'POST')
-		ManipulateUser(username=request.user.username).uptade_avatar(request.FILES.get('avatar'))
-		return HttpResponse(status=200)
+		print(request.FILES)
+		if 'file' not in request.FILES:
+			return JsonResponse({"status": "error", "msg": "Error: file not sent"}, status=400)
+
+		file = request.FILES['file']
+		file_extension = file.name.split('.')[-1].lower()
+		print(file_extension)
+		if file_extension not in ['jpg', 'png', 'jpeg']:
+			return JsonResponse({"status": "error", "msg": "Error: file extension is not valid"}, status=400)
+		ManipulateUser(username=request.user.username).uptade_avatar(file)
+		return JsonResponse({"msg": "Avatar updated successfully!"}, status=200)
 	except ExceptionMethodNotAllowed as e:
 		return JsonResponse({"msg": str(e)}, status=405)
 	except KeyError as e:

@@ -19,7 +19,7 @@ const Statistics = async () => {
 				<div class="page-content__container__header__info">
 					<h4 class="page-content__container__header__info__title">Statistics</h4>
 				</div>
-				<button class="button button--secondary">
+				<button type="button" class="button button--secondary">
 					<span class="material-icons-round button__icon-left">refresh</span>
 					<span class="button__text font-body-regular-bold">Refresh</span>
 				</button>
@@ -79,7 +79,7 @@ const Statistics = async () => {
 					<div class="metric-line">
 						<span class="metric-line__label font-body-regular">Average Points Taken per Match</span>
 						<div class="metric-line__line"></div>
-						<span class="metric-line__data font-body-medium-bold">Um dia eu faço</span>
+						<span class="metric-line__data font-body-medium-bold">${statistics_data.average_points_taken}</span>
 					</div>
 				</div>
 			</div>

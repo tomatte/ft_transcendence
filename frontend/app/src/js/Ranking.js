@@ -8,7 +8,7 @@ const loadingPage = () => {
 			<div class="page-content__container__header__info">
 				<h4 class="page-content__container__header__info__title">Ranking</h4>
 			</div>
-			<button class="button button--secondary">
+			<button type="button" class="button button--secondary">
 				<span class="material-icons-round button__icon-left">refresh</span>
 				<span class="button__text font-body-regular-bold">Refresh</span>
 			</button>
@@ -50,7 +50,9 @@ const createTableLines = (ranking_list, start) => {
 			<tr class="table-row">
 				<td class="table-row__data-rank font-body-large">#${start + index + 1}</td>
 				<td class="table-row__player">
-					<img class="table-row__player__image" src="${item.avatar}">
+					<div class="table-row__player__image-container player__status-offline">
+						<img class="table-row__player__image" src="${item.avatar}" alt="player">
+					</div>
 					<div class="table-row__player__text">
 						<span class="table-row__player__text__name font-body-medium-bold">${item.nickname}</span>
 						<span class="table-row__player__text__nickname font-body-regular">${item.username}</span>
@@ -62,7 +64,7 @@ const createTableLines = (ranking_list, start) => {
 				<td class="table-row__data-default font-body-medium-bold">${item.percent_winner}%</td>
 				<td class="table-row__data-default font-body-medium-bold">${item.percent_losses}</td>
 				<td class="table-row__actions" onclick="fetchDeleteFriend('${item.username}')">
-					<button class="game-row-option">
+					<button type="button" class="game-row-option">
 						<span class="material-icons-round game-row-option__icon">person_remove</span>
 					</button>
 				</td>
