@@ -5,7 +5,7 @@ import websocketMatch from "./websocketMatch.js"
 import websocketTournament from "./websocketTournament.js"
 import { listenPlayer2Moves } from "../game.js"
 import { orderNotificationsByDate } from "../element-creators/utils.js"
-import { updateStateFriends } from "../element-creators/utils.js"
+import { updateStateFriends, updateFriendsOnlineStatus } from "../element-creators/utils.js"
 import { createTableLines } from "../../js/Friends.js"
 
 class NotificationEventHandler {
@@ -35,6 +35,7 @@ function newConnection(data, state) {
     state.notifications = [...data.notifications, ...state.notifications]
     orderNotificationsByDate(state.notifications)
     state.online_players = data.online_players
+    updateFriendsOnlineStatus()
     state.renderPage()
     console.log("newConnection()")
 }
@@ -49,6 +50,7 @@ function newNotification(data, state) {
 
 function updateOnlinePlayers(data, state) {
     state.online_players = data.online_players
+    updateFriendsOnlineStatus()
     if (state.hasOwnProperty("tournament") && state.tournament.is_owner) {
         updateOnlinePlayersTournament(state.online_players)
     }
@@ -87,10 +89,6 @@ function updateNotifications(data) {
 
 function updateFriends() {
     updateStateFriends()
-    if (state.currentPage == 'Friends') {
-        const tableBody = document.querySelector('.page-content__container__content tbody');
-        tableBody.innerHTML = createTableLines(state.friends)
-    }
 }
 
 const notificationEventHandler = new NotificationEventHandler(state)

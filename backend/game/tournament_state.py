@@ -64,6 +64,18 @@ class ExitTournament:
 
 class TournamentState:
     @classmethod
+    def can_start_final(cls, id):
+        tournament = cls.get(id)
+        semifinals = tournament["semi_finals"]
+        match1 = MatchState.get(semifinals[0])
+        match2 = MatchState.get(semifinals[1])
+        return (
+            match1["phase"] == "ended" and
+            match2["phase"] == "ended" and
+            not tournament["final_started"]
+        )
+    
+    @classmethod
     def delete_invitation(cls, id, username):
         notifications = redis.get_map(username, "notifications")
         to_remove = []
@@ -154,7 +166,7 @@ class TournamentState:
             'id': self.tournament_id,
             'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'status': 'creating',
-            'final_bracket_event_sent': 0,
+            'final_started': False,
             'invited_players': []
         }
         
