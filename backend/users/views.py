@@ -590,12 +590,15 @@ def uptade_nickname(request):
 	try:
 		is_valid_method(request, 'POST')
 		nickname = json.loads(request.body).get('nickname')
+		nickname = nickname.strip()
+		words = nickname.split()
+		nickname = ' '.join(words)
 
 		if not nickname:
 			raise KeyError('Nickname not send')
 
-		if len(nickname) > 40:
-			return JsonResponse({"msg": 'Nickname too long!'}, status=400)
+		if len(nickname) > 15 or len(nickname) < 3:
+			return JsonResponse({"msg": 'Nickname invalid size!'}, status=400)
 
 		ManipulateUser(username=request.user.username).uptade_nickname(nickname)
 		return HttpResponse(status=200)
