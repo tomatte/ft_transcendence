@@ -165,6 +165,7 @@ class ManipulateUser:
 			send_update_friends_notification(friend_username)
 		else:
 			friendship.delete()
+			send_update_friends_notification(self.me.username)
 
 	def seding_friends(self):
 		response = Friendship.objects.filter(from_user=self.me, status='pending').values(
