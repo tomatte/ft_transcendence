@@ -326,7 +326,7 @@ const PageLogin = () => {
 				</div>
 
 				<form class="login-form-button">
-					<a class="button button--primary" id="login-42-button" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a&redirect_uri=https%3A%2F%2F134.209.223.141%2Fapi%2Fauth%2F&response_type=code">
+					<a class="button button--primary" id="login-42-button" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-a9bd2a36a6c5c5730287fe7c6aa4a7b0bcdee84025614824732a9730ee44625e&redirect_uri=https%3A%2F%2Flocalhost%2Fapi%2Fauth%2F&response_type=code">
 						<img class="login-container__logo" src="/assets/logo/logo_42_white.svg" alt="logo logomark 42">
 						<span class="button__text font-body-regular-bold">Login with 42</span>
 					</a>
