@@ -13,12 +13,6 @@ const loadingPage = () => {
 				 <span class="button__text font-body-regular-bold">Add Friend</span>
 			</button>
 		</div>
-		<div class="page-content__container__header__search-bar">
-			<div class="search-bar">
-				<span class="material-icons-round search-bar__icon icon--regular">search</span>
-				<input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
-			</div>
-		</div>
 		<div class="page-content__container__content page-content__container__content--matches">
 			<table>
 				<thead>

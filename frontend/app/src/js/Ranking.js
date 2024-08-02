@@ -9,10 +9,6 @@ const loadingPage = () => {
 				<h4 class="page-content__container__header__info__title">Ranking</h4>
 			</div>
 		</div>
-		<div class="search-bar">
-			<span class="material-icons-round search-bar__icon icon--regular">search</span>
-			<input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
-		</div>
 		<div class="page-content__container__content page-content__container__content--ranking">
 			<table>
 				<thead>
