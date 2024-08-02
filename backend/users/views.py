@@ -190,7 +190,7 @@ class ManipulateUser:
 		total_matchs = matches_player.count()
 		wins = user.winners
 		win_rate = (wins / total_matchs) * 100 if total_matchs > 0 else 0
-		losses_rate = 100 - win_rate
+		losses_rate = 100 - win_rate if total_matchs > 0 else 0
 		losses = total_matchs - user.winners,
 		total_score = 0
 		for m in matches_player:
@@ -307,6 +307,7 @@ class ManipulateUser:
 			dict['all_matchs'] = all_matchs.count()
 			dict['average_points'] = mean(points) if points else 0
 			dict['average_points_taken'] = self.avarage_points_taken()
+			dict['losses'] = all_matchs.count() - self.me.winners
 			return dict
 
 		except MatchPlayer.DoesNotExist as e:
@@ -322,7 +323,6 @@ class ManipulateUser:
 			"global_ranking": self.position_ranking(),
 			"percent_winner": 0,
 			"percent_losses": 0,
-
 		})
 		return data_match
 
