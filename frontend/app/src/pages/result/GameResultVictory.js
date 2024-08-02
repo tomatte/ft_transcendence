@@ -4,7 +4,7 @@ const goBackButton = /* html */ `
             <span class="material-icons-round button__icon-right">arrow_forward</span>
         </button>
 `
-const redirectMessage = `<h6 class="game-result__content__info__redirect">You will be redirected to the brackets in 10 seconds...</h6>`
+const redirectMessage = `<h6 class="game-result__content__info__redirect">You will be redirected to the brackets soon...</h6>`
 
 const GameResultVictory = (player_left, player_right, description, type) => {
     const title = type == "local" ? "END OF GAME" : "VICTORY"

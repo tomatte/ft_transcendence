@@ -81,10 +81,6 @@ const Home = (state) => {
                             </button>
 
                         </div>
-                <div class="search-bar">
-                    <span class="material-icons-round search-bar__icon icon--regular">search</span>
-                    <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
-                </div>
             </div>
 
             <div class="modal__player-queue">
