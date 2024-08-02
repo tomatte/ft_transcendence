@@ -95,3 +95,13 @@ export const updateStateFriends = async () => {
     state.friends = friends
     updateFriendsOnlineStatus()
 }
+
+export const updateNotificationBadge = () => {
+    console.log("updateNotificationBadge()")
+    const parent = document.querySelector('.notification-badge')
+    const num = state.notifications.length
+    if (num <= 0) return parent.style.display = 'none'
+    parent.style.display = 'flex'
+    const count = document.querySelector('.notification-badge__count')
+    count.innerText = num
+}
