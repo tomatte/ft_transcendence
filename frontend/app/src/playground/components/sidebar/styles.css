@@ -35,10 +35,10 @@ ul {
 
 .sidebar__logo-container__logo {
     height: 32px;
-    user-select: none; /* standard property for modern browsers */
     -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
     -moz-user-select: none; /* for older versions of Firefox */
     pointer-events: none;
+    user-select: none; /* standard property for modern browsers */
 }
 
 .sidebar__menu-container {
@@ -110,6 +110,10 @@ ul {
 
 
 /* menu-item toggle */
+
+.sidebar.collapsed .notification-badge {
+    display: none;
+}
 
 .sidebar.collapsed .sidebar__menu-container__itens .menu-item__text {
     display: none;

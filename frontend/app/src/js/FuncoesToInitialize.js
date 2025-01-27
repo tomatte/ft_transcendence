@@ -59,9 +59,7 @@ const setButtonAddFriendSentStyle = (friend_username) => {
 	const btnId = `button-add-friend-${friend_username}`
 	const btn = document.getElementById(btnId)
 	btn.innerHTML = `
-		<span class="material-icons-round button__icon-left">sports_esports</span>
 		<span class="button__text font-body-regular-bold">Request sent!</span>
-		<span class="material-icons-round button__icon-right">sports_esports</span>
 	`
 	btn.style.cursor = 'default';
 	btn.classList.remove('button--success');
@@ -144,17 +142,13 @@ const fetchDeleteFriend = async (username) => {
 const getAddFriendButton = (user) => {
 	const toAdd = /* html */ `
 		<button id="button-add-friend-${user.username}" class="button button--success" onclick="fetchAddFriend('${user.username}')">
-			<span class="material-icons-round button__icon-left">sports_esports</span>
 			<span class="button__text font-body-regular-bold">Add friend</span>
-			<span class="material-icons-round button__icon-right">sports_esports</span>
 		</button>
 	`
 
 	const pending = /* html */ `
 		<button class="button button--success-confirmation" style="cursor: default;">
-			<span class="material-icons-round button__icon-left">sports_esports</span>
 			<span class="button__text font-body-regular-bold">Request sent!</span>
-			<span class="material-icons-round button__icon-right">sports_esports</span>
 		</button>
 	`
 
@@ -308,7 +302,7 @@ const generatoModalToDelete = () => {
 				<button type="button" onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
 					<span class="button__text font-body-regular-bold">No, cancel</span>
 				</button>
-				<button onclick="closeModal('modalRemoveFriend')" class="button button--danger" id="button-accept-delete">
+				<button type="button" onclick="closeModal('modalRemoveFriend')" class="button button--danger" id="button-accept-delete">
 					<span class="button__text font-body-regular-bold">Yes, remove friend</span>
 				</button>
 			</div>
@@ -332,7 +326,7 @@ const PageLogin = () => {
 				</div>
 
 				<form class="login-form-button">
-					<a class="button button--primary" id="login-42-button" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1f4fd9261e71e1972517d81316efdf5562bf5fcd9a94889ecb414facb8bcac0a&redirect_uri=https%3A%2F%2F134.209.223.141%2Fapi%2Fauth%2F&response_type=code">
+					<a class="button button--primary" id="login-42-button" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-9954ea12a766e3c5e958dede25fc19868a2da863a3b70188bbf1d9c952d8433b&redirect_uri=https%3A%2F%2Flocalhost%2Fapi%2Fauth&response_type=code">
 						<img class="login-container__logo" src="/assets/logo/logo_42_white.svg" alt="logo logomark 42">
 						<span class="button__text font-body-regular-bold">Login with 42</span>
 					</a>

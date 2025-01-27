@@ -13,9 +13,11 @@ services:
       - "4009:80"
     volumes:
       - ./frontend/app:/var/www
+    networks:
+      - trans
     environment:
-      - BACKEND_HOST=localhost
-    network_mode: host
+      - BACKEND_HOST=host.docker.internal
+
 
   db:
     image: postgres:latest
@@ -47,7 +49,18 @@ services:
   #   environment:
   #     - BACKEND_HOST=localhost
   #     - BACKEND_PORT=${BACKEND_PORT}
-  #     - REDIS_HOST=localhost
   #     - REDIS_PORT=${REDIS_PORT}
-  #   network_mode: host
-  
+  #     - REDIS_HOST=redis
+  #   networks:
+  #     - trans
+  #   depends_on:
+  #     - backend
+
+
+# docker stop $(docker ps -a -q)
+# docker rm $(docker ps -a -q)
+# docker rmi $(docker images -q)
+# docker network prune -f
+# docker volume prune -f
+# docker system prune -a --volumes
+# docker volume rm ft_transcendence_backend-files ft_transcendence_frontend-files

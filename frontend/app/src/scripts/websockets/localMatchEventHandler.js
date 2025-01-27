@@ -17,7 +17,6 @@ class LocalMatchEventHandler {
 
     execute(eventData) {
         if (this.events.hasOwnProperty(eventData.name) == false) {
-            console.log(`no callback for event: ${eventData.name}`)
            return
         }
 
@@ -26,7 +25,6 @@ class LocalMatchEventHandler {
 }
 
 function start(data, state) {
-    console.log("EVENT startLocalMatch()")
     websocketMatch.listen()
     websocketMatch.listen()
     showGamePage()

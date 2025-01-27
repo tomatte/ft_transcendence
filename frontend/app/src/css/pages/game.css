@@ -26,9 +26,9 @@ body, .page-game__container {
     height: auto;
     transform: translate(-50%, -50%);
     z-index: 3;
-    user-select: none; /* standard property for modern browsers */
     -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
     -moz-user-select: none; /* for older versions of Firefox */
+    user-select: none; /* standard property for modern browsers */
     pointer-events: none;
 }
 
@@ -37,9 +37,9 @@ body, .page-game__container {
     position: absolute;
     top: 10%;
     font-size: 2.8vw;
-    user-select: none; /* standard property for modern browsers */
     -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
     -moz-user-select: none; /* for older versions of Firefox */
+    user-select: none; /* standard property for modern browsers */
     pointer-events: none;
 }
 

@@ -10,9 +10,9 @@
     align-items: center;
     gap: 8px;
     border-radius: 4px;
-    user-select: none; /* standard property for modern browsers */
     -webkit-user-select: none; /* for Safari 3+, Safari on iOS 3+ */
     -moz-user-select: none; /* for older versions of Firefox */
+    user-select: none; /* standard property for modern browsers */
 }
 
 .tag--defeat

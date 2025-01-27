@@ -43,7 +43,6 @@ class ModalCreateTournament {
     }
 
     close() {
-        console.log("MODAL close()")
         this.modal.close(this.modalId)
         websocketTournament.client.close(3111)
     }

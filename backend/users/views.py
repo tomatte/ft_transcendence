@@ -165,6 +165,7 @@ class ManipulateUser:
 			send_update_friends_notification(friend_username)
 		else:
 			friendship.delete()
+			send_update_friends_notification(self.me.username)
 
 	def seding_friends(self):
 		response = Friendship.objects.filter(from_user=self.me, status='pending').values(
@@ -183,6 +184,28 @@ class ManipulateUser:
 		)
 
 		return format_friend_requests(friend_requests)
+
+	def get_ranking_stats(self, user: User):
+		matches_player = MatchPlayer.objects.filter(user=user)
+
+		total_matchs = matches_player.count()
+		wins = user.winners
+		win_rate = (wins / total_matchs) * 100 if total_matchs > 0 else 0
+		losses_rate = 100 - win_rate if total_matchs > 0 else 0
+		losses = total_matchs - user.winners,
+		total_score = 0
+		for m in matches_player:
+			total_score += m.score
+		return {
+			"username": user.username,
+			"nickname": user.nickname,
+			"avatar": user.avatar.name,
+			"wins": wins,
+			"losses": losses,
+			"win_rate": round(win_rate, 2),
+			"losses_rate": round(losses_rate, 2),
+			"total_score": total_score,
+		}
 
 	def player_statistics_by_you(self, friend: object) -> dict:
 		if not friend:
@@ -238,7 +261,7 @@ class ManipulateUser:
 
 	def table_ranking(self):
 		all_players = User.objects.all().order_by('-winners')
-		return [self.player_statistics_by_you(friend=play) for play in all_players]
+		return [self.get_ranking_stats(user=play) for play in all_players]
 
 	def number_of_matchs(self):
 		return Match.objects.filter(players=self.me).count()
@@ -285,6 +308,7 @@ class ManipulateUser:
 			dict['all_matchs'] = all_matchs.count()
 			dict['average_points'] = mean(points) if points else 0
 			dict['average_points_taken'] = self.avarage_points_taken()
+			dict['losses'] = all_matchs.count() - self.me.winners
 			return dict
 
 		except MatchPlayer.DoesNotExist as e:
@@ -297,11 +321,9 @@ class ManipulateUser:
 			"nickname": self.me.nickname,
 			"avatar": self.me.avatar.name,
 			"winners": self.me.winners,
-			"losses": self.me.losses,
 			"global_ranking": self.position_ranking(),
 			"percent_winner": 0,
 			"percent_losses": 0,
-
 		})
 		return data_match
 
@@ -313,11 +335,12 @@ class ManipulateUser:
 			return query_obj[1], player1
 
 	def historic(self):
-		prefetch = Prefetch('matchMatch', queryset=MatchPlayer.objects.all())
-		matches = Match.objects.prefetch_related(prefetch).order_by('create_at')
+		matches = MatchPlayer.objects.filter(user=self.me)
+	
 		data = []
 		gmt_minus_3 = pytz.timezone('Etc/GMT+3')
 		for _match in matches:
+			_match = _match.match
 			me, other = self.separate_players(_match.matchMatch.all())
 			created_at = _match.create_at.astimezone(gmt_minus_3)
 			data.append({

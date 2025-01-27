@@ -12,12 +12,10 @@ html, body
     padding: 0;
   	height: 100%;
 	width: 100%;
-    background: linear-gradient(156deg, #494955 -22.74%, #000 32.87%, #000 98.16%);
 	overflow: hidden;
     display: flex;
 	justify-content: flex-start;
 	align-items: center;
-    z-index: -1;
 }
 
 .Bracket-Searching
@@ -56,8 +54,8 @@ html, body
 
 .Searching-Title {
     background: linear-gradient(90deg, #9A9AAF 0%, #565665 85%, #151515 100%);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 

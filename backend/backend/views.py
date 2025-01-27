@@ -6,9 +6,18 @@ import requests
 from environs import Env
 import os
 from django.conf import settings
+from tournament.models import Match, Tournament
 
 env = Env()
 env.read_env()
+
+def stats(request):
+	data = {
+		"users": User.objects.count(),
+		"matches": Match.objects.count(),
+		"tournaments": Tournament.objects.count(),
+	}
+	return JsonResponse(data)
 
 def get_access_token(code):
 	data = {
@@ -16,7 +25,7 @@ def get_access_token(code):
 		'client_id': env('S42_CLIENT_ID'),
 		'client_secret': env('S42_CLIENT_SECRET'),
 		'code': code,
-		'redirect_uri': f"{env('SITE_URL')}/api/auth/"
+		'redirect_uri': f"{env('SITE_URL')}/api/auth"
 	}
 
 	response = requests.post('https://api.intra.42.fr/oauth/token', data=data)

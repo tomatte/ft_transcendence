@@ -17,7 +17,6 @@ listenButtonClick(
 
  
 const Home = (state) => {
-    console.log({state})
 	const pageContentContainer = document.querySelector('.page-content__container');
   
         pageContentContainer.innerHTML = /*html*/ `
@@ -47,7 +46,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">LOCAL MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button id="button-play-local-match" class="button button--secondary">
+                    <button type="button" id="button-play-local-match" class="button button--secondary">
                         <span class="material-icons-round button__icon-left">computer</span>
                         <span class="button__text font-body-regular-bold">Play locally</span>
                     </button>
@@ -62,7 +61,7 @@ const Home = (state) => {
             <div class="game-mode-banner__info">
                 <div class="game-mode-banner__info__title">RANDOM MATCH</div>
                 <div class="game-mode-banner__info__button">
-                    <button id="button-play-random-match" class="button button--primary">
+                    <button type="button" id="button-play-random-match" class="button button--primary">
                         <span class="material-icons-round button__icon-left">shuffle</span>
                         <span class="button__text font-body-regular-bold">Play randomly</span>
                     </button>
@@ -77,15 +76,11 @@ const Home = (state) => {
                     <div class="modal__header">
                         <div class="modal__header__title">
                             <h4 class="modal__header__title__text">Invite to tournament</h4>
-                            <button id="button-close-invite-tournament" class="button" onclick="openModal('modalDeleteTournament')">
+                            <button type="button" id="button-close-invite-tournament" class="button" onclick="openModal('modalDeleteTournament')">
                                 <span class="material-icons-round modal__header__title__close icon--regular">close</span>
                             </button>
 
                         </div>
-                <div class="search-bar">
-                    <span class="material-icons-round search-bar__icon icon--regular">search</span>
-                    <input type="text" class="search-bar__input font-body-regular" placeholder="Search for a name...">
-                </div>
             </div>
 
             <div class="modal__player-queue">
@@ -121,17 +116,16 @@ const Home = (state) => {
 					<div class="modal__header__title__text">
 						<h4>Delete tournament</h4>
 					</div>
-					<span class="material-icons-round modal__header__title__close icon--regular">close</span>
 				</div>
 				<span class="modal__header__description font-body-medium">
 					If you leave this page, the tournament will be ended.
 				</span>
 			</div>
         <div class="modal__actions">
-            <button class="button button--secondary" onclick="closeModal('modalDeleteTournament')">
+            <button type="button" class="button button--secondary" onclick="closeModal('modalDeleteTournament')">
                 <span class="button__text font-body-regular-bold">No, stay</span>
             </button>
-            <button id="button-close-create-tournament" class="button button--danger" onclick="closeBothModals()">
+            <button type="button" id="button-close-create-tournament" class="button button--danger" onclick="closeBothModals()">
                 <span class="button__text font-body-regular-bold">Yes, leave tournament</span>
             </button>
 			</div>

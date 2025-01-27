@@ -19,7 +19,6 @@ function addElements() {
 }
 
 const Game = (state) => {
-    console.log(state)
     hideContents()
     addGameStyles()
     addElements()

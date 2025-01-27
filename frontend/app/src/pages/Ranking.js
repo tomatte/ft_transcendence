@@ -18,11 +18,6 @@ const createTableLines = (ranking_list, start) => {
 				<td class="table-row__data-default font-body-medium-bold">${item.winners_against_you}</td>
 				<td class="table-row__data-default font-body-medium-bold">${item.percent_winner}%</td>
 				<td class="table-row__data-default font-body-medium-bold">${item.percent_losses}</td>
-				<td class="table-row__actions">
-					<button onclick="openModal('modalRemoveFriend')" class="game-row-option">
-						<span class="material-icons-round game-row-option__icon">person_remove</span>
-					</button>
-				</td>
 			</tr>
 		`;
 	}, '');
@@ -98,7 +93,7 @@ const loadingBasePage = () => {
 				</span>
 			</div>
 			<div class="modal__actions">
-				<button onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
+				<button type="button" onclick="closeModal('modalRemoveFriend')" class="button button--secondary">
 					<span class="button__text font-body-regular-bold">No, cancel</span>
 				</button>
 				<button class="button button--danger">

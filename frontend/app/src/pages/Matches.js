@@ -14,7 +14,6 @@ function get_status_match(is_winner) {
 
 
 const createTableLines = (matchesList) => {
-	console.log(matchesList)
 	return matchesList.reduce((acc, item) => {return acc + `
 		<tr class="table-row">
 			<td class="table-row__player">

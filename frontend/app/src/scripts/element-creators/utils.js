@@ -32,28 +32,11 @@ export function listenForKeyPress(targetKey, callback) {
     document.addEventListener('keydown', handleKeyPress);
 }
 
-/* TODO: remove in production */
-export function listenTestKeys() {
-    listenForKeyPress("1", () => websocketMatch.listen())
-    listenForKeyPress("2", () => websocketTournament.listen())
-    listenForKeyPress("3", () => websocketTournament.send({action: "start"}))
-    listenForKeyPress("4", () => {
-        state.tournament = {}
-        state.tournament.players = mockPlayers
-        showTournamentPage()
-    })
-    listenForKeyPress("5", () => showGamePage())
-    listenForKeyPress("6", () => goBackHome())
-    listenForKeyPress("7", () => console.log({state}))
-    listenForKeyPress("8", () => showGamePage())
-}
-
 export function listenButtonClick(parent, btnId, callback) {
     parent.addEventListener('click', function(event) {
         let targetElement = event.target;
         while (targetElement != null && targetElement !== this) {
             if (targetElement.id === btnId) {
-                console.log(`${btnId} clicked`);
                 callback()
                 break;
             }
@@ -101,7 +84,6 @@ function setFriendsOnlineStatus() {
 
 export const updateFriendsOnlineStatus = async () => {
     setFriendsOnlineStatus()
-    console.log({panpan: state})
     if (state.currentPage == 'Friends') {
         const tableBody = document.querySelector('.page-content__container__content tbody');
         tableBody.innerHTML = createTableLines(state.friends)
@@ -112,4 +94,14 @@ export const updateStateFriends = async () => {
     const friends = await fetchFriends()
     state.friends = friends
     updateFriendsOnlineStatus()
+}
+
+export const updateNotificationBadge = () => {
+    console.log("updateNotificationBadge()")
+    const parent = document.querySelector('.notification-badge')
+    const num = state.notifications.length
+    if (num <= 0) return parent.style.display = 'none'
+    parent.style.display = 'flex'
+    const count = document.querySelector('.notification-badge__count')
+    count.innerText = num
 }

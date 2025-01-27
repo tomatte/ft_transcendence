@@ -7,6 +7,7 @@ import { listenPlayer2Moves } from "../game.js"
 import { orderNotificationsByDate } from "../element-creators/utils.js"
 import { updateStateFriends, updateFriendsOnlineStatus } from "../element-creators/utils.js"
 import { createTableLines } from "../../js/Friends.js"
+import { updateNotificationBadge } from "../element-creators/utils.js"
 
 class NotificationEventHandler {
     constructor (state) {
@@ -34,15 +35,15 @@ function newConnection(data, state) {
     // TODO: create a function to merge the notifications from redis with notifications from database
     state.notifications = [...data.notifications, ...state.notifications]
     orderNotificationsByDate(state.notifications)
+    updateNotificationBadge()
     state.online_players = data.online_players
     updateFriendsOnlineStatus()
     state.renderPage()
-    console.log("newConnection()")
 }
 
 function newNotification(data, state) {
     state['notifications'].unshift(data)
-    console.log({state})
+    updateNotificationBadge()
     if (state.currentPage == 'Notifications') { //TODO: change this to inject the html
         state.renderPage()
     }
@@ -54,12 +55,9 @@ function updateOnlinePlayers(data, state) {
     if (state.hasOwnProperty("tournament") && state.tournament.is_owner) {
         updateOnlinePlayersTournament(state.online_players)
     }
-    console.log("updateOnlinePlayers()")
 }
 
 function tournamentInvitation(data, state) {
-    console.log("tournamentInvitation()")
-    console.log(data)
 }
 
 function enterRunningMatch() {
@@ -82,6 +80,7 @@ function updateNotifications(data) {
     state.notifications = state.notifications.filter(n => n.type !== "tournament");
     state['notifications'] = [...data.notifications, ...state.notifications]
     orderNotificationsByDate(state.notifications)
+    updateNotificationBadge()
     if (state.currentPage == 'Notifications') {
         state.renderPage()
     }
@@ -89,6 +88,7 @@ function updateNotifications(data) {
 
 function updateFriends() {
     updateStateFriends()
+    updateNotificationBadge()
 }
 
 const notificationEventHandler = new NotificationEventHandler(state)
