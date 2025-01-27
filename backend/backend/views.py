@@ -25,7 +25,7 @@ def get_access_token(code):
 		'client_id': env('S42_CLIENT_ID'),
 		'client_secret': env('S42_CLIENT_SECRET'),
 		'code': code,
-		'redirect_uri': f"{env('SITE_URL')}/api/auth/"
+		'redirect_uri': f"{env('SITE_URL')}/api/auth"
 	}
 
 	response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
