@@ -14,7 +14,7 @@ class MyBackend(BaseBackend):
 
         return (response.json())
 
-    def authenticate(self, request=None, token=None, fake_data=None):
+    def authenticate(self, request=None, token=None, fake_data=None, auth_provider='42'):
         try:
             data = MyBackend.get_intra_data(token)
         except:

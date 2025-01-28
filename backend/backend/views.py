@@ -25,7 +25,7 @@ def get_access_token(code):
 		'client_id': env('S42_CLIENT_ID'),
 		'client_secret': env('S42_CLIENT_SECRET'),
 		'code': code,
-		'redirect_uri': f"{env('SITE_URL')}/api/auth"
+		'redirect_uri': f"{env('SITE_URL')}/api/auth_42"
 	}
 
 	response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
@@ -50,12 +50,28 @@ def set_cookies(response, user):
 	response.set_cookie('nickname', user.nickname)
 	response.set_cookie('avatar', user.avatar.name)
 
-def auth(request):
+def auth_42(request):
 	if request.method != 'GET':
 		return JsonResponse({'message': 'Invalid request'})
 	try:
 		access_token = get_access_token(request.GET.get('code'))
-		user = authenticate(request, token=access_token)
+		user = authenticate(request, token=access_token, auth_provider='42')
+		if user:
+			auth_login(request, user)
+			response = redirect(env('SITE_URL'))
+			set_cookies(response, user)
+			return response
+		else:
+			return JsonResponse({'message': "forbbiden"})
+	except Exception as e:
+		return JsonResponse({'message': str(e)})
+
+def auth_google(request):
+	if request.method != 'GET':
+		return JsonResponse({'message': 'Invalid request'})
+	try:
+		access_token = get_access_token(request.GET.get('code'))
+		user = authenticate(request, token=access_token, auth_provider='google')
 		if user:
 			auth_login(request, user)
 			response = redirect(env('SITE_URL'))

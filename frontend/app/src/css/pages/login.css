@@ -82,6 +82,11 @@ body {
 	align-self: stretch;
 }
 
+#login-google-button {
+	flex: 1 0 0;
+	align-self: stretch;
+}
+
 .login-container__credits-text {
 	color: var(--Lunar-Dust-500);
 	text-align: center;
