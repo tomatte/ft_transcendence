@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate
 from users.models import User
@@ -7,6 +7,8 @@ from environs import Env
 import os
 from django.conf import settings
 from tournament.models import Match, Tournament
+from backend.auth_google_utils import create_anti_forgery_state_token, decode_jwt
+import secrets
 
 env = Env()
 env.read_env()
@@ -70,15 +72,34 @@ def auth_google(request):
 	if request.method != 'GET':
 		return JsonResponse({'message': 'Invalid request'})
 	try:
-		access_token = get_access_token(request.GET.get('code'))
-		user = authenticate(request, token=access_token, auth_provider='google')
-		if user:
-			auth_login(request, user)
-			response = redirect(env('SITE_URL'))
-			set_cookies(response, user)
-			return response
+		code = request.GET.get('code')
+		client_id = env('GOOGLE_CLIENT_ID')
+		nonce = secrets.token_urlsafe(16)
+		if not code:
+			token = create_anti_forgery_state_token(request)
+			request.session['state'] = token
+			url = f"https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id={client_id}&scope=openid%20profile%20email&redirect_uri=https%3A//localhost/api/auth_google&state={token}&nonce={nonce}"
+			return HttpResponseRedirect(url)
 		else:
-			return JsonResponse({'message': "forbbiden"})
+			if request.GET.get('state') != request.session['state']:
+				return JsonResponse({'message': 'invalid state parameter'})
+			codeExchangeResponse = requests.post('https://oauth2.googleapis.com/token', {
+				'code': code,
+				'client_id': client_id,
+				'client_secret': env('GOOGLE_CLIENT_SECRET'),
+				'redirect_uri': 'https://localhost/api/auth_google',
+				'grant_type': 'authorization_code'
+			})
+			id_token = codeExchangeResponse.json()['id_token']
+			decoded_token = decode_jwt(id_token)
+			user = authenticate(request, auth_provider='google', google_data=decoded_token)
+			if user:
+				auth_login(request, user)
+				response = redirect(env('SITE_URL'))
+				set_cookies(response, user)
+				return response
+			else:
+				return JsonResponse({'message': "forbbiden"})
 	except Exception as e:
 		return JsonResponse({'message': str(e)})
 

@@ -331,6 +331,13 @@ const PageLogin = () => {
 						<span class="button__text font-body-regular-bold">Login with 42</span>
 					</a>
 				</form>
+
+				<form class="login-form-button">
+					<a class="button button--primary" id="login-google-button" href="/api/auth_google">
+						<img class="login-container__logo" src="/assets/logo/logo_42_white.svg" alt="logo logomark 42">
+						<span class="button__text font-body-regular-bold">Login with Google</span>
+					</a>
+				</form>
 			</div>
 			<span class="login-container__credits-text font-body-regular">A project made by: etomiyos, dbrandao and clourenc, for 42 São Paulo</span>
 		</div>
