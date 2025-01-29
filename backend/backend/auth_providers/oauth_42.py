@@ -5,6 +5,9 @@ from backend.config import env
 
 
 class OAuth_42(OAuthBase):
+    def __init__(self, request):
+        self.request = request
+    
     def get_intra_data(self, access_token):
         headers = {
             'Authorization': 'Bearer ' + access_token
@@ -30,8 +33,8 @@ class OAuth_42(OAuthBase):
 
         return response.json()['access_token']
     
-    def authenticate(self, request):
-            code = request.GET.get('code')
+    def authenticate(self):
+            code = self.request.GET.get('code')
             access_token = self.get_access_token(code)
             intra_data = self.get_intra_data(access_token)
             data = {
@@ -39,7 +42,7 @@ class OAuth_42(OAuthBase):
                 'nickname': intra_data['login'],
                 'email': intra_data['email'],
 		    }
-            return authenticate(request, data=data)
+            return authenticate(self.request, data=data)
     
     def get_redirect_url(self):
         return env('S42_AUTH_URL')

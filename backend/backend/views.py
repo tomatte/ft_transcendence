@@ -10,6 +10,7 @@ from backend.auth_google_utils import create_anti_forgery_state_token, decode_jw
 import secrets
 from backend.auth_providers import OAuthBase
 from backend.auth_providers.oauth_42 import OAuth_42
+from backend.auth_providers.oauth_google import OAuth_Google
 from backend.config import env
 
 def stats(request):
@@ -55,11 +56,11 @@ def auth_42(request):
 	if request.method != 'GET':
 		return JsonResponse({'message': 'Invalid request'})
 	try:
-		oauth_provider: OAuthBase = OAuth_42()
+		oauth_provider: OAuthBase = OAuth_42(request)
 		code = request.GET.get('code')
 		if not code:
 			return HttpResponseRedirect(oauth_provider.get_redirect_url())
-		user = oauth_provider.authenticate(request)
+		user = oauth_provider.authenticate()
 		if user:
 			auth_login(request, user)
 			response = redirect(env('SITE_URL'))
@@ -75,32 +76,11 @@ def auth_google(request):
 		return JsonResponse({'message': 'Invalid request'})
 	try:
 		code = request.GET.get('code')
-		client_id = env('GOOGLE_CLIENT_ID')
-		nonce = secrets.token_urlsafe(16)
+		oauth_provider: OAuthBase = OAuth_Google(request)
 		if not code:
-			token = create_anti_forgery_state_token(request)
-			request.session['state'] = token
-			url = f"https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id={client_id}&scope=openid%20profile%20email&redirect_uri=https%3A//localhost/api/auth_google&state={token}&nonce={nonce}"
-			return HttpResponseRedirect(url)
+			return HttpResponseRedirect(oauth_provider.get_redirect_url())
 		else:
-			if request.GET.get('state') != request.session['state']:
-				return JsonResponse({'message': 'invalid state parameter'})
-			codeExchangeResponse = requests.post('https://oauth2.googleapis.com/token', {
-				'code': code,
-				'client_id': client_id,
-				'client_secret': env('GOOGLE_CLIENT_SECRET'),
-				'redirect_uri': 'https://localhost/api/auth_google',
-				'grant_type': 'authorization_code'
-			})
-			id_token = codeExchangeResponse.json()['id_token']
-			decoded_token = decode_jwt(id_token)
-			nickname = make_nickname(decoded_token['name'], decoded_token['sub'])
-			data = {
-				'username': nickname,
-				'nickname': nickname,
-				'email': decoded_token['email']
-			}
-			user = authenticate(request, data=data)
+			user = oauth_provider.authenticate()
 			if user:
 				auth_login(request, user)
 				response = redirect(env('SITE_URL'))
