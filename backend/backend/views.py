@@ -1,15 +1,15 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate
 from users.models import User
 import requests
-from environs import Env
 import os
 from django.conf import settings
 from tournament.models import Match, Tournament
-
-env = Env()
-env.read_env()
+from backend.auth_google_utils import create_anti_forgery_state_token, decode_jwt, make_nickname
+import secrets
+from backend.config import env
+from backend.auth_providers.oauth_factory import OAuth_Factory
 
 def stats(request):
 	data = {
@@ -19,43 +19,22 @@ def stats(request):
 	}
 	return JsonResponse(data)
 
-def get_access_token(code):
-	data = {
-		'grant_type': 'authorization_code',
-		'client_id': env('S42_CLIENT_ID'),
-		'client_secret': env('S42_CLIENT_SECRET'),
-		'code': code,
-		'redirect_uri': f"{env('SITE_URL')}/api/auth"
-	}
-
-	response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
-	if response.status_code != 200:
-		raise Exception('Error getting access token')
-
-	return response.json()['access_token']
-
-
-def get_intra_data(access_token):
-	headers = {
-		'Authorization': 'Bearer ' + access_token
-	}
-	response = requests.get('https://api.intra.42.fr/v2/me', headers=headers)
-	if response.status_code != 200:
-		raise Exception('Error getting user data')
-
-	return (response.json())
 
 def set_cookies(response, user):
 	response.set_cookie('username', user.username)
 	response.set_cookie('nickname', user.nickname)
 	response.set_cookie('avatar', user.avatar.name)
 
-def auth(request):
+
+def auth(request, provider):
 	if request.method != 'GET':
 		return JsonResponse({'message': 'Invalid request'})
 	try:
-		access_token = get_access_token(request.GET.get('code'))
-		user = authenticate(request, token=access_token)
+		oauth_provider = OAuth_Factory.create(provider, request)
+		code = request.GET.get('code')
+		if not code:
+			return HttpResponseRedirect(oauth_provider.get_redirect_url())
+		user = oauth_provider.authenticate()
 		if user:
 			auth_login(request, user)
 			response = redirect(env('SITE_URL'))
@@ -65,7 +44,6 @@ def auth(request):
 			return JsonResponse({'message': "forbbiden"})
 	except Exception as e:
 		return JsonResponse({'message': str(e)})
-
 
 def not_authorized(request):
 	return render(request, 'not_authorized.html')

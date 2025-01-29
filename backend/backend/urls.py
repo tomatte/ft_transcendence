@@ -7,7 +7,7 @@ urlpatterns = [
 	path('api/login/', views.login, name='login'),
 	path('api/stats/', views.stats, name='stats'),
 	path('api/fake_login/', views.auth_fake, name='fake_login'), #TODO: remove in production
-	path('api/auth/', views.auth, name='auth'),
+	path('api/auth/<str:provider>/', views.auth, name='auth'),
 	path('api/notAuthorized/', views.not_authorized, name='not_authorized'),
 	path('api/users/', include('users.urls')),
 	path('api/tournament/', include('tournament.urls')),
