@@ -7,7 +7,7 @@ from environs import Env
 import os
 from django.conf import settings
 from tournament.models import Match, Tournament
-from backend.auth_google_utils import create_anti_forgery_state_token, decode_jwt
+from backend.auth_google_utils import create_anti_forgery_state_token, decode_jwt, make_nickname
 import secrets
 
 env = Env()
@@ -60,7 +60,13 @@ def auth_42(request):
 		if not code:
 			return HttpResponseRedirect(env('S42_AUTH_URL'))
 		access_token = get_access_token(code)
-		user = authenticate(request, token=access_token, auth_provider='42')
+		intra_data = get_intra_data(access_token)
+		data = {
+			'username': intra_data['login'],
+			'nickname': intra_data['login'],
+			'email': intra_data['email'],
+		}
+		user = authenticate(request, data=data)
 		if user:
 			auth_login(request, user)
 			response = redirect(env('SITE_URL'))
@@ -95,7 +101,13 @@ def auth_google(request):
 			})
 			id_token = codeExchangeResponse.json()['id_token']
 			decoded_token = decode_jwt(id_token)
-			user = authenticate(request, auth_provider='google', google_data=decoded_token)
+			nickname = make_nickname(decoded_token['name'], decoded_token['sub'])
+			data = {
+				'username': nickname,
+				'nickname': nickname,
+				'email': decoded_token['email']
+			}
+			user = authenticate(request, data=data)
 			if user:
 				auth_login(request, user)
 				response = redirect(env('SITE_URL'))
@@ -106,6 +118,9 @@ def auth_google(request):
 	except Exception as e:
 		return JsonResponse({'message': str(e)})
 
+
+def auth(request):
+    pass
 
 def not_authorized(request):
 	return render(request, 'not_authorized.html')
