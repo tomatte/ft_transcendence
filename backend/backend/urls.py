@@ -9,7 +9,7 @@ urlpatterns = [
 	path('api/fake_login/', views.auth_fake, name='fake_login'), #TODO: remove in production
 	path('api/auth_42/', views.auth_42, name='auth_42'),
 	path('api/auth_google/', views.auth_google, name='auth_42'),
-	path('api/auth/', views.auth, name='auth'),
+	path('api/auth/<str:provider>/', views.auth, name='auth'),
 	path('api/notAuthorized/', views.not_authorized, name='not_authorized'),
 	path('api/users/', include('users.urls')),
 	path('api/tournament/', include('tournament.urls')),

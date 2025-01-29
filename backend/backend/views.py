@@ -92,8 +92,9 @@ def auth_google(request):
 		return JsonResponse({'message': str(e)})
 
 
-def auth(request):
-    pass
+def auth(request, provider):
+    print({'provider': provider})
+    return JsonResponse({'message': f"trying to authenticate with {provider}"})
 
 def not_authorized(request):
 	return render(request, 'not_authorized.html')
