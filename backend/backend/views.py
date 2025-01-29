@@ -8,10 +8,8 @@ from django.conf import settings
 from tournament.models import Match, Tournament
 from backend.auth_google_utils import create_anti_forgery_state_token, decode_jwt, make_nickname
 import secrets
-from backend.auth_providers import OAuthBase
-from backend.auth_providers.oauth_42 import OAuth_42
-from backend.auth_providers.oauth_google import OAuth_Google
 from backend.config import env
+from backend.auth_providers.oauth_factory import OAuth_Factory
 
 def stats(request):
 	data = {
@@ -56,7 +54,7 @@ def auth_42(request):
 	if request.method != 'GET':
 		return JsonResponse({'message': 'Invalid request'})
 	try:
-		oauth_provider: OAuthBase = OAuth_42(request)
+		oauth_provider = OAuth_Factory.create('42', request)
 		code = request.GET.get('code')
 		if not code:
 			return HttpResponseRedirect(oauth_provider.get_redirect_url())
@@ -76,7 +74,7 @@ def auth_google(request):
 		return JsonResponse({'message': 'Invalid request'})
 	try:
 		code = request.GET.get('code')
-		oauth_provider: OAuthBase = OAuth_Google(request)
+		oauth_provider = OAuth_Factory.create('google', request)
 		if not code:
 			return HttpResponseRedirect(oauth_provider.get_redirect_url())
 		else:
