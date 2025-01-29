@@ -3,15 +3,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate
 from users.models import User
 import requests
-from environs import Env
 import os
 from django.conf import settings
 from tournament.models import Match, Tournament
 from backend.auth_google_utils import create_anti_forgery_state_token, decode_jwt, make_nickname
 import secrets
-
-env = Env()
-env.read_env()
+from backend.auth_providers import OAuthBase
+from backend.auth_providers.oauth_42 import OAuth_42
+from backend.config import env
 
 def stats(request):
 	data = {
@@ -56,17 +55,11 @@ def auth_42(request):
 	if request.method != 'GET':
 		return JsonResponse({'message': 'Invalid request'})
 	try:
+		oauth_provider: OAuthBase = OAuth_42()
 		code = request.GET.get('code')
 		if not code:
-			return HttpResponseRedirect(env('S42_AUTH_URL'))
-		access_token = get_access_token(code)
-		intra_data = get_intra_data(access_token)
-		data = {
-			'username': intra_data['login'],
-			'nickname': intra_data['login'],
-			'email': intra_data['email'],
-		}
-		user = authenticate(request, data=data)
+			return HttpResponseRedirect(oauth_provider.get_redirect_url())
+		user = oauth_provider.authenticate(request)
 		if user:
 			auth_login(request, user)
 			response = redirect(env('SITE_URL'))
