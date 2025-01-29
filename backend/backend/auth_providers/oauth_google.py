@@ -21,7 +21,7 @@ class OAuth_Google(OAuthBase):
             'code': code,
             'client_id': client_id,
             'client_secret': env('GOOGLE_CLIENT_SECRET'),
-            'redirect_uri': 'https://localhost/api/auth_google',
+            'redirect_uri': 'https://localhost/api/auth/google',
             'grant_type': 'authorization_code'
         })
         id_token = codeExchangeResponse.json()['id_token']
@@ -39,5 +39,5 @@ class OAuth_Google(OAuthBase):
         client_id = env('GOOGLE_CLIENT_ID')
         nonce = secrets.token_urlsafe(16)
         self.request.session['state'] = token
-        url = f"https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id={client_id}&scope=openid%20profile%20email&redirect_uri=https%3A//localhost/api/auth_google&state={token}&nonce={nonce}"
+        url = f"https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id={client_id}&scope=openid%20profile%20email&redirect_uri=https%3A//localhost/api/auth/google&state={token}&nonce={nonce}"
         return url
