@@ -56,7 +56,10 @@ def auth_42(request):
 	if request.method != 'GET':
 		return JsonResponse({'message': 'Invalid request'})
 	try:
-		access_token = get_access_token(request.GET.get('code'))
+		code = request.GET.get('code')
+		if not code:
+			return HttpResponseRedirect(env('S42_AUTH_URL'))
+		access_token = get_access_token(code)
 		user = authenticate(request, token=access_token, auth_provider='42')
 		if user:
 			auth_login(request, user)
