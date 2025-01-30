@@ -57,9 +57,6 @@ function updateOnlinePlayers(data, state) {
     }
 }
 
-function tournamentInvitation(data, state) {
-}
-
 function enterRunningMatch() {
     websocketMatch.listen()
     showGamePage()
@@ -96,7 +93,6 @@ const notificationEventHandler = new NotificationEventHandler(state)
 notificationEventHandler.register("new_connection", newConnection)
 notificationEventHandler.register("new_notification", newNotification)
 notificationEventHandler.register("update_online_players", updateOnlinePlayers)
-notificationEventHandler.register('tournament_invitation', tournamentInvitation)
 notificationEventHandler.register("enter_running_match", enterRunningMatch)
 notificationEventHandler.register("enter_running_tournament", enterRunningTournament)
 notificationEventHandler.register("enter_running_local_match", enterRunningLocalMatch)

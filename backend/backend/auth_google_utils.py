@@ -37,4 +37,4 @@ def deterministic_hash(s: str):
 
 def make_nickname(name, sub):
     nickname = '_'.join(name.lower().split())
-    return f"{nickname}#{deterministic_hash(sub)}"
+    return f"{nickname}_{deterministic_hash(sub)}"

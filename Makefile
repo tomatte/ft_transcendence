@@ -45,6 +45,9 @@ purge: down fclean del del_vol del_net
 dev:
 	docker compose --file ./docker-compose-dev.yml up --build
 
+migrate:
+	python3 ./backend/manage.py migrate
+
 run:
 	docker compose --file ./docker-compose-dev.yml down redis
 	docker compose --file ./docker-compose-dev.yml up redis -d
