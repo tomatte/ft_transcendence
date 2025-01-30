@@ -8,7 +8,7 @@ class WebsocketNotification {
     }
 
     listen() {
-        this.client = new WebSocket("wss://localhost:443/ws/notification/")
+        this.client = new WebSocket(`wss://${window.location.hostname}:443/ws/notification/`)
 
         this.client.onmessage = (event) => {
             let data = JSON.parse(event.data)
