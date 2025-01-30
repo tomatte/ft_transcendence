@@ -2,7 +2,7 @@ import secrets
 
 import requests
 from backend.auth_providers.oauth_base import OAuthBase
-from backend.auth_google_utils import create_anti_forgery_state_token, decode_jwt, make_nickname
+from backend.auth_google_utils import create_anti_forgery_state_token, decode_jwt, make_nickname, make_uri_safe
 from backend.config import env
 from django.contrib.auth import authenticate
 
@@ -16,7 +16,7 @@ class OAuth_Google(OAuthBase):
             'code': self.request.GET.get('code'),
             'client_id': env('GOOGLE_CLIENT_ID'),
             'client_secret': env('GOOGLE_CLIENT_SECRET'),
-            'redirect_uri': 'https://localhost/api/auth/google',
+            'redirect_uri': env('GOOGLE_REDIRECT_URI'),
             'grant_type': 'authorization_code'
         })
         id_token = codeExchangeResponse.json()['id_token']
@@ -40,5 +40,5 @@ class OAuth_Google(OAuthBase):
         client_id = env('GOOGLE_CLIENT_ID')
         nonce = secrets.token_urlsafe(16)
         self.request.session['state'] = token
-        url = f"https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id={client_id}&scope=openid%20profile%20email&redirect_uri=https%3A//localhost/api/auth/google&state={token}&nonce={nonce}"
+        url = f"https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id={client_id}&scope=openid%20profile%20email&redirect_uri={make_uri_safe(env('GOOGLE_REDIRECT_URI'))}&state={token}&nonce={nonce}"
         return url

@@ -22,4 +22,4 @@ class OAuth_Fake(OAuthBase):
         return authenticate(self.request, data=data)
     
     def get_redirect_url(self):
-        return 'https://localhost'
+        return f"https://{env('SERVER_IP')}"
