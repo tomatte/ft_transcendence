@@ -334,7 +334,7 @@ const PageLogin = () => {
 
 				<form class="login-form-button">
 					<a class="button button--primary" id="login-google-button" href="/api/auth/google">
-						<img class="login-container__logo" src="/assets/logo/logo_42_white.svg" alt="logo logomark 42">
+						<img width="20" height="22" class="login-container__logo" src="/assets/logo/logo_google.svg" alt="logo logomark 42">
 						<span class="button__text font-body-regular-bold">Login with Google</span>
 					</a>
 				</form>
