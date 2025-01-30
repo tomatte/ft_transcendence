@@ -11,26 +11,27 @@ class OAuth_Google(OAuthBase):
     def __init__(self, request):
         self.request = request
     
-    def authenticate(self):
-        if self.request.GET.get('state') != self.request.session['state']:
-            raise ValueError({'message': 'invalid state parameter'})
-        
-        code = self.request.GET.get('code')
-        client_id = env('GOOGLE_CLIENT_ID')
+    def get_google_data(self):
         codeExchangeResponse = requests.post('https://oauth2.googleapis.com/token', {
-            'code': code,
-            'client_id': client_id,
+            'code': self.request.GET.get('code'),
+            'client_id': env('GOOGLE_CLIENT_ID'),
             'client_secret': env('GOOGLE_CLIENT_SECRET'),
             'redirect_uri': 'https://localhost/api/auth/google',
             'grant_type': 'authorization_code'
         })
         id_token = codeExchangeResponse.json()['id_token']
-        decoded_token = decode_jwt(id_token)
-        nickname = make_nickname(decoded_token['name'], decoded_token['sub'])
+        return decode_jwt(id_token)
+    
+    def authenticate(self):
+        if self.request.GET.get('state') != self.request.session['state']:
+            raise ValueError('invalid state parameter')
+        
+        google_data = self.get_google_data()
+        nickname = make_nickname(google_data['name'], google_data['sub'])
         data = {
             'username': nickname,
             'nickname': nickname,
-            'email': decoded_token['email']
+            'email': google_data['email']
         }
         return authenticate(self.request, data=data)
     
