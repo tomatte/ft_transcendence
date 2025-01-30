@@ -4,6 +4,7 @@ import base64
 import json
 import string
 import secrets
+from urllib.parse import quote
 
 def decode_jwt(token: str):
     header, payload, signature = token.split(".")
@@ -37,4 +38,8 @@ def deterministic_hash(s: str):
 
 def make_nickname(name, sub):
     nickname = '_'.join(name.lower().split())
-    return f"{nickname}#{deterministic_hash(sub)}"
+    return f"{nickname}_{deterministic_hash(sub)}"
+
+
+def make_uri_safe(input_string):
+    return quote(input_string, safe='')

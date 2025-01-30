@@ -7,7 +7,7 @@ class WebsocketRandomMatch {
     }
 
     listen() {
-        this.client = new WebSocket("wss://localhost:443/ws/random_match/")
+        this.client = new WebSocket(`wss://${window.location.hostname}:443/ws/random_match/`)
 
         this.client.onmessage = (event) => {
             let data = JSON.parse(event.data)

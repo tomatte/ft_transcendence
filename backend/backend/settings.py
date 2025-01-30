@@ -12,9 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from environs import Env
-
-env = Env()
-env.read_env()
+from backend.config import env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,8 +75,8 @@ MIDDLEWARE = [
     'backend.CustomMiddleware.CustomMiddleware',
 ]
 
-ALLOWED_HOSTS = ['localhost', '0.0.0.0', '134.209.223.141']
-CSRF_TRUSTED_ORIGINS = ['https://localhost', 'https://134.209.223.141']
+ALLOWED_HOSTS = ['0.0.0.0', env('SERVER_IP')]
+CSRF_TRUSTED_ORIGINS = ['https://localhost', f"https://{env('SERVER_IP')}"]
 
 AUTHENTICATION_BACKENDS=['backend.backends.MyBackend']
 

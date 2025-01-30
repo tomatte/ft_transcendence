@@ -9,7 +9,7 @@ server {
 
     index index.html;
 
-    server_name localhost;
+    server_name ${SERVER_NAME};
 
     client_max_body_size 50M;
 
