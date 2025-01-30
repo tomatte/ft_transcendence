@@ -5,8 +5,6 @@ COPY ./default.conf.template /etc/nginx/conf.d/default.conf.template
 
 RUN apt install nginx openssl -y
 
-RUN openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/nginx/key.key -out /etc/nginx/crt.crt -subj "/CN=localhost"
-
 RUN apt-get install certbot && certbot certonly --standalone -d tomatte.dev
 
 COPY ./start.sh /app/start.sh

@@ -2,8 +2,8 @@ server {
 	listen 443 ssl;
 	listen [::]:443 ssl default ipv6only=on;
 
-    ssl_certificate    /etc/letsencrypt/live/tomatte.dev/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/tomatte.dev/privkey.pem;
+	ssl_certificate    /etc/nginx/crt.crt;
+	ssl_certificate_key /etc/nginx/key.key;
 
 	ssl_protocols TLSv1.2 TLSv1.3;
 

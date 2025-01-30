@@ -13,6 +13,8 @@ services:
       - "4009:80"
     volumes:
       - ./frontend/app:/var/www
+      - /etc/letsencrypt/live/tomatte.dev/fullchain.pem:/etc/nginx/crt.crt:ro
+      - /etc/letsencrypt/live/tomatte.dev/privkey.pem:/etc/nginx/key.key:ro
     networks:
       - trans
     depends_on:
