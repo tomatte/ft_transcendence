@@ -31,15 +31,13 @@ def base62_encode(num: int, length=5):
     return ''.join(encoded)
 
 def deterministic_hash(s: str):
-    """Generates a deterministic 5-character hash from a string."""
-    hash_digest = hashlib.sha256(s.encode()).hexdigest()  # Get SHA-256 hash
-    hash_int = int(hash_digest, 16)  # Convert to an integer
-    return base62_encode(hash_int)  # Convert to Base62
+    hash_digest = hashlib.sha256(s.encode()).hexdigest()
+    hash_int = int(hash_digest, 16)
+    return base62_encode(hash_int, length=5)
 
 def make_nickname(name, sub):
-    nickname = '_'.join(name.lower().split())
+    nickname = name.split()[0].lower()
     return f"{nickname}_{deterministic_hash(sub)}"
-
 
 def make_uri_safe(input_string):
     return quote(input_string, safe='')
