@@ -12,8 +12,8 @@ const GameResultTournamentChampion = (player) => {
                 <div class="tournament-result__info__text__player">
                     <img class="imageplayer-tournament" src="${player.avatar}" alt="players">
                     <div class="player-info">
-                        <span class="name_player_tournament">${player.username}</span>
-                        <span class="nick_player_tournament">${player.nickname}</span>
+                        <span class="name_player_tournament">${player.nickname}</span>
+                        <span class="nick_player_tournament">${player.username}</span>
                     </div>
                 </div>
             </div>

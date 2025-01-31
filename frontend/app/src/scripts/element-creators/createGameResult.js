@@ -22,8 +22,8 @@ const createGameResult = (left, right, goBack = true) => {
                     <div class="player-bracket">
                         <img class="player-bracket__info__image" src="${left.avatar}" alt="Player Image"/>
                         <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">${left.username}</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">${left.nickname}</span>
+                            <span class="player-bracket__info__text__name font-body-medium-bold">${left.nickname}</span>
+                            <span class="player-bracket__info__text__nickname font-body-regular">${left.username}</span>
                         </div>
                     </div>
                 
@@ -36,8 +36,8 @@ const createGameResult = (left, right, goBack = true) => {
                     <div class="player-bracket">
                         <img class="player-bracket__info__image" src="${right.avatar}" alt="Player Image"/>
                         <div class="player-bracket__info__text">
-                            <span class="player-bracket__info__text__name font-body-medium-bold">${right.username}</span>
-                            <span class="player-bracket__info__text__nickname font-body-regular">${right.nickname}</span>
+                            <span class="player-bracket__info__text__name font-body-medium-bold">${right.nickname}</span>
+                            <span class="player-bracket__info__text__nickname font-body-regular">${right.username}</span>
                         </div>
                     </div>
                 </div>

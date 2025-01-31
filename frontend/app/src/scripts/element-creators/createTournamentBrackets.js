@@ -6,8 +6,8 @@ function createBracket(player) {
             <div class="player-bracket">
                 <img class="player-bracket__info__image" src="${player.avatar}" alt="Player Image"/>
                 <div class="player-bracket__info__text">
-                    <span class="player-bracket__info__text__name font-body-medium-bold">${player.username}</span>
-                    <span class="player-bracket__info__text__nickname font-body-regular">${player.nickname}</span>
+                    <span class="player-bracket__info__text__name font-body-medium-bold">${player.nickname}</span>
+                    <span class="player-bracket__info__text__nickname font-body-regular">${player.username}</span>
                 </div>
             </div>
         </div>

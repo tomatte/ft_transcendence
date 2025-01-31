@@ -6,8 +6,8 @@ function createRow(player) {
                     <img class="table-row__player__image" src="${player.avatar}" alt="player">
                 </div>
                 <div class="table-row__player__text">
-                    <span class="table-row__player__text__name font-body-medium-bold">${player.username}</span>
-                    <span class="table-row__player__text__nickname font-body-regular">${player.nickname}</span>
+                    <span class="table-row__player__text__name font-body-medium-bold">${player.nickname}</span>
+                    <span class="table-row__player__text__nickname font-body-regular">${player.username}</span>
                 </div>
             </td>
             <td class="table-row__data-default font-body-medium-bold">#1</td>
