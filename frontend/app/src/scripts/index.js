@@ -71,12 +71,12 @@ const getMyUser = () => {
     }
 	}).then((data) => {
 		document.cookie = `nickname=${data.nickname}`;
-		document.getElementById("profile-info-nickname").innerText = data.nickname;
+		document.getElementById("profile-info-nickname").innerText = data.username;
 
 		document.cookie = `avatar=${data.avatar}`;
 		document.getElementById("profile-info-img").src =  data.avatar;
 
     document.cookie = `username=${data.username}`;
-		document.getElementById("profile-info-name").innerText = data.username;
+		document.getElementById("profile-info-name").innerText = data.nickname;
 	}).catch((error) => {console.log(error)});
 }

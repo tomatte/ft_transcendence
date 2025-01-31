@@ -35,8 +35,8 @@ const createTableLines = (matchesList) => {
 					<img class="table-row__player__image" src="${item.opponent_avatar}" alt="player">
 				</div>
 				<div class="table-row__player__text">
-					<span class="table-row__player__text__name font-body-medium-bold">${item.opponent_username}</span>
-					<span class="table-row__player__text__nickname font-body-regular">${item.opponent_nickname}</span>
+					<span class="table-row__player__text__name font-body-medium-bold">${item.opponent_nickname}</span>
+					<span class="table-row__player__text__nickname font-body-regular">${item.opponent_username}</span>
 				</div>
 			</td>
 			<td class="table-row__data-default font-body-medium-bold">${item.type}</td>

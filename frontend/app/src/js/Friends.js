@@ -105,8 +105,8 @@ export const createTableLines = (friendList) => {
 						<img class="table-row__player__image" src="${friend.avatar}" alt="player">
 					</div>
 					<div class="table-row__player__text">
-						<span class="table-row__player__text__name font-body-medium-bold">${friend.username}</span>
-						<span class="table-row__player__text__nickname font-body-regular">${friend.nickname}</span>
+						<span class="table-row__player__text__name font-body-medium-bold">${truncStr(friend.nickname)}</span>
+						<span class="table-row__player__text__nickname font-body-regular">${truncStr(friend.username)}</span>
 					</div>
 				</td>
 				<td class="table-row__data-default font-body-medium-bold">${friend.global_ranking}</td>
