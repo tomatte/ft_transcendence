@@ -18,20 +18,24 @@ const getCookie = (name) => {
 	return cookieValue;
 }
 
+function truncStr(str, size = 12) {
+    return str.length > size ? str.slice(0, size) + '..' : str;
+}
+
 
 const getMyProfile = () => {
 	fetch('/api/users/get/my_user', { method: 'GET', credentials: 'include' })
 	.then((response) => {
 		return response.json();
 	}).then((data) => {
-		document.cookie = `nickname=${data.nickname}`;
-		document.getElementById("profile-info-nickname").innerText = data.nickname;
+		document.cookie = `nickname=${truncStr(data.nickname)}`;
+		document.getElementById("profile-info-nickname").innerText = truncStr(data.nickname);
 
 		document.cookie = `avatar=${data.avatar}`;
 		document.getElementById("profile-info-img").src = data.avatar;
 
-		document.cookie = `username=${data.username}`;
-		document.getElementById("profile-info-name").innerText = data.username;
+		document.cookie = `username=${truncStr(data.username)}`;
+		document.getElementById("profile-info-name").innerText = truncStr(data.username);
 	}).catch((error) => {console.log(error)});
 }
 
@@ -246,8 +250,8 @@ const generateListOfUsersToAdd = (usersList) => {
 						<img class="table-row__player__image" src="${user.avatar}" alt="player">
 					</div>
 					<div class="table-row__player__text">
-						<span class="table-row__player__text__name font-body-medium-bold">${user.username}</span>
-						<span class="table-row__player__text__nickname font-body-regular">${user.nickname}</span>
+						<span class="table-row__player__text__name font-body-medium-bold">${truncStr(user.username)}</span>
+						<span class="table-row__player__text__nickname font-body-regular">${truncStr(user.nickname)}</span>
 					</div>
 				</td>
 				<td class="table-row__data-default font-body-medium-bold">${index + 1}</td>

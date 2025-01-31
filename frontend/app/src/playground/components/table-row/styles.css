@@ -86,6 +86,7 @@
     height: 42px;
     flex-direction: column;
     justify-content: space-between;
+    width: 94px;
 }
 
 .table-row__player__text__name {

@@ -45,8 +45,8 @@ const createTableLines = (ranking_list, start) => {
 						<img class="table-row__player__image" src="${item.avatar}" alt="player">
 					</div>
 					<div class="table-row__player__text">
-						<span class="table-row__player__text__name font-body-medium-bold">${item.nickname}</span>
-						<span class="table-row__player__text__nickname font-body-regular">${item.username}</span>
+						<span class="table-row__player__text__name font-body-medium-bold">${truncStr(item.nickname)}</span>
+						<span class="table-row__player__text__nickname font-body-regular">${truncStr(item.username)}</span>
 					</div>
 				</td>
 				<td class="table-row__data-default font-body-medium-bold">${item.total_score}</td>

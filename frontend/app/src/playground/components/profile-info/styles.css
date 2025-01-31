@@ -10,6 +10,7 @@
     border-radius: 8px;
     background: var(--Lunar-Dust-950);
     transition: all 0.2s ease;
+    overflow: hidden;
 }
 
 .profile-info:hover {
