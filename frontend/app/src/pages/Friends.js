@@ -22,8 +22,8 @@ const renderTable = (data, page) => {
                         <img class="table-row__player__image" src="${friend.avatar}" alt="player">
                     </div>
                     <div class="table-row__player__text">
-                        <span class="table-row__player__text__name font-body-medium-bold">${friend.username}</span>
-                        <span class="table-row__player__text__nickname font-body-regular">${friend.nickname}</span>
+                        <span class="table-row__player__text__name font-body-medium-bold">${friend.nickname}</span>
+                        <span class="table-row__player__text__nickname font-body-regular">${friend.username}</span>
                     </div>
                 </td>
                 <td class="table-row__data-default font-body-medium-bold">${friend.global_ranking}</td>

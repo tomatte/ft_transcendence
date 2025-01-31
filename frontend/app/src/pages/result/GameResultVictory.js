@@ -25,8 +25,8 @@ const GameResultVictory = (player_left, player_right, description, type) => {
                 <div class="player-bracket">
                     <img class="player-bracket__info__image" src="${player_left.avatar}" alt="Player Image"/>
                     <div class="player-bracket__info__text">
-                        <span class="player-bracket__info__text__name font-body-medium-bold">${player_left.username}</span>
-                        <span class="player-bracket__info__text__nickname font-body-regular">${player_left.nickname}</span>
+                        <span class="player-bracket__info__text__name font-body-medium-bold">${player_left.nickname}</span>
+                        <span class="player-bracket__info__text__nickname font-body-regular">${player_left.username}</span>
                     </div>
                 </div> 
 
@@ -40,8 +40,8 @@ const GameResultVictory = (player_left, player_right, description, type) => {
                 <div class="player-bracket">
                     <img class="player-bracket__info__image" src="${player_right.avatar}" alt="Player Image"/>
                     <div class="player-bracket__info__text">
-                        <span class="player-bracket__info__text__name font-body-medium-bold">${player_right.username}</span>
-                        <span class="player-bracket__info__text__nickname font-body-regular">${player_right.nickname}</span>
+                        <span class="player-bracket__info__text__name font-body-medium-bold">${player_right.nickname}</span>
+                        <span class="player-bracket__info__text__nickname font-body-regular">${player_right.username}</span>
                     </div>
                 </div>
             </div>
