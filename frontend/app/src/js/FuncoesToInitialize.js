@@ -29,13 +29,13 @@ const getMyProfile = () => {
 		return response.json();
 	}).then((data) => {
 		document.cookie = `nickname=${truncStr(data.nickname)}`;
-		document.getElementById("profile-info-nickname").innerText = truncStr(data.nickname);
+		document.getElementById("profile-info-nickname").innerText = truncStr(data.username);
 
 		document.cookie = `avatar=${data.avatar}`;
 		document.getElementById("profile-info-img").src = data.avatar;
 
 		document.cookie = `username=${truncStr(data.username)}`;
-		document.getElementById("profile-info-name").innerText = truncStr(data.username);
+		document.getElementById("profile-info-name").innerText = truncStr(data.nickname);
 	}).catch((error) => {console.log(error)});
 }
 
@@ -250,8 +250,8 @@ const generateListOfUsersToAdd = (usersList) => {
 						<img class="table-row__player__image" src="${user.avatar}" alt="player">
 					</div>
 					<div class="table-row__player__text">
-						<span class="table-row__player__text__name font-body-medium-bold">${truncStr(user.username)}</span>
-						<span class="table-row__player__text__nickname font-body-regular">${truncStr(user.nickname)}</span>
+						<span class="table-row__player__text__name font-body-medium-bold">${truncStr(user.nickname)}</span>
+						<span class="table-row__player__text__nickname font-body-regular">${truncStr(user.username)}</span>
 					</div>
 				</td>
 				<td class="table-row__data-default font-body-medium-bold">${index + 1}</td>
